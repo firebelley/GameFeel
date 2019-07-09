@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GodotTools</name>
+    </assembly>
+    <members>
+        <member name="M:GodotTools.Extension.NodeExtensions.SetNodesByDeclaredNodePaths(Godot.Node)">
+            <summary>
+            Uses reflection to find non-public NodePath fields. It is assumed that declared NodePath field names end with "Path". 
+            This method will use reflection to find the corresponding Node field by removing "Path" from the name and matching on the result.
+            For example, a NodePath field with name "_labelPath" will automatically try to set the non-public field "_label" to the node present at the NodePath location.
+            </summary>
+            <param name="n"></param>
+        </member>
+        <member name="M:GodotTools.Extension.ResourcePreloaderExtension.InstanceScene``1(Godot.ResourcePreloader,System.String)">
+            <summary>
+            Instances a scene with the resource name. Returns null if resource was not found or was not a packed scene.
+            </summary>
+            <param name="preloader"></param>
+            <param name="name"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

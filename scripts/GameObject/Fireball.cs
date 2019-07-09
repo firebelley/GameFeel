@@ -5,7 +5,7 @@ namespace GameFeel.GameObject
     public class Fireball : RigidBody2D
     {
         private const string ANIM_DELETE = "delete";
-        private const float SPEED = 250f;
+        private const float SPEED = 500f;
 
         private AnimationPlayer _animationPlayer;
 

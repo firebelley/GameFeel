@@ -3,14 +3,14 @@
 [ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=1]
 [ext_resource path="res://assets/particle.png" type="Texture" id=2]
 
-[sub_resource type="Curve" id=2]
+[sub_resource type="Curve" id=1]
 max_value = 2.0
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.128019, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=3]
-curve = SubResource( 2 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 1
 emission_sphere_radius = 4.0
 flag_disable_z = true
@@ -24,7 +24,7 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 360.0
 angle_random = 1.0
-scale_curve = SubResource( 3 )
+scale_curve = SubResource( 2 )
 color_ramp = ExtResource( 1 )
 
 [sub_resource type="Animation" id=4]
@@ -65,7 +65,7 @@ one_shot = true
 explosiveness = 0.8
 randomness = 1.0
 draw_order = 1
-process_material = SubResource( 1 )
+process_material = SubResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

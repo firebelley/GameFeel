@@ -1,8 +1,9 @@
+using GameFeel.Interface;
 using Godot;
 
 namespace GameFeel.GameObject
 {
-    public class Fireball : RigidBody2D
+    public class Fireball : RigidBody2D, IDamageImparter
     {
         private const string ANIM_DELETE = "delete";
         private const float SPEED = 500f;
@@ -22,6 +23,11 @@ namespace GameFeel.GameObject
         public void Delete()
         {
             _animationPlayer.Play(ANIM_DELETE);
+        }
+
+        public void RegisterHit(IDamageReceiver receiver)
+        {
+
         }
     }
 }

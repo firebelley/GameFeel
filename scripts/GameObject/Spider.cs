@@ -1,9 +1,10 @@
 using GameFeel.Effect;
+using GameFeel.Interface;
 using Godot;
 
 namespace GameFeel.GameObject
 {
-    public class Spider : KinematicBody2D
+    public class Spider : KinematicBody2D, IDamageReceiver
     {
         private Area2D _hitboxArea;
         private Tween _shaderTween;
@@ -22,13 +23,13 @@ namespace GameFeel.GameObject
 
         private void OnBodyEntered(PhysicsBody2D body)
         {
-            if (body is Fireball fb)
+            if (body is IDamageImparter di)
             {
                 var scene = GD.Load("res://scenes/Effect/FireballDeath.tscn") as PackedScene;
                 var node = scene.Instance() as Node2D;
                 GetParent().AddChild(node);
                 node.GlobalPosition = _hitboxArea.GlobalPosition;
-                fb.Delete();
+                di.RegisterHit(this);
                 PlayTween();
                 Camera.Shake();
 

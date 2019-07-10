@@ -1,6 +1,6 @@
 namespace GameFeel.Interface
 {
-    public interface IDamageImparter
+    public interface IDamageDealer
     {
         void RegisterHit(IDamageReceiver damageReceiver);
     }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/GameObject/Fireball.cs" type="Script" id=1]
-[ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=2]
-[ext_resource path="res://assets/particle.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Effect/FireballDeath.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=3]
+[ext_resource path="res://assets/particle.png" type="Texture" id=4]
 
 [sub_resource type="Curve" id=1]
 max_value = 2.0
@@ -23,7 +24,7 @@ orbit_velocity_random = 0.0
 angle = 180.0
 angle_random = 1.0
 scale_curve = SubResource( 2 )
-color_ramp = ExtResource( 2 )
+color_ramp = ExtResource( 3 )
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 6.0
@@ -77,6 +78,9 @@ gravity_scale = 0.0
 continuous_cd = 1
 script = ExtResource( 1 )
 
+[node name="ResourcePreloader" type="ResourcePreloader" parent="."]
+resources = [ PoolStringArray( "FireballDeath" ), [ ExtResource( 2 ) ] ]
+
 [node name="Particles2D" type="Particles2D" parent="."]
 show_behind_parent = true
 amount = 40
@@ -85,7 +89,7 @@ visibility_rect = Rect2( -300, -300, 600, 600 )
 local_coords = false
 draw_order = 1
 process_material = SubResource( 3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 4 )

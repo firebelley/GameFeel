@@ -13,10 +13,11 @@ namespace GameFeel
 
         private float _xNoiseSample;
         private float _yNoiseSample;
-        private static float _amplitude;
 
         private Vector2 _originalOffset;
         private Vector2 _offset;
+
+        private static float _amplitude;
 
         public override void _Ready()
         {

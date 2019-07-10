@@ -58,8 +58,9 @@
     <Compile Include="scripts\GameObject\Fireball.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\Spider.cs" />
-    <Compile Include="scripts\Interface\IDamageImparter.cs" />
+    <Compile Include="scripts\Interface\IDamageDealer.cs" />
     <Compile Include="scripts\Interface\IDamageReceiver.cs" />
+    <Compile Include="scripts\Main.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

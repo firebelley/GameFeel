@@ -21,27 +21,14 @@ namespace GameFeel.GameObject
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
         }
 
-        private void OnBodyEntered(PhysicsBody2D body)
+        public void DealDamage(float damage)
         {
-            if (body is IDamageImparter di)
-            {
-                var scene = GD.Load("res://scenes/Effect/FireballDeath.tscn") as PackedScene;
-                var node = scene.Instance() as Node2D;
-                GetParent().AddChild(node);
-                node.GlobalPosition = _hitboxArea.GlobalPosition;
-                di.RegisterHit(this);
-                PlayTween();
-                Camera.Shake();
-
-                var damageScene = GD.Load("res://scenes/Effect/DamageNumber.tscn") as PackedScene;
-                var damageNumber = damageScene.Instance() as DamageNumber;
-                GetParent().AddChild(damageNumber);
-                damageNumber.SetNumber(10);
-                damageNumber.GlobalPosition = GlobalPosition;
-            }
+            PlayHitShadeTween();
+            Camera.Shake();
+            Main.CreateDamageNumber(this, damage);
         }
 
-        private void PlayTween()
+        private void PlayHitShadeTween()
         {
             _shaderTween.ResetAll();
             _shaderTween.InterpolateProperty(
@@ -54,6 +41,14 @@ namespace GameFeel.GameObject
                 Tween.EaseType.In
             );
             _shaderTween.Start();
+        }
+
+        private void OnBodyEntered(PhysicsBody2D body)
+        {
+            if (body is IDamageDealer dd)
+            {
+                dd.RegisterHit(this);
+            }
         }
     }
 }

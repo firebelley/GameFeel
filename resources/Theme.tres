@@ -1,0 +1,17 @@
+[gd_resource type="Theme" load_steps=4 format=2]
+
+[ext_resource path="res://resources/styles/HealthbarBg.tres" type="StyleBox" id=1]
+[ext_resource path="res://resources/styles/HealthBarFg.tres" type="StyleBox" id=2]
+[ext_resource path="res://resources/HitFont.tres" type="DynamicFont" id=3]
+
+[resource]
+default_font = ExtResource( 3 )
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+ProgressBar/colors/font_color = Color( 0.941176, 0.941176, 0.941176, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = ExtResource( 1 )
+ProgressBar/styles/fg = ExtResource( 2 )

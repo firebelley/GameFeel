@@ -5,10 +5,15 @@ namespace GameFeel.GameObject
 {
     public class Spider : KinematicBody2D, IDamageReceiver
     {
+        [Signal]
+        public delegate void DamageReceived(float damage);
+
         private Area2D _hitboxArea;
         private Tween _shaderTween;
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
+        private float _maxHp = 10f;
+        private float _hp = 10f;
 
         public override void _Ready()
         {
@@ -25,6 +30,13 @@ namespace GameFeel.GameObject
             PlayHitShadeTween();
             Camera.Shake();
             Main.CreateDamageNumber(this, damage);
+            _hp -= damage;
+            EmitSignal(nameof(DamageReceived), damage);
+        }
+
+        public float GetCurrentHealthPercent()
+        {
+            return _hp / (_maxHp > 0f ? _maxHp : 1f);
         }
 
         private void PlayHitShadeTween()
@@ -49,5 +61,6 @@ namespace GameFeel.GameObject
                 dd.RegisterHit(this);
             }
         }
+
     }
 }

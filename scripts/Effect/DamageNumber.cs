@@ -27,7 +27,7 @@ namespace GameFeel.Effect
 
         public void SetNumber(int number)
         {
-            _label.Text = $"{_rng.RandiRange(1, 15)}";
+            _label.Text = $"{number}";
         }
 
         public void SetNumber(float number)

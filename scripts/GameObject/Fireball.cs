@@ -33,7 +33,7 @@ namespace GameFeel.GameObject
 
         public void RegisterHit(IDamageReceiver receiver)
         {
-            receiver.DealDamage(10f);
+            receiver.DealDamage(1f);
             Delete();
         }
     }

@@ -14,6 +14,9 @@ script = ExtResource( 1 )
 resources = [ PoolStringArray( "DamageNumber", "Fireball", "Player", "Spider" ), [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ] ]
 
 [node name="Entities" type="YSort" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Player" parent="Entities" instance=ExtResource( 4 )]
 position = Vector2( 139.748, 83.9969 )
@@ -21,10 +24,22 @@ position = Vector2( 139.748, 83.9969 )
 [node name="Spider" parent="Entities" instance=ExtResource( 5 )]
 position = Vector2( 111.233, 0.554779 )
 
+[node name="Spider2" parent="Entities" instance=ExtResource( 5 )]
+position = Vector2( -82.0932, -30.8298 )
+
+[node name="Spider3" parent="Entities" instance=ExtResource( 5 )]
+position = Vector2( -93.9233, 42.6598 )
+
 [node name="Effects" type="YSort" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="DamageNumbers" type="Node" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}

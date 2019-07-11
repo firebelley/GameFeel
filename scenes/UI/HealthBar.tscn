@@ -27,7 +27,7 @@ rect_pivot_offset = Vector2( 10, 2 )
 theme = ExtResource( 1 )
 max_value = 1.0
 step = 0.001
-value = 1.0
+value = 0.5
 percent_visible = false
 script = ExtResource( 2 )
 

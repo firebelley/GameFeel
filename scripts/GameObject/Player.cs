@@ -63,7 +63,7 @@ namespace GameFeel.GameObject
             if (Input.IsActionJustPressed(INPUT_ATTACK))
             {
                 var fireball = _fireballScene.Instance() as Fireball;
-                GetParent().AddChild(fireball);
+                Main.EffectsLayer.AddChild(fireball);
                 var position = _position2d.GlobalPosition;
                 fireball.SetDirection(GetGlobalMousePosition() - position);
                 fireball.GlobalPosition = position;

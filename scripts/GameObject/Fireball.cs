@@ -1,5 +1,6 @@
 using GameFeel.Interface;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.GameObject
 {
@@ -24,8 +25,9 @@ namespace GameFeel.GameObject
 
         public void Delete()
         {
-            var fireballDeath = _resourcePreloader.GetResource("FireballDeath") as PackedScene;
-            Main.CreateEffect(fireballDeath, GlobalPosition);
+            var fireballDeath = _resourcePreloader.InstanceScene<Node2D>("FireballDeath");
+            Main.EffectsLayer.AddChild(fireballDeath);
+            fireballDeath.GlobalPosition = GlobalPosition;
             _animationPlayer.Play(ANIM_DELETE);
         }
 

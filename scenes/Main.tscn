@@ -15,7 +15,6 @@ script = ExtResource( 1 )
 resources = [ PoolStringArray( "DamageNumber", "Fireball", "Player", "Spider" ), [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ] ]
 
 [node name="Entities" type="YSort" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_lock_": true
 }

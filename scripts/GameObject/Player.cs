@@ -4,6 +4,8 @@ namespace GameFeel.GameObject
 {
     public class Player : KinematicBody2D
     {
+        public const string GROUP = "player";
+
         private const string INPUT_MOVE_DOWN = "move_down";
         private const string INPUT_MOVE_LEFT = "move_left";
         private const string INPUT_MOVE_RIGHT = "move_right";
@@ -20,6 +22,9 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private Position2D _position2d;
 
+        public float Mana { get; private set; } = 15f;
+        public float MaxMana { get; private set; } = 15f;
+
         // TODO: move to resource preloader
         private PackedScene _fireballScene;
 
@@ -28,6 +33,8 @@ namespace GameFeel.GameObject
             _fireballScene = GD.Load("res://scenes/GameObject/Fireball.tscn") as PackedScene;
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _position2d = GetNode<Position2D>("AnimatedSprite/Position2D");
+
+            AddToGroup(GROUP);
         }
 
         public override void _Process(float delta)
@@ -67,6 +74,7 @@ namespace GameFeel.GameObject
                 var position = _position2d.GlobalPosition;
                 fireball.SetDirection(GetGlobalMousePosition() - position);
                 fireball.GlobalPosition = position;
+                Mana -= 1f;
             }
         }
 

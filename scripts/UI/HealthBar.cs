@@ -2,24 +2,27 @@ using GameFeel.GameObject;
 using GameFeel.Interface;
 using Godot;
 
-public class HealthBar : ProgressBar
+namespace GameFeel.UI
 {
-    private AnimationPlayer _animationPlayer;
-
-    public override void _Ready()
+    public class HealthBar : ProgressBar
     {
-        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        private AnimationPlayer _animationPlayer;
 
-        if (GetOwner() is Spider s)
+        public override void _Ready()
         {
-            s.Connect(nameof(Spider.DamageReceived), this, nameof(OnDamageReceived));
-        }
-    }
+            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    private void OnDamageReceived(float damage)
-    {
-        Value = (GetOwner() as IDamageReceiver).GetCurrentHealthPercent();
-        _animationPlayer.Stop(true);
-        _animationPlayer.Play("bounce");
+            if (GetOwner() is Spider s)
+            {
+                s.Connect(nameof(Spider.DamageReceived), this, nameof(OnDamageReceived));
+            }
+        }
+
+        private void OnDamageReceived(float damage)
+        {
+            Value = (GetOwner() as IDamageReceiver).GetCurrentHealthPercent();
+            _animationPlayer.Stop(true);
+            _animationPlayer.Play("bounce");
+        }
     }
 }

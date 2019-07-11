@@ -62,6 +62,7 @@
     <Compile Include="scripts\Interface\IDamageReceiver.cs" />
     <Compile Include="scripts\Main.cs" />
     <Compile Include="scripts\UI\HealthBar.cs" />
+    <Compile Include="scripts\UI\UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

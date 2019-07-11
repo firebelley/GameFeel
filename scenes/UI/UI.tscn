@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
-[ext_resource path="res://assets/ui-widgets.png" type="Texture" id=2]
+[ext_resource path="res://scripts/UI/UI.cs" type="Script" id=1]
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/ui-widgets.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxTexture" id=1]
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 region_rect = Rect2( 49, 6, 14, 5 )
 margin_left = 6.0
 margin_right = 6.0
@@ -14,7 +15,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxTexture" id=2]
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 region_rect = Rect2( 33, 6, 14, 5 )
 margin_left = 6.0
 margin_right = 6.0
@@ -24,11 +25,13 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [node name="UI" type="CanvasLayer"]
+script = ExtResource( 1 )
+_manaBarPath = NodePath("Control/MarginContainer/VBoxContainer/HBoxContainer/ManaBar")
 
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 1 )
+theme = ExtResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 anchor_right = 1.0
@@ -43,7 +46,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
-editor/display_folded = true
 margin_right = 100.0
 margin_bottom = 5.0
 size_flags_vertical = 0

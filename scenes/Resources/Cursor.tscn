@@ -1,8 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/cursor.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Resources/Cursor.cs" type="Script" id=2]
 
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 0.5
+step = 0.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.00245179, 0.0514876, 0.416804 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
+
 [node name="Cursor" type="Sprite"]
+scale = Vector2( 1.125, 1.125 )
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/default = SubResource( 1 )

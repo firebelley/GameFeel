@@ -15,8 +15,9 @@ namespace GameFeel.GameObject
         private const string ANIM_RUN = "run";
 
         private const float ACCELERATION = 3000f;
-        private const float DECELERATION = 15f;
+        private const float DECELERATION = 17f;
         private const float MAX_SPEED = 125f;
+        private const float MANA_REGEN_RATE = 2f;
 
         private Vector2 _velocity;
         private AnimatedSprite _animatedSprite;
@@ -41,6 +42,7 @@ namespace GameFeel.GameObject
         {
             UpdateMovement(delta);
             UpdateAttack(delta);
+            UpdateRegen(delta);
         }
 
         private void UpdateMovement(float delta)
@@ -69,13 +71,21 @@ namespace GameFeel.GameObject
         {
             if (Input.IsActionJustPressed(INPUT_ATTACK))
             {
-                var fireball = _fireballScene.Instance() as Fireball;
-                Main.EffectsLayer.AddChild(fireball);
-                var position = _position2d.GlobalPosition;
-                fireball.SetDirection(GetGlobalMousePosition() - position);
-                fireball.GlobalPosition = position;
-                Mana -= 1f;
+                if (Mana >= 1f)
+                {
+                    var fireball = _fireballScene.Instance() as Fireball;
+                    Main.EffectsLayer.AddChild(fireball);
+                    var position = _position2d.GlobalPosition;
+                    fireball.SetDirection(GetGlobalMousePosition() - position);
+                    fireball.GlobalPosition = position;
+                    Mana -= 1f;
+                }
             }
+        }
+
+        private void UpdateRegen(float delta)
+        {
+            Mana = Mathf.Clamp(Mana + MANA_REGEN_RATE * delta, 0f, MaxMana);
         }
 
         private Vector2 GetMovementVector()

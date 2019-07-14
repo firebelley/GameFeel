@@ -12,6 +12,19 @@
             </summary>
             <param name="n"></param>
         </member>
+        <member name="M:GodotTools.Extension.Physics2DDirectSpaceStateExtensions.Raycast(Godot.Physics2DDirectSpaceState,Godot.Vector2,Godot.Vector2,Godot.Collections.Array,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Returns a RaycastResult if there is a collision, otherwise returns null.
+            </summary>
+            <param name="state"></param>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="exclude"></param>
+            <param name="collisionLayer"></param>
+            <param name="collideWithBodies"></param>
+            <param name="collideWithAreas"></param>
+            <returns></returns>
+        </member>
         <member name="M:GodotTools.Extension.ResourcePreloaderExtension.InstanceScene``1(Godot.ResourcePreloader,System.String)">
             <summary>
             Instances a scene with the resource name. Returns null if resource was not found or was not a packed scene.

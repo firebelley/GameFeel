@@ -47,7 +47,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="GodotTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Firebelley.GodotTools.1.0.13\lib\net45\GodotTools.dll</HintPath>
+      <HintPath>packages\Firebelley.GodotTools.1.0.14\lib\net45\GodotTools.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

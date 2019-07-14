@@ -74,7 +74,7 @@ namespace GameFeel.GameObject
                 if (Mana >= 1f)
                 {
                     var fireball = _fireballScene.Instance() as Fireball;
-                    Main.EffectsLayer.AddChild(fireball);
+                    GameWorld.EffectsLayer.AddChild(fireball);
                     var position = _position2d.GlobalPosition;
                     fireball.SetDirection(GetGlobalMousePosition() - position);
                     fireball.GlobalPosition = position;

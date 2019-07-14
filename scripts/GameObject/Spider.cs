@@ -29,7 +29,7 @@ namespace GameFeel.GameObject
         {
             PlayHitShadeTween();
             Camera.Shake();
-            Main.CreateDamageNumber(this, damage);
+            GameWorld.CreateDamageNumber(this, damage);
             _hp -= damage;
             EmitSignal(nameof(DamageReceived), damage);
         }

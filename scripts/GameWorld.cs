@@ -33,5 +33,20 @@ namespace GameFeel
                 damageNumber.GlobalPosition = sourceNode.GlobalPosition;
             }
         }
+
+        public static Vector2 GetViewportMousePosition()
+        {
+            if (!IsInstanceValid(Instance))
+            {
+                return Vector2.Zero;
+            }
+
+            if (Instance.GetParent() is Viewport vp)
+            {
+                return vp.GetCanvasTransform().XformInv(vp.GetMousePosition());
+            }
+
+            return Vector2.Zero;
+        }
     }
 }

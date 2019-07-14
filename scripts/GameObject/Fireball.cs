@@ -26,7 +26,7 @@ namespace GameFeel.GameObject
         public void Delete()
         {
             var fireballDeath = _resourcePreloader.InstanceScene<Node2D>("FireballDeath");
-            Main.EffectsLayer.AddChild(fireballDeath);
+            GameWorld.EffectsLayer.AddChild(fireballDeath);
             fireballDeath.GlobalPosition = GlobalPosition;
             _animationPlayer.Play(ANIM_DELETE);
         }

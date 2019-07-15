@@ -4,6 +4,9 @@ namespace GameFeel.GameObject
 {
     public class Player : KinematicBody2D
     {
+        [Signal]
+        public delegate void Attack(Player p);
+
         public const string GROUP = "player";
 
         private const string INPUT_MOVE_DOWN = "move_down";
@@ -21,32 +24,52 @@ namespace GameFeel.GameObject
 
         private Vector2 _velocity;
         private AnimatedSprite _animatedSprite;
-        private Position2D _position2d;
+        private Position2D _weaponPosition2d;
+        private Position2D _cameraTargetPosition2d;
+
+        private float _weaponRadius;
+        private float _weaponHeight;
 
         public float Mana { get; private set; } = 15f;
         public float MaxMana { get; private set; } = 15f;
 
-        // TODO: move to resource preloader
-        private PackedScene _fireballScene;
-
         public override void _Ready()
         {
-            _fireballScene = GD.Load("res://scenes/GameObject/Fireball.tscn") as PackedScene;
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-            _position2d = GetNode<Position2D>("AnimatedSprite/Position2D");
+            _weaponPosition2d = GetNode<Position2D>("WeaponPosition2D");
+            _cameraTargetPosition2d = GetNode<Position2D>("CameraTargetPosition2D");
+            _weaponRadius = _weaponPosition2d.Position.x;
+            _weaponHeight = _weaponPosition2d.Position.y;
 
             AddToGroup(GROUP);
         }
 
         public override void _Process(float delta)
         {
-            UpdateMovement(delta);
-            UpdateAttack(delta);
-            UpdateRegen(delta);
+            UpdateMovement();
+            UpdateAttack();
+            UpdateRegen();
+            UpdateWeaponOrientation();
         }
 
-        private void UpdateMovement(float delta)
+        public Position2D GetWeaponPosition()
         {
+            return _weaponPosition2d;
+        }
+
+        public void RemoveMana(float amount)
+        {
+            Mana -= amount;
+        }
+
+        public Vector2 GetCameraTargetPosition()
+        {
+            return _cameraTargetPosition2d.GlobalPosition;
+        }
+
+        private void UpdateMovement()
+        {
+            var delta = GetProcessDeltaTime();
             var moveVec = GetMovementVector();
             if (moveVec.LengthSquared() != 0f)
             {
@@ -67,25 +90,31 @@ namespace GameFeel.GameObject
             _animatedSprite.Scale = spriteScale;
         }
 
-        private void UpdateAttack(float delta)
+        private void UpdateAttack()
         {
             if (Input.IsActionJustPressed(INPUT_ATTACK))
             {
-                if (Mana >= 1f)
-                {
-                    var fireball = _fireballScene.Instance() as Fireball;
-                    GameWorld.EffectsLayer.AddChild(fireball);
-                    var position = _position2d.GlobalPosition;
-                    fireball.SetDirection(GetGlobalMousePosition() - position);
-                    fireball.GlobalPosition = position;
-                    Mana -= 1f;
-                }
+                EmitSignal(nameof(Attack), this);
             }
         }
 
-        private void UpdateRegen(float delta)
+        private void UpdateRegen()
         {
+            var delta = GetProcessDeltaTime();
             Mana = Mathf.Clamp(Mana + MANA_REGEN_RATE * delta, 0f, MaxMana);
+        }
+
+        private void UpdateWeaponOrientation()
+        {
+            var centerPosition = new Vector2(0, _weaponHeight);
+            var globalCenterPosition = GlobalPosition + centerPosition;
+            var direction = (GetGlobalMousePosition() - globalCenterPosition).Normalized();
+            _weaponPosition2d.GlobalPosition = globalCenterPosition + _weaponRadius * direction;
+            _weaponPosition2d.Rotation = direction.Angle();
+
+            var weaponScale = _weaponPosition2d.Scale;
+            weaponScale.y = Mathf.Sign(_animatedSprite.Scale.x);
+            _weaponPosition2d.Scale = weaponScale;
         }
 
         private Vector2 GetMovementVector()

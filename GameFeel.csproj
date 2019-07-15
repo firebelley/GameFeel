@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="scripts\Camera.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />
+    <Compile Include="scripts\GameObject\Book.cs" />
     <Compile Include="scripts\GameObject\Fireball.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\Spider.cs" />

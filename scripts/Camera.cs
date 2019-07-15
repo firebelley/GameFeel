@@ -1,4 +1,6 @@
+using GameFeel.GameObject;
 using Godot;
+using GodotTools.Extension;
 using GodotTools.Util;
 
 namespace GameFeel
@@ -10,12 +12,14 @@ namespace GameFeel
         private const float NOISE_MAX = 5000f;
         private const float AMPLITUDE_DECAY = 6f;
         private const float MAX_OFFSET = 4f;
+        private const float CAMERA_FOLLOW = 10f;
 
         private float _xNoiseSample;
         private float _yNoiseSample;
 
         private Vector2 _originalOffset;
         private Vector2 _offset;
+        private Vector2 _targetPosition;
 
         private static float _amplitude;
 
@@ -26,6 +30,14 @@ namespace GameFeel
 
         public override void _Process(float delta)
         {
+            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
+            if (player != null)
+            {
+                _targetPosition = player.GetCameraTargetPosition();
+            }
+
+            GlobalPosition = GlobalPosition.LinearInterpolate(_targetPosition, CAMERA_FOLLOW * delta);
+
             if (_amplitude > 0f)
             {
                 _xNoiseSample += X_NOISE_GROWTH * delta;

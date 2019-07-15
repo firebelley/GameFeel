@@ -13,6 +13,7 @@ namespace GameFeel
 
         private Node _damageNumbersLayer;
         private ResourcePreloader _resourcePreloader;
+        private Navigation2D _navigation;
 
         public override void _Ready()
         {
@@ -21,6 +22,7 @@ namespace GameFeel
             EffectsLayer = GetNode<YSort>("Effects");
             _damageNumbersLayer = GetNode<Node>("DamageNumbers");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
+            _navigation = GetNode<Navigation2D>("Navigation2D");
         }
 
         public static void CreateDamageNumber(Node2D sourceNode, float damage)
@@ -32,6 +34,15 @@ namespace GameFeel
                 damageNumber.SetNumber(damage);
                 damageNumber.GlobalPosition = sourceNode.GlobalPosition;
             }
+        }
+
+        public static Vector2[] GetPath(Vector2 start, Vector2 end)
+        {
+            if (!IsInstanceValid(Instance))
+            {
+                return new Vector2[] { };
+            }
+            return Instance._navigation.GetSimplePath(start, end, false);
         }
 
         public static Vector2 GetViewportMousePosition()

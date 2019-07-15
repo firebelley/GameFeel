@@ -1,5 +1,6 @@
 using GameFeel.Interface;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.GameObject
 {
@@ -12,8 +13,13 @@ namespace GameFeel.GameObject
         private Tween _shaderTween;
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
+
         private float _maxHp = 10f;
         private float _hp = 10f;
+
+        private float _currentT;
+        private float _speed = 75f;
+        private Curve2D _curve;
 
         public override void _Ready()
         {
@@ -23,6 +29,23 @@ namespace GameFeel.GameObject
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
+        }
+
+        public override void _Process(float delta)
+        {
+            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
+            if (player != null)
+            {
+                var points = GameWorld.GetPath(GlobalPosition, player.GlobalPosition);
+                _curve = new Curve2D();
+                _currentT = 0f;
+                foreach (var point in points)
+                {
+                    _curve.AddPoint(point);
+                }
+                _currentT += _speed * delta;
+                GlobalPosition = _curve.InterpolateBaked(_currentT);
+            }
         }
 
         public void DealDamage(float damage)

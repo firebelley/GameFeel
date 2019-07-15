@@ -15,7 +15,9 @@ script = ExtResource( 1 )
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "DamageNumber", "Fireball", "Player", "Spider" ), [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ] ]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Navigation2D" type="Navigation2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="Navigation2D"]
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 16, 16 )
 format = 1

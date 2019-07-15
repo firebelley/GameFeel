@@ -20,14 +20,14 @@ tracks/0/keys = {
 }
 
 [node name="HealthBar" type="ProgressBar"]
-margin_right = 20.0
+margin_right = 18.0
 margin_bottom = 4.0
-rect_min_size = Vector2( 20, 4 )
-rect_pivot_offset = Vector2( 10, 2 )
+rect_min_size = Vector2( 18, 4 )
+rect_pivot_offset = Vector2( 9, 2 )
 theme = ExtResource( 1 )
 max_value = 1.0
 step = 0.001
-value = 0.5
+value = 1.0
 percent_visible = false
 script = ExtResource( 2 )
 

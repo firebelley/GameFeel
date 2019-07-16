@@ -20,7 +20,7 @@ namespace GameFeel.GameObject
         private const float ACCELERATION = 3000f;
         private const float DECELERATION = 17f;
         private const float MAX_SPEED = 125f;
-        private const float MANA_REGEN_RATE = 2f;
+        private const float MANA_REGEN_RATE = 5f;
 
         private Vector2 _velocity;
         private AnimatedSprite _animatedSprite;

@@ -25,7 +25,8 @@ namespace GameFeel.GameObject
                 GameWorld.EffectsLayer.AddChild(fireball);
 
                 var position = GlobalPosition;
-                fireball.SetDirection(GetGlobalMousePosition() - position);
+                var direction = Vector2.Right.Rotated(GlobalRotation * Mathf.Sign(GlobalScale.y));
+                fireball.SetDirection(direction);
                 fireball.GlobalPosition = position;
                 p.RemoveMana(1f);
             }

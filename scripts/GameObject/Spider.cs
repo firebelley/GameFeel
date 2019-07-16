@@ -26,6 +26,8 @@ namespace GameFeel.GameObject
         private Curve2D _curve = new Curve2D();
         private Vector2 _velocity;
 
+        private ResourcePreloader _resourcePreloader;
+
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
         private enum State
@@ -42,6 +44,7 @@ namespace GameFeel.GameObject
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _shaderTween = GetNode<Tween>("ShaderTween");
             _pathfindTimer = GetNode<Timer>("PathfindTimer");
+            _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
@@ -59,6 +62,10 @@ namespace GameFeel.GameObject
             Camera.Shake();
             GameWorld.CreateDamageNumber(this, damage);
             _hp -= damage;
+            if (_hp <= 0)
+            {
+                Kill();
+            }
             EmitSignal(nameof(DamageReceived), damage);
         }
 
@@ -89,6 +96,14 @@ namespace GameFeel.GameObject
             }
 
             _velocity = MoveAndSlide(_velocity);
+        }
+
+        private void Kill()
+        {
+            var death = _resourcePreloader.InstanceScene<Node2D>("EntityDeath");
+            GameWorld.EffectsLayer.AddChild(death);
+            death.GlobalPosition = GlobalPosition;
+            QueueFree();
         }
 
         private void PlayHitShadeTween()

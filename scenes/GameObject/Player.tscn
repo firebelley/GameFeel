@@ -24,11 +24,13 @@ animations = [ {
 radius = 4.0
 
 [node name="Player" type="KinematicBody2D"]
+collision_layer = 32
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "run"
+frame = 2
 playing = true
 offset = Vector2( 0, -16 )
 

@@ -36,13 +36,20 @@ namespace GameFeel
             }
         }
 
-        public static Vector2[] GetPath(Vector2 start, Vector2 end)
+        public static Curve2D GetPathCurve(Vector2 start, Vector2 end)
         {
+            var curve = new Curve2D();
             if (!IsInstanceValid(Instance))
             {
-                return new Vector2[] { };
+                return curve;
             }
-            return Instance._navigation.GetSimplePath(start, end, false);
+            var points = Instance._navigation.GetSimplePath(start, end, false);
+            foreach (var point in points)
+            {
+                curve.AddPoint(point);
+            }
+            curve.AddPoint(end);
+            return curve;
         }
 
         public static Vector2 GetViewportMousePosition()

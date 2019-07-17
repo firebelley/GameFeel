@@ -23,7 +23,7 @@ namespace GameFeel.UI
 
         public override string _GetConfigurationWarning()
         {
-            if (GetOwner().GetFirstNodeOfType<HealthComponent>() == null)
+            if (!IsInstanceValid(GetOwner()) || GetOwner().GetFirstNodeOfType<HealthComponent>() == null)
             {
                 return "Will not display properly without owner having a child " + nameof(HealthComponent);
             }

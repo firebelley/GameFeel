@@ -3,7 +3,7 @@ using Godot;
 
 namespace GameFeel.GameObject
 {
-    // [Tool]
+    [Tool]
     public class SpawnZone : Node2D
     {
         [Export]
@@ -36,7 +36,11 @@ namespace GameFeel.GameObject
             _spawnTimer = GetNode<Timer>("SpawnTimer");
             _timer.Connect("timeout", this, nameof(OnTimerTimeout));
             _spawnTimer.Connect("timeout", this, nameof(OnSpawnTimerTimeout));
-            CallDeferred(nameof(SpawnAll));
+
+            if (!Engine.IsEditorHint())
+            {
+                CallDeferred(nameof(SpawnAll));
+            }
         }
 
         public override void _Draw()

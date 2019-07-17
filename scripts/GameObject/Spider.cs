@@ -1,3 +1,4 @@
+using GameFeel.Component;
 using GameFeel.Interface;
 using Godot;
 using GodotTools.Extension;
@@ -17,9 +18,7 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
         private Timer _pathfindTimer;
-
-        private float _maxHp = 10f;
-        private float _hp = 10f;
+        private HealthComponent _healthComponent;
 
         private float _currentT;
         private float _speed = 75f;
@@ -45,10 +44,12 @@ namespace GameFeel.GameObject
             _shaderTween = GetNode<Tween>("ShaderTween");
             _pathfindTimer = GetNode<Timer>("PathfindTimer");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
+            _healthComponent = GetNode<HealthComponent>("HealthComponent");
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
             _pathfindTimer.Connect("timeout", this, nameof(OnPathfindTimerTimeout));
+            _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
         public override void _Process(float delta)
@@ -61,17 +62,8 @@ namespace GameFeel.GameObject
             PlayHitShadeTween();
             Camera.Shake();
             GameWorld.CreateDamageNumber(this, damage);
-            _hp -= damage;
-            if (_hp <= 0)
-            {
-                Kill();
-            }
+            _healthComponent.Decrement(damage);
             EmitSignal(nameof(DamageReceived), damage);
-        }
-
-        public float GetCurrentHealthPercent()
-        {
-            return _hp / (_maxHp > 0f ? _maxHp : 1f);
         }
 
         private void StatePursue(bool isStateNew)
@@ -145,6 +137,11 @@ namespace GameFeel.GameObject
             {
                 UpdatePath();
             }
+        }
+
+        private void OnHealthDepleted()
+        {
+            Kill();
         }
     }
 }

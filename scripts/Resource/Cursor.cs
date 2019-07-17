@@ -1,6 +1,6 @@
 using Godot;
 
-namespace GameFeel.Resources
+namespace GameFeel.Resource
 {
     public class Cursor : Sprite
     {

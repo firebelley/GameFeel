@@ -1,26 +1,43 @@
+using GameFeel.Component;
 using GameFeel.GameObject;
-using GameFeel.Interface;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
-    public class HealthBar : ProgressBar
+    [Tool]
+    public class HealthBar : Node2D
     {
         private AnimationPlayer _animationPlayer;
+        private ProgressBar _progressBar;
 
         public override void _Ready()
         {
-            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-
+            _progressBar = GetNode<ProgressBar>("ProgressBar");
+            _animationPlayer = GetNode<AnimationPlayer>("ProgressBar/AnimationPlayer");
             if (GetOwner() is Spider s)
             {
                 s.Connect(nameof(Spider.DamageReceived), this, nameof(OnDamageReceived));
             }
         }
 
+        public override string _GetConfigurationWarning()
+        {
+            if (GetOwner().GetFirstNodeOfType<HealthComponent>() == null)
+            {
+                return "Will not display properly without owner having a child " + nameof(HealthComponent);
+            }
+            return string.Empty;
+        }
+
         private void OnDamageReceived(float damage)
         {
-            Value = (GetOwner() as IDamageReceiver).GetCurrentHealthPercent();
+            var healthComponent = GetOwner().GetFirstNodeOfType<HealthComponent>();
+            if (healthComponent == null)
+            {
+                return;
+            }
+            _progressBar.Value = healthComponent.GetHealthPercentage();
             _animationPlayer.Stop(true);
             _animationPlayer.Play("bounce");
         }

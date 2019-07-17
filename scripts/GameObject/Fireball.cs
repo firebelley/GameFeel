@@ -11,6 +11,7 @@ namespace GameFeel.GameObject
 
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
+        private int _hits;
 
         public override void _Ready()
         {
@@ -33,6 +34,9 @@ namespace GameFeel.GameObject
 
         public void RegisterHit(IDamageReceiver receiver)
         {
+            if (_hits > 0) return;
+
+            _hits++;
             receiver.DealDamage(1f);
             Delete();
         }

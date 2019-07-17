@@ -9,6 +9,7 @@ namespace GameFeel.GameObject
     public class Spider : KinematicBody2D, IDamageReceiver
     {
         private const float MAX_AHEAD = 20f;
+        private const float ACCELERATION = 400f;
 
         [Signal]
         public delegate void DamageReceived(float damage);
@@ -17,6 +18,7 @@ namespace GameFeel.GameObject
         private Tween _shaderTween;
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
+        private AnimationPlayer _animationPlayer;
         private Timer _pathfindTimer;
         private HealthComponent _healthComponent;
 
@@ -31,13 +33,15 @@ namespace GameFeel.GameObject
 
         private enum State
         {
-            PURSUE
+            PURSUE,
+            SPAWNING
         }
 
         public override void _Ready()
         {
             _stateMachine.AddState(State.PURSUE, StatePursue);
-            _stateMachine.SetInitialState(State.PURSUE);
+            _stateMachine.AddState(State.SPAWNING, StateSpawning);
+            _stateMachine.SetInitialState(State.SPAWNING);
 
             _hitboxArea = GetNode<Area2D>("HitboxArea2D");
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
@@ -45,6 +49,7 @@ namespace GameFeel.GameObject
             _pathfindTimer = GetNode<Timer>("PathfindTimer");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
+            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
@@ -66,6 +71,19 @@ namespace GameFeel.GameObject
             EmitSignal(nameof(DamageReceived), damage);
         }
 
+        private void StateSpawning(bool isStateNew)
+        {
+            if (isStateNew)
+            {
+                _animatedSprite.FlipH = Main.RNG.RandiRange(0, 1) == 1;
+            }
+
+            if (!_animationPlayer.IsPlaying())
+            {
+                _stateMachine.ChangeState(State.PURSUE);
+            }
+        }
+
         private void StatePursue(bool isStateNew)
         {
             if (isStateNew)
@@ -73,6 +91,8 @@ namespace GameFeel.GameObject
                 UpdatePath();
             }
             var destinationPoint = _curve.InterpolateBaked(_currentT);
+            var acceleration = Vector2.Zero;
+
             if (GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
             {
                 _currentT += _speed * GetProcessDeltaTime();
@@ -80,14 +100,25 @@ namespace GameFeel.GameObject
 
             if (_currentT < (_curve.GetBakedLength()))
             {
-                _velocity = (destinationPoint - GlobalPosition).Normalized() * _speed;
+                acceleration = (destinationPoint - GlobalPosition).Normalized() * ACCELERATION;
             }
             else
             {
                 _velocity = Vector2.Zero;
             }
 
+            _velocity += acceleration * GetProcessDeltaTime();
+            _velocity = _velocity.Clamped(_speed);
+
             _velocity = MoveAndSlide(_velocity);
+            if (_velocity.x < -5f)
+            {
+                _animatedSprite.FlipH = true;
+            }
+            else if (_velocity.x > 5f)
+            {
+                _animatedSprite.FlipH = false;
+            }
         }
 
         private void Kill()

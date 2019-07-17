@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/GameObject/SpawnZone.cs" type="Script" id=1]
+
+[node name="SpawnZone" type="Node2D"]
+script = ExtResource( 1 )
+Radius = 100.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true

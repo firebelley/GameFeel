@@ -6,16 +6,13 @@ namespace GameFeel.Effect
     {
         private const float SPEED = 150f;
         private Label _label;
-
-        private RandomNumberGenerator _rng;
         private Vector2 _velocity;
 
         public override void _Ready()
         {
             _label = GetNode<Label>("Label");
-            _rng = new RandomNumberGenerator();
-            _rng.Randomize();
-            var angle = _rng.RandfRange(90f - 15f, 90f + 15f);
+            Main.RNG.Randomize();
+            var angle = Main.RNG.RandfRange(90f - 15f, 90f + 15f);
             _velocity = -Vector2.Right.Rotated(Mathf.Deg2Rad(angle)) * SPEED;
         }
 

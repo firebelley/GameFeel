@@ -59,10 +59,12 @@
     <Compile Include="scripts\GameObject\Book.cs" />
     <Compile Include="scripts\GameObject\Fireball.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
+    <Compile Include="scripts\GameObject\SpawnZone.cs" />
     <Compile Include="scripts\GameObject\Spider.cs" />
     <Compile Include="scripts\Interface\IDamageDealer.cs" />
     <Compile Include="scripts\Interface\IDamageReceiver.cs" />
     <Compile Include="scripts\GameWorld.cs" />
+    <Compile Include="scripts\Main.cs" />
     <Compile Include="scripts\Resource\Cursor.cs" />
     <Compile Include="scripts\UI\HealthBar.cs" />
     <Compile Include="scripts\UI\UI.cs" />

@@ -8,6 +8,7 @@ namespace GameFeel.Component
     public class PathfindComponent : Node
     {
         private const float MAX_AHEAD = 20f;
+        private const float TIME_DIFF_PERCENT = .1f;
 
         [Export]
         private float _maxSpeed;
@@ -21,12 +22,15 @@ namespace GameFeel.Component
 
         private float _currentT;
         private bool _enabled = true;
+        private float _baseWaitTime;
         private KinematicBody2D _owner;
 
         public override void _Ready()
         {
             _owner = GetOwner<KinematicBody2D>();
             _timer = GetNode<Timer>("Timer");
+
+            _baseWaitTime = _timer.WaitTime;
             _timer.Connect("timeout", this, nameof(OnTimerTimeout));
         }
 
@@ -90,6 +94,11 @@ namespace GameFeel.Component
             {
                 UpdatePath();
             }
+
+            var start = _baseWaitTime * (1 - TIME_DIFF_PERCENT);
+            var end = _baseWaitTime + _baseWaitTime * TIME_DIFF_PERCENT;
+            _timer.WaitTime = Main.RNG.RandfRange(start, end);
+            _timer.Start();
         }
     }
 }

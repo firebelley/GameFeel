@@ -16,9 +16,10 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
         private AnimationPlayer _animationPlayer;
+        private ResourcePreloader _resourcePreloader;
+
         private HealthComponent _healthComponent;
         private PathfindComponent _pathfindComponent;
-        private ResourcePreloader _resourcePreloader;
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 

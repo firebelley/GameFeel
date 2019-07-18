@@ -8,9 +8,6 @@ namespace GameFeel.GameObject
 {
     public class Spider : KinematicBody2D, IDamageReceiver
     {
-        private const float MAX_AHEAD = 20f;
-        private const float ACCELERATION = 400f;
-
         [Signal]
         public delegate void DamageReceived(float damage);
 
@@ -19,14 +16,8 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
         private AnimationPlayer _animationPlayer;
-        private Timer _pathfindTimer;
         private HealthComponent _healthComponent;
-
-        private float _currentT;
-        private float _speed = 75f;
-        private Curve2D _curve = new Curve2D();
-        private Vector2 _velocity;
-
+        private PathfindComponent _pathfindComponent;
         private ResourcePreloader _resourcePreloader;
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
@@ -46,14 +37,14 @@ namespace GameFeel.GameObject
             _hitboxArea = GetNode<Area2D>("HitboxArea2D");
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _shaderTween = GetNode<Tween>("ShaderTween");
-            _pathfindTimer = GetNode<Timer>("PathfindTimer");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
-            _healthComponent = GetNode<HealthComponent>("HealthComponent");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+
+            _healthComponent = GetNode<HealthComponent>("HealthComponent");
+            _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
-            _pathfindTimer.Connect("timeout", this, nameof(OnPathfindTimerTimeout));
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
@@ -88,34 +79,16 @@ namespace GameFeel.GameObject
         {
             if (isStateNew)
             {
-                UpdatePath();
-            }
-            var destinationPoint = _curve.InterpolateBaked(_currentT);
-            var acceleration = Vector2.Zero;
-
-            if (GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
-            {
-                _currentT += _speed * GetProcessDeltaTime();
+                _pathfindComponent.UpdatePath();
             }
 
-            if (_currentT < (_curve.GetBakedLength()))
-            {
-                acceleration = (destinationPoint - GlobalPosition).Normalized() * ACCELERATION;
-            }
-            else
-            {
-                _velocity = Vector2.Zero;
-            }
+            _pathfindComponent.UpdateVelocity();
 
-            _velocity += acceleration * GetProcessDeltaTime();
-            _velocity = _velocity.Clamped(_speed);
-
-            _velocity = MoveAndSlide(_velocity);
-            if (_velocity.x < -5f)
+            if (_pathfindComponent.Velocity.x < -5f)
             {
                 _animatedSprite.FlipH = true;
             }
-            else if (_velocity.x > 5f)
+            else if (_pathfindComponent.Velocity.x > 5f)
             {
                 _animatedSprite.FlipH = false;
             }
@@ -144,29 +117,11 @@ namespace GameFeel.GameObject
             _shaderTween.Start();
         }
 
-        private void UpdatePath()
-        {
-            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            if (player != null)
-            {
-                _curve = GameWorld.GetPathCurve(GlobalPosition, player.GlobalPosition);
-                _currentT = 0f;
-            }
-        }
-
         private void OnBodyEntered(PhysicsBody2D body)
         {
             if (body is IDamageDealer dd)
             {
                 dd.RegisterHit(this);
-            }
-        }
-
-        private void OnPathfindTimerTimeout()
-        {
-            if (_stateMachine.GetCurrentState() == State.PURSUE)
-            {
-                UpdatePath();
             }
         }
 

@@ -73,7 +73,7 @@ color_ramp = ExtResource( 3 )
 radius = 6.0
 
 [node name="Fireball" type="RigidBody2D"]
-collision_layer = 8
+collision_layer = 0
 collision_mask = 4
 gravity_scale = 0.0
 continuous_cd = 1
@@ -83,7 +83,7 @@ script = ExtResource( 1 )
 resources = [ PoolStringArray( "FireballDeath" ), [ ExtResource( 2 ) ] ]
 
 [node name="LifetimeTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 1.5
 one_shot = true
 autostart = true
 

@@ -11,11 +11,14 @@ namespace GameFeel.GameObject
 
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
+        private Timer _lifetimeTimer;
         private int _hits;
 
         public override void _Ready()
         {
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+            _lifetimeTimer = GetNode<Timer>("LifetimeTimer");
+            _lifetimeTimer.Connect("timeout", this, nameof(OnLifetimeTimerTimeout));
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
         }
 
@@ -26,9 +29,6 @@ namespace GameFeel.GameObject
 
         public void Delete()
         {
-            var fireballDeath = _resourcePreloader.InstanceScene<Node2D>("FireballDeath");
-            GameWorld.EffectsLayer.AddChild(fireballDeath);
-            fireballDeath.GlobalPosition = GlobalPosition;
             _animationPlayer.Play(ANIM_DELETE);
         }
 
@@ -38,6 +38,19 @@ namespace GameFeel.GameObject
 
             _hits++;
             receiver.DealDamage(1f);
+            SpawnHitEffect();
+            Delete();
+        }
+
+        private void SpawnHitEffect()
+        {
+            var fireballDeath = _resourcePreloader.InstanceScene<Node2D>("FireballDeath");
+            GameWorld.EffectsLayer.AddChild(fireballDeath);
+            fireballDeath.GlobalPosition = GlobalPosition;
+        }
+
+        private void OnLifetimeTimerTimeout()
+        {
             Delete();
         }
     }

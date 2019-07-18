@@ -48,6 +48,7 @@ tracks/2/keys = {
 
 [node name="DamageNumber" type="Position2D"]
 modulate = Color( 1, 1, 1, 0 )
+z_index = 4000
 script = ExtResource( 1 )
 
 [node name="Label" type="Label" parent="."]

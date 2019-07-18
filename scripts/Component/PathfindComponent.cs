@@ -85,6 +85,7 @@ namespace GameFeel.Component
 
         private void OnTimerTimeout()
         {
+            // TODO: ALWAYS ENABLED
             if (_enabled)
             {
                 UpdatePath();

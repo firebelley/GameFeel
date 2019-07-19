@@ -87,10 +87,6 @@ _shape = SubResource( 6 )
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 5 ) ] ]
 
-[node name="PathfindTimer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-
 [node name="ShaderTween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

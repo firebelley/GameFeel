@@ -1,5 +1,4 @@
 using GameFeel.Component;
-using GameFeel.GameObject;
 using Godot;
 using GodotTools.Extension;
 
@@ -15,9 +14,11 @@ namespace GameFeel.UI
         {
             _progressBar = GetNode<ProgressBar>("ProgressBar");
             _animationPlayer = GetNode<AnimationPlayer>("ProgressBar/AnimationPlayer");
-            if (GetOwner() is Spider s)
+
+            var damageReceiverComponent = GetOwner()?.GetFirstNodeOfType<DamageReceiverComponent>();
+            if (damageReceiverComponent != null)
             {
-                s.Connect(nameof(Spider.DamageReceived), this, nameof(OnDamageReceived));
+                damageReceiverComponent.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
             }
         }
 

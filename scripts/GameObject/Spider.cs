@@ -1,17 +1,12 @@
 using GameFeel.Component;
-using GameFeel.Interface;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Logic;
 
 namespace GameFeel.GameObject
 {
-    public class Spider : KinematicBody2D, IDamageReceiver
+    public class Spider : KinematicBody2D
     {
-        [Signal]
-        public delegate void DamageReceived(float damage);
-
-        private Area2D _hitboxArea;
         private Tween _shaderTween;
         private AnimatedSprite _animatedSprite;
         private ShaderMaterial _shaderMaterial;
@@ -35,7 +30,6 @@ namespace GameFeel.GameObject
             _stateMachine.AddState(State.SPAWNING, StateSpawning);
             _stateMachine.SetInitialState(State.SPAWNING);
 
-            _hitboxArea = GetNode<Area2D>("HitboxArea2D");
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _shaderTween = GetNode<Tween>("ShaderTween");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
@@ -45,22 +39,12 @@ namespace GameFeel.GameObject
             _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
 
             _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
-            _hitboxArea.Connect("body_entered", this, nameof(OnBodyEntered));
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
         public override void _Process(float delta)
         {
             _stateMachine.Update();
-        }
-
-        public void DealDamage(float damage)
-        {
-            PlayHitShadeTween();
-            Camera.Shake();
-            GameWorld.CreateDamageNumber(this, damage);
-            _healthComponent.Decrement(damage);
-            EmitSignal(nameof(DamageReceived), damage);
         }
 
         private void StateSpawning(bool isStateNew)
@@ -116,14 +100,6 @@ namespace GameFeel.GameObject
                 Tween.EaseType.In
             );
             _shaderTween.Start();
-        }
-
-        private void OnBodyEntered(PhysicsBody2D body)
-        {
-            if (body is IDamageDealer dd)
-            {
-                dd.RegisterHit(this);
-            }
         }
 
         private void OnHealthDepleted()

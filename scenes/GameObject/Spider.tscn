@@ -1,44 +1,18 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/GameObject/Spider.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/spider.png" type="Texture" id=6]
+[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/spider.png" type="Texture" id=7]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 4.0
-
-[sub_resource type="Shader" id=2]
-code = "shader_type canvas_item;
-
-uniform float _hitShadePercent : hint_range(0.0, 1.0);
-
-void fragment() {
-	vec4 texColor = texture(TEXTURE, UV);
-	
-	COLOR.rgb = mix(texColor.rgb, vec3(.8, .2, .2), _hitShadePercent);
-	COLOR.a = texColor.a;
-}"
-
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="CircleShape2D" id=6]
 resource_local_to_scene = true
-shader = SubResource( 2 )
-shader_param/_hitShadePercent = 0.0
-
-[sub_resource type="SpriteFrames" id=4]
-animations = [ {
-"frames": [ ExtResource( 6 ) ],
-"loop": true,
-"name": "idle",
-"speed": 10.0
-} ]
-
-[sub_resource type="CircleShape2D" id=5]
 radius = 6.0
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "spawn"
 length = 0.5
 step = 0.0
@@ -67,6 +41,34 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="CircleShape2D" id=1]
+radius = 4.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float _hitShadePercent : hint_range(0.0, 1.0);
+
+void fragment() {
+	vec4 texColor = texture(TEXTURE, UV);
+	
+	COLOR.rgb = mix(texColor.rgb, vec3(.8, .2, .2), _hitShadePercent);
+	COLOR.a = texColor.a;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = SubResource( 2 )
+shader_param/_hitShadePercent = 0.0
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "idle",
+"speed": 10.0
+} ]
+
 [node name="Spider" type="KinematicBody2D"]
 collision_layer = 16
 collision_mask = 17
@@ -79,8 +81,11 @@ _maxHp = 3.0
 _acceleration = 400.0
 _maxSpeed = 75.0
 
+[node name="DamageReceiverComponent" parent="." instance=ExtResource( 4 )]
+_shape = SubResource( 6 )
+
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 4 ) ] ]
+resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 5 ) ] ]
 
 [node name="PathfindTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -88,7 +93,11 @@ autostart = true
 
 [node name="ShaderTween" type="Tween" parent="."]
 
-[node name="HealthBar" parent="." instance=ExtResource( 5 )]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "spawn"
+anims/spawn = SubResource( 5 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 6 )]
 position = Vector2( 0, -9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -98,15 +107,3 @@ shape = SubResource( 1 )
 material = SubResource( 3 )
 frames = SubResource( 4 )
 animation = "idle"
-
-[node name="HitboxArea2D" type="Area2D" parent="."]
-editor/display_folded = true
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea2D"]
-shape = SubResource( 5 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "spawn"
-anims/spawn = SubResource( 6 )

@@ -7,19 +7,19 @@ namespace GameFeel.GameObject
     public class SpawnZone : Node2D
     {
         [Export]
-        public float Radius
+        private float _radius
         {
             get
             {
-                return _radius;
+                return _radiusProperty;
             }
             set
             {
-                _radius = value;
+                _radiusProperty = value;
                 Update();
             }
         }
-        private float _radius;
+        private float _radiusProperty;
 
         [Export]
         private int _maxSpawned = 5;

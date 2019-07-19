@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/Component/DamageReceiverComponent.cs" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+resource_local_to_scene = true
+radius = 6.0
+
+[node name="DamageReceiverComponent" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 1 )
+_shape = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )

@@ -97,29 +97,28 @@ namespace GameFeel
 
             var worldTileMap = GetNode<TileMap>("WorldTileMap");
             var worldTileSet = worldTileMap.TileSet;
-            var decorativeTileMap = GetNode<TileMap>("DecorativeTileMap");
-            var decorativeTileSet = decorativeTileMap.TileSet;
             var blockedSet = new HashSet<Vector2>();
 
-            foreach (var cellvObj in decorativeTileMap.GetUsedCells())
+            foreach (var node in EntitiesLayer.GetChildren())
             {
-                var cellv = (Vector2) cellvObj;
-                var cellId = decorativeTileMap.GetCellv(cellv);
-                var cellWorldPosition = decorativeTileMap.MapToWorld(cellv);
-                foreach (var shape in decorativeTileSet.TileGetShapes(cellId))
+                if (node is StaticBody2D staticBody)
                 {
-                    var shapeDict = (Godot.Collections.Dictionary) shape;
-                    var polygon = (ConvexPolygonShape2D) shapeDict["shape"];
+                    var collisionShape = staticBody.GetFirstNodeOfType<CollisionPolygon2D>();
+                    if (collisionShape == null)
+                    {
+                        continue;
+                    }
+
                     var centroid = Vector2.Zero;
                     var polygonPointsSum = Vector2.Zero;
-                    foreach (var point in polygon.GetPoints())
+                    foreach (var point in collisionShape.Polygon)
                     {
                         polygonPointsSum += point;
                     }
-                    centroid = polygonPointsSum / polygon.GetPoints().Length;
+                    centroid = polygonPointsSum / collisionShape.Polygon.Length;
 
                     var scaledPolygonPoints = new List<Vector2>();
-                    foreach (var point in polygon.GetPoints())
+                    foreach (var point in collisionShape.Polygon)
                     {
                         // normalize the polygon
                         var newPoint = point - centroid;
@@ -129,11 +128,11 @@ namespace GameFeel
 
                     foreach (var point in scaledPolygonPoints)
                     {
-                        var blockedCellV = decorativeTileMap.WorldToMap(cellWorldPosition + point);
+                        var blockedCellV = worldTileMap.WorldToMap(staticBody.GlobalPosition + point);
                         blockedSet.Add(blockedCellV);
                     }
-                }
 
+                }
             }
 
             foreach (var cellvObj in worldTileMap.GetUsedCells())
@@ -150,6 +149,10 @@ namespace GameFeel
                 if (poly == null)
                 {
                     poly = worldTileSet.TileGetNavigationPolygon(cellId);
+                    if (poly == null)
+                    {
+                        continue;
+                    }
                 }
 
                 var transform = Transform2D.Identity;

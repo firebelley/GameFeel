@@ -37,7 +37,10 @@ namespace GameFeel.Component
                 newPoints.Add(GetGlobalTransform().XformInv(point));
             }
 
-            DrawPolyline(newPoints.ToArray(), new Color(1f, 1f, 1f), 1);
+            if (newPoints.Count > 1)
+            {
+                DrawPolyline(newPoints.ToArray(), new Color(1f, 1f, 1f), 1);
+            }
         }
     }
 }

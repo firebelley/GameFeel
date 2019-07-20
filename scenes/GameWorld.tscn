@@ -7,8 +7,8 @@
 [ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://scenes/Environment/Bush.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/Camera.cs" type="Script" id=8]
-[ext_resource path="res://scenes/GameObject/SpawnZone.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/GameObject/SpawnZone.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scripts/Camera.cs" type="Script" id=9]
 [ext_resource path="res://scenes/UI/UI.tscn" type="PackedScene" id=10]
 
 [node name="GameWorld" type="Node"]
@@ -32,6 +32,7 @@ tile_data = PoolIntArray( 589817, 1, 0 )
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
 [node name="Entities" type="YSort" parent="."]
+editor/display_folded = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -49,25 +50,25 @@ __meta__ = {
 
 [node name="DamageNumbers" type="Node" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-drag_margin_h_enabled = false
-drag_margin_v_enabled = false
-script = ExtResource( 8 )
-__meta__ = {
-"_edit_lock_": true
-}
-
 [node name="SpawnZones" type="Node" parent="."]
 
-[node name="SpawnZone" parent="SpawnZones" instance=ExtResource( 9 )]
+[node name="SpawnZone" parent="SpawnZones" instance=ExtResource( 8 )]
 position = Vector2( -130, -80 )
 _radius = 75.0
 _spawnedScene = ExtResource( 5 )
 
-[node name="SpawnZone2" parent="SpawnZones" instance=ExtResource( 9 )]
+[node name="SpawnZone2" parent="SpawnZones" instance=ExtResource( 8 )]
 position = Vector2( 170, 140 )
 _radius = 75.0
 _spawnedScene = ExtResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="UI" parent="." instance=ExtResource( 10 )]

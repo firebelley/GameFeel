@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/GameObject/Spider.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/spider.png" type="Texture" id=7]
-[ext_resource path="res://scenes/Component/PathfindDrawComponent.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 resource_local_to_scene = true
@@ -104,5 +103,3 @@ shape = SubResource( 3 )
 material = SubResource( 5 )
 frames = SubResource( 6 )
 animation = "idle"
-
-[node name="PathfindDrawComponent" parent="." instance=ExtResource( 8 )]

@@ -12,6 +12,9 @@ namespace GameFeel
         public static YSort EntitiesLayer { get; private set; }
         public static YSort EffectsLayer { get; private set; }
 
+        [Export]
+        private bool _drawNavigation;
+
         private Node _damageNumbersLayer;
         private ResourcePreloader _resourcePreloader;
         private Navigation2D _navigation;
@@ -152,6 +155,14 @@ namespace GameFeel
                 var transform = Transform2D.Identity;
                 transform.origin = worldTileMap.MapToWorld(cellv);
 
+                if (OS.IsDebugBuild() && _drawNavigation)
+                {
+                    var polygonNode = new Polygon2D();
+                    polygonNode.Polygon = poly.GetVertices();
+                    polygonNode.Transform = transform;
+                    polygonNode.Modulate = new Color(0f, .5f, .5f, .5f);
+                    _navigation.AddChild(polygonNode);
+                }
                 _navigation.NavpolyAdd(poly, transform);
             }
         }

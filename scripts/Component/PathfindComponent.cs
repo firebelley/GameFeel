@@ -8,7 +8,7 @@ namespace GameFeel.Component
     public class PathfindComponent : Node
     {
         private const float MAX_AHEAD = 20f;
-        private const float TIME_DIFF_PERCENT = .1f;
+        private const float TIME_DIFF_PERCENT = .25f;
 
         [Export]
         private float _maxSpeed;
@@ -17,7 +17,8 @@ namespace GameFeel.Component
 
         public Vector2 Velocity { get; private set; }
 
-        private Curve2D _curve = new Curve2D();
+        public Curve2D Curve { get; private set; } = new Curve2D();
+
         private Timer _timer;
 
         private float _currentT;
@@ -45,7 +46,7 @@ namespace GameFeel.Component
 
         public void UpdateVelocity()
         {
-            var destinationPoint = _curve.InterpolateBaked(_currentT);
+            var destinationPoint = Curve.InterpolateBaked(_currentT);
             var acceleration = Vector2.Zero;
 
             if (_owner.GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
@@ -53,7 +54,7 @@ namespace GameFeel.Component
                 _currentT += _maxSpeed * GetProcessDeltaTime();
             }
 
-            if (_currentT < (_curve.GetBakedLength()))
+            if (_currentT < (Curve.GetBakedLength()))
             {
                 acceleration = (destinationPoint - _owner.GlobalPosition).Normalized() * _acceleration;
             }
@@ -82,7 +83,7 @@ namespace GameFeel.Component
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
-                _curve = GameWorld.GetPathCurve(_owner.GlobalPosition, player.GlobalPosition);
+                Curve = GameWorld.GetPathCurve(_owner.GlobalPosition, player.GlobalPosition, 10f);
                 _currentT = 0f;
             }
         }

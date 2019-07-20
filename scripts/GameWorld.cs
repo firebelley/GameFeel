@@ -36,7 +36,7 @@ namespace GameFeel
             }
         }
 
-        public static Curve2D GetPathCurve(Vector2 start, Vector2 end)
+        public static Curve2D GetPathCurve(Vector2 start, Vector2 end, float handleMagnitude)
         {
             var curve = new Curve2D();
             if (!IsInstanceValid(Instance))
@@ -44,9 +44,34 @@ namespace GameFeel
                 return curve;
             }
             var points = Instance._navigation.GetSimplePath(start, end, false);
-            foreach (var point in points)
+            for (int i = 0; i < points.Length; i++)
             {
-                curve.AddPoint(point);
+                var point = points[i];
+
+                var inVec = Vector2.Zero;
+                var outVec = Vector2.Zero;
+
+                if (i > 0)
+                {
+                    // var dir = point - points[i - 1];
+                    // if (Mathf.Abs(dir.x) > 0.1f)
+                    // {
+                    //     inVec.y = Mathf.Sign(dir.x);
+                    //     outVec.y = -inVec.y;
+                    // }
+
+                    // if (Mathf.Abs(dir.y) > 0.1f)
+                    // {
+                    //     inVec.x = -Mathf.Sign(dir.y);
+                    //     outVec.x = -inVec.x;
+                    // }
+                    curve.AddPoint(point, inVec * handleMagnitude, outVec * handleMagnitude);
+                }
+                else
+                {
+                    curve.AddPoint(point);
+                }
+
             }
             curve.AddPoint(end);
             return curve;

@@ -54,12 +54,14 @@ __meta__ = {
 
 [node name="SpawnZone" parent="SpawnZones" instance=ExtResource( 8 )]
 position = Vector2( -130, -80 )
-_spawnedScene = ExtResource( 5 )
+_maxSpawned = 0
 _radius = 75.0
+_spawnedScene = ExtResource( 5 )
 
 [node name="SpawnZone2" parent="SpawnZones" instance=ExtResource( 8 )]
 position = Vector2( 170, 140 )
-_spawnedScene = ExtResource( 5 )
+_maxSpawned = 1
 _radius = 75.0
+_spawnedScene = ExtResource( 5 )
 
 [node name="UI" parent="." instance=ExtResource( 9 )]

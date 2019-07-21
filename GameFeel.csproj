@@ -60,6 +60,7 @@
     <Compile Include="scripts\Component\HitEffectComponent.cs" />
     <Compile Include="scripts\Component\PathfindComponent.cs" />
     <Compile Include="scripts\Component\PathfindDrawComponent.cs" />
+    <Compile Include="scripts\Component\ShadowComponent.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />
     <Compile Include="scripts\GameObject\Book.cs" />
     <Compile Include="scripts\GameObject\Fireball.cs" />

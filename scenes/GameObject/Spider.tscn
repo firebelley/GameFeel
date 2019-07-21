@@ -1,17 +1,18 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scripts/GameObject/Spider.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=5]
-[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=8]
-[ext_resource path="res://assets/spider1.png" type="Texture" id=9]
-[ext_resource path="res://assets/spider2.png" type="Texture" id=10]
-[ext_resource path="res://assets/spider3.png" type="Texture" id=11]
-[ext_resource path="res://assets/spider4.png" type="Texture" id=12]
+[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/spider1.png" type="Texture" id=10]
+[ext_resource path="res://assets/spider2.png" type="Texture" id=11]
+[ext_resource path="res://assets/spider3.png" type="Texture" id=12]
+[ext_resource path="res://assets/spider4.png" type="Texture" id=13]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -72,12 +73,12 @@ shader_param/_hitShadePercent = 0.0
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 9 ) ],
+"frames": [ ExtResource( 10 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
+"frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
 "loop": true,
 "name": "run",
 "speed": 10.0
@@ -99,11 +100,16 @@ _acceleration = 500.0
 _shaderMaterial = SubResource( 1 )
 _shadedNodePath = NodePath("../AnimatedSprite")
 
-[node name="DamageReceiverComponent" parent="." instance=ExtResource( 6 )]
+[node name="ShadowComponent" parent="." instance=ExtResource( 6 )]
+position = Vector2( 0, -2 )
+_radius = 7.0
+
+[node name="DamageReceiverComponent" parent="." instance=ExtResource( 7 )]
+position = Vector2( 0, -6 )
 _shape = SubResource( 2 )
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 7 ) ] ]
+resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 8 ) ] ]
 
 [node name="ShaderTween" type="Tween" parent="."]
 
@@ -111,13 +117,15 @@ resources = [ PoolStringArray( "EntityDeath" ), [ ExtResource( 7 ) ] ]
 autoplay = "spawn"
 anims/spawn = SubResource( 3 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 8 )]
-position = Vector2( 0, -9 )
+[node name="HealthBar" parent="." instance=ExtResource( 9 )]
+position = Vector2( 0, -15 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -6 )
 shape = SubResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 6 )
+position = Vector2( 0, -6 )
 frames = SubResource( 7 )
 animation = "run"

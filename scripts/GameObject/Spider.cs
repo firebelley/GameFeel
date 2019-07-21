@@ -7,6 +7,8 @@ namespace GameFeel.GameObject
 {
     public class Spider : KinematicBody2D
     {
+        private const string ANIM_RUN = "run";
+
         private AnimatedSprite _animatedSprite;
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
@@ -61,6 +63,7 @@ namespace GameFeel.GameObject
             if (isStateNew)
             {
                 _pathfindComponent.UpdatePath();
+                _animatedSprite.Play(ANIM_RUN);
             }
 
             _pathfindComponent.UpdateVelocity();

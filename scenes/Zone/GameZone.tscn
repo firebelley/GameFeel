@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scripts/Zone/GameZone.cs" type="Script" id=1]
+[ext_resource path="res://scenes/Effect/DamageNumber.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/GameObject/Fireball.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/GameObject/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
+[ext_resource path="res://scripts/Camera.cs" type="Script" id=7]
+[ext_resource path="res://scenes/UI/UI.tscn" type="PackedScene" id=8]
+
+[node name="GameZone" type="Node"]
+script = ExtResource( 1 )
+
+[node name="ResourcePreloader" type="ResourcePreloader" parent="."]
+resources = [ PoolStringArray( "DamageNumber", "Fireball", "Player", "Spider" ), [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ] ]
+
+[node name="WorldTileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -720912, 0, 0, -720911, 0, 0, -720910, 0, 0, -720909, 0, 0, -720908, 0, 0, -720907, 0, 0, -720906, 0, 0, -720905, 0, 0, -720904, 0, 0, -720903, 0, 0, -720902, 0, 0, -720901, 0, 0, -720900, 0, 0, -720899, 0, 0, -720898, 0, 0, -720897, 0, 0, -786432, 0, 0, -786431, 0, 0, -786430, 0, 0, -786429, 0, 0, -786428, 0, 0, -786427, 0, 0, -786426, 0, 0, -786425, 0, 0, -786424, 0, 0, -786423, 0, 0, -786422, 0, 0, -786421, 0, 0, -786420, 0, 0, -786419, 0, 0, -786418, 0, 0, -786417, 0, 0, -786416, 0, 0, -786415, 0, 0 )
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+
+[node name="Entities" type="YSort" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Effects" type="YSort" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DamageNumbers" type="Node" parent="."]
+
+[node name="SpawnZones" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="UI" parent="." instance=ExtResource( 8 )]

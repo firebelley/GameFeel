@@ -81,7 +81,7 @@ namespace GameFeel.GameObject
         private void Kill()
         {
             var death = _resourcePreloader.InstanceScene<Node2D>("EntityDeath");
-            GameWorld.EffectsLayer.AddChild(death);
+            GameZone.EffectsLayer.AddChild(death);
             death.GlobalPosition = GlobalPosition;
             QueueFree();
         }

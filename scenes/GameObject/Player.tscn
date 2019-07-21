@@ -22,7 +22,7 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 4.0
+radius = 3.5
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 32

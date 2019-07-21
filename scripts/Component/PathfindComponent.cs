@@ -83,7 +83,7 @@ namespace GameFeel.Component
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
-                Curve = GameWorld.GetPathCurve(_owner.GlobalPosition, player.GlobalPosition, 10f);
+                Curve = GameZone.GetPathCurve(_owner.GlobalPosition, player.GlobalPosition, 10f);
                 _currentT = 0f;
             }
         }

@@ -22,7 +22,7 @@ namespace GameFeel.GameObject
             if (p.Mana >= 1f)
             {
                 var fireball = _resourcePreloader.InstanceScene<Fireball>();
-                GameWorld.EffectsLayer.AddChild(fireball);
+                GameZone.EffectsLayer.AddChild(fireball);
 
                 var position = GlobalPosition;
                 var direction = Vector2.Right.Rotated(GlobalRotation * Mathf.Sign(GlobalScale.y));

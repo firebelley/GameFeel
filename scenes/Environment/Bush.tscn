@@ -5,10 +5,11 @@
 [node name="Bush" type="StaticBody2D"]
 collision_mask = 0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -16, 0, 0, 0, 16, 0, 16, 16, 0, 16, -16, 16 )
-
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -8 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 0, 16, 32, 32 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -8, -8, 0, -8, 8, -8, 8, 0, 0, 0, -8, 0 )

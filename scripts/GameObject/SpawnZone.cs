@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.GameObject
 {
     [Tool]
     public class SpawnZone : Node2D
     {
+        private const int MAX_SPAWN_TRIES = 3;
+
         [Export]
         private float _radius
         {
@@ -28,12 +32,17 @@ namespace GameFeel.GameObject
 
         private Timer _timer;
         private Timer _spawnTimer;
+        private Node2D _worldDetectionArea;
         private List<Node2D> _spawnedNodes = new List<Node2D>();
+        private List<RayCast2D> _spawnRaycasts = new List<RayCast2D>();
 
         public override void _Ready()
         {
             _timer = GetNode<Timer>("Timer");
             _spawnTimer = GetNode<Timer>("SpawnTimer");
+            _worldDetectionArea = GetNode<Node2D>("WorldDetectionArea");
+            _spawnRaycasts = _worldDetectionArea.GetChildren<RayCast2D>();
+
             _timer.Connect("timeout", this, nameof(OnTimerTimeout));
             _spawnTimer.Connect("timeout", this, nameof(OnSpawnTimerTimeout));
 
@@ -53,7 +62,9 @@ namespace GameFeel.GameObject
 
         private void SpawnAll()
         {
-            while (_spawnedNodes.Count < _maxSpawned)
+            // only try to spawn x amount of times
+            // can hang if using while loop due to physics collision checks
+            for (int i = 0; i < _maxSpawned; i++)
             {
                 Spawn();
             }
@@ -61,10 +72,32 @@ namespace GameFeel.GameObject
 
         private void Spawn()
         {
-            var node = _spawnedScene.Instance() as Node2D;
-            GameWorld.EntitiesLayer.AddChild(node);
-            node.GlobalPosition = GetPointInSpawnArea();
-            _spawnedNodes.Add(node);
+            Vector2 position = Vector2.Zero;
+            for (int i = 0; i < MAX_SPAWN_TRIES; i++)
+            {
+                position = GetPointInSpawnArea();
+                _worldDetectionArea.GlobalPosition = position;
+
+                _spawnRaycasts.ForEach(x =>
+                {
+                    x.ForceRaycastUpdate();
+                    x.Enabled = true;
+                });
+
+                if (_spawnRaycasts.Any(x => x.IsColliding()))
+                {
+                    continue;
+                }
+
+                var node = _spawnedScene.Instance() as Node2D;
+                GameZone.EntitiesLayer.AddChild(node);
+                node.GlobalPosition = position;
+                _spawnedNodes.Add(node);
+
+                break;
+            }
+
+            _spawnRaycasts.ForEach(x => x.Enabled = false);
         }
 
         private Vector2 GetPointInSpawnArea()

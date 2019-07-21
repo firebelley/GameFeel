@@ -5,9 +5,9 @@ using GodotTools.Extension;
 
 namespace GameFeel
 {
-    public class GameWorld : Node
+    public class GameZone : Node
     {
-        public static GameWorld Instance { get; private set; }
+        public static GameZone Instance { get; private set; }
 
         public static YSort EntitiesLayer { get; private set; }
         public static YSort EffectsLayer { get; private set; }
@@ -128,6 +128,7 @@ namespace GameFeel
 
                     foreach (var point in scaledPolygonPoints)
                     {
+                        GD.Print(point);
                         var blockedCellV = worldTileMap.WorldToMap(staticBody.GlobalPosition + point);
                         blockedSet.Add(blockedCellV);
                     }

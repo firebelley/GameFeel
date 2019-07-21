@@ -39,7 +39,7 @@ namespace GameFeel.Component
             if (GetOwner() is Node2D owner && _hitEffect != null)
             {
                 var death = _hitEffect.Instance() as Node2D;
-                GameWorld.EffectsLayer.AddChild(death);
+                GameZone.EffectsLayer.AddChild(death);
                 death.GlobalPosition = owner.GlobalPosition;
             }
         }

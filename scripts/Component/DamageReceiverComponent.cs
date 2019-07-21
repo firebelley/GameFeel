@@ -41,7 +41,7 @@ namespace GameFeel.Component
         {
             // PlayHitShadeTween();
             Camera.Shake();
-            GameWorld.CreateDamageNumber(this, damageDealer.Damage);
+            GameZone.CreateDamageNumber(this, damageDealer.Damage);
             EmitSignal(nameof(DamageReceived), damageDealer.Damage);
         }
 

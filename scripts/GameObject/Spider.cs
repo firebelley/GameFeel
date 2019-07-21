@@ -7,9 +7,7 @@ namespace GameFeel.GameObject
 {
     public class Spider : KinematicBody2D
     {
-        private Tween _shaderTween;
         private AnimatedSprite _animatedSprite;
-        private ShaderMaterial _shaderMaterial;
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
 
@@ -31,14 +29,12 @@ namespace GameFeel.GameObject
             _stateMachine.SetInitialState(State.SPAWNING);
 
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-            _shaderTween = GetNode<Tween>("ShaderTween");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
             _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
 
-            _shaderMaterial = _animatedSprite.Material as ShaderMaterial;
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
@@ -85,21 +81,6 @@ namespace GameFeel.GameObject
             GameWorld.EffectsLayer.AddChild(death);
             death.GlobalPosition = GlobalPosition;
             QueueFree();
-        }
-
-        private void PlayHitShadeTween()
-        {
-            _shaderTween.ResetAll();
-            _shaderTween.InterpolateProperty(
-                _shaderMaterial,
-                "shader_param/_hitShadePercent",
-                1.0f,
-                0f,
-                .3f,
-                Tween.TransitionType.Quad,
-                Tween.EaseType.In
-            );
-            _shaderTween.Start();
         }
 
         private void OnHealthDepleted()

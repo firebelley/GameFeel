@@ -57,6 +57,7 @@
     <Compile Include="scripts\Component\DamageDealerComponent.cs" />
     <Compile Include="scripts\Component\DamageReceiverComponent.cs" />
     <Compile Include="scripts\Component\HealthComponent.cs" />
+    <Compile Include="scripts\Component\HitEffectComponent.cs" />
     <Compile Include="scripts\Component\PathfindComponent.cs" />
     <Compile Include="scripts\Component\PathfindDrawComponent.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />

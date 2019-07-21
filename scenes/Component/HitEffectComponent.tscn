@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/Component/HitEffectComponent.cs" type="Script" id=1]
+[ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 2 )
+shader_param/_hitShadePercent = null
+
+[node name="HitEffectComponent" type="Node"]
+script = ExtResource( 1 )
+_shaderMaterial = SubResource( 1 )
+
+[node name="ShaderTween" type="Tween" parent="."]

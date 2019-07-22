@@ -91,6 +91,11 @@ attack={
 2d_physics/layer_5="ENEMY_PATHFINDING"
 2d_physics/layer_6="PLAYER_PATHFINDING"
 
+[physics]
+
+2d/default_linear_damp=0.0
+2d/default_angular_damp=0
+
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0

@@ -1,6 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://assets/particle.png" type="Texture" id=1]
+[ext_resource path="res://assets/effect/particle.png" type="Texture" id=1]
+
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.607973, 0.993355 )

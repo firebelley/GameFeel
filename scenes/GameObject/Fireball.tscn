@@ -4,7 +4,8 @@
 [ext_resource path="res://scenes/Component/DamageDealerComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Effect/FireballDeath.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=4]
-[ext_resource path="res://assets/particle.png" type="Texture" id=5]
+[ext_resource path="res://assets/effect/particle.png" type="Texture" id=5]
+
 
 [sub_resource type="Animation" id=1]
 length = 2.0

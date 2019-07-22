@@ -128,7 +128,6 @@ namespace GameFeel
 
                     foreach (var point in scaledPolygonPoints)
                     {
-                        GD.Print(point);
                         var blockedCellV = worldTileMap.WorldToMap(staticBody.GlobalPosition + point);
                         blockedSet.Add(blockedCellV);
                     }

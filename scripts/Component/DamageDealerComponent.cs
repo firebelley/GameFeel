@@ -1,4 +1,3 @@
-using GameFeel.GameObject;
 using Godot;
 using GodotTools.Extension;
 
@@ -15,11 +14,6 @@ namespace GameFeel.Component
         private PackedScene _hitEffect;
 
         private int _hits;
-
-        public override void _Ready()
-        {
-
-        }
 
         public void HandleHit(DamageReceiverComponent damageReceiverComponent)
         {

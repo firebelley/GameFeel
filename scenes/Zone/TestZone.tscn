@@ -52,6 +52,5 @@ position = Vector2( 448, 384 )
 
 [node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 4 )]
 position = Vector2( 480, 352 )
-_radius = 1.0
+_radius = 100.0
 _spawnedScene = ExtResource( 5 )
-_maxSpawned = 1

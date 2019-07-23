@@ -19,6 +19,7 @@ namespace GameFeel.GameObject
 
         private HealthComponent _healthComponent;
         private PathfindComponent _pathfindComponent;
+        private ProjectileSpawnComponent _projectileSpawnComponent;
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
@@ -45,6 +46,7 @@ namespace GameFeel.GameObject
 
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
             _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
+            _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>("ProjectileSpawnComponent");
 
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _animatedSprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
@@ -139,10 +141,8 @@ namespace GameFeel.GameObject
             if (_animatedSprite.Animation == ANIM_ATTACK)
             {
                 _stateMachine.ChangeState(State.PURSUE);
-                var ball = _resourcePreloader.InstanceScene<RigidBody2D>("SpiderBall");
-                GameZone.EffectsLayer.AddChild(ball);
-                ball.GlobalPosition = GlobalPosition - new Vector2(0, 6f);
-                ball.LinearVelocity = (GetTree().GetFirstNodeInGroup<Player>(Player.GROUP).GlobalPosition - GlobalPosition).Normalized() * 100f;
+                var direction = (GetTree().GetFirstNodeInGroup<Player>(Player.GROUP).GlobalPosition - GlobalPosition).Normalized();
+                _projectileSpawnComponent.Spawn(direction);
             }
         }
     }

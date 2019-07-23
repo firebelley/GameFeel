@@ -1,5 +1,6 @@
 using GameFeel.GameObject;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -28,9 +29,9 @@ namespace GameFeel.Component
 
             damageReceiverComponent.HandleHit(this);
 
-            if (GetOwner() is Fireball f && _hits >= _maxHits)
+            if (_hits >= _maxHits)
             {
-                f.Delete();
+                GetOwner().GetFirstNodeOfType<ProjectileDeleterComponent>()?.Delete();
             }
         }
 

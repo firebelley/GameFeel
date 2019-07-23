@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=1]
 [ext_resource path="res://assets/effect/particle.png" type="Texture" id=2]
-
+[ext_resource path="res://resources/animations/HitParticleDeath.tres" type="Animation" id=3]
 
 [sub_resource type="Curve" id=1]
 max_value = 2.0
@@ -28,35 +28,6 @@ angle_random = 1.0
 scale_curve = SubResource( 2 )
 color_ramp = ExtResource( 1 )
 
-[sub_resource type="Animation" id=4]
-resource_name = "burst"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:emitting")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/1/type = "method"
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "queue_free"
-} ]
-}
-
 [node name="FireballDeath" type="Particles2D"]
 rotation = -1.5708
 emitting = false
@@ -71,4 +42,4 @@ texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "burst"
-anims/burst = SubResource( 4 )
+anims/burst = ExtResource( 3 )

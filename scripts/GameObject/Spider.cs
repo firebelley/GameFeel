@@ -16,6 +16,7 @@ namespace GameFeel.GameObject
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
         private Particles2D _attackIntentParticles;
+        private Timer _attackDelayTimer;
 
         private HealthComponent _healthComponent;
         private PathfindComponent _pathfindComponent;
@@ -43,6 +44,7 @@ namespace GameFeel.GameObject
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _attackIntentParticles = GetNode<Particles2D>("AttackIntentParticles");
+            _attackDelayTimer = GetNode<Timer>("AttackDelayTimer");
 
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
             _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
@@ -103,12 +105,13 @@ namespace GameFeel.GameObject
         {
             if (isStateNew)
             {
+                _attackDelayTimer.Start();
                 _attackIntentParticles.Restart();
                 _attackIntentParticles.Emitting = true;
                 _animatedSprite.Play(ANIM_IDLE);
             }
 
-            if (!_attackIntentParticles.IsEmitting())
+            if (_attackDelayTimer.IsStopped())
             {
                 _stateMachine.ChangeState(State.ATTACK);
             }
@@ -119,7 +122,6 @@ namespace GameFeel.GameObject
             if (isStateNew)
             {
                 _animatedSprite.Play(ANIM_ATTACK);
-
             }
         }
 

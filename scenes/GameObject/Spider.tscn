@@ -176,3 +176,6 @@ lifetime = 0.5
 one_shot = true
 process_material = SubResource( 12 )
 texture = ExtResource( 19 )
+
+[node name="AttackDelayTimer" type="Timer" parent="."]
+one_shot = true

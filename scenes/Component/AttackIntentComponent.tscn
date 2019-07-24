@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/Component/AttackIntentComponent.cs" type="Script" id=1]
+[ext_resource path="res://assets/effect/circle10.png" type="Texture" id=2]
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.458472, 1 )
+colors = PoolColorArray( 0.737255, 0.278431, 0.278431, 0, 1, 0.158203, 0.158203, 1, 0.737255, 0.278431, 0.278431, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=10]
+max_value = 3.0
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 3 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 9 )
+
+[node name="AttackIntentComponent" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+amount = 3
+lifetime = 0.5
+process_material = SubResource( 12 )
+texture = ExtResource( 2 )

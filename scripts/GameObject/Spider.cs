@@ -15,12 +15,12 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private AnimationPlayer _animationPlayer;
         private ResourcePreloader _resourcePreloader;
-        private Particles2D _attackIntentParticles;
         private Timer _attackDelayTimer;
 
         private HealthComponent _healthComponent;
         private PathfindComponent _pathfindComponent;
         private ProjectileSpawnComponent _projectileSpawnComponent;
+        private AttackIntentComponent _attackIntentComponent;
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
@@ -43,12 +43,12 @@ namespace GameFeel.GameObject
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-            _attackIntentParticles = GetNode<Particles2D>("AttackIntentParticles");
             _attackDelayTimer = GetNode<Timer>("AttackDelayTimer");
 
-            _healthComponent = GetNode<HealthComponent>("HealthComponent");
-            _pathfindComponent = GetNode<PathfindComponent>("PathfindComponent");
-            _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>("ProjectileSpawnComponent");
+            _healthComponent = this.GetFirstNodeOfType<HealthComponent>();
+            _pathfindComponent = this.GetFirstNodeOfType<PathfindComponent>();
+            _projectileSpawnComponent = this.GetFirstNodeOfType<ProjectileSpawnComponent>();
+            _attackIntentComponent = this.GetFirstNodeOfType<AttackIntentComponent>();
 
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _animatedSprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
@@ -106,13 +106,13 @@ namespace GameFeel.GameObject
             if (isStateNew)
             {
                 _attackDelayTimer.Start();
-                _attackIntentParticles.Restart();
-                _attackIntentParticles.Emitting = true;
+                _attackIntentComponent.Play();
                 _animatedSprite.Play(ANIM_IDLE);
             }
 
             if (_attackDelayTimer.IsStopped())
             {
+                _attackIntentComponent.Stop();
                 _stateMachine.ChangeState(State.ATTACK);
             }
         }

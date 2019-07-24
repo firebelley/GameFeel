@@ -126,8 +126,8 @@ script = ExtResource( 1 )
 _maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 3 )]
-_acceleration = 500.0
 _maxSpeed = 100.0
+_acceleration = 500.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 4 )]
 _shaderMaterial = SubResource( 1 )

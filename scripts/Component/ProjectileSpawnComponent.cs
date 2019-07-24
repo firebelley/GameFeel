@@ -1,4 +1,5 @@
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -17,6 +18,11 @@ namespace GameFeel.Component
             GameZone.EffectsLayer.AddChild(scene);
             scene.GlobalPosition = GlobalPosition;
             scene.LinearVelocity = normalizedDirection * _speed;
+
+            if (_maxDistance > 0f)
+            {
+                scene.GetFirstNodeOfType<ProjectileDeleterComponent>()?.SetTravelDistance(_maxDistance);
+            }
         }
     }
 }

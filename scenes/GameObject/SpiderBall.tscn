@@ -42,12 +42,12 @@ gravity_scale = 0.0
 continuous_cd = 1
 
 [node name="DamageDealerComponent" parent="." instance=ExtResource( 1 )]
-Damage = 1.0
 _hitEffect = ExtResource( 2 )
+Damage = 1.0
 
 [node name="ProjectileDeleterComponent" parent="." instance=ExtResource( 3 )]
-_hideOnDeletePath = NodePath("../Sprite")
 _particlesPath = NodePath("../Particles2D")
+_hideOnDeletePath = NodePath("../Sprite")
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 4 )

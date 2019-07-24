@@ -12,3 +12,4 @@ script = ExtResource( 2 )
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 3 )]
 _scene = ExtResource( 4 )
 _speed = 500.0
+_maxDistance = 180.0

@@ -5,6 +5,7 @@
 [node name="ProjectileDeleterComponent" type="Node"]
 script = ExtResource( 1 )
 _particlesPath = NodePath("")
+_hideOnDeletePath = NodePath("")
 
 [node name="DeleteTimer" type="Timer" parent="."]
 wait_time = 3.0

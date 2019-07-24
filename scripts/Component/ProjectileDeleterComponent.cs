@@ -13,6 +13,12 @@ namespace GameFeel.Component
         private Particles2D _particles;
         private Node2D _hideOnDelete;
         private Timer _deleteTimer;
+        private RigidBody2D _owner;
+
+        private float _maxTravelDistance;
+        private Vector2 _startPosition;
+        private bool _checkDistance;
+        private bool _isDeleting;
 
         public override void _Ready()
         {
@@ -25,26 +31,39 @@ namespace GameFeel.Component
                 _hideOnDelete = GetNode(_hideOnDeletePath) as Node2D;
             }
 
+            _owner = GetOwner() as RigidBody2D;
+
             _deleteTimer = GetNode<Timer>("DeleteTimer");
             _deleteTimer.Connect("timeout", this, nameof(OnDeleteTimerTimeout));
         }
 
         public override string _GetConfigurationWarning()
         {
-            if (!IsInstanceValid(GetOwner()) || !(GetOwner() is RigidBody2D))
+            if (!IsInstanceValid(_owner))
             {
                 return "Owner must be " + nameof(RigidBody2D);
             }
             return string.Empty;
         }
 
+        public override void _PhysicsProcess(float delta)
+        {
+            if (IsDistanceCheckEnabled())
+            {
+                Delete();
+            }
+        }
+
         public void Delete()
         {
-            if (GetOwner() is RigidBody2D rigidBody)
+            if (_isDeleting) return;
+            _isDeleting = true;
+
+            if (IsInstanceValid(_owner))
             {
-                rigidBody.LinearVelocity = Vector2.Zero;
-                rigidBody.CollisionLayer = 0;
-                rigidBody.CollisionMask = 0;
+                _owner.LinearVelocity = Vector2.Zero;
+                _owner.CollisionLayer = 0;
+                _owner.CollisionMask = 0;
             }
 
             if (IsInstanceValid(_particles))
@@ -58,6 +77,23 @@ namespace GameFeel.Component
             }
 
             _deleteTimer.Start();
+        }
+
+        public void SetTravelDistance(float distance)
+        {
+            if (IsInstanceValid(_owner))
+            {
+                _checkDistance = true;
+                _startPosition = _owner.GlobalPosition;
+                _maxTravelDistance = distance;
+            }
+        }
+
+        private bool IsDistanceCheckEnabled()
+        {
+            return _checkDistance &&
+                IsInstanceValid(_owner) &&
+                _owner.GlobalPosition.DistanceSquaredTo(_startPosition) > _maxTravelDistance * _maxTravelDistance;
         }
 
         private void OnDeleteTimerTimeout()

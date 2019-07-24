@@ -28,6 +28,11 @@ namespace GameFeel.Component
             }
         }
 
+        [Export]
+        private bool _showDamageNumber = true;
+        [Export]
+        private float _cameraShakeMagnitude = 1f;
+
         private Shape2D _realShape;
         private CollisionShape2D _collisionShape2d;
 
@@ -39,9 +44,11 @@ namespace GameFeel.Component
 
         public void HandleHit(DamageDealerComponent damageDealer)
         {
-            // PlayHitShadeTween();
-            Camera.Shake();
-            GameZone.CreateDamageNumber(this, damageDealer.Damage);
+            Camera.Shake(_cameraShakeMagnitude);
+            if (_showDamageNumber)
+            {
+                GameZone.CreateDamageNumber(this, damageDealer.Damage);
+            }
             EmitSignal(nameof(DamageReceived), damageDealer.Damage);
         }
 

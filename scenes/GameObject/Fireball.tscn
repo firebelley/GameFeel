@@ -41,8 +41,8 @@ continuous_cd = 1
 _particlesPath = NodePath("../Particles2D")
 
 [node name="DamageDealerComponent" parent="." instance=ExtResource( 2 )]
-Damage = 1.0
 _hitEffect = ExtResource( 3 )
+Damage = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

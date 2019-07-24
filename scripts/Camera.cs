@@ -49,7 +49,7 @@ namespace GameFeel
                 _offset.x = PerlinNoise.Noise(_xNoiseSample);
                 _offset.y = PerlinNoise.Noise(_yNoiseSample);
 
-                _amplitude = Mathf.Clamp(_amplitude - AMPLITUDE_DECAY * delta, 0f, 1f);
+                _amplitude = Mathf.Clamp(_amplitude - AMPLITUDE_DECAY * delta, 0f, 5f);
 
                 _offset *= MAX_OFFSET * _amplitude * _amplitude;
 
@@ -57,9 +57,9 @@ namespace GameFeel
             }
         }
 
-        public static void Shake()
+        public static void Shake(float magnitude)
         {
-            _amplitude = 1f;
+            _amplitude = magnitude;
         }
     }
 }

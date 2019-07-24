@@ -1,4 +1,6 @@
+using GameFeel.Component;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.GameObject
 {
@@ -27,21 +29,30 @@ namespace GameFeel.GameObject
         private Position2D _weaponPosition2d;
         private Position2D _cameraTargetPosition2d;
 
+        private DamageReceiverComponent _damageReceiverComponent;
+
         private float _weaponRadius;
         private float _weaponHeight;
 
         public float Mana { get; private set; } = 15f;
         public float MaxMana { get; private set; } = 15f;
+        public float Health { get; private set; } = 10f;
+        public float MaxHealth { get; private set; } = 10f;
 
         public override void _Ready()
         {
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _weaponPosition2d = GetNode<Position2D>("WeaponPosition2D");
             _cameraTargetPosition2d = GetNode<Position2D>("CameraTargetPosition2D");
+
+            _damageReceiverComponent = this.GetFirstNodeOfType<DamageReceiverComponent>();
+
             _weaponRadius = _weaponPosition2d.Position.x;
             _weaponHeight = _weaponPosition2d.Position.y;
 
             AddToGroup(GROUP);
+
+            _damageReceiverComponent.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
         }
 
         public override void _Process(float delta)
@@ -123,6 +134,11 @@ namespace GameFeel.GameObject
             moveVec.x = Input.GetActionStrength(INPUT_MOVE_RIGHT) - Input.GetActionStrength(INPUT_MOVE_LEFT);
             moveVec.y = Input.GetActionStrength(INPUT_MOVE_DOWN) - Input.GetActionStrength(INPUT_MOVE_UP);
             return moveVec.Normalized();
+        }
+
+        private void OnDamageReceived(float damage)
+        {
+            Health -= damage;
         }
     }
 }

@@ -143,8 +143,15 @@ namespace GameFeel.GameObject
             if (_animatedSprite.Animation == ANIM_ATTACK)
             {
                 _stateMachine.ChangeState(State.PURSUE);
-                var direction = (GetTree().GetFirstNodeInGroup<Player>(Player.GROUP).GlobalPosition - GlobalPosition).Normalized();
-                _projectileSpawnComponent.Spawn(direction);
+
+                var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
+                var toPos = Vector2.Zero;
+                if (player != null)
+                {
+                    toPos = player.GetFirstNodeOfType<DamageReceiverComponent>()?.GlobalPosition ?? player.GlobalPosition;
+                }
+
+                _projectileSpawnComponent.SpawnToPosition(toPos);
             }
         }
     }

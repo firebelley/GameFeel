@@ -12,6 +12,12 @@ namespace GameFeel.Component
         [Export]
         private float _maxDistance = 100f;
 
+        public void SpawnToPosition(Vector2 targetPos)
+        {
+            var normalizedDirection = (targetPos - GlobalPosition).Normalized();
+            Spawn(normalizedDirection);
+        }
+
         public void Spawn(Vector2 normalizedDirection)
         {
             var scene = _scene.Instance() as RigidBody2D;

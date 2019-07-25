@@ -4,7 +4,7 @@
 
 [sub_resource type="CircleShape2D" id=1]
 resource_local_to_scene = true
-radius = 6.0
+radius = 4.0
 
 [node name="DamageReceiverComponent" type="Area2D"]
 collision_layer = 4

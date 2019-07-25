@@ -20,7 +20,10 @@ namespace GameFeel.Component
             set
             {
                 _realShape = value;
-                _realShape.ResourceLocalToScene = true;
+                if (_realShape != null)
+                {
+                    _realShape.ResourceLocalToScene = true;
+                }
                 if (IsInstanceValid(_collisionShape2d))
                 {
                     _collisionShape2d.Shape = _realShape;

@@ -32,6 +32,8 @@ namespace GameFeel.Component
         private bool _showDamageNumber = true;
         [Export]
         private float _cameraShakeMagnitude = 1f;
+        [Export]
+        private bool _flashScreen = false;
 
         private Shape2D _realShape;
         private CollisionShape2D _collisionShape2d;
@@ -45,6 +47,10 @@ namespace GameFeel.Component
         public void HandleHit(DamageDealerComponent damageDealer)
         {
             Camera.Shake(_cameraShakeMagnitude);
+            if (_flashScreen)
+            {
+                Camera.Flash();
+            }
             if (_showDamageNumber)
             {
                 GameZone.CreateDamageNumber(this, damageDealer.Damage);

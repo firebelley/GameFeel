@@ -14,6 +14,9 @@ namespace GameFeel
         private const float MAX_OFFSET = 4f;
         private const float CAMERA_FOLLOW = 10f;
 
+        private static float _amplitude;
+        private static Camera _camera;
+
         private float _xNoiseSample;
         private float _yNoiseSample;
 
@@ -21,11 +24,15 @@ namespace GameFeel
         private Vector2 _offset;
         private Vector2 _targetPosition;
 
-        private static float _amplitude;
+        private ColorRect _colorRect;
+        private Tween _tween;
 
         public override void _Ready()
         {
             _originalOffset = Offset;
+            _colorRect = GetNode<ColorRect>("CanvasLayer/ColorRect");
+            _tween = GetNode<Tween>("CanvasLayer/Tween");
+            _camera = this;
         }
 
         public override void _Process(float delta)
@@ -55,6 +62,30 @@ namespace GameFeel
 
                 Offset = _originalOffset + _offset;
             }
+        }
+
+        public static void Flash()
+        {
+            _camera._tween.ResetAll();
+            _camera._tween.InterpolateProperty(
+                _camera._colorRect,
+                "modulate",
+                new Color(1f, 1f, 1f, .75f),
+                new Color(1f, 1f, 1f, 0f),
+                .35f,
+                Tween.TransitionType.Linear,
+                Tween.EaseType.In
+            );
+            _camera._tween.InterpolateProperty(
+                _camera._colorRect.Material,
+                "shader_param/_cutoff",
+                0f,
+                1f,
+                .35f,
+                Tween.TransitionType.Linear,
+                Tween.EaseType.In
+            );
+            _camera._tween.Start();
         }
 
         public static void Shake(float magnitude)

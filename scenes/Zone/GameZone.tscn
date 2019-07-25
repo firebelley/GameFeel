@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/GameObject/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
-[ext_resource path="res://scripts/Camera.cs" type="Script" id=7]
+[ext_resource path="res://scenes/Camera.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/UI/UI.tscn" type="PackedScene" id=8]
 
 [node name="GameZone" type="Node"]
@@ -36,13 +36,6 @@ __meta__ = {
 
 [node name="SpawnZones" type="Node" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-drag_margin_h_enabled = false
-drag_margin_v_enabled = false
-script = ExtResource( 7 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="Camera2D" parent="." instance=ExtResource( 7 )]
 
 [node name="UI" parent="." instance=ExtResource( 8 )]

@@ -64,6 +64,7 @@ namespace GameFeel.Component
                 _owner.LinearVelocity = Vector2.Zero;
                 _owner.CollisionLayer = 0;
                 _owner.CollisionMask = 0;
+                _owner.Sleeping = true;
             }
 
             if (IsInstanceValid(_particles))

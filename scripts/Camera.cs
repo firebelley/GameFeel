@@ -82,7 +82,7 @@ namespace GameFeel
                 0f,
                 1f,
                 .75f,
-                Tween.TransitionType.Linear,
+                Tween.TransitionType.Quad,
                 Tween.EaseType.In
             );
             _camera._tween.Start();

@@ -30,8 +30,8 @@ namespace GameFeel
         public override void _Ready()
         {
             _originalOffset = Offset;
-            _colorRect = GetNode<ColorRect>("CanvasLayer/ColorRect");
-            _tween = GetNode<Tween>("CanvasLayer/Tween");
+            _colorRect = GetNode<ColorRect>("HitEffectLayer/ColorRect");
+            _tween = GetNode<Tween>("HitEffectLayer/Tween");
             _camera = this;
         }
 

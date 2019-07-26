@@ -38,6 +38,7 @@ namespace GameFeel.GameObject
             _stateMachine.AddState(State.SPAWN, StateSpawning);
             _stateMachine.AddState(State.ATTACK, StateAttack);
             _stateMachine.AddState(State.ATTACK_PREPARATION, StateAttackPreparation);
+            _stateMachine.AddLeaveState(State.ATTACK, LeaveStateAttack);
             _stateMachine.SetInitialState(State.SPAWN);
 
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
@@ -59,22 +60,22 @@ namespace GameFeel.GameObject
             _stateMachine.Update();
         }
 
-        private void StateSpawning(bool isStateNew)
+        private void StateSpawning()
         {
-            if (isStateNew)
+            if (_stateMachine.IsStateNew())
             {
                 _animatedSprite.FlipH = Main.RNG.RandiRange(0, 1) == 1;
             }
 
             if (!_animationPlayer.IsPlaying())
             {
-                _stateMachine.ChangeState(State.PURSUE);
+                _stateMachine.ChangeState(StatePursue);
             }
         }
 
-        private void StatePursue(bool isStateNew)
+        private void StatePursue()
         {
-            if (isStateNew)
+            if (_stateMachine.IsStateNew())
             {
                 _pathfindComponent.UpdatePath();
                 _animatedSprite.Play(ANIM_RUN);
@@ -96,14 +97,14 @@ namespace GameFeel.GameObject
             {
                 if (player.GlobalPosition.DistanceSquaredTo(GlobalPosition) < ATTACK_RANGE * ATTACK_RANGE)
                 {
-                    _stateMachine.ChangeState(State.ATTACK_PREPARATION);
+                    _stateMachine.ChangeState(StateAttackPreparation);
                 }
             }
         }
 
-        private void StateAttackPreparation(bool isStateNew)
+        private void StateAttackPreparation()
         {
-            if (isStateNew)
+            if (_stateMachine.IsStateNew())
             {
                 _attackDelayTimer.Start();
                 _attackIntentComponent.Play();
@@ -112,17 +113,21 @@ namespace GameFeel.GameObject
 
             if (_attackDelayTimer.IsStopped())
             {
-                _attackIntentComponent.Stop();
-                _stateMachine.ChangeState(State.ATTACK);
+                _stateMachine.ChangeState(StateAttack);
             }
         }
 
-        private void StateAttack(bool isStateNew)
+        private void StateAttack()
         {
-            if (isStateNew)
+            if (_stateMachine.IsStateNew())
             {
                 _animatedSprite.Play(ANIM_ATTACK);
             }
+        }
+
+        private void LeaveStateAttack()
+        {
+            _attackIntentComponent.Stop();
         }
 
         private void Kill()
@@ -142,7 +147,7 @@ namespace GameFeel.GameObject
         {
             if (_animatedSprite.Animation == ANIM_ATTACK)
             {
-                _stateMachine.ChangeState(State.PURSUE);
+                _stateMachine.ChangeState(StatePursue);
 
                 var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
                 var toPos = Vector2.Zero;
@@ -150,7 +155,6 @@ namespace GameFeel.GameObject
                 {
                     toPos = player.GetFirstNodeOfType<DamageReceiverComponent>()?.GlobalPosition ?? player.GlobalPosition;
                 }
-
                 _projectileSpawnComponent.SpawnToPosition(toPos);
             }
         }

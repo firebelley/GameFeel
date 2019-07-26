@@ -52,13 +52,21 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HitEffectLayer" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="HitEffectLayer"]
 modulate = Color( 0.458824, 0.00392157, 0.00392157, 1 )
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Tween" type="Tween" parent="CanvasLayer"]
+[node name="Tween" type="Tween" parent="HitEffectLayer"]
+
+[node name="ClearLayer" type="CanvasLayer" parent="."]
+layer = -40
+
+[node name="ColorRect" type="ColorRect" parent="ClearLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )

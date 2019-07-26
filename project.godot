@@ -101,6 +101,7 @@ attack={
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
+environment/default_clear_color=Color( 0.0588235, 0.0588235, 0.0588235, 1 )
 quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false

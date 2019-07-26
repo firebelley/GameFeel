@@ -66,22 +66,22 @@ namespace GameFeel
 
         public static void Flash()
         {
+            var x = Main.RNG.RandfRange(-.1f, .1f);
+            var y = Main.RNG.RandfRange(-.1f, .1f);
+            var uvShift = new Vector2(x, y);
+
+            uvShift.x += Main.RNG.RandiRange(0, 1);
+            uvShift.y += Main.RNG.RandiRange(0, 1);
+
+            _camera._colorRect.Material.Set("shader_param/_uvShift", uvShift);
+
             _camera._tween.ResetAll();
-            _camera._tween.InterpolateProperty(
-                _camera._colorRect,
-                "modulate",
-                new Color(1f, 1f, 1f, .75f),
-                new Color(1f, 1f, 1f, 0f),
-                .35f,
-                Tween.TransitionType.Linear,
-                Tween.EaseType.In
-            );
             _camera._tween.InterpolateProperty(
                 _camera._colorRect.Material,
                 "shader_param/_cutoff",
                 0f,
                 1f,
-                .35f,
+                .75f,
                 Tween.TransitionType.Linear,
                 Tween.EaseType.In
             );

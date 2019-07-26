@@ -9,28 +9,38 @@ code = "shader_type canvas_item;
 uniform sampler2D _texture;
 uniform float _cutoff : hint_range(0.0, 1.0);
 uniform float _rotation : hint_range(0.0, 6.28);
+uniform vec2 _uvShift;
 
 void fragment() {
-	float cutoffValue = texture(_texture, vec2(1) - UV).r;
+	// https://gist.github.com/alco/3070640
+	vec2 dir = UV - vec2(.5);
+	vec2 uv = UV - _uvShift;
+	float dist = distance(uv, vec2(.5));
+	vec2 offset = dir * sin(dist * 30.0 - TIME * 25.0) / 20.0;
 	
-	COLOR.rgba = vec4(0, 0, 0, 0);
+	float cutoffValue = texture(_texture, uv + offset).r;
+	
+	COLOR.rgb = texture(TEXTURE, uv).rgb;
+	COLOR.a = 0.0;
+	
 	if (_cutoff < cutoffValue) {
-		float alpha = .5;
+		float alpha = .25;
 		
 		if (_cutoff < cutoffValue - .4) {
-			alpha = 1.0;
-		}
-		else if (_cutoff < cutoffValue - .2) {
 			alpha = .75;
 		}
-		COLOR.rgba = vec4(.5, 0, 0, alpha);
+		else if (_cutoff < cutoffValue - .2) {
+			alpha = .5;
+		}
+		COLOR.a = alpha;
 	}
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/_cutoff = 1.0
+shader_param/_cutoff = 0.0
 shader_param/_rotation = 0.0
+shader_param/_uvShift = Vector2( 0, 0 )
 shader_param/_texture = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D"]
@@ -45,6 +55,7 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+modulate = Color( 0.458824, 0.00392157, 0.00392157, 1 )
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0

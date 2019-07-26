@@ -38,7 +38,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/_cutoff = 0.0
+shader_param/_cutoff = 1.0
 shader_param/_rotation = 0.0
 shader_param/_uvShift = Vector2( 0, 0 )
 shader_param/_texture = ExtResource( 2 )

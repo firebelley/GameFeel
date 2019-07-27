@@ -29,7 +29,8 @@ namespace GameFeel.GameObject
             PURSUE,
             SPAWN,
             ATTACK,
-            ATTACK_PREPARATION
+            ATTACK_PREPARATION,
+            WANDER
         }
 
         public override void _Ready()
@@ -38,6 +39,7 @@ namespace GameFeel.GameObject
             _stateMachine.AddState(State.SPAWN, StateSpawning);
             _stateMachine.AddState(State.ATTACK, StateAttack);
             _stateMachine.AddState(State.ATTACK_PREPARATION, StateAttackPreparation);
+            _stateMachine.AddState(State.WANDER, StateWander);
             _stateMachine.AddLeaveState(State.ATTACK, LeaveStateAttack);
             _stateMachine.SetInitialState(State.SPAWN);
 
@@ -69,7 +71,7 @@ namespace GameFeel.GameObject
 
             if (!_animationPlayer.IsPlaying())
             {
-                _stateMachine.ChangeState(StatePursue);
+                _stateMachine.ChangeState(StateWander);
             }
         }
 
@@ -128,6 +130,28 @@ namespace GameFeel.GameObject
         private void LeaveStateAttack()
         {
             _attackIntentComponent.Stop();
+        }
+
+        private void StateWander()
+        {
+            if (_attackDelayTimer.IsStopped())
+            {
+                var toPos = Vector2.Right.Rotated(Main.RNG.RandfRange(0f, Mathf.Pi * 2f));
+                toPos *= 25f;
+                toPos += GlobalPosition;
+                _pathfindComponent.UpdateStraightPath(GlobalPosition, toPos);
+                _attackDelayTimer.WaitTime = 2f;
+                _attackDelayTimer.Start();
+            }
+            _pathfindComponent.UpdateVelocity();
+            if (_pathfindComponent.Velocity.x < -5f)
+            {
+                _animatedSprite.FlipH = true;
+            }
+            else if (_pathfindComponent.Velocity.x > 5f)
+            {
+                _animatedSprite.FlipH = false;
+            }
         }
 
         private void Kill()

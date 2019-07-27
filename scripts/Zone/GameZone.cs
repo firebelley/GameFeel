@@ -77,6 +77,16 @@ namespace GameFeel
             return curve;
         }
 
+        public static Curve2D GetStraightCurve(Vector2 fromPos, Vector2 toPos)
+        {
+            var curve = new Curve2D();
+            var raycast = Instance.GetViewport().GetWorld2d().DirectSpaceState.Raycast(fromPos, toPos, null, 1);
+            var endPos = raycast?.Position ?? toPos;
+            curve.AddPoint(fromPos);
+            curve.AddPoint(endPos);
+            return curve;
+        }
+
         public static Vector2 GetViewportMousePosition()
         {
             if (!IsInstanceValid(Instance))

@@ -88,11 +88,18 @@ namespace GameFeel.Component
             }
         }
 
+        public void UpdateStraightPath(Vector2 fromPos, Vector2 toPos)
+        {
+            Curve = GameZone.GetStraightCurve(fromPos, toPos);
+            _currentT = 0f;
+        }
+
         private void OnTimerTimeout()
         {
             // TODO: ALWAYS ENABLED
             if (_enabled)
             {
+                return;
                 UpdatePath();
             }
 

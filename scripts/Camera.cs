@@ -33,6 +33,7 @@ namespace GameFeel
             _colorRect = GetNode<ColorRect>("HitEffectLayer/ColorRect");
             _tween = GetNode<Tween>("HitEffectLayer/Tween");
             _camera = this;
+            VisualServer.SetDefaultClearColor(new Color(15f / 255f, 15f / 255f, 15f / 255f, 1f));
         }
 
         public override void _Process(float delta)

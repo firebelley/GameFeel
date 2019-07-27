@@ -158,17 +158,17 @@ position = Vector2( 1472, 760 )
 [node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 4 )]
 position = Vector2( 880, 896 )
 _radius = 100.0
-_maxSpawned = 10
 _spawnedScene = ExtResource( 5 )
+_maxSpawned = 10
 
 [node name="SpawnZone2" parent="SpawnZones" index="1" instance=ExtResource( 4 )]
 position = Vector2( 1424, 733.6 )
 _radius = 100.0
-_maxSpawned = 10
 _spawnedScene = ExtResource( 5 )
+_maxSpawned = 10
 
 [node name="SpawnZone3" parent="SpawnZones" index="2" instance=ExtResource( 4 )]
 position = Vector2( 848, 528 )
 _radius = 80.0
-_maxSpawned = 10
 _spawnedScene = ExtResource( 5 )
+_maxSpawned = 10

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/Component/DeathEffectComponent.cs" type="Script" id=1]
+[ext_resource path="res://scenes/Effect/EntityDeath.tscn" type="PackedScene" id=2]
+
+[node name="DeathEffectComponent" type="Node2D"]
+script = ExtResource( 1 )
+_deathScene = ExtResource( 2 )

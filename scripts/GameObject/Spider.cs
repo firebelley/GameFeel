@@ -17,7 +17,6 @@ namespace GameFeel.GameObject
         private ResourcePreloader _resourcePreloader;
         private Timer _attackDelayTimer;
 
-        private HealthComponent _healthComponent;
         private PathfindComponent _pathfindComponent;
         private ProjectileSpawnComponent _projectileSpawnComponent;
         private AttackIntentComponent _attackIntentComponent;
@@ -48,12 +47,10 @@ namespace GameFeel.GameObject
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _attackDelayTimer = GetNode<Timer>("AttackDelayTimer");
 
-            _healthComponent = this.GetFirstNodeOfType<HealthComponent>();
             _pathfindComponent = this.GetFirstNodeOfType<PathfindComponent>();
             _projectileSpawnComponent = this.GetFirstNodeOfType<ProjectileSpawnComponent>();
             _attackIntentComponent = this.GetFirstNodeOfType<AttackIntentComponent>();
 
-            _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _animatedSprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
         }
 
@@ -152,19 +149,6 @@ namespace GameFeel.GameObject
             {
                 _animatedSprite.FlipH = false;
             }
-        }
-
-        private void Kill()
-        {
-            var death = _resourcePreloader.InstanceScene<Node2D>("EntityDeath");
-            GameZone.EffectsLayer.AddChild(death);
-            death.GlobalPosition = GlobalPosition;
-            QueueFree();
-        }
-
-        private void OnHealthDepleted()
-        {
-            Kill();
         }
 
         private void OnAnimationFinished()

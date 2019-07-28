@@ -57,6 +57,7 @@
     <Compile Include="scripts\Component\AttackIntentComponent.cs" />
     <Compile Include="scripts\Component\DamageDealerComponent.cs" />
     <Compile Include="scripts\Component\DamageReceiverComponent.cs" />
+    <Compile Include="scripts\Component\DeathEffectComponent.cs" />
     <Compile Include="scripts\Component\HealthComponent.cs" />
     <Compile Include="scripts\Component\HitEffectComponent.cs" />
     <Compile Include="scripts\Component\PathfindComponent.cs" />

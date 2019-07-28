@@ -99,7 +99,6 @@ namespace GameFeel.Component
             // TODO: ALWAYS ENABLED
             if (_enabled)
             {
-                return;
                 UpdatePath();
             }
 

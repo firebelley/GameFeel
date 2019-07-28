@@ -22,6 +22,8 @@ namespace GameFeel.GameObject
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
+        private Vector2 _spawnPosition;
+
         private enum State
         {
             PURSUE,
@@ -39,6 +41,7 @@ namespace GameFeel.GameObject
             _stateMachine.AddState(State.ATTACK_PREPARATION, StateAttackPreparation);
             _stateMachine.AddState(State.WANDER, StateWander);
             _stateMachine.AddLeaveState(State.ATTACK, LeaveStateAttack);
+            _stateMachine.AddLeaveState(State.PURSUE, LeaveStatePursue);
             _stateMachine.SetInitialState(State.SPAWN);
 
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
@@ -62,6 +65,7 @@ namespace GameFeel.GameObject
             if (_stateMachine.IsStateNew())
             {
                 _animatedSprite.FlipH = Main.RNG.RandiRange(0, 1) == 1;
+                _spawnPosition = GlobalPosition;
             }
 
             if (!_animationPlayer.IsPlaying())
@@ -74,6 +78,7 @@ namespace GameFeel.GameObject
         {
             if (_stateMachine.IsStateNew())
             {
+                _pathfindComponent.Enable();
                 _pathfindComponent.UpdatePath();
                 _animatedSprite.Play(ANIM_RUN);
             }
@@ -99,10 +104,16 @@ namespace GameFeel.GameObject
             }
         }
 
+        private void LeaveStatePursue()
+        {
+            _pathfindComponent.Disable();
+        }
+
         private void StateAttackPreparation()
         {
             if (_stateMachine.IsStateNew())
             {
+                _attackDelayTimer.WaitTime = .25f;
                 _attackDelayTimer.Start();
                 _attackIntentComponent.Play();
                 _animatedSprite.Play(ANIM_IDLE);
@@ -129,15 +140,26 @@ namespace GameFeel.GameObject
 
         private void StateWander()
         {
+            if (_stateMachine.IsStateNew())
+            {
+                _pathfindComponent.Disable();
+            }
+
             if (_attackDelayTimer.IsStopped())
             {
                 var toPos = Vector2.Right.Rotated(Main.RNG.RandfRange(0f, Mathf.Pi * 2f));
-                toPos *= 25f;
-                toPos += GlobalPosition;
+                toPos *= 100f;
+                toPos += _spawnPosition;
                 _pathfindComponent.UpdateStraightPath(GlobalPosition, toPos);
-                _attackDelayTimer.WaitTime = 2f;
+                _attackDelayTimer.WaitTime = Main.RNG.RandfRange(1.5f, 2.5f);
                 _attackDelayTimer.Start();
             }
+
+            if (GlobalPosition.DistanceSquaredTo(GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero) < 5000f)
+            {
+                _stateMachine.ChangeState(StatePursue);
+            }
+
             _pathfindComponent.UpdateVelocity();
             if (_pathfindComponent.Velocity.x < -5f)
             {
@@ -146,6 +168,15 @@ namespace GameFeel.GameObject
             else if (_pathfindComponent.Velocity.x > 5f)
             {
                 _animatedSprite.FlipH = false;
+            }
+
+            if (_pathfindComponent.Velocity.LengthSquared() > 4f)
+            {
+                _animatedSprite.Play(ANIM_RUN);
+            }
+            else
+            {
+                _animatedSprite.Play(ANIM_IDLE);
             }
         }
 

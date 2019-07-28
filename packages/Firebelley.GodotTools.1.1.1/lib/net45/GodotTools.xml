@@ -34,5 +34,10 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:GodotTools.Logic.StateExecutorMachine.Update">
+            <summary>
+            Call every frame to update the state machine.
+            </summary>
+        </member>
     </members>
 </doc>

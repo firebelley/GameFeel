@@ -78,7 +78,7 @@ namespace GameFeel.GameObject
         {
             if (_stateMachine.IsStateNew())
             {
-                _pathfindComponent.Enable();
+                _pathfindComponent.EnablePathTimer();
                 _pathfindComponent.UpdatePath();
                 _animatedSprite.Play(ANIM_RUN);
             }
@@ -106,7 +106,7 @@ namespace GameFeel.GameObject
 
         private void LeaveStatePursue()
         {
-            _pathfindComponent.Disable();
+            _pathfindComponent.DisablePathTimer();
         }
 
         private void StateAttackPreparation()
@@ -142,7 +142,7 @@ namespace GameFeel.GameObject
         {
             if (_stateMachine.IsStateNew())
             {
-                _pathfindComponent.Disable();
+                _pathfindComponent.DisablePathTimer();
             }
 
             if (_attackDelayTimer.IsStopped())
@@ -150,7 +150,7 @@ namespace GameFeel.GameObject
                 var toPos = Vector2.Right.Rotated(Main.RNG.RandfRange(0f, Mathf.Pi * 2f));
                 toPos *= 100f;
                 toPos += _spawnPosition;
-                _pathfindComponent.UpdateStraightPath(GlobalPosition, toPos);
+                _pathfindComponent.UpdatePath(GlobalPosition, toPos);
                 _attackDelayTimer.WaitTime = Main.RNG.RandfRange(1.5f, 2.5f);
                 _attackDelayTimer.Start();
             }

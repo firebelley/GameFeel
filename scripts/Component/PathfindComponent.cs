@@ -22,7 +22,7 @@ namespace GameFeel.Component
         private Timer _timer;
 
         private float _currentT;
-        private bool _enabled = true;
+        private bool _pathTimerEnabled = true;
         private float _baseWaitTime;
         private KinematicBody2D _owner;
 
@@ -68,14 +68,14 @@ namespace GameFeel.Component
             Velocity = _owner.MoveAndSlide(Velocity);
         }
 
-        public void Disable()
+        public void DisablePathTimer()
         {
-            _enabled = false;
+            _pathTimerEnabled = false;
         }
 
-        public void Enable()
+        public void EnablePathTimer()
         {
-            _enabled = true;
+            _pathTimerEnabled = true;
         }
 
         public void UpdatePath()
@@ -88,16 +88,16 @@ namespace GameFeel.Component
             }
         }
 
-        public void UpdateStraightPath(Vector2 fromPos, Vector2 toPos)
+        public void UpdatePath(Vector2 fromPos, Vector2 toPos)
         {
-            Curve = GameZone.GetStraightCurve(fromPos, toPos);
+            Curve = GameZone.GetPathCurve(fromPos, toPos, 0f);
             _currentT = 0f;
         }
 
         private void OnTimerTimeout()
         {
             // TODO: ALWAYS ENABLED
-            if (_enabled)
+            if (_pathTimerEnabled)
             {
                 UpdatePath();
             }

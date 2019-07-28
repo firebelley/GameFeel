@@ -14,7 +14,6 @@ namespace GameFeel.GameObject
 
         private AnimatedSprite _animatedSprite;
         private AnimationPlayer _animationPlayer;
-        private ResourcePreloader _resourcePreloader;
         private Timer _attackDelayTimer;
 
         private PathfindComponent _pathfindComponent;
@@ -43,7 +42,6 @@ namespace GameFeel.GameObject
             _stateMachine.SetInitialState(State.SPAWN);
 
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-            _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _attackDelayTimer = GetNode<Timer>("AttackDelayTimer");
 

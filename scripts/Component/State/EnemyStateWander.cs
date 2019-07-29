@@ -5,29 +5,35 @@ using GodotTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {
-    public class EnemyStateWander : Node, IStateExector
+    public class EnemyStateWander : EnemyState
     {
-        private const string ANIM_RUN = "run";
-        private const string ANIM_IDLE = "idle";
-
         [Export]
         private NodePath _pursueStateNodePath;
+        [Export]
+        private NodePath _animatedSpritePath;
+        [Export]
+        private NodePath _pathfindComponentPath;
+        [Export]
+        private float _pathfindMinTime = 1.5f;
+        [Export]
+        private float _pathfindMaxTime = 2.5f;
+        [Export]
+        private int _wanderDistance = 100;
+        [Export]
+        private int _detectionDistance = 75;
 
         private Timer _timer;
         private AnimatedSprite _animatedSprite;
-        private Node2D _parentOwner;
 
-        private EnemyAIComponent _parent;
         private PathfindComponent _pathfindComponent;
         private IStateExector _pursueState;
 
         public override void _Ready()
         {
-            _parent = GetParent() as EnemyAIComponent;
-            _parentOwner = _parent.GetOwner() as Node2D;
+            base._Ready();
             _timer = GetNode<Timer>("Timer");
-            _pathfindComponent = _parent?.Owner?.GetFirstNodeOfType<PathfindComponent>();
-            _animatedSprite = _parent?.Owner?.GetFirstNodeOfType<AnimatedSprite>();
+            _pathfindComponent = GetNode<PathfindComponent>(_pathfindComponentPath);
+            _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
 
             if (_pursueStateNodePath != null)
             {
@@ -35,20 +41,19 @@ namespace GameFeel.Component.State
             }
         }
 
-        public void StateActive()
+        public override void StateActive()
         {
             if (_timer.IsStopped())
             {
                 var toPos = Vector2.Right.Rotated(Main.RNG.RandfRange(0f, Mathf.Pi * 2f));
-                toPos *= 100f;
-                // toPos += _spawnPosition;
-                toPos += _parentOwner.GlobalPosition;
+                toPos *= _wanderDistance;
+                toPos += _parent.MetaSpawnPosition == Vector2.Zero ? _parentOwner.GlobalPosition : _parent.MetaSpawnPosition;
                 _pathfindComponent.UpdatePath(_parentOwner.GlobalPosition, toPos);
-                _timer.WaitTime = Main.RNG.RandfRange(1.5f, 2.5f);
+                _timer.WaitTime = Main.RNG.RandfRange(_pathfindMinTime, _pathfindMaxTime);
                 _timer.Start();
             }
 
-            if (_parentOwner.GlobalPosition.DistanceSquaredTo(GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero) < 5000f)
+            if (_parentOwner.GlobalPosition.DistanceSquaredTo(GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero) < _detectionDistance * _detectionDistance)
             {
                 _parent.StateMachine.ChangeState(_pursueState);
             }
@@ -65,20 +70,20 @@ namespace GameFeel.Component.State
 
             if (_pathfindComponent.Velocity.LengthSquared() > 4f)
             {
-                _animatedSprite.Play(ANIM_RUN);
+                _animatedSprite.Play(EnemyAIComponent.META_ANIM_RUN);
             }
             else
             {
-                _animatedSprite.Play(ANIM_IDLE);
+                _animatedSprite.Play(EnemyAIComponent.META_ANIM_IDLE);
             }
         }
 
-        public void StateEntered()
+        public override void StateEntered()
         {
             _pathfindComponent.DisablePathTimer();
         }
 
-        public void StateLeft()
+        public override void StateLeft()
         {
 
         }

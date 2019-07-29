@@ -5,14 +5,17 @@ using GodotTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {
-    public class EnemyStateAttack : Node, IStateExector
+    public class EnemyStateAttack : EnemyState
     {
-        private const string ANIM_ATTACK = "attack";
-
         [Export]
         private NodePath _pursueStateNodePath;
+        [Export]
+        private NodePath _animatedSpritePath;
+        [Export]
+        private NodePath _attackIntentComponentPath;
+        [Export]
+        private NodePath _projectileSpawnComponentPath;
 
-        private EnemyAIComponent _parent;
         private AnimatedSprite _animatedSprite;
         private AttackIntentComponent _attackIntentComponent;
         private ProjectileSpawnComponent _projectileSpawnComponent;
@@ -21,10 +24,10 @@ namespace GameFeel.Component.State
 
         public override void _Ready()
         {
-            _parent = GetParent() as EnemyAIComponent;
-            _animatedSprite = _parent?.GetOwner()?.GetFirstNodeOfType<AnimatedSprite>();
-            _attackIntentComponent = _parent?.GetOwner()?.GetFirstNodeOfType<AttackIntentComponent>();
-            _projectileSpawnComponent = _parent?.GetOwner()?.GetFirstNodeOfType<ProjectileSpawnComponent>();
+            base._Ready();
+            _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
+            _attackIntentComponent = GetNode<AttackIntentComponent>(_attackIntentComponentPath);
+            _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>(_projectileSpawnComponentPath);
 
             if (_pursueStateNodePath != null)
             {
@@ -37,24 +40,24 @@ namespace GameFeel.Component.State
             }
         }
 
-        public void StateActive()
+        public override void StateActive()
         {
 
         }
 
-        public void StateEntered()
+        public override void StateEntered()
         {
-            _animatedSprite?.Play(ANIM_ATTACK);
+            _animatedSprite?.Play(EnemyAIComponent.META_ANIM_ATTACK);
         }
 
-        public void StateLeft()
+        public override void StateLeft()
         {
             _attackIntentComponent?.Stop();
         }
 
         private void OnAnimationFinished()
         {
-            if (_animatedSprite.Animation == ANIM_ATTACK)
+            if (_animatedSprite.Animation == EnemyAIComponent.META_ANIM_ATTACK)
             {
                 _parent.StateMachine.ChangeState(_pursueState);
 

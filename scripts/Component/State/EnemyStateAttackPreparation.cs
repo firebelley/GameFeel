@@ -1,17 +1,19 @@
 using Godot;
-using GodotTools.Extension;
 using GodotTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {
-    public class EnemyStateAttackPreparation : Node, IStateExector
+    public class EnemyStateAttackPreparation : EnemyState
     {
-        private const string ANIM_IDLE = "idle";
-
         [Export]
         private NodePath _attackStateNodePath;
+        [Export]
+        private NodePath _animatedSpritePath;
+        [Export]
+        private NodePath _attackIntentComponentPath;
+        [Export]
+        private float _preparationTime = .25f;
 
-        private EnemyAIComponent _parent;
         private IStateExector _attackState;
 
         private AttackIntentComponent _attackIntentComponent;
@@ -21,11 +23,11 @@ namespace GameFeel.Component.State
 
         public override void _Ready()
         {
-            _parent = GetParent() as EnemyAIComponent;
+            base._Ready();
             _timer = GetNode<Timer>("Timer");
 
-            _attackIntentComponent = _parent?.Owner?.GetFirstNodeOfType<AttackIntentComponent>();
-            _animatedSprite = _parent?.Owner?.GetFirstNodeOfType<AnimatedSprite>();
+            _attackIntentComponent = GetNode<AttackIntentComponent>(_attackIntentComponentPath);
+            _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
 
             if (_attackStateNodePath != null)
             {
@@ -33,7 +35,7 @@ namespace GameFeel.Component.State
             }
         }
 
-        public void StateActive()
+        public override void StateActive()
         {
             if (_timer.IsStopped())
             {
@@ -41,15 +43,15 @@ namespace GameFeel.Component.State
             }
         }
 
-        public void StateEntered()
+        public override void StateEntered()
         {
-            _timer.WaitTime = .25f;
+            _timer.WaitTime = _preparationTime;
             _timer.Start();
             _attackIntentComponent.Play();
-            _animatedSprite.Play(ANIM_IDLE);
+            _animatedSprite.Play(EnemyAIComponent.META_ANIM_IDLE);
         }
 
-        public void StateLeft()
+        public override void StateLeft()
         {
 
         }

@@ -6,14 +6,21 @@ namespace GameFeel.Component
 {
     public class EnemyAIComponent : Node
     {
-        // TODO: ASK FOR REQUIRED NODES HERE
-        // REFERENCE REQUIRED NODES IN CHILD NODES VIA PROPERTIES
+        public const string META_ANIM_ATTACK = "attack";
+        public const string META_ANIM_IDLE = "idle";
+        public const string META_ANIM_RUN = "run";
+
         public StateExecutorMachine StateMachine { get; private set; } = new StateExecutorMachine();
+
+        public Vector2 MetaSpawnPosition { get; set; }
 
         public override void _Ready()
         {
-            var first = GetChildren() [0] as IStateExector;
-            StateMachine.ChangeState(first);
+            if (GetChildCount() > 0)
+            {
+                var first = GetChildren() [0] as IStateExector;
+                StateMachine.ChangeState(first);
+            }
         }
 
         public override void _Process(float delta)

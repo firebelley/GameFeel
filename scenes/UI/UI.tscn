@@ -26,7 +26,7 @@ expand_margin_right = 4.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[sub_resource type="StyleBoxTexture" id=4]
+[sub_resource type="StyleBoxTexture" id=3]
 texture = ExtResource( 3 )
 region_rect = Rect2( 69, 6, 6, 5 )
 margin_left = 2.0
@@ -34,8 +34,7 @@ margin_right = 2.0
 margin_top = 1.0
 margin_bottom = 1.0
 
-[sub_resource type="Animation" id=3]
-resource_name = "default"
+[sub_resource type="Animation" id=4]
 length = 0.3
 step = 0.0
 tracks/0/type = "value"
@@ -164,7 +163,7 @@ margin_bottom = 5.0
 rect_min_size = Vector2( 100, 5 )
 rect_pivot_offset = Vector2( 50, 2 )
 size_flags_vertical = 4
-custom_styles/fg = SubResource( 4 )
+custom_styles/fg = SubResource( 3 )
 custom_styles/bg = SubResource( 2 )
 max_value = 1.0
 step = 0.001
@@ -181,7 +180,7 @@ text = "15/15"
 align = 1
 
 [node name="ManaBarAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/default = SubResource( 3 )
+anims/default = SubResource( 4 )
 
 [node name="HealthBarAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/default = SubResource( 5 )

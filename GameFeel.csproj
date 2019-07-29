@@ -82,8 +82,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Compile Include="scripts\Component\State\EnemyStatePursue.cs" />
-    <Folder Include="scripts\Component\State\" />
     <Folder Include="scenes\Component\State\" />
+    <Compile Include="scripts\Component\State\EnemyState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

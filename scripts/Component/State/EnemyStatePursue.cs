@@ -5,25 +5,26 @@ using GodotTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {
-    public class EnemyStatePursue : Node, IStateExector
+    public class EnemyStatePursue : EnemyState
     {
         [Export]
         private NodePath _attackStateNodePath;
-
-        private const string ANIM_RUN = "run";
-        private const string ANIM_IDLE = "idle";
-        private const float ATTACK_RANGE = 50f;
+        [Export]
+        private NodePath _animatedSpritePath;
+        [Export]
+        private NodePath _pathfindComponentPath;
+        [Export]
+        private int _initiateAttackRange = 50;
 
         private PathfindComponent _pathfindComponent;
         private AnimatedSprite _animatedSprite;
         private IStateExector _attackState;
-        private EnemyAIComponent _parent;
 
         public override void _Ready()
         {
-            _parent = GetParent() as EnemyAIComponent;
-            _pathfindComponent = _parent?.GetOwner()?.GetFirstNodeOfType<PathfindComponent>();
-            _animatedSprite = _parent?.GetOwner()?.GetFirstNodeOfType<AnimatedSprite>();
+            base._Ready();
+            _pathfindComponent = GetNode<PathfindComponent>(_pathfindComponentPath);
+            _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
 
             if (_attackStateNodePath != null)
             {
@@ -31,14 +32,14 @@ namespace GameFeel.Component.State
             }
         }
 
-        public void StateEntered()
+        public override void StateEntered()
         {
             _pathfindComponent.EnablePathTimer();
             _pathfindComponent.UpdatePath();
-            _animatedSprite.Play(ANIM_RUN);
+            _animatedSprite.Play(EnemyAIComponent.META_ANIM_RUN);
         }
 
-        public void StateActive()
+        public override void StateActive()
         {
             _pathfindComponent.UpdateVelocity();
 
@@ -55,14 +56,14 @@ namespace GameFeel.Component.State
             var player = owner.GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
-                if (player.GlobalPosition.DistanceSquaredTo(owner.GlobalPosition) < ATTACK_RANGE * ATTACK_RANGE)
+                if (player.GlobalPosition.DistanceSquaredTo(owner.GlobalPosition) < _initiateAttackRange * _initiateAttackRange)
                 {
                     _parent.StateMachine.ChangeState(_attackState);
                 }
             }
         }
 
-        public void StateLeft()
+        public override void StateLeft()
         {
             _pathfindComponent.DisablePathTimer();
         }

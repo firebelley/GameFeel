@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -60,6 +61,7 @@
     <Compile Include="scripts\Component\EnemyAIComponent.cs" />
     <Compile Include="scripts\Component\HealthComponent.cs" />
     <Compile Include="scripts\Component\HitEffectComponent.cs" />
+    <Compile Include="scripts\Component\LootTableComponent.cs" />
     <Compile Include="scripts\Component\PathfindComponent.cs" />
     <Compile Include="scripts\Component\PathfindDrawComponent.cs" />
     <Compile Include="scripts\Component\ProjectileDeleterComponent.cs" />
@@ -69,8 +71,10 @@
     <Compile Include="scripts\Component\State\EnemyStateAttackPreparation.cs" />
     <Compile Include="scripts\Component\State\EnemyStateSpawn.cs" />
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
+    <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />
     <Compile Include="scripts\GameObject\Book.cs" />
+    <Compile Include="scripts\GameObject\Loot\LootItem.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\SpawnZone.cs" />
     <Compile Include="scripts\Zone\GameZone.cs" />

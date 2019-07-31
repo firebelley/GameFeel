@@ -4,8 +4,10 @@ namespace GameFeel.GameObject.Loot
 {
     public class LootItem : KinematicBody2D
     {
-        private const float MIN_ANGLE = 90f - 30f;
-        private const float MAX_ANGLE = 90f + 30f;
+        private string ANIM_IDLE = "idle";
+
+        private const float MIN_ANGLE = 90f - 15f;
+        private const float MAX_ANGLE = 90f + 15f;
         private const float MIN_SPEED = 200f;
         private const float MAX_SPEED = 250f;
         private const float DAMPING = .6f;
@@ -13,12 +15,17 @@ namespace GameFeel.GameObject.Loot
 
         private const float GRAVITY = 300f;
 
+        private AnimationPlayer _animationPlayer;
+        private CollisionShape2D _collisionShape2d;
+
         private float _floorY;
         private Vector2 _velocity;
         private int _bounces;
 
         public override void _Ready()
         {
+            _collisionShape2d = GetNode<CollisionShape2D>("CollisionShape2D");
+            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _velocity = Vector2.Right.Rotated(Mathf.Deg2Rad(Main.RNG.RandfRange(MIN_ANGLE, MAX_ANGLE)));
             _velocity *= Main.RNG.RandfRange(MIN_SPEED, MAX_SPEED);
         }
@@ -52,6 +59,8 @@ namespace GameFeel.GameObject.Loot
             _velocity = Vector2.Zero;
             GlobalPosition = GlobalPosition.Round();
             SetProcess(false);
+            _animationPlayer.Play(ANIM_IDLE);
+            _collisionShape2d.Disabled = true;
         }
     }
 }

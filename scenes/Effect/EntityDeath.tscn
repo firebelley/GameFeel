@@ -65,7 +65,6 @@ tracks/1/keys = {
 }
 
 [node name="EntityDeath" type="Particles2D"]
-visible = false
 rotation = -1.5708
 emitting = false
 amount = 10

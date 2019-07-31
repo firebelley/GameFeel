@@ -45,9 +45,7 @@ namespace GameFeel.Component
                 var scene = toSpawn.Scene?.Instance() as Node2D;
                 if (scene != null)
                 {
-                    //TODO: I DON'T WANT TO DO THIS
-                    GameZone.EntitiesLayer.CallDeferred("add_child", scene);
-                    // GameZone.EntitiesLayer.AddChild(scene);
+                    GameZone.EntitiesLayer.AddChildDeferred(scene);
                     scene.GlobalPosition = node.GlobalPosition;
                 }
             }

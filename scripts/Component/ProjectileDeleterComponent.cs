@@ -5,6 +5,9 @@ namespace GameFeel.Component
     [Tool]
     public class ProjectileDeleterComponent : Node
     {
+        [Signal]
+        public delegate void Deleted();
+
         [Export]
         private NodePath _particlesPath;
         [Export]
@@ -78,6 +81,8 @@ namespace GameFeel.Component
             }
 
             _deleteTimer.Start();
+
+            EmitSignal(nameof(Deleted));
         }
 
         public void SetTravelDistance(float distance)

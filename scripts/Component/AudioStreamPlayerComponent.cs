@@ -17,5 +17,10 @@ namespace GameFeel.Component
                 PitchScale = Main.RNG.RandfRange(MIN_PITCH, MAX_PITCH);
             }
         }
+
+        private void OnDamageReceived(float damage)
+        {
+            Play();
+        }
     }
 }

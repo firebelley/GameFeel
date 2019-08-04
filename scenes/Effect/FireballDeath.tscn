@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resources/FireballColorRamp.tres" type="Texture" id=1]
 [ext_resource path="res://assets/effect/particle.png" type="Texture" id=2]
-[ext_resource path="res://resources/animations/HitParticleDeath.tres" type="Animation" id=3]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sound/boom-01.wav" type="AudioStream" id=4]
+[ext_resource path="res://resources/animations/HitParticleDeath.tres" type="Animation" id=5]
 
 [sub_resource type="Curve" id=1]
 max_value = 2.0
@@ -40,6 +42,12 @@ draw_order = 1
 process_material = SubResource( 3 )
 texture = ExtResource( 2 )
 
+[node name="AudioStreamPlayerComponent" parent="." instance=ExtResource( 3 )]
+stream = ExtResource( 4 )
+volume_db = -10.0
+autoplay = true
+_randomPitch = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "burst"
-anims/burst = ExtResource( 3 )
+anims/burst = ExtResource( 5 )

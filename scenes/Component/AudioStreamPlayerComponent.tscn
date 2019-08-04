@@ -3,4 +3,5 @@
 [ext_resource path="res://scripts/Component/AudioStreamPlayerComponent.cs" type="Script" id=1]
 
 [node name="AudioStreamPlayerComponent" type="AudioStreamPlayer"]
+bus = "SFX"
 script = ExtResource( 1 )

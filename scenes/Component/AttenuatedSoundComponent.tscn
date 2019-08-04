@@ -4,7 +4,7 @@
 
 [node name="AttenuatedSoundComponent" type="AudioStreamPlayer2D"]
 autoplay = true
-max_distance = 200.0
+max_distance = 250.0
 bus = "SFX"
 area_mask = 0
 script = ExtResource( 1 )

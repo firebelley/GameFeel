@@ -56,6 +56,7 @@
     <Compile Include="scripts\Camera.cs" />
     <Compile Include="scripts\Component\AttackIntentComponent.cs" />
     <Compile Include="scripts\Component\AttenuatedSoundComponent.cs" />
+    <Compile Include="scripts\Component\AudioStreamPlayerComponent.cs" />
     <Compile Include="scripts\Component\DamageDealerComponent.cs" />
     <Compile Include="scripts\Component\DamageReceiverComponent.cs" />
     <Compile Include="scripts\Component\DeathEffectComponent.cs" />

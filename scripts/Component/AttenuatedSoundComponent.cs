@@ -57,7 +57,6 @@ namespace GameFeel.Component
 
         private void OnTweenCompleted()
         {
-            GD.Print("stopped");
             Playing = false;
         }
     }

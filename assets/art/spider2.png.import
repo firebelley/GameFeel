@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sorcerer3.png-8ec4bd2f2c81993f0c5f85384df5e01d.stex"
+path="res://.import/spider2.png-1871809c94e0ccfe478d9751cb4958c3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sorcerer3.png"
-dest_files=[ "res://.import/sorcerer3.png-8ec4bd2f2c81993f0c5f85384df5e01d.stex" ]
+source_file="res://assets/art/spider2.png"
+dest_files=[ "res://.import/spider2.png-1871809c94e0ccfe478d9751cb4958c3.stex" ]
 
 [params]
 

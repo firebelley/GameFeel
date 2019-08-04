@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=65 format=2]
 
-[ext_resource path="res://assets/tileset.png" type="Texture" id=1]
+[ext_resource path="res://assets/art/tileset.png" type="Texture" id=1]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )

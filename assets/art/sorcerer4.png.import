@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/book.png-f86e32782bc333ef26cee29508714a05.stex"
+path="res://.import/sorcerer4.png-d10cc0ae30bb58c79a10abd2add48d56.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/book.png"
-dest_files=[ "res://.import/book.png-f86e32782bc333ef26cee29508714a05.stex" ]
+source_file="res://assets/art/sorcerer4.png"
+dest_files=[ "res://.import/sorcerer4.png-d10cc0ae30bb58c79a10abd2add48d56.stex" ]
 
 [params]
 

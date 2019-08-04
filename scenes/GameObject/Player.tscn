@@ -5,11 +5,12 @@
 [ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=3]
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/sorcerer1.png" type="Texture" id=6]
-[ext_resource path="res://assets/sorcerer2.png" type="Texture" id=7]
-[ext_resource path="res://assets/sorcerer3.png" type="Texture" id=8]
-[ext_resource path="res://assets/sorcerer4.png" type="Texture" id=9]
+[ext_resource path="res://assets/art/sorcerer1.png" type="Texture" id=6]
+[ext_resource path="res://assets/art/sorcerer2.png" type="Texture" id=7]
+[ext_resource path="res://assets/art/sorcerer3.png" type="Texture" id=8]
+[ext_resource path="res://assets/art/sorcerer4.png" type="Texture" id=9]
 [ext_resource path="res://scenes/GameObject/Book.tscn" type="PackedScene" id=10]
+
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true

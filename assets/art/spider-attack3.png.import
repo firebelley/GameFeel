@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spider4.png-3f89a4f90e4f3fb9618702620d2d1457.stex"
+path="res://.import/spider-attack3.png-45f0c9291cb56820cfa3e20717343de7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/spider4.png"
-dest_files=[ "res://.import/spider4.png-3f89a4f90e4f3fb9618702620d2d1457.stex" ]
+source_file="res://assets/art/spider-attack3.png"
+dest_files=[ "res://.import/spider-attack3.png-45f0c9291cb56820cfa3e20717343de7.stex" ]
 
 [params]
 

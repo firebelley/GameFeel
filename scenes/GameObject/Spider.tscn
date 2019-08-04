@@ -20,13 +20,14 @@
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=20]
-[ext_resource path="res://assets/spider1.png" type="Texture" id=21]
-[ext_resource path="res://assets/spider2.png" type="Texture" id=22]
-[ext_resource path="res://assets/spider3.png" type="Texture" id=23]
-[ext_resource path="res://assets/spider4.png" type="Texture" id=24]
-[ext_resource path="res://assets/spider-attack1.png" type="Texture" id=25]
-[ext_resource path="res://assets/spider-attack2.png" type="Texture" id=26]
-[ext_resource path="res://assets/spider-attack3.png" type="Texture" id=27]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=21]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=22]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=23]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=24]
+[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=25]
+[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=26]
+[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=27]
+
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true

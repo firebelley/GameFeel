@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sorcerer1.png-8b852606aaf2b4873e75b91675a1b5c4.stex"
+path="res://.import/ui-widgets.png-e421551e68a766cb126bafbfcaa081fc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sorcerer1.png"
-dest_files=[ "res://.import/sorcerer1.png-8b852606aaf2b4873e75b91675a1b5c4.stex" ]
+source_file="res://assets/art/ui-widgets.png"
+dest_files=[ "res://.import/ui-widgets.png-e421551e68a766cb126bafbfcaa081fc.stex" ]
 
 [params]
 

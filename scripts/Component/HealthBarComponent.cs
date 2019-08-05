@@ -4,7 +4,7 @@ using Godot;
 namespace GameFeel.UI
 {
     [Tool]
-    public class HealthBar : Node2D
+    public class HealthBarComponent : Node2D
     {
         [Export]
         private NodePath _healthComponentPath;

@@ -19,7 +19,7 @@
 [ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=19]
-[ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=20]
 [ext_resource path="res://assets/art/spider1.png" type="Texture" id=21]
 [ext_resource path="res://assets/art/spider2.png" type="Texture" id=22]
 [ext_resource path="res://assets/art/spider3.png" type="Texture" id=23]
@@ -53,7 +53,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 1.5, 1.5 ), Vector2( 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("HealthBar:modulate")
+tracks/1/path = NodePath("HealthBarComponent:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -175,9 +175,8 @@ _radius = 7.0
 position = Vector2( 0, -6 )
 _shape = SubResource( 2 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 20 )]
+[node name="HealthBarComponent" parent="." instance=ExtResource( 20 )]
 position = Vector2( 0, -15 )
-_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

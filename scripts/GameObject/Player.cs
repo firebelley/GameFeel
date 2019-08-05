@@ -8,6 +8,8 @@ namespace GameFeel.GameObject
     {
         [Signal]
         public delegate void Attack(Player p);
+        [Signal]
+        public delegate void Interact();
 
         public const string GROUP = "player";
 
@@ -16,6 +18,8 @@ namespace GameFeel.GameObject
         private const string INPUT_MOVE_RIGHT = "move_right";
         private const string INPUT_MOVE_UP = "move_up";
         private const string INPUT_ATTACK = "attack";
+        private const string INPUT_INTERACT = "interact";
+
         private const string ANIM_IDLE = "idle";
         private const string ANIM_RUN = "run";
 
@@ -61,6 +65,11 @@ namespace GameFeel.GameObject
             UpdateAttack();
             UpdateRegen();
             UpdateWeaponOrientation();
+
+            if (Input.IsActionJustPressed(INPUT_INTERACT))
+            {
+                EmitSignal(nameof(Interact));
+            }
         }
 
         public Position2D GetWeaponPosition()

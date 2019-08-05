@@ -82,6 +82,11 @@ attack={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+interact={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -90,6 +95,7 @@ attack={
 2d_physics/layer_3="ENEMY_HITBOX"
 2d_physics/layer_5="ENEMY_PATHFINDING"
 2d_physics/layer_6="PLAYER_PATHFINDING"
+2d_physics/layer_20="MOUSE"
 
 [physics]
 

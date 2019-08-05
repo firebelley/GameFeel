@@ -1,5 +1,4 @@
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -8,7 +7,11 @@ namespace GameFeel.Component
     {
         [Signal]
         public delegate void HealthDepleted();
+        [Signal]
+        public delegate void HealthDecremented();
 
+        [Export]
+        private NodePath _damageReceiverComponentPath;
         [Export]
         private float _maxHp;
 
@@ -18,16 +21,16 @@ namespace GameFeel.Component
         {
             _hp = _maxHp;
 
-            var damageReceiver = GetOwner()?.GetFirstNodeOfType<DamageReceiverComponent>();
-            if (damageReceiver != null)
+            if (_damageReceiverComponentPath != null)
             {
-                damageReceiver.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
+                GetNodeOrNull<DamageReceiverComponent>(_damageReceiverComponentPath)?.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
             }
         }
 
         public void Decrement(float amount)
         {
             _hp -= amount;
+            EmitSignal(nameof(HealthDecremented));
             if (_hp <= 0f)
             {
                 EmitSignal(nameof(HealthDepleted));

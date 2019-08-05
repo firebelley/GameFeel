@@ -1,5 +1,4 @@
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -8,19 +7,30 @@ namespace GameFeel.Component
     {
         [Export]
         private PackedScene _deathScene;
+        [Export]
+        private NodePath _healthComponentPath;
 
         public override void _Ready()
         {
-            GetOwner()?.GetFirstNodeOfType<HealthComponent>()?.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
+            GetHealthComponent()?.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
         public override string _GetConfigurationWarning()
         {
-            if (!IsInstanceValid(GetOwner()) || GetOwner().GetFirstNodeOfType<HealthComponent>() == null)
+            if (!IsInstanceValid(GetOwner()) || GetHealthComponent() == null)
             {
-                return "Owner must have a " + nameof(HealthComponent);
+                return "Must have a " + nameof(HealthComponent);
             }
             return string.Empty;
+        }
+
+        private HealthComponent GetHealthComponent()
+        {
+            if (_healthComponentPath != null)
+            {
+                return GetNodeOrNull<HealthComponent>(_healthComponentPath);
+            }
+            return null;
         }
 
         private void OnHealthDepleted()

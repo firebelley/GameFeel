@@ -8,6 +8,9 @@ namespace GameFeel.Component
     [Tool]
     public class LootTableComponent : Node
     {
+        [Export]
+        private NodePath _healthComponentPath;
+
         private LootTable<LootTableItem> _lootTable = new LootTable<LootTableItem>();
 
         public override void _Ready()
@@ -19,7 +22,11 @@ namespace GameFeel.Component
                     _lootTable.AddItem(li, li.Weight);
                 }
             }
-            GetOwner()?.GetFirstNodeOfType<HealthComponent>()?.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
+
+            if (_healthComponentPath != null)
+            {
+                GetNodeOrNull<HealthComponent>(_healthComponentPath)?.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
+            }
         }
 
         public override string _GetConfigurationWarning()

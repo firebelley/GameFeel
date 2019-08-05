@@ -1,12 +1,14 @@
 using GameFeel.Component;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
     [Tool]
     public class HealthBar : Node2D
     {
+        [Export]
+        private NodePath _healthComponentPath;
+
         private AnimationPlayer _animationPlayer;
         private ProgressBar _progressBar;
 
@@ -15,30 +17,30 @@ namespace GameFeel.UI
             _progressBar = GetNode<ProgressBar>("ProgressBar");
             _animationPlayer = GetNode<AnimationPlayer>("ProgressBar/AnimationPlayer");
 
-            var damageReceiverComponent = GetOwner()?.GetFirstNodeOfType<DamageReceiverComponent>();
-            if (damageReceiverComponent != null)
-            {
-                damageReceiverComponent.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
-            }
+            GetHealthComponent()?.Connect(nameof(HealthComponent.HealthDecremented), this, nameof(OnHealthDecremented));
         }
 
         public override string _GetConfigurationWarning()
         {
-            if (!IsInstanceValid(GetOwner()) || GetOwner().GetFirstNodeOfType<HealthComponent>() == null)
+            if (!IsInstanceValid(GetOwner()) || GetHealthComponent() == null)
             {
                 return "Will not display properly without owner having a child " + nameof(HealthComponent);
             }
             return string.Empty;
         }
 
-        private void OnDamageReceived(float damage)
+        private HealthComponent GetHealthComponent()
         {
-            var healthComponent = GetOwner().GetFirstNodeOfType<HealthComponent>();
-            if (healthComponent == null)
+            if (_healthComponentPath != null)
             {
-                return;
+                return GetNodeOrNull<HealthComponent>(_healthComponentPath);
             }
-            _progressBar.Value = healthComponent.GetHealthPercentage();
+            return null;
+        }
+
+        private void OnHealthDecremented()
+        {
+            _progressBar.Value = GetHealthComponent()?.GetHealthPercentage() ?? 0f;
             _animationPlayer.Stop(true);
             _animationPlayer.Play("bounce");
         }

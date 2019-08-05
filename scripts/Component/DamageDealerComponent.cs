@@ -1,11 +1,12 @@
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
     [Tool]
     public class DamageDealerComponent : Node
     {
+        [Export]
+        private NodePath _projectileDeleterComponentPath;
         [Export]
         public float Damage;
         [Export]
@@ -14,6 +15,15 @@ namespace GameFeel.Component
         private PackedScene _hitEffect;
 
         private int _hits;
+        private ProjectileDeleterComponent _projectileDeleterComponent;
+
+        public override void _Ready()
+        {
+            if (_projectileDeleterComponentPath != null)
+            {
+                _projectileDeleterComponent = GetNodeOrNull<ProjectileDeleterComponent>(_projectileDeleterComponentPath);
+            }
+        }
 
         public void HandleHit(DamageReceiverComponent damageReceiverComponent)
         {
@@ -25,7 +35,7 @@ namespace GameFeel.Component
 
             if (_hits >= _maxHits)
             {
-                GetOwner().GetFirstNodeOfType<ProjectileDeleterComponent>()?.Delete();
+                _projectileDeleterComponent?.Delete();
             }
         }
 

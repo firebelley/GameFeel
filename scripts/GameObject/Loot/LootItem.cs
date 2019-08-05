@@ -8,6 +8,7 @@ namespace GameFeel.GameObject.Loot
         private const string GROUP = "loot_item";
         private const string ANIM_IDLE = "idle";
         private const string ANIM_DEFAULT = "default";
+        private const float PLAYER_NEAR_DISTANCE = 50f;
 
         private const float SEPARATION_DISTANCE = 30f;
         private const float SEPARATION_SPEED = 30f;
@@ -63,6 +64,22 @@ namespace GameFeel.GameObject.Loot
             else
             {
                 Separate();
+            }
+        }
+
+        public override void _PhysicsProcess(float delta)
+        {
+            var playerPosition = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;
+            var near = GlobalPosition.DistanceSquaredTo(playerPosition) < PLAYER_NEAR_DISTANCE * PLAYER_NEAR_DISTANCE;
+            if (!_deathTimer.IsStopped() && near)
+            {
+                _deathTimer.Start();
+            }
+            else if (near && _blinkAnimationPlayer.IsPlaying())
+            {
+                _blinkAnimationPlayer.Stop(true);
+                _blinkAnimationPlayer.Seek(0f, true);
+                _deathTimer.Start();
             }
         }
 

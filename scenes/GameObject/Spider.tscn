@@ -21,12 +21,12 @@
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/UI/HealthBar.tscn" type="PackedScene" id=20]
 [ext_resource path="res://assets/art/spider1.png" type="Texture" id=21]
-[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=22]
-[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=23]
-[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=24]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=25]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=26]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=27]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=22]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=23]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=24]
+[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=25]
+[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=26]
+[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=27]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -92,14 +92,14 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
-"loop": false,
-"name": "attack",
-"speed": 10.0
-}, {
-"frames": [ ExtResource( 21 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ) ],
+"frames": [ ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
 "loop": true,
 "name": "run",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ) ],
+"loop": false,
+"name": "attack",
 "speed": 10.0
 } ]
 
@@ -111,8 +111,8 @@ collision_mask = 17
 _maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
-_acceleration = 500.0
 _maxSpeed = 100.0
+_acceleration = 500.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
 _shaderMaterial = SubResource( 1 )
@@ -148,7 +148,6 @@ _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 11 )]
-editor/display_folded = true
 
 [node name="LootItem2" parent="LootTableComponent" instance=ExtResource( 12 )]
 Scene = ExtResource( 13 )

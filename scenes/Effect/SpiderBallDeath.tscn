@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resources/VenomColorRamp.tres" type="Texture" id=1]
 [ext_resource path="res://assets/effect/square4.png" type="Texture" id=2]
-[ext_resource path="res://resources/animations/HitParticleDeath.tres" type="Animation" id=3]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sound/squish-02.wav" type="AudioStream" id=4]
+[ext_resource path="res://resources/animations/HitParticleDeath.tres" type="Animation" id=5]
 
 [sub_resource type="Curve" id=1]
 max_value = 3.0
@@ -41,6 +43,12 @@ local_coords = false
 process_material = SubResource( 3 )
 texture = ExtResource( 2 )
 
+[node name="AudioStreamPlayerComponent" parent="." instance=ExtResource( 3 )]
+stream = ExtResource( 4 )
+volume_db = -5.0
+autoplay = true
+_randomPitch = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "HitParticleDeath"
-anims/HitParticleDeath = ExtResource( 3 )
+anims/HitParticleDeath = ExtResource( 5 )

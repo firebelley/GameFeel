@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="IntermittentSoundComponent" type="AudioStreamPlayer2D"]
+max_distance = 250.0

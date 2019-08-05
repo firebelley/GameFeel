@@ -4,8 +4,8 @@ namespace GameFeel.Component
 {
     public class AudioStreamPlayerComponent : AudioStreamPlayer
     {
-        private const float MIN_PITCH = .9f;
-        private const float MAX_PITCH = 1.1f;
+        private const float MIN_PITCH = .75f;
+        private const float MAX_PITCH = 1.25f;
 
         [Export]
         private bool _randomPitch;

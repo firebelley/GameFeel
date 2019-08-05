@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/Component/DamageDealerComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Effect/SpiderBallDeath.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/ProjectileDeleterComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/effect/spider-ball.png" type="Texture" id=4]
-[ext_resource path="res://resources/VenomColorRamp.tres" type="Texture" id=5]
-[ext_resource path="res://assets/effect/square4.png" type="Texture" id=6]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/sound/squish-01.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/effect/spider-ball.png" type="Texture" id=6]
+[ext_resource path="res://resources/VenomColorRamp.tres" type="Texture" id=7]
+[ext_resource path="res://assets/effect/square4.png" type="Texture" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 2.0
@@ -31,7 +33,7 @@ orbit_velocity_random = 0.0
 angle = 180.0
 angle_random = 1.0
 scale_curve = SubResource( 3 )
-color_ramp = ExtResource( 5 )
+color_ramp = ExtResource( 7 )
 hue_variation = 0.5
 hue_variation_random = 1.0
 
@@ -49,8 +51,14 @@ _hitEffect = ExtResource( 2 )
 _particlesPath = NodePath("../Particles2D")
 _hideOnDeletePath = NodePath("../Sprite")
 
+[node name="AudioStreamPlayerComponent" parent="." instance=ExtResource( 4 )]
+stream = ExtResource( 5 )
+volume_db = -15.0
+autoplay = true
+_randomPitch = true
+
 [node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -61,4 +69,4 @@ amount = 10
 lifetime = 0.4
 local_coords = false
 process_material = SubResource( 4 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )

@@ -68,6 +68,7 @@
     <Compile Include="scripts\Component\PathfindDrawComponent.cs" />
     <Compile Include="scripts\Component\ProjectileDeleterComponent.cs" />
     <Compile Include="scripts\Component\ProjectileSpawnComponent.cs" />
+    <Compile Include="scripts\Component\SelectableComponent.cs" />
     <Compile Include="scripts\Component\ShadowComponent.cs" />
     <Compile Include="scripts\Component\State\EnemyStateAttack.cs" />
     <Compile Include="scripts\Component\State\EnemyStateAttackPreparation.cs" />

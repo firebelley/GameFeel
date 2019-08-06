@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
 [ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
-[ext_resource path="res://assets/art/money.png" type="Texture" id=6]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -150,6 +149,5 @@ anims/default = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -8, -16 )

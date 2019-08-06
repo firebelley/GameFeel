@@ -4,6 +4,7 @@
 
 [node name="IntermittentSoundComponent" type="AudioStreamPlayer2D"]
 max_distance = 160.0
+bus = "SFX"
 script = ExtResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

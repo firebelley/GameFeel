@@ -43,6 +43,16 @@ namespace GameFeel.Component
             }
         }
 
+        public void Disable()
+        {
+            var collisionShape = this.GetFirstNodeOfType<CollisionShape2D>();
+            if (collisionShape != null)
+            {
+                collisionShape.Disabled = true;
+            }
+            Deselect();
+        }
+
         private void Select()
         {
             if (IsInstanceValid(_selected))

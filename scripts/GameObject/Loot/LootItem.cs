@@ -1,6 +1,7 @@
 using GameFeel.Component;
 using Godot;
 using GodotTools.Extension;
+using GodotTools.Logic;
 
 namespace GameFeel.GameObject.Loot
 {
@@ -11,6 +12,7 @@ namespace GameFeel.GameObject.Loot
         private const string ANIM_PICKUP = "pickup";
         private const string ANIM_DEFAULT = "default";
         private const float PLAYER_NEAR_DISTANCE = 50f;
+        private const float PLAYER_HOVER_Y_OFFSET = -24f;
 
         private const float SEPARATION_DISTANCE = 30f;
         private const float SEPARATION_SPEED = 30f;
@@ -24,6 +26,8 @@ namespace GameFeel.GameObject.Loot
 
         private const float GRAVITY = 300f;
 
+        private StateMachine<State> _stateMachine = new StateMachine<State>();
+
         private AnimationPlayer _animationPlayer;
         private CollisionShape2D _collisionShape2d;
         private AnimationPlayer _blinkAnimationPlayer;
@@ -35,8 +39,22 @@ namespace GameFeel.GameObject.Loot
         private Vector2 _velocity;
         private int _bounces;
 
+        private enum State
+        {
+            BOUNCING,
+            SEPARATE,
+            SETTLED,
+            PICKED_UP
+        }
+
         public override void _Ready()
         {
+            _stateMachine.AddState(State.BOUNCING, StateBouncing);
+            _stateMachine.AddState(State.SEPARATE, StateSeparate);
+            _stateMachine.AddState(State.SETTLED, StateSettled);
+            _stateMachine.AddState(State.PICKED_UP, StatePickedUp);
+            _stateMachine.SetInitialState(State.BOUNCING);
+
             _collisionShape2d = GetNode<CollisionShape2D>("CollisionShape2D");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _blinkAnimationPlayer = GetNode<AnimationPlayer>("BlinkAnimationPlayer");
@@ -53,18 +71,60 @@ namespace GameFeel.GameObject.Loot
 
         public override void _Process(float delta)
         {
+            _stateMachine.Update();
+        }
+
+        private void StateBouncing()
+        {
             if (_bounces <= MAX_BOUNCES)
             {
                 Bounce();
             }
             else
             {
-                Separate();
+                _stateMachine.ChangeState(StateSeparate);
             }
         }
 
-        public override void _PhysicsProcess(float delta)
+        private void StateSeparate()
         {
+            var pushVec = Vector2.Zero;
+            foreach (var node in GetTree().GetNodesInGroup(GROUP))
+            {
+                if (node is Node2D n)
+                {
+                    if (GlobalPosition.DistanceSquaredTo(n.GlobalPosition) < SEPARATION_DISTANCE * SEPARATION_DISTANCE)
+                    {
+                        pushVec = (GlobalPosition - n.GlobalPosition);
+                        break;
+                    }
+                }
+            }
+
+            if (pushVec == Vector2.Zero)
+            {
+                _stateMachine.ChangeState(StateSettled);
+            }
+            else
+            {
+                pushVec = pushVec.Normalized() * SEPARATION_SPEED;
+                _velocity = MoveAndSlide(pushVec);
+            }
+        }
+
+        private void StateSettled()
+        {
+            if (_stateMachine.IsStateNew())
+            {
+                CollisionLayer = 0;
+                CollisionMask = 0;
+                _velocity = Vector2.Zero;
+                GlobalPosition = GlobalPosition.Round();
+                _animationPlayer.Play(ANIM_IDLE);
+                _collisionShape2d.Disabled = true;
+                _deathTimer.Start();
+            }
+
             var playerPosition = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;
             var near = GlobalPosition.DistanceSquaredTo(playerPosition) < PLAYER_NEAR_DISTANCE * PLAYER_NEAR_DISTANCE;
             if (!_deathTimer.IsStopped() && near)
@@ -76,6 +136,19 @@ namespace GameFeel.GameObject.Loot
                 ResetBlink();
                 _deathTimer.Start();
             }
+        }
+
+        private void StatePickedUp()
+        {
+            if (_stateMachine.IsStateNew())
+            {
+                _animationPlayer.Play(ANIM_PICKUP);
+                _deathTimer.Stop();
+                ResetBlink();
+                _selectableComponent.Disable();
+            }
+            var playerPosition = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;
+            GlobalPosition = playerPosition + new Vector2(0f, PLAYER_HOVER_Y_OFFSET);
         }
 
         private void Bounce()
@@ -95,53 +168,6 @@ namespace GameFeel.GameObject.Loot
             _velocity = MoveAndSlide(_velocity);
         }
 
-        private void Separate()
-        {
-            var pushVec = Vector2.Zero;
-            foreach (var node in GetTree().GetNodesInGroup(GROUP))
-            {
-                if (node is Node2D n)
-                {
-                    if (GlobalPosition.DistanceSquaredTo(n.GlobalPosition) < SEPARATION_DISTANCE * SEPARATION_DISTANCE)
-                    {
-                        pushVec = (GlobalPosition - n.GlobalPosition);
-                        break;
-                    }
-                }
-            }
-
-            if (pushVec == Vector2.Zero)
-            {
-                Disable();
-            }
-            else
-            {
-                pushVec = pushVec.Normalized() * SEPARATION_SPEED;
-                _velocity = MoveAndSlide(pushVec);
-            }
-        }
-
-        private void Disable()
-        {
-            CollisionLayer = 0;
-            CollisionMask = 0;
-            _velocity = Vector2.Zero;
-            GlobalPosition = GlobalPosition.Round();
-            SetProcess(false);
-            _animationPlayer.Play(ANIM_IDLE);
-            _collisionShape2d.Disabled = true;
-            _deathTimer.Start();
-        }
-
-        private void Pickup()
-        {
-            _animationPlayer.Play(ANIM_PICKUP);
-            _deathTimer.Stop();
-            SetProcess(false);
-            SetPhysicsProcess(false);
-            ResetBlink();
-        }
-
         private void ResetBlink()
         {
             if (_blinkAnimationPlayer.IsPlaying())
@@ -158,7 +184,7 @@ namespace GameFeel.GameObject.Loot
 
         private void OnSelected()
         {
-            Pickup();
+            _stateMachine.ChangeState(StatePickedUp);
         }
     }
 }

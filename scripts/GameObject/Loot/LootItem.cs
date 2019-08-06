@@ -8,6 +8,7 @@ namespace GameFeel.GameObject.Loot
     {
         private const string GROUP = "loot_item";
         private const string ANIM_IDLE = "idle";
+        private const string ANIM_PICKUP = "pickup";
         private const string ANIM_DEFAULT = "default";
         private const float PLAYER_NEAR_DISTANCE = 50f;
 
@@ -72,8 +73,7 @@ namespace GameFeel.GameObject.Loot
             }
             else if (near && _blinkAnimationPlayer.IsPlaying())
             {
-                _blinkAnimationPlayer.Stop(true);
-                _blinkAnimationPlayer.Seek(0f, true);
+                ResetBlink();
                 _deathTimer.Start();
             }
         }
@@ -133,6 +133,24 @@ namespace GameFeel.GameObject.Loot
             _deathTimer.Start();
         }
 
+        private void Pickup()
+        {
+            _animationPlayer.Play(ANIM_PICKUP);
+            _deathTimer.Stop();
+            SetProcess(false);
+            SetPhysicsProcess(false);
+            ResetBlink();
+        }
+
+        private void ResetBlink()
+        {
+            if (_blinkAnimationPlayer.IsPlaying())
+            {
+                _blinkAnimationPlayer.Stop(true);
+                _blinkAnimationPlayer.Seek(0f, true);
+            }
+        }
+
         private void OnDeathTimerTimeout()
         {
             _blinkAnimationPlayer.Play(ANIM_DEFAULT);
@@ -140,7 +158,7 @@ namespace GameFeel.GameObject.Loot
 
         private void OnSelected()
         {
-            QueueFree();
+            Pickup();
         }
     }
 }

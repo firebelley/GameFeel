@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
 [ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
+[ext_resource path="res://assets/art/money.png" type="Texture" id=6]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -29,6 +30,60 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 0, -5 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "pickup"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 2, 2.25 ), Vector2( 1.5, 1.5 ), Vector2( 1.8, 1.8 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -10 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ShadowComponent:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -71,11 +126,11 @@ script = ExtResource( 1 )
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, -8 )
 _shaderMaterial = SubResource( 1 )
 _shadedNodePath = NodePath("../Sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
-position = Vector2( 0, -8 )
 shape = SubResource( 2 )
 
 [node name="DeathTimer" type="Timer" parent="."]
@@ -83,9 +138,10 @@ wait_time = 3.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "default"
-anims/default = ExtResource( 5 )
+autoplay = "BounceIn"
+anims/BounceIn = ExtResource( 5 )
 anims/idle = SubResource( 3 )
+anims/pickup = SubResource( 6 )
 
 [node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/default = SubResource( 4 )
@@ -94,5 +150,6 @@ anims/default = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 6 )
 centered = false
 offset = Vector2( -8, -16 )

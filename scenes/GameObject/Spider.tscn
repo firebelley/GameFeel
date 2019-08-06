@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=2]
@@ -20,13 +20,15 @@
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=20]
-[ext_resource path="res://assets/art/spider1.png" type="Texture" id=21]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=22]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=23]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=24]
-[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=25]
-[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=26]
-[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=27]
+[ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=21]
+[ext_resource path="res://assets/sound/spider-01.wav" type="AudioStream" id=22]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=23]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=24]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=25]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=26]
+[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=27]
+[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=28]
+[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=29]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -87,17 +89,17 @@ shader_param/_hitShadePercent = 0.0
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 21 ) ],
+"frames": [ ExtResource( 23 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
+"frames": [ ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ) ],
 "loop": true,
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ) ],
+"frames": [ ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ) ],
 "loop": false,
 "name": "attack",
 "speed": 10.0
@@ -112,8 +114,8 @@ _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
-_maxSpeed = 100.0
 _acceleration = 500.0
+_maxSpeed = 100.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
 _shaderMaterial = SubResource( 1 )
@@ -150,6 +152,7 @@ _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 11 )]
+editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="LootItem2" parent="LootTableComponent" instance=ExtResource( 12 )]
@@ -178,6 +181,10 @@ _shape = SubResource( 2 )
 [node name="HealthBarComponent" parent="." instance=ExtResource( 20 )]
 position = Vector2( 0, -15 )
 _healthComponentPath = NodePath("../HealthComponent")
+
+[node name="IntermittentSoundComponent" parent="." instance=ExtResource( 21 )]
+stream = ExtResource( 22 )
+_minTime = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "spawn"

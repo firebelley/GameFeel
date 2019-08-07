@@ -80,6 +80,8 @@
     <Compile Include="scripts\GameObject\Loot\LootItem.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\SpawnZone.cs" />
+    <Compile Include="scripts\UI\InventoryCell.cs" />
+    <Compile Include="scripts\UI\PlayerInventoryUI.cs" />
     <Compile Include="scripts\Zone\GameZone.cs" />
     <Compile Include="scripts\Main.cs" />
     <Compile Include="scripts\Resource\Cursor.cs" />

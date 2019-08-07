@@ -62,13 +62,21 @@ namespace GameFeel.GameObject
         public override void _Process(float delta)
         {
             UpdateMovement();
-            UpdateAttack();
             UpdateRegen();
             UpdateWeaponOrientation();
 
             if (Input.IsActionJustPressed(INPUT_INTERACT))
             {
                 EmitSignal(nameof(Interact));
+            }
+        }
+
+        public override void _UnhandledInput(InputEvent evt)
+        {
+            if (evt.IsActionPressed(INPUT_ATTACK))
+            {
+                GetTree().SetInputAsHandled();
+                EmitSignal(nameof(Attack), this);
             }
         }
 
@@ -108,14 +116,6 @@ namespace GameFeel.GameObject
             var spriteScale = _animatedSprite.Scale;
             spriteScale.x = GetGlobalMousePosition().x < GlobalPosition.x ? -1f : 1f;
             _animatedSprite.Scale = spriteScale;
-        }
-
-        private void UpdateAttack()
-        {
-            if (Input.IsActionJustPressed(INPUT_ATTACK))
-            {
-                EmitSignal(nameof(Attack), this);
-            }
         }
 
         private void UpdateRegen()

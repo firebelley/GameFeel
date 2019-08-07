@@ -8,15 +8,20 @@ namespace GameFeel.Singleton
 {
     public class PlayerInventory : Node
     {
+        [Signal]
+        public delegate void ItemAdded(int idx);
+
         private const int MAX_SIZE = 30;
 
-        private static List<InventoryItem> _items = new List<InventoryItem>();
+        public static PlayerInventory Instance { get; private set; }
+        public static List<InventoryItem> Items { get; private set; } = new List<InventoryItem>();
 
         public override void _Ready()
         {
+            Instance = this;
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _items.Add(null);
+                Items.Add(null);
             }
         }
 
@@ -40,17 +45,19 @@ namespace GameFeel.Singleton
 
         public static void AddItem(InventoryItem inventoryItem)
         {
-            var item = FindItem(inventoryItem.Id);
-            if (item != null)
+            var itemIndex = FindItemIndex(inventoryItem.Id);
+            if (itemIndex >= 0)
             {
-                item.Amount += inventoryItem.Amount;
+                Items[itemIndex].Amount += inventoryItem.Amount;
+                Instance.EmitSignal(nameof(ItemAdded), itemIndex);
             }
             else
             {
                 var idx = FindFirstNullIndex();
                 if (idx >= 0)
                 {
-                    _items[idx] = inventoryItem;
+                    Items[idx] = inventoryItem;
+                    Instance.EmitSignal(nameof(ItemAdded), idx);
                 }
                 else
                 {
@@ -59,16 +66,16 @@ namespace GameFeel.Singleton
             }
         }
 
-        public static InventoryItem FindItem(string itemId)
+        public static int FindItemIndex(string itemId)
         {
-            return _items.FirstOrDefault(x => x != null && x.Id == itemId);
+            return Items.FindIndex(x => x != null && x.Id == itemId);
         }
 
         public static int FindFirstNullIndex()
         {
-            for (int i = 0; i < _items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                if (_items[i] == null)
+                if (Items[i] == null)
                 {
                     return i;
                 }

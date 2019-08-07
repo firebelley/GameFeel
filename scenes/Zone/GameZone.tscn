@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/Zone/GameZone.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Effect/DamageNumber.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://scenes/Camera.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/UI/UI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/UI/PlayerInventoryUI.tscn" type="PackedScene" id=9]
 
 [node name="GameZone" type="Node"]
 script = ExtResource( 1 )
@@ -39,3 +40,5 @@ __meta__ = {
 [node name="Camera2D" parent="." instance=ExtResource( 7 )]
 
 [node name="UI" parent="." instance=ExtResource( 8 )]
+
+[node name="PlayerInventoryUI" parent="." instance=ExtResource( 9 )]

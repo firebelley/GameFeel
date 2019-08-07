@@ -1,4 +1,5 @@
 using GameFeel.Component;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Logic;
@@ -22,9 +23,14 @@ namespace GameFeel.GameObject.Loot
         private const float MIN_SPEED = 200f;
         private const float MAX_SPEED = 250f;
         private const float DAMPING = .6f;
+        private const float GRAVITY = 300f;
         private const int MAX_BOUNCES = 3;
 
-        private const float GRAVITY = 300f;
+        [Export]
+        public string ItemId { get; private set; }
+
+        [Export]
+        public Texture IconTexture { get; private set; }
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
@@ -146,6 +152,7 @@ namespace GameFeel.GameObject.Loot
                 _deathTimer.Stop();
                 ResetBlink();
                 _selectableComponent.Disable();
+                PlayerInventory.AddItem(this);
             }
             var playerPosition = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;
             GlobalPosition = playerPosition + new Vector2(0f, PLAYER_HOVER_Y_OFFSET);

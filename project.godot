@@ -19,6 +19,10 @@ config/name="GameFeel"
 run/main_scene="res://scenes/Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+PlayerInventory="*res://scripts/Singleton/PlayerInventory.cs"
+
 [display]
 
 window/size/width=320

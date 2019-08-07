@@ -32,7 +32,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="DamageNumbers" type="Node" parent="."]
+[node name="Floaters" type="Node" parent="."]
 
 [node name="SpawnZones" type="Node" parent="."]
 

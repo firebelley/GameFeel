@@ -152,6 +152,8 @@ namespace GameFeel.GameObject.Loot
                 _deathTimer.Stop();
                 ResetBlink();
                 _selectableComponent.Disable();
+                GetParent().RemoveChild(this);
+                GameZone.FloatersLayer.AddChild(this);
                 PlayerInventory.AddItem(this);
             }
             var playerPosition = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;

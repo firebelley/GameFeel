@@ -11,11 +11,11 @@ namespace GameFeel
 
         public static YSort EntitiesLayer { get; private set; }
         public static YSort EffectsLayer { get; private set; }
+        public static Node FloatersLayer { get; private set; }
 
         [Export]
         private bool _drawNavigation;
 
-        private Node _damageNumbersLayer;
         private ResourcePreloader _resourcePreloader;
         private Navigation2D _navigation;
 
@@ -25,7 +25,7 @@ namespace GameFeel
 
             EntitiesLayer = GetNode<YSort>("Entities");
             EffectsLayer = GetNode<YSort>("Effects");
-            _damageNumbersLayer = GetNode<Node>("DamageNumbers");
+            FloatersLayer = GetNode<Node>("Floaters");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _navigation = GetNode<Navigation2D>("Navigation2D");
 
@@ -37,7 +37,7 @@ namespace GameFeel
             if (IsInstanceValid(Instance))
             {
                 var damageNumber = Instance._resourcePreloader.InstanceScene<DamageNumber>();
-                Instance._damageNumbersLayer.AddChild(damageNumber);
+                FloatersLayer.AddChild(damageNumber);
                 damageNumber.SetNumber(damage);
                 damageNumber.GlobalPosition = sourceNode.GlobalPosition;
             }

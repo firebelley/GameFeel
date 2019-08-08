@@ -15,6 +15,7 @@ namespace GameFeel.Component
 
         public override void _Ready()
         {
+            _lootTable.SetRandom(Main.RNG);
             foreach (var child in GetChildren())
             {
                 if (child is LootTableItem li)

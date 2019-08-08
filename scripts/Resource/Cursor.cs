@@ -35,6 +35,7 @@ namespace GameFeel.Resource
         public static void SetSecondaryTexture(Texture texture)
         {
             _instance._secondary.Texture = texture;
+            _instance._secondary.Modulate = new Color(1f, 1f, 1f, .75f);
             _instance._primary.Visible = texture == null;
         }
     }

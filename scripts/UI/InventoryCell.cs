@@ -1,11 +1,14 @@
 using GameFeel.Data;
-using GameFeel.Resource;
 using Godot;
 
 namespace GameFeel.UI
 {
     public class InventoryCell : Control
     {
+        [Signal]
+        public delegate void Selected();
+
+        private const string INPUT_SELECT = "select";
         private TextureRect _backgroundTextureRect;
         private TextureRect _foregroundTextureRect;
         private Label _countLabel;
@@ -16,7 +19,7 @@ namespace GameFeel.UI
             _foregroundTextureRect = GetNode<TextureRect>("TextureRectForeground");
             _countLabel = GetNode<Label>("CountLabel");
 
-            _foregroundTextureRect.Connect("gui_input", this, nameof(OnGuiInput));
+            Connect("gui_input", this, nameof(OnGuiInput));
         }
 
         public void SetInventoryItem(InventoryItem inventoryItem)
@@ -41,9 +44,10 @@ namespace GameFeel.UI
 
         private void OnGuiInput(InputEvent evt)
         {
-            if (evt.IsActionPressed("attack"))
+            if (evt.IsActionPressed(INPUT_SELECT))
             {
-                Cursor.SetSecondaryTexture(_backgroundTextureRect.Texture);
+                AcceptEvent();
+                EmitSignal(nameof(Selected));
             }
         }
     }

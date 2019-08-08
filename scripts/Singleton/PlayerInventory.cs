@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using GameFeel.Data;
 using GameFeel.GameObject.Loot;
 using Godot;
@@ -64,6 +63,16 @@ namespace GameFeel.Singleton
                     // throw some kind of full error here
                 }
             }
+        }
+
+        public static void SwapIndices(int idx1, int idx2)
+        {
+            var val1 = Items[idx1];
+            var val2 = Items[idx2];
+            Items[idx1] = val2;
+            Items[idx2] = val1;
+            Instance.EmitSignal(nameof(ItemAdded), idx1);
+            Instance.EmitSignal(nameof(ItemAdded), idx2);
         }
 
         public static int FindItemIndex(string itemId)

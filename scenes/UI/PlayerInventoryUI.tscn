@@ -1,49 +1,71 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/UI/PlayerInventoryUI.cs" type="Script" id=1]
 [ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=3]
+[ext_resource path="res://assets/art/ui/inventory-widgets.png" type="Texture" id=4]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=5]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 6.0
+margin_right = 6.0
+margin_top = 6.0
+margin_bottom = 6.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="PlayerInventoryUI" type="CanvasLayer"]
 script = ExtResource( 1 )
-_gridContainerPath = NodePath("Control/MarginContainer/VBoxContainer/GridContainer")
-_rootControlPath = NodePath("Control")
+_gridContainerPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/GridContainer")
+_rootControlPath = NodePath("MarginContainer")
+_animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
+_panelContainerPath = NodePath("MarginContainer/PanelContainer")
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "InventoryCell" ), [ ExtResource( 2 ) ] ]
 
-[node name="Control" type="Control" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 theme = ExtResource( 3 )
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
-margin_left = 8.0
-margin_top = 84.0
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+margin_left = 228.0
+margin_top = 148.0
 margin_right = 312.0
-margin_bottom = 96.0
-size_flags_vertical = 4
+margin_bottom = 172.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+custom_styles/panel = SubResource( 1 )
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
-margin_right = 304.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 78.0
+margin_bottom = 18.0
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer"]
+margin_right = 72.0
 margin_bottom = 8.0
+size_flags_horizontal = 4
 text = "inventory"
 align = 1
 valign = 1
 uppercase = true
 
-[node name="GridContainer" type="GridContainer" parent="Control/MarginContainer/VBoxContainer"]
-margin_left = 152.0
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+margin_left = 36.0
 margin_top = 12.0
-margin_right = 152.0
+margin_right = 36.0
 margin_bottom = 12.0
 size_flags_horizontal = 4
 size_flags_vertical = 2
 custom_constants/vseparation = 6
-custom_constants/hseparation = 4
+custom_constants/hseparation = 2
 columns = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
+anims/BounceIn = ExtResource( 5 )

@@ -32,6 +32,10 @@ window/size/test_height=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[gui]
+
+common/snap_controls_to_pixels=false
+
 [importer_defaults]
 
 texture={
@@ -126,6 +130,7 @@ deselect={
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
+quality/filters/use_nearest_mipmap_filter=true
 quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false

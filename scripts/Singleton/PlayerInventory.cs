@@ -10,7 +10,7 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void ItemAdded(int idx);
 
-        private const int MAX_SIZE = 30;
+        private const int MAX_SIZE = 25;
 
         public static PlayerInventory Instance { get; private set; }
         public static List<InventoryItem> Items { get; private set; } = new List<InventoryItem>();

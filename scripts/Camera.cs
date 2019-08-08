@@ -16,6 +16,8 @@ namespace GameFeel
 
         private static float _amplitude;
         private static Camera _camera;
+        // TODO: THIS IS A BAD SOLUTION
+        public static Vector2 Shift;
 
         private float _xNoiseSample;
         private float _yNoiseSample;
@@ -41,7 +43,7 @@ namespace GameFeel
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
-                _targetPosition = player.GetCameraTargetPosition();
+                _targetPosition = player.GetCameraTargetPosition() + Shift;
             }
 
             GlobalPosition = GlobalPosition.LinearInterpolate(_targetPosition, CAMERA_FOLLOW * delta);

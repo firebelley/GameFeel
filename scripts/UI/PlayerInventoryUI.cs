@@ -9,14 +9,22 @@ namespace GameFeel.UI
     {
         private const string INPUT_INVENTORY = "inventory";
         private const string INPUT_DESELECT = "deselect";
+        private const string INPUT_SELECT = "select";
+        private const string ANIM_BOUNCE_IN = "BounceIn";
 
         [Export]
         private NodePath _gridContainerPath;
         [Export]
         private NodePath _rootControlPath;
+        [Export]
+        private NodePath _animationPlayerPath;
+        [Export]
+        private NodePath _panelContainerPath;
 
         private ResourcePreloader _resourcePreloader;
         private GridContainer _gridContainer;
+        private AnimationPlayer _animationPlayer;
+        private Control _panelContainer;
         private Control _rootControl;
         private int _selectedIndex = -1;
 
@@ -30,6 +38,7 @@ namespace GameFeel.UI
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemAdded));
             _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
+            _panelContainer.Connect("resized", this, nameof(OnPanelResized));
         }
 
         public override void _UnhandledInput(InputEvent evt)
@@ -102,10 +111,19 @@ namespace GameFeel.UI
 
         private void OnRootControlVisibilityChanged()
         {
-            if (!_rootControl.Visible)
+            if (!_rootControl.IsVisibleInTree())
             {
                 CancelSelection();
             }
+            else
+            {
+                if (_animationPlayer.IsPlaying())
+                {
+                    _animationPlayer.Seek(0f, true);
+                }
+                _animationPlayer.Play(ANIM_BOUNCE_IN);
+            }
+            Camera.Shift = _rootControl.Visible ? Vector2.Right * 50f : Vector2.Zero;
         }
 
         private void OnGuiInput(InputEvent evt)
@@ -115,6 +133,15 @@ namespace GameFeel.UI
                 _rootControl.AcceptEvent();
                 CancelSelection();
             }
+            else if (evt.IsActionPressed(INPUT_SELECT))
+            {
+                _rootControl.Visible = false;
+            }
+        }
+
+        private void OnPanelResized()
+        {
+            _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
         }
     }
 }

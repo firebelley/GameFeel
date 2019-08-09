@@ -20,7 +20,7 @@ margin_bottom = 6.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[sub_resource type="StyleBoxTexture" id=3]
+[sub_resource type="StyleBoxTexture" id=2]
 content_margin_bottom = 4.0
 texture = ExtResource( 4 )
 region_rect = Rect2( 48, 4, 28, 6 )
@@ -33,7 +33,7 @@ expand_margin_right = 4.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 4 )
 region = Rect2( 0, 32, 16, 16 )
 
@@ -58,6 +58,7 @@ margin_left = 274.0
 margin_top = 133.0
 margin_right = 312.0
 margin_bottom = 172.0
+mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 custom_styles/panel = SubResource( 1 )
@@ -67,13 +68,15 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = 34.0
 margin_bottom = 35.0
+mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 editor/display_folded = true
 margin_right = 30.0
 margin_bottom = 23.0
-custom_styles/panel = SubResource( 3 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
 margin_left = 7.0
@@ -85,12 +88,13 @@ custom_constants/separation = 0
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
 margin_right = 16.0
 margin_bottom = 16.0
-texture = SubResource( 2 )
+texture = SubResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 23.0
 margin_right = 30.0
 margin_bottom = 31.0
+mouse_filter = 2
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -101,6 +105,7 @@ margin_left = 15.0
 margin_top = 4.0
 margin_right = 15.0
 margin_bottom = 4.0
+mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
 custom_constants/vseparation = 6

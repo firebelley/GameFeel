@@ -4,6 +4,7 @@ using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
+    [Tool]
     public class SelectableComponent : Area2D
     {
         [Signal]

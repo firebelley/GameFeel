@@ -6,7 +6,7 @@ using GodotTools.Logic;
 
 namespace GameFeel.GameObject.Loot
 {
-    // [Tool]
+    [Tool]
     public class LootItem : KinematicBody2D
     {
         private const string GROUP = "loot_item";
@@ -91,6 +91,11 @@ namespace GameFeel.GameObject.Loot
             AddToGroup(GROUP);
             _deathTimer.Connect("timeout", this, nameof(OnDeathTimerTimeout));
             _selectableComponent.Connect(nameof(SelectableComponent.Selected), this, nameof(OnSelected));
+
+            if (Engine.IsEditorHint())
+            {
+                SetProcess(false);
+            }
         }
 
         public override void _Process(float delta)

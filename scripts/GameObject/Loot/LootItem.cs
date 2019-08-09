@@ -6,6 +6,7 @@ using GodotTools.Logic;
 
 namespace GameFeel.GameObject.Loot
 {
+    // [Tool]
     public class LootItem : KinematicBody2D
     {
         private const string GROUP = "loot_item";
@@ -30,7 +31,21 @@ namespace GameFeel.GameObject.Loot
         public string ItemId { get; private set; }
 
         [Export]
-        public Texture IconTexture { get; private set; }
+        public Texture IconTexture
+        {
+            get
+            {
+                return _spriteTexture;
+            }
+            private set
+            {
+                _spriteTexture = value;
+                if (IsInstanceValid(_sprite))
+                {
+                    _sprite.Texture = _spriteTexture;
+                }
+            }
+        }
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
@@ -40,6 +55,7 @@ namespace GameFeel.GameObject.Loot
         private Timer _deathTimer;
         private SelectableComponent _selectableComponent;
         private Sprite _sprite;
+        private Texture _spriteTexture;
 
         private float _floorY;
         private Vector2 _velocity;
@@ -67,6 +83,8 @@ namespace GameFeel.GameObject.Loot
             _deathTimer = GetNode<Timer>("DeathTimer");
             _selectableComponent = GetNode<SelectableComponent>("SelectableComponent");
             _sprite = GetNode<Sprite>("Sprite");
+            _sprite.Texture = _spriteTexture;
+
             _velocity = Vector2.Right.Rotated(Mathf.Deg2Rad(Main.RNG.RandfRange(MIN_ANGLE, MAX_ANGLE)));
             _velocity *= Main.RNG.RandfRange(MIN_SPEED, MAX_SPEED);
 

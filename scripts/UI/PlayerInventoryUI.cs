@@ -39,6 +39,7 @@ namespace GameFeel.UI
             _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
             _panelContainer.Connect("resized", this, nameof(OnPanelResized));
+            _panelContainer.Connect("gui_input", this, nameof(OnPanelGuiInput));
         }
 
         public override void _UnhandledInput(InputEvent evt)
@@ -84,17 +85,23 @@ namespace GameFeel.UI
         private void SelectIndex(int idx)
         {
             var item = PlayerInventory.Items[idx];
-            var cell = _gridContainer.GetChild<InventoryCell>(idx);
             _selectedIndex = idx;
             Cursor.SetSecondaryTexture(item?.Icon ?? null);
-            cell.SetInventoryItem(null);
+            ClearCell(idx);
         }
 
         private void OnItemAdded(int idx)
         {
+            ClearCell(idx);
             var cell = _gridContainer.GetChild<InventoryCell>(idx);
             var item = PlayerInventory.Items[idx];
             cell.SetInventoryItem(item);
+        }
+
+        private void ClearCell(int idx)
+        {
+            var cell = _gridContainer.GetChild<InventoryCell>(idx);
+            cell.SetInventoryItem(null);
         }
 
         private void OnCellSelected(int idx)
@@ -136,6 +143,14 @@ namespace GameFeel.UI
             else if (evt.IsActionPressed(INPUT_SELECT))
             {
                 _rootControl.Visible = false;
+            }
+        }
+
+        private void OnPanelGuiInput(InputEvent evt)
+        {
+            if (evt.IsActionPressed(INPUT_SELECT))
+            {
+                _panelContainer.AcceptEvent();
             }
         }
 

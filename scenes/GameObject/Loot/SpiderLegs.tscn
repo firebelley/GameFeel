@@ -1,11 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/GameObject/Loot/LootItem.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=2]
+[ext_resource path="res://assets/art/ui/loot-icons.png" type="Texture" id=2]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+resource_local_to_scene = true
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = ExtResource( 2 )
+shader = ExtResource( 3 )
 shader_param/_outlineColor = Color( 1, 1, 1, 1 )
 shader_param/_enabled = null
 
@@ -17,8 +23,9 @@ radius = 15.0
 resource_local_to_scene = true
 radius = 5.0
 
-[node name="LootItem" index="0" instance=ExtResource( 1 )]
-ItemId = "083ab998-ec69-5344-bada-3a7d19bced5b"
+[node name="SpiderLegs" instance=ExtResource( 1 )]
+ItemId = "0ec828df-dab9-5af0-b797-b3905544e6ac"
+IconTexture = SubResource( 1 )
 
 [node name="SelectableComponent" parent="." index="1"]
 _shaderMaterial = SubResource( 2 )

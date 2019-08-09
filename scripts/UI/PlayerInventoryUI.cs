@@ -122,8 +122,8 @@ namespace GameFeel.UI
                     _animationPlayer.Seek(0f, true);
                 }
                 _animationPlayer.Play(ANIM_BOUNCE_IN);
+                Camera.ClearShift();
             }
-            Camera.Shift = _rootControl.Visible ? Vector2.Right * 50f : Vector2.Zero;
         }
 
         private void OnGuiInput(InputEvent evt)
@@ -142,6 +142,8 @@ namespace GameFeel.UI
         private void OnPanelResized()
         {
             _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
+            Camera.ClearShift();
+            Camera.AddShift(_panelContainer.RectSize * Vector2.Right / 2f);
         }
     }
 }

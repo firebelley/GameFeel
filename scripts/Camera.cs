@@ -14,10 +14,9 @@ namespace GameFeel
         private const float MAX_OFFSET = 4f;
         private const float CAMERA_FOLLOW = 10f;
 
+        private static Vector2 _shift;
         private static float _amplitude;
         private static Camera _camera;
-        // TODO: THIS IS A BAD SOLUTION
-        public static Vector2 Shift;
 
         private float _xNoiseSample;
         private float _yNoiseSample;
@@ -43,7 +42,7 @@ namespace GameFeel
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
-                _targetPosition = player.GetCameraTargetPosition() + Shift;
+                _targetPosition = player.GetCameraTargetPosition() + _shift;
             }
 
             GlobalPosition = GlobalPosition.LinearInterpolate(_targetPosition, CAMERA_FOLLOW * delta);
@@ -94,6 +93,16 @@ namespace GameFeel
         public static void Shake(float magnitude)
         {
             _amplitude = magnitude;
+        }
+
+        public static void AddShift(Vector2 shift)
+        {
+            _shift += shift;
+        }
+
+        public static void ClearShift()
+        {
+            _shift = Vector2.Zero;
         }
     }
 }

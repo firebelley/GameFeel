@@ -4,9 +4,9 @@
 [ext_resource path="res://scripts/UI/InventoryCell.cs" type="Script" id=2]
 [ext_resource path="res://assets/art/ui/inventory-widgets.png" type="Texture" id=3]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
-region = Rect2( 16, 0, 16, 16 )
+region = Rect2( 32, 0, 16, 16 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "hover"
@@ -14,12 +14,24 @@ length = 0.5
 loop = true
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_scale")
+tracks/0/path = NodePath("TextureRectForeground:rect_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.25, 1.25 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextureRectBackground:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
 "times": PoolRealArray( 0, 0.25 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
@@ -43,11 +55,12 @@ script = ExtResource( 2 )
 margin_right = 16.0
 margin_bottom = 16.0
 rect_pivot_offset = Vector2( 8, 8 )
-texture = SubResource( 3 )
+texture = SubResource( 1 )
 
 [node name="TextureRectBackground" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 8, 8 )
 mouse_filter = 2
 
 [node name="CountLabel" type="Label" parent="."]

@@ -1,13 +1,21 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=4]
-[ext_resource path="res://resources/Theme.tres" type="Theme" id=5]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=6]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
+[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
+[ext_resource path="res://assets/effect/star16.png" type="Texture" id=6]
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=7]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/_outlineColor = Color( 1, 1, 1, 1 )
+shader_param/_enabled = null
+
+[sub_resource type="Shader" id=2]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -30,17 +38,17 @@ void fragment() {
 	}
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=3]
 resource_local_to_scene = true
-shader = SubResource( 1 )
+shader = SubResource( 2 )
 shader_param/_outlineColor = Color( 1, 1, 1, 1 )
 shader_param/_enabled = null
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 resource_local_to_scene = true
 radius = 15.0
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
@@ -55,7 +63,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -5 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:scale")
@@ -100,7 +108,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 1 ),
+"times": PoolRealArray( 0.6 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -119,8 +127,20 @@ tracks/4/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite/Particles2D:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.01 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 4.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
@@ -149,9 +169,32 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="CircleShape2D" id=7]
+[sub_resource type="CircleShape2D" id=8]
 resource_local_to_scene = true
 radius = 5.0
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0, 0.211196, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=13]
+gradient = SubResource( 12 )
+
+[sub_resource type="Curve" id=10]
+max_value = 2.0
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.15097, 2 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 100.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 13 )
 
 [node name="LootItem" type="KinematicBody2D"]
 collision_layer = 0
@@ -162,12 +205,13 @@ DisplayName = "Null"
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
+material = SubResource( 1 )
 position = Vector2( 0, -8 )
-_shaderMaterial = SubResource( 2 )
+_shaderMaterial = SubResource( 3 )
 _shadedNodePath = NodePath("../Sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -175,20 +219,31 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "BounceIn"
-anims/BounceIn = ExtResource( 4 )
-anims/idle = SubResource( 4 )
-anims/pickup = SubResource( 5 )
+anims/BounceIn = ExtResource( 5 )
+anims/idle = SubResource( 5 )
+anims/pickup = SubResource( 6 )
 
 [node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/default = SubResource( 6 )
+anims/default = SubResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 2 )
+material = SubResource( 3 )
 centered = false
 offset = Vector2( -8, -16 )
+
+[node name="Particles2D" type="Particles2D" parent="Sprite"]
+show_behind_parent = true
+position = Vector2( 0, -8 )
+rotation = -1.5708
+emitting = false
+amount = 5
+lifetime = 1.5
+preprocess = 1.0
+process_material = SubResource( 9 )
+texture = ExtResource( 6 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 visible = false
@@ -198,7 +253,7 @@ margin_bottom = -18.0
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = ExtResource( 5 )
+theme = ExtResource( 7 )
 
 [node name="DisplayName" type="Label" parent="PanelContainer"]
 margin_left = 3.0
@@ -212,4 +267,4 @@ align = 1
 valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
-anims/ControlBounceIn = ExtResource( 6 )
+anims/ControlBounceIn = ExtResource( 8 )

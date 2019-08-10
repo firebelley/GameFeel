@@ -6,7 +6,6 @@ using GodotTools.Logic;
 
 namespace GameFeel.GameObject.Loot
 {
-    [Tool]
     public class LootItem : KinematicBody2D
     {
         private const string GROUP = "loot_item";

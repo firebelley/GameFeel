@@ -58,30 +58,30 @@ namespace GameFeel.Component
             Deselect();
         }
 
-        private void Select()
-        {
-            if (IsInstanceValid(_selected))
-            {
-                _selected.ToggleHighlight(false);
-            }
-            var wasSelected = _selected;
-            _selected = this;
-            ToggleHighlight(true);
-
-            if (wasSelected != _selected)
-            {
-                EmitSignal(nameof(SelectEnter));
-            }
-        }
-
-        private void Deselect()
+        public void Deselect()
         {
             if (_selected == this)
             {
                 _selected = null;
+                EmitSignal(nameof(SelectLeave));
             }
             ToggleHighlight(false);
-            EmitSignal(nameof(SelectLeave));
+        }
+
+        public void Select()
+        {
+            var wasSelected = _selected;
+            if (IsInstanceValid(_selected) && _selected != this)
+            {
+                _selected.Deselect();
+            }
+            _selected = this;
+            ToggleHighlight(true);
+
+            if (wasSelected != this)
+            {
+                EmitSignal(nameof(SelectEnter));
+            }
         }
 
         private void OnMouseEntered()

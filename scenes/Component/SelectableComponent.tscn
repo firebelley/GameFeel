@@ -16,3 +16,4 @@ collision_layer = 524288
 collision_mask = 0
 script = ExtResource( 1 )
 _shaderMaterial = SubResource( 1 )
+_shadedNodePath = NodePath("")

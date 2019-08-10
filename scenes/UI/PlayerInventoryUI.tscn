@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/UI/PlayerInventoryUI.cs" type="Script" id=1]
 [ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=3]
 [ext_resource path="res://assets/art/ui/inventory-widgets.png" type="Texture" id=4]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=5]
+[ext_resource path="res://resources/InventoryFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=6]
 
 [sub_resource type="StyleBoxTexture" id=1]
 content_margin_left = 4.0
@@ -54,7 +55,7 @@ mouse_filter = 1
 theme = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_left = 274.0
+margin_left = 242.0
 margin_top = 133.0
 margin_right = 312.0
 margin_bottom = 172.0
@@ -66,14 +67,13 @@ custom_styles/panel = SubResource( 1 )
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 34.0
+margin_right = 66.0
 margin_bottom = 35.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-editor/display_folded = true
-margin_right = 30.0
+margin_right = 62.0
 margin_bottom = 23.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
@@ -81,7 +81,7 @@ custom_styles/panel = SubResource( 2 )
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
 margin_left = 7.0
 margin_top = 3.0
-margin_right = 23.0
+margin_right = 55.0
 margin_bottom = 19.0
 custom_constants/separation = 0
 
@@ -90,9 +90,21 @@ margin_right = 16.0
 margin_bottom = 16.0
 texture = SubResource( 3 )
 
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+margin_left = 16.0
+margin_top = 4.0
+margin_right = 48.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 0.956863, 0.890196, 1 )
+text = "1000"
+align = 2
+valign = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 23.0
-margin_right = 30.0
+margin_right = 62.0
 margin_bottom = 31.0
 mouse_filter = 2
 custom_constants/margin_right = 4
@@ -101,9 +113,9 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer/MarginContainer"]
-margin_left = 15.0
+margin_left = 31.0
 margin_top = 4.0
-margin_right = 15.0
+margin_right = 31.0
 margin_bottom = 4.0
 mouse_filter = 2
 size_flags_horizontal = 4
@@ -113,4 +125,4 @@ custom_constants/hseparation = 2
 columns = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
-anims/BounceIn = ExtResource( 5 )
+anims/BounceIn = ExtResource( 6 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://assets/art/ui/loot-icons.png" type="Texture" id=2]
@@ -6,8 +6,10 @@
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=5]
 [ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=6]
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=7]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="AtlasTexture" id=8]
 resource_local_to_scene = true
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 16, 16 )
@@ -138,7 +140,9 @@ radius = 5.0
 [node name="LootItem" type="KinematicBody2D"]
 collision_layer = 0
 script = ExtResource( 1 )
-IconTexture = SubResource( 1 )
+DisplayName = "Null"
+Id = "Null"
+Icon = SubResource( 8 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 3 )]
 
@@ -168,6 +172,29 @@ shape = SubResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 2 )
-texture = SubResource( 1 )
+texture = SubResource( 8 )
 centered = false
 offset = Vector2( -8, -16 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_top = -32.0
+margin_right = 38.0
+margin_bottom = -18.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource( 7 )
+
+[node name="DisplayName" type="Label" parent="PanelContainer"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 35.0
+margin_bottom = 11.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Loot"
+align = 1
+valign = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
+anims/ControlBounceIn = ExtResource( 8 )

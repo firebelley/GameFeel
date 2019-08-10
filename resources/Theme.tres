@@ -1,17 +1,27 @@
-[gd_resource type="Theme" load_steps=4 format=2]
+[gd_resource type="Theme" load_steps=6 format=2]
 
-[ext_resource path="res://resources/styles/HealthbarBg.tres" type="StyleBox" id=1]
-[ext_resource path="res://resources/styles/HealthBarFg.tres" type="StyleBox" id=2]
-[ext_resource path="res://resources/UIFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/art/ui/ui-widgets.png" type="Texture" id=1]
+[ext_resource path="res://resources/styles/HealthbarBg.tres" type="StyleBox" id=2]
+[ext_resource path="res://resources/styles/HealthBarFg.tres" type="StyleBox" id=3]
+[ext_resource path="res://resources/UIFont.tres" type="DynamicFont" id=4]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 16, 16, 16 )
+margin_left = 3.0
+margin_right = 3.0
+margin_top = 3.0
+margin_bottom = 3.0
 
 [resource]
-default_font = ExtResource( 3 )
+default_font = ExtResource( 4 )
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
 MarginContainer/constants/margin_top = 8
+PanelContainer/styles/panel = SubResource( 1 )
 ProgressBar/colors/font_color = Color( 0.941176, 0.941176, 0.941176, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
 ProgressBar/fonts/font = null
-ProgressBar/styles/bg = ExtResource( 1 )
-ProgressBar/styles/fg = ExtResource( 2 )
+ProgressBar/styles/bg = ExtResource( 2 )
+ProgressBar/styles/fg = ExtResource( 3 )

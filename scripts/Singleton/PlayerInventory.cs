@@ -28,8 +28,8 @@ namespace GameFeel.Singleton
         {
             var item = new InventoryItem();
             item.Amount = 1;
-            item.Icon = lootItem.IconTexture;
-            item.Id = lootItem.ItemId;
+            item.Icon = lootItem.Icon;
+            item.Id = lootItem.Id;
             AddItem(item);
         }
 

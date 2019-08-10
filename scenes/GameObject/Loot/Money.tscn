@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/GameObject/Loot/LootItem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=2]
+[ext_resource path="res://assets/art/ui/loot-icons.png" type="Texture" id=3]
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
@@ -17,14 +18,24 @@ radius = 15.0
 resource_local_to_scene = true
 radius = 5.0
 
-[node name="LootItem" index="0" instance=ExtResource( 1 )]
-ItemId = "083ab998-ec69-5344-bada-3a7d19bced5b"
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 16, 16 )
+
+[node name="Money" index="0" instance=ExtResource( 1 )]
+DisplayName = "Money"
+Id = "cf19d764-6d3f-5a47-b64c-8cc56a48a869"
 
 [node name="SelectableComponent" parent="." index="1"]
 _shaderMaterial = SubResource( 2 )
+_shadedNodePath = NodePath("../../Money/Sprite")
 
 [node name="CollisionShape2D" parent="SelectableComponent" index="0"]
 shape = SubResource( 3 )
 
 [node name="CollisionShape2D" parent="." index="5"]
 shape = SubResource( 4 )
+
+[node name="Sprite" parent="." index="6"]
+material = SubResource( 2 )
+texture = SubResource( 1 )

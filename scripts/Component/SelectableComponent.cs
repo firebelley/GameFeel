@@ -9,6 +9,10 @@ namespace GameFeel.Component
     {
         [Signal]
         public delegate void Selected();
+        [Signal]
+        public delegate void SelectEnter();
+        [Signal]
+        public delegate void SelectLeave();
 
         [Export]
         private ShaderMaterial _shaderMaterial;
@@ -60,8 +64,14 @@ namespace GameFeel.Component
             {
                 _selected.ToggleHighlight(false);
             }
+            var wasSelected = _selected;
             _selected = this;
             ToggleHighlight(true);
+
+            if (wasSelected != _selected)
+            {
+                EmitSignal(nameof(SelectEnter));
+            }
         }
 
         private void Deselect()
@@ -71,6 +81,7 @@ namespace GameFeel.Component
                 _selected = null;
             }
             ToggleHighlight(false);
+            EmitSignal(nameof(SelectLeave));
         }
 
         private void OnMouseEntered()

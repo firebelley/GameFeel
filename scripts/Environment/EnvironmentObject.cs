@@ -35,7 +35,6 @@ namespace GameFeel.Environment
 
         public override void _Process(float delta)
         {
-            GD.Print("yo");
             var existing = _showTransparency;
             var shouldBeTransparent = _trackedNodes.Any(x => x.GlobalPosition.y <= GlobalPosition.y);
             if (shouldBeTransparent != existing)

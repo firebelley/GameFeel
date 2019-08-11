@@ -173,28 +173,29 @@ tracks/1/keys = {
 resource_local_to_scene = true
 radius = 5.0
 
-[sub_resource type="Gradient" id=12]
+[sub_resource type="Gradient" id=9]
 offsets = PoolRealArray( 0, 0.211196, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=13]
-gradient = SubResource( 12 )
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
 
-[sub_resource type="Curve" id=10]
+[sub_resource type="Curve" id=11]
 max_value = 2.0
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.15097, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=11]
-curve = SubResource( 10 )
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
 
-[sub_resource type="ParticlesMaterial" id=9]
+[sub_resource type="ParticlesMaterial" id=13]
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
 angular_velocity = 100.0
+angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale_curve = SubResource( 11 )
-color_ramp = SubResource( 13 )
+scale_curve = SubResource( 12 )
+color_ramp = SubResource( 10 )
 
 [node name="LootItem" type="KinematicBody2D"]
 collision_layer = 0
@@ -207,8 +208,8 @@ DisplayName = "Null"
 [node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
 material = SubResource( 1 )
 position = Vector2( 0, -8 )
-_shaderMaterial = SubResource( 3 )
 _shadedNodePath = NodePath("../Sprite")
+_shaderMaterial = SubResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 shape = SubResource( 4 )
@@ -242,7 +243,7 @@ emitting = false
 amount = 5
 lifetime = 1.5
 preprocess = 1.0
-process_material = SubResource( 9 )
+process_material = SubResource( 13 )
 texture = ExtResource( 6 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/spider-02.wav-a90925e5923fc9e89b9f01b58e3315e8.sample"
+
+[deps]
+
+source_file="res://assets/sound/spider-02.wav"
+dest_files=[ "res://.import/spider-02.wav-a90925e5923fc9e89b9f01b58e3315e8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

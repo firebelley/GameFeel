@@ -23,7 +23,7 @@
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=23]
-[ext_resource path="res://assets/sound/spider-01.wav" type="AudioStream" id=24]
+[ext_resource path="res://assets/sound/spider-02.wav" type="AudioStream" id=24]
 [ext_resource path="res://assets/art/spider1.png" type="Texture" id=25]
 [ext_resource path="res://assets/art/spider2.png" type="Texture" id=26]
 [ext_resource path="res://assets/art/spider3.png" type="Texture" id=27]
@@ -157,16 +157,16 @@ _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Money" parent="LootTableComponent" instance=ExtResource( 12 )]
-Scene = ExtResource( 13 )
 Weight = 100
+Scene = ExtResource( 13 )
 
 [node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 12 )]
-Scene = ExtResource( 14 )
 Weight = 100
+Scene = ExtResource( 14 )
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 12 )]
-Scene = ExtResource( 15 )
 Weight = 5
+Scene = ExtResource( 15 )
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 16 )]
 position = Vector2( 0, -6 )

@@ -50,8 +50,8 @@ position = Vector2( 0, -11 )
 collision_layer = 2
 _showDamageNumber = false
 _cameraShakeMagnitude = 1.5
-_shape = SubResource( 2 )
 _flashScreen = true
+_shape = SubResource( 2 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, -1 )

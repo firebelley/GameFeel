@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/DesignTool/QuestEventNode.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/DesignTool/QuestEventPlayerInventoryItemAdded.cs" type="Script" id=2]
+
+[node name="QuestEventPlayerInventoryItemAdded" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" parent="." index="0"]
+margin_bottom = 48.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="0"]
+margin_right = 288.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" index="0"]
+margin_top = 5.0
+margin_right = 70.0
+margin_bottom = 19.0
+text = "Item GUID"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer" index="1"]
+margin_left = 74.0
+margin_right = 288.0
+margin_bottom = 24.0
+size_flags_horizontal = 3

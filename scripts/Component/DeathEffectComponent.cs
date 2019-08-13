@@ -1,3 +1,4 @@
+using GameFeel.Singleton;
 using Godot;
 
 namespace GameFeel.Component
@@ -5,6 +6,8 @@ namespace GameFeel.Component
     [Tool]
     public class DeathEffectComponent : Node2D
     {
+        [Export]
+        private string _entityId;
         [Export]
         private PackedScene _deathScene;
         [Export]
@@ -20,6 +23,10 @@ namespace GameFeel.Component
             if (!IsInstanceValid(GetOwner()) || GetHealthComponent() == null)
             {
                 return "Must have a " + nameof(HealthComponent);
+            }
+            if (string.IsNullOrEmpty(_entityId))
+            {
+                return "Must define an ID";
             }
             return string.Empty;
         }
@@ -39,6 +46,7 @@ namespace GameFeel.Component
             var death = _deathScene.Instance() as Node2D;
             GameZone.EffectsLayer.AddChild(death);
             death.GlobalPosition = GlobalPosition;
+            GameEventDispatcher.DispatchEntityKilledEvent(_entityId);
             GetOwner().QueueFree();
         }
     }

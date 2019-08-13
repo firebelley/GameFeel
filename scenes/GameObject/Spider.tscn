@@ -154,22 +154,24 @@ _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 11 )]
+editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Money" parent="LootTableComponent" instance=ExtResource( 12 )]
-Weight = 100
 Scene = ExtResource( 13 )
+Weight = 100
 
 [node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 12 )]
-Weight = 100
 Scene = ExtResource( 14 )
+Weight = 100
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 12 )]
-Weight = 5
 Scene = ExtResource( 15 )
+Weight = 5
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 16 )]
 position = Vector2( 0, -6 )
+_entityId = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="AttackIntentComponent" parent="." instance=ExtResource( 17 )]

@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -76,6 +77,8 @@
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
     <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />
     <Compile Include="scripts\DesignTool\QuestDesigner.cs" />
+    <Compile Include="scripts\DesignTool\QuestEventNode.cs" />
+    <Compile Include="scripts\DesignTool\QuestEventPlayerInventoryItemAdded.cs" />
     <Compile Include="scripts\DesignTool\QuestStageNode.cs" />
     <Compile Include="scripts\DesignTool\QuestStartNode.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />
@@ -105,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="scripts\DesignTool\QuestNode.cs" />
+    <Compile Include="scripts\Singleton\GameEventDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

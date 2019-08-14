@@ -43,6 +43,12 @@ margin_right = 358.0
 margin_bottom = 20.0
 text = "Add Quest Event"
 
+[node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 362.0
+margin_right = 403.0
+margin_bottom = 20.0
+text = "Save"
+
 [node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
 margin_top = 24.0
 margin_right = 1280.0

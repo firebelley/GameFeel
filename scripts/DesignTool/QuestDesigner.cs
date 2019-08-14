@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
+using Newtonsoft.Json;
 
 namespace GameFeel.DesignTool
 {
@@ -29,6 +30,7 @@ namespace GameFeel.DesignTool
             GetNode("VBoxContainer/HBoxContainer/AddStageNode").Connect("pressed", this, nameof(OnAddStageNodePressed));
             GetNode("VBoxContainer/HBoxContainer/AddStartNode").Connect("pressed", this, nameof(OnAddStartNodePressed));
             GetNode("VBoxContainer/HBoxContainer/AddEventNode").Connect("pressed", this, nameof(OnAddEventNodePressed));
+            GetNode("VBoxContainer/HBoxContainer/SaveButton").Connect("pressed", this, nameof(OnSaveButtonPressed));
 
             _graphEdit.Connect("connection_request", this, nameof(OnConnectionRequest));
             _graphEdit.Connect("disconnection_request", this, nameof(OnDisconnectRequest));
@@ -106,6 +108,52 @@ namespace GameFeel.DesignTool
                 node.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
             }
             _questEventDialog.Hide();
+        }
+
+        private void OnSaveButtonPressed()
+        {
+            var saveModel = new QuestSaveModel();
+            foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
+            {
+                var from = (string) connection["from"];
+                var to = (string) connection["to"];
+                var fromPort = (int) connection["from_port"];
+                var toPort = (int) connection["to_port"];
+
+                var fromQuestNode = _graphEdit.GetNode(from) as QuestNode;
+                var fromModel = fromQuestNode.GetSaveModel();
+                var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
+                var toModel = toQuestNode.GetSaveModel();
+
+                StoreData(saveModel, fromQuestNode);
+                StoreData(saveModel, toQuestNode);
+
+                saveModel.AddRightConnection(fromModel.Id, toModel.Id);
+            }
+            var json = JsonConvert.SerializeObject(saveModel);
+            var file = new File();
+            file.Open("res://testquest.json", (int) File.ModeFlags.Write);
+            file.StoreLine(json);
+            file.Close();
+        }
+
+        private void StoreData(QuestSaveModel saveModel, QuestNode node)
+        {
+            var fromModel = node.GetSaveModel();
+
+            if (node is QuestStartNode qsn)
+            {
+                saveModel.Id = fromModel.Id;
+                saveModel.DisplayName = fromModel.DisplayName;
+            }
+            else if (node is QuestEventNode qen)
+            {
+                saveModel.AddEvent(fromModel as QuestEventNode.QuestEventModel);
+            }
+            else if (node is QuestStageNode qstn)
+            {
+                saveModel.AddStage(fromModel as QuestStageNode.QuestStageModel);
+            }
         }
     }
 }

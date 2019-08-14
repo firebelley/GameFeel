@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GameFeel.Singleton;
 using Godot;
@@ -41,6 +40,8 @@ namespace GameFeel.DesignTool
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
                     return _resourcePreloader.InstanceScene<QuestEventPlayerInventoryItemAdded>();
+                case GameEventDispatcher.ENTITY_KILLED:
+                    return _resourcePreloader.InstanceScene<QuestEventEntityKilled>();
             }
             return null;
         }

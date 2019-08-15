@@ -7,6 +7,7 @@ namespace GameFeel.Singleton
 {
     public class PlayerInventory : Node
     {
+        // TODO: make new signal for cell updating and item adding
         [Signal]
         public delegate void ItemAdded(int idx);
 
@@ -22,6 +23,7 @@ namespace GameFeel.Singleton
             {
                 Items.Add(null);
             }
+            Connect(nameof(ItemAdded), this, nameof(OnItemAdded));
         }
 
         public static void AddItem(LootItem lootItem)
@@ -90,6 +92,15 @@ namespace GameFeel.Singleton
                 }
             }
             return -1;
+        }
+
+        private void OnItemAdded(int idx)
+        {
+            // TODO: remove once signals are resolved
+            if (Items[idx] != null)
+            {
+                GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
+            }
         }
     }
 }

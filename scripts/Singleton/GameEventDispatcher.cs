@@ -15,8 +15,7 @@ namespace GameFeel.Singleton
         public const string ENTITY_KILLED = "2e51c8d6-47ab-55aa-a274-66ff242365d7";
 
         public static Dictionary<string, GameEvent> GameEventMapping { get; private set; } = new Dictionary<string, GameEvent>();
-
-        private static GameEventDispatcher _instance;
+        public static GameEventDispatcher Instance { get; private set; }
 
         public class GameEvent
         {
@@ -32,19 +31,19 @@ namespace GameFeel.Singleton
 
         public override void _Ready()
         {
-            _instance = this;
+            Instance = this;
             GameEventMapping.Add(PLAYER_INVENTORY_ITEM_ADDED, new GameEvent(PLAYER_INVENTORY_ITEM_ADDED, nameof(PLAYER_INVENTORY_ITEM_ADDED)));
             GameEventMapping.Add(ENTITY_KILLED, new GameEvent(ENTITY_KILLED, nameof(ENTITY_KILLED)));
         }
 
         public static void DispatchEntityKilledEvent(string entityGuid)
         {
-            _instance.EmitSignal(nameof(EventEntityKilled), ENTITY_KILLED.ToString(), entityGuid);
+            Instance.EmitSignal(nameof(EventEntityKilled), ENTITY_KILLED.ToString(), entityGuid);
         }
 
         public static void DispatchPlayerInventoryItemAddedEvent(string itemGuid)
         {
-            _instance.EmitSignal(nameof(EventPlayerInventoryItemAdded), PLAYER_INVENTORY_ITEM_ADDED.ToString(), itemGuid);
+            Instance.EmitSignal(nameof(EventPlayerInventoryItemAdded), PLAYER_INVENTORY_ITEM_ADDED.ToString(), itemGuid);
         }
     }
 }

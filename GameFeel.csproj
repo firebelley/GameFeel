@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -90,6 +91,7 @@
     <Compile Include="scripts\GameObject\Loot\LootItem.cs" />
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\SpawnZone.cs" />
+    <Compile Include="scripts\Resource\Quest.cs" />
     <Compile Include="scripts\UI\InventoryCell.cs" />
     <Compile Include="scripts\UI\PlayerInventoryUI.cs" />
     <Compile Include="scripts\Zone\GameZone.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="scripts\DesignTool\QuestNode.cs" />
     <Compile Include="scripts\Singleton\GameEventDispatcher.cs" />
     <Compile Include="scripts\DesignTool\QuestSaveModel.cs" />
+    <Compile Include="scripts\Singleton\QuestTracker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,18 +53,22 @@ namespace GameFeel.DesignTool
             return null;
         }
 
-        private void OnAddStageNodePressed()
+        private T AddQuestNode<T>() where T : GraphNode
         {
-            var node = _resourcePreloader.InstanceScene<QuestStageNode>();
+            var node = _resourcePreloader.InstanceScene<T>();
             _graphEdit.AddChild(node);
             node.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
+            return node;
+        }
+
+        private void OnAddStageNodePressed()
+        {
+            AddQuestNode<QuestStageNode>();
         }
 
         private void OnAddStartNodePressed()
         {
-            var node = _resourcePreloader.InstanceScene<QuestStartNode>();
-            _graphEdit.AddChild(node);
-            node.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
+            AddQuestNode<QuestStartNode>();
         }
 
         private void OnAddEventNodePressed()
@@ -118,6 +122,16 @@ namespace GameFeel.DesignTool
         private void OnSaveButtonPressed()
         {
             var saveModel = new QuestSaveModel();
+            // save all node data
+            foreach (var node in _graphEdit.GetChildren())
+            {
+                if (node is QuestNode qn)
+                {
+                    StoreData(saveModel, qn);
+                }
+            }
+
+            // establish connections
             foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
             {
                 var from = (string) connection["from"];
@@ -129,9 +143,6 @@ namespace GameFeel.DesignTool
                 var fromModel = fromQuestNode.Model;
                 var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
                 var toModel = toQuestNode.Model;
-
-                StoreData(saveModel, fromQuestNode);
-                StoreData(saveModel, toQuestNode);
 
                 saveModel.AddRightConnection(fromModel.Id, toModel.Id);
             }
@@ -147,8 +158,7 @@ namespace GameFeel.DesignTool
             if (node is QuestStartNode qsn)
             {
                 var fromModel = qsn.Model;
-                saveModel.Start.Id = fromModel.Id;
-                saveModel.Start.DisplayName = fromModel.DisplayName;
+                saveModel.Start = (QuestStartNode.QuestStartModel) fromModel;
             }
             else if (node is QuestEventNode qen)
             {
@@ -168,6 +178,7 @@ namespace GameFeel.DesignTool
             {
                 if (node is QuestNode qn)
                 {
+                    qn.GetParent().RemoveChild(qn);
                     qn.QueueFree();
                 }
             }
@@ -180,23 +191,20 @@ namespace GameFeel.DesignTool
             var idToNodeMappings = new Dictionary<string, QuestNode>();
             idToNodeMappings.Clear();
 
-            var qsn = _resourcePreloader.InstanceScene<QuestStartNode>();
-            _graphEdit.AddChild(qsn);
+            var qsn = AddQuestNode<QuestStartNode>();
             qsn.LoadModel(saveModel.Start);
             idToNodeMappings.Add(qsn.Model.Id, qsn);
 
             foreach (var model in saveModel.Events)
             {
-                var evt = _resourcePreloader.InstanceScene<QuestEventNode>();
-                _graphEdit.AddChild(evt);
+                var evt = AddQuestNode<QuestEventNode>();
                 evt.LoadModel(model);
                 idToNodeMappings.Add(evt.Model.Id, evt);
             }
 
             foreach (var model in saveModel.Stages)
             {
-                var stage = _resourcePreloader.InstanceScene<QuestStageNode>();
-                _graphEdit.AddChild(stage);
+                var stage = AddQuestNode<QuestStageNode>();
                 stage.LoadModel(model);
                 idToNodeMappings.Add(stage.Model.Id, stage);
             }

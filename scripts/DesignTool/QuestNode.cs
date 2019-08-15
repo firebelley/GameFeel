@@ -11,6 +11,7 @@ namespace GameFeel.DesignTool
         {
             public string Id;
             public string DisplayName;
+            public Vector2 NodePosition;
 
             public QuestModel()
             {
@@ -24,6 +25,8 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             Connect("close_request", this, nameof(OnCloseRequest));
+            Connect("dragged", this, nameof(OnDragged));
+            CallDeferred(nameof(Reposition));
         }
 
         public virtual void LoadModel(QuestModel questModel)
@@ -31,9 +34,19 @@ namespace GameFeel.DesignTool
 
         }
 
+        private void Reposition()
+        {
+            Offset = Model.NodePosition;
+        }
+
         protected virtual void OnCloseRequest()
         {
             EmitSignal(nameof(CloseRequest), this);
+        }
+
+        private void OnDragged(Vector2 from, Vector2 to)
+        {
+            Model.NodePosition = Offset;
         }
     }
 }

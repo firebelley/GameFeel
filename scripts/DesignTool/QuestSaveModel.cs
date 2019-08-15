@@ -5,8 +5,7 @@ namespace GameFeel.DesignTool
 {
     public class QuestSaveModel
     {
-        public string Id;
-        public string DisplayName;
+        public QuestStartNode.QuestStartModel Start = new QuestStartNode.QuestStartModel();
 
         public List<QuestStageNode.QuestStageModel> Stages = new List<QuestStageNode.QuestStageModel>();
         public List<QuestEventNode.QuestEventModel> Events = new List<QuestEventNode.QuestEventModel>();

@@ -10,6 +10,7 @@ namespace GameFeel.DesignTool
     {
         private GraphEdit _graphEdit;
         private WindowDialog _questEventDialog;
+        private FileDialog _openFileDialog;
         private ResourcePreloader _resourcePreloader;
 
         public override void _Ready()
@@ -18,6 +19,7 @@ namespace GameFeel.DesignTool
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _questEventDialog = GetNode<WindowDialog>("WindowDialog");
+            _openFileDialog = GetNode<FileDialog>("OpenFileDialog");
 
             var itemList = _questEventDialog.GetNode<ItemList>("VBoxContainer/ItemList");
             foreach (var key in GameEventDispatcher.GameEventMapping.Keys)
@@ -31,9 +33,12 @@ namespace GameFeel.DesignTool
             GetNode("VBoxContainer/HBoxContainer/AddStartNode").Connect("pressed", this, nameof(OnAddStartNodePressed));
             GetNode("VBoxContainer/HBoxContainer/AddEventNode").Connect("pressed", this, nameof(OnAddEventNodePressed));
             GetNode("VBoxContainer/HBoxContainer/SaveButton").Connect("pressed", this, nameof(OnSaveButtonPressed));
+            GetNode("VBoxContainer/HBoxContainer/OpenButton").Connect("pressed", this, nameof(OnOpenButtonPressed));
 
             _graphEdit.Connect("connection_request", this, nameof(OnConnectionRequest));
             _graphEdit.Connect("disconnection_request", this, nameof(OnDisconnectRequest));
+
+            _openFileDialog.Connect("file_selected", this, nameof(OnFileSelected));
         }
 
         private QuestEventNode GetQuestEventNodeFromGuid(string guid)
@@ -121,9 +126,9 @@ namespace GameFeel.DesignTool
                 var toPort = (int) connection["to_port"];
 
                 var fromQuestNode = _graphEdit.GetNode(from) as QuestNode;
-                var fromModel = fromQuestNode.GetSaveModel();
+                var fromModel = fromQuestNode.Model;
                 var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
-                var toModel = toQuestNode.GetSaveModel();
+                var toModel = toQuestNode.Model;
 
                 StoreData(saveModel, fromQuestNode);
                 StoreData(saveModel, toQuestNode);
@@ -132,28 +137,90 @@ namespace GameFeel.DesignTool
             }
             var json = JsonConvert.SerializeObject(saveModel);
             var file = new File();
-            file.Open("res://testquest.json", (int) File.ModeFlags.Write);
+            file.Open("res://test.quest", (int) File.ModeFlags.Write);
             file.StoreLine(json);
             file.Close();
         }
 
         private void StoreData(QuestSaveModel saveModel, QuestNode node)
         {
-            var fromModel = node.GetSaveModel();
-
             if (node is QuestStartNode qsn)
             {
-                saveModel.Id = fromModel.Id;
-                saveModel.DisplayName = fromModel.DisplayName;
+                var fromModel = qsn.Model;
+                saveModel.Start.Id = fromModel.Id;
+                saveModel.Start.DisplayName = fromModel.DisplayName;
             }
             else if (node is QuestEventNode qen)
             {
-                saveModel.AddEvent(fromModel as QuestEventNode.QuestEventModel);
+                var fromModel = qen.Model;
+                saveModel.AddEvent((QuestEventNode.QuestEventModel) fromModel);
             }
             else if (node is QuestStageNode qstn)
             {
-                saveModel.AddStage(fromModel as QuestStageNode.QuestStageModel);
+                var fromModel = qstn.Model;
+                saveModel.AddStage((QuestStageNode.QuestStageModel) fromModel);
             }
+        }
+
+        private void Load(string path)
+        {
+            foreach (var node in _graphEdit.GetChildren())
+            {
+                if (node is QuestNode qn)
+                {
+                    qn.QueueFree();
+                }
+            }
+            var file = new File();
+            file.Open(path, (int) File.ModeFlags.Read);
+            var json = file.GetAsText();
+            file.Close();
+            var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
+
+            var idToNodeMappings = new Dictionary<string, QuestNode>();
+            idToNodeMappings.Clear();
+
+            var qsn = _resourcePreloader.InstanceScene<QuestStartNode>();
+            _graphEdit.AddChild(qsn);
+            qsn.LoadModel(saveModel.Start);
+            idToNodeMappings.Add(qsn.Model.Id, qsn);
+
+            foreach (var model in saveModel.Events)
+            {
+                var evt = _resourcePreloader.InstanceScene<QuestEventNode>();
+                _graphEdit.AddChild(evt);
+                evt.LoadModel(model);
+                idToNodeMappings.Add(evt.Model.Id, evt);
+            }
+
+            foreach (var model in saveModel.Stages)
+            {
+                var stage = _resourcePreloader.InstanceScene<QuestStageNode>();
+                _graphEdit.AddChild(stage);
+                stage.LoadModel(model);
+                idToNodeMappings.Add(stage.Model.Id, stage);
+            }
+
+            foreach (var sourceId in saveModel.RightConnections.Keys)
+            {
+                foreach (var toId in saveModel.RightConnections[sourceId])
+                {
+                    var fromNode = idToNodeMappings[sourceId];
+                    var toNode = idToNodeMappings[toId];
+
+                    _graphEdit.ConnectNode(fromNode.GetName(), 0, toNode.GetName(), 0);
+                }
+            }
+        }
+
+        private void OnOpenButtonPressed()
+        {
+            _openFileDialog.PopupCenteredRatio();
+        }
+
+        private void OnFileSelected(string path)
+        {
+            Load(path);
         }
     }
 }

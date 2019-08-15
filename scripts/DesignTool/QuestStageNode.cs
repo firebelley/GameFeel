@@ -13,14 +13,13 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             base._Ready();
+            Model = new QuestStageModel();
+            Model.DisplayName = "stage";
         }
 
-        public override QuestNode.QuestModel GetSaveModel()
+        public override void LoadModel(QuestModel questModel)
         {
-            var saveModel = new QuestStageModel();
-            saveModel.Id = "stage id";
-            saveModel.DisplayName = "stage display name";
-            return saveModel;
+            Model = (QuestStageModel) questModel;
         }
     }
 }

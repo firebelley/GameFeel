@@ -5,10 +5,17 @@ namespace GameFeel.DesignTool
 {
     public class QuestNode : GraphNode
     {
+        public QuestModel Model { get; protected set; } = new QuestModel();
+
         public class QuestModel
         {
             public string Id;
             public string DisplayName;
+
+            public QuestModel()
+            {
+                Id = Guid.NewGuid().ToString();
+            }
         }
 
         [Signal]
@@ -19,9 +26,9 @@ namespace GameFeel.DesignTool
             Connect("close_request", this, nameof(OnCloseRequest));
         }
 
-        public virtual QuestModel GetSaveModel()
+        public virtual void LoadModel(QuestModel questModel)
         {
-            throw new NotImplementedException();
+
         }
 
         protected virtual void OnCloseRequest()

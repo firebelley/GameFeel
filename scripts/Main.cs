@@ -8,6 +8,11 @@ namespace GameFeel
 
         public override void _Ready()
         {
+            File file = new File();
+            if (file.FileExists("res://test.quest"))
+            {
+                GetTree().Quit();
+            }
             RNG.Randomize();
         }
     }

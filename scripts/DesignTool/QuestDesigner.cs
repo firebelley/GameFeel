@@ -8,6 +8,8 @@ namespace GameFeel.DesignTool
 {
     public class QuestDesigner : Control
     {
+        private const string QUEST_PATH = "res://resources/quests/";
+
         private GraphEdit _graphEdit;
         private WindowDialog _questEventDialog;
         private FileDialog _openFileDialog;
@@ -15,7 +17,8 @@ namespace GameFeel.DesignTool
 
         public override void _Ready()
         {
-            GetTree().SetScreenStretch(SceneTree.StretchMode.Disabled, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
+            GetTree().SetScreenStretch(SceneTree.StretchMode.Mode2d, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
+            OS.SetWindowMaximized(true);
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _questEventDialog = GetNode<WindowDialog>("WindowDialog");
@@ -53,12 +56,18 @@ namespace GameFeel.DesignTool
             return null;
         }
 
-        private T AddQuestNode<T>() where T : GraphNode
+        private T AddQuestNode<T>() where T : QuestNode
         {
             var node = _resourcePreloader.InstanceScene<T>();
-            _graphEdit.AddChild(node);
-            node.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
+            AddQuestNode(node);
             return node;
+        }
+
+        private QuestNode AddQuestNode(QuestNode n)
+        {
+            _graphEdit.AddChild(n);
+            n.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
+            return n;
         }
 
         private void OnAddStageNodePressed()
@@ -112,9 +121,7 @@ namespace GameFeel.DesignTool
             var node = GetQuestEventNodeFromGuid(guid);
             if (node != null)
             {
-                _graphEdit.AddChild(node);
-                node.SetTitle(GameEventDispatcher.GameEventMapping[guid].DisplayName);
-                node.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
+                AddQuestNode(node);
             }
             _questEventDialog.Hide();
         }
@@ -148,7 +155,7 @@ namespace GameFeel.DesignTool
             }
             var json = JsonConvert.SerializeObject(saveModel);
             var file = new File();
-            file.Open("res://test.quest", (int) File.ModeFlags.Write);
+            file.Open(QUEST_PATH + "test.quest", (int) File.ModeFlags.Write);
             file.StoreLine(json);
             file.Close();
         }
@@ -197,7 +204,8 @@ namespace GameFeel.DesignTool
 
             foreach (var model in saveModel.Events)
             {
-                var evt = AddQuestNode<QuestEventNode>();
+                var evt = GetQuestEventNodeFromGuid(model.EventId);
+                AddQuestNode(evt);
                 evt.LoadModel(model);
                 idToNodeMappings.Add(evt.Model.Id, evt);
             }

@@ -1,4 +1,5 @@
 using System;
+using GameFeel.Singleton;
 using Godot;
 
 namespace GameFeel.DesignTool
@@ -8,6 +9,7 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             base._Ready();
+            ((QuestEventModel) Model).EventId = GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED;
         }
     }
 }

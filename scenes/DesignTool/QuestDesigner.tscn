@@ -88,5 +88,5 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.quest" )
-current_dir = "C:/Users/Jake/Documents/GitHub/GameFeel"
-current_path = "C:/Users/Jake/Documents/GitHub/GameFeel/"
+current_dir = "C:/Users/Jake/Documents/GitHub/GameFeel/resources/quests"
+current_path = "C:/Users/Jake/Documents/GitHub/GameFeel/resources/quests/"

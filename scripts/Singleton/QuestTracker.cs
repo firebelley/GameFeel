@@ -36,7 +36,11 @@ namespace GameFeel.Singleton
             {
                 var quest = _questScene.Instance() as Quest;
                 Instance.AddChild(quest);
-                quest.SetQuestModel(_quests[questGuid]);
+                quest.Start(_quests[questGuid]);
+            }
+            else
+            {
+                Logger.Error("No quest with id " + questGuid + " exists");
             }
         }
 
@@ -44,7 +48,13 @@ namespace GameFeel.Singleton
         {
             _quests.Clear();
             var dir = new Directory();
-            dir.Open(QUESTS_PATH);
+            var err = dir.Open(QUESTS_PATH);
+            if (err != Error.Ok)
+            {
+                Logger.Error("Could not load quests code " + (int) err);
+                return;
+            }
+
             dir.ListDirBegin();
 
             while (true)
@@ -59,7 +69,6 @@ namespace GameFeel.Singleton
                 {
                     LoadQuest(path);
                 }
-
             }
 
             dir.ListDirEnd();
@@ -85,7 +94,6 @@ namespace GameFeel.Singleton
                     Logger.Error("Quests already has key " + saveModel.Start.Id);
                 }
                 _quests[saveModel.Start.Id] = saveModel;
-                GD.Print(_quests.Count);
             }
             else
             {

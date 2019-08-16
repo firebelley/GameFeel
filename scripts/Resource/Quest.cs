@@ -3,44 +3,103 @@ using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.Resource
 {
     public class Quest : Node
     {
+        [Signal]
+        public delegate void StageStarted();
+
         private QuestSaveModel _questSaveModel;
+        private Dictionary<string, QuestModel> _idToModelMap;
         private List<QuestEventModel> _trackedEvents = new List<QuestEventModel>();
+        private Stack<QuestStageModel> _stageStack = new Stack<QuestStageModel>();
 
         public override void _Ready()
         {
-
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemAdded), this, nameof(CheckInventoryItemAddedCompletion));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
         }
 
-        public void SetQuestModel(QuestSaveModel questSaveModel)
+        public void Start(QuestSaveModel questSaveModel)
         {
             _questSaveModel = questSaveModel;
-            BeginEventListen(_questSaveModel.Events[0]);
+            _idToModelMap = _questSaveModel.IdToModelMap;
+            var start = _questSaveModel.Start;
+
+            if (_questSaveModel.RightConnections.ContainsKey(start.Id))
+            {
+                foreach (var rightConnectionId in _questSaveModel.RightConnections[start.Id])
+                {
+                    var toModel = _idToModelMap[rightConnectionId];
+                    if (toModel is QuestStageModel qsm)
+                    {
+                        StartStage(qsm);
+                        break;
+                    }
+                }
+            }
         }
 
-        private void BeginEventListen(QuestEventModel eventModel)
+        private void StartStage(QuestStageModel questStageModel)
         {
+            ClearTrackedEvents();
+            _stageStack.Push(questStageModel);
+
+            if (_questSaveModel.RightConnections.ContainsKey(questStageModel.Id))
+            {
+                foreach (var rightConnectionId in _questSaveModel.RightConnections[questStageModel.Id])
+                {
+                    var toModel = _idToModelMap[rightConnectionId];
+                    if (toModel is QuestEventModel qem)
+                    {
+                        TrackEvent(qem);
+                    }
+                }
+            }
+            EmitSignal(nameof(StageStarted));
+        }
+
+        private void TrackEvent(QuestEventModel eventModel)
+        {
+            _trackedEvents.Add(eventModel);
             switch (eventModel.EventId)
             {
-                case GameEventDispatcher.ENTITY_KILLED:
-                    break;
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemAdded), this, nameof(OnInventoryItemAdded));
+                    CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.Id);
+                    break;
+                case GameEventDispatcher.ENTITY_KILLED:
+                    CheckEntityKilledCompletion(eventModel.EventId, eventModel.Id);
                     break;
             }
-            _trackedEvents.Add(eventModel);
         }
 
-        private void OnInventoryItemAdded(string eventGuid, string itemId)
+        private void ClearTrackedEvents()
         {
-            // TODO: this won't work if another event looks for the same id but is not the inventory item added event
-            if (_trackedEvents.Any(x => x.EventId == eventGuid && x.ItemId == itemId))
+            _trackedEvents.Clear();
+        }
+
+        private void AttemptAdvance(QuestEventModel questEventModel)
+        {
+            GD.Print("holy moly!");
+        }
+
+        private void CheckInventoryItemAddedCompletion(string eventGuid, string itemId)
+        {
+            var evt = _trackedEvents.Find(x => x.EventId == eventGuid && x.ItemId == itemId);
+            if (evt != null && PlayerInventory.GetItemCount(itemId) == evt.Required)
             {
-                GD.Print("wooo");
+                AttemptAdvance(evt);
+            }
+        }
+
+        private void CheckEntityKilledCompletion(string eventGuid, string entityId)
+        {
+            if (_trackedEvents.Any(x => x.EventId == eventGuid && x.Id == entityId))
+            {
+                GD.Print("entity killed");
             }
         }
     }

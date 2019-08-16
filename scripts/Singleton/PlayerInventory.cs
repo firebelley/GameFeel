@@ -94,6 +94,16 @@ namespace GameFeel.Singleton
             return -1;
         }
 
+        public static int GetItemCount(string itemId)
+        {
+            var idx = FindItemIndex(itemId);
+            if (idx < 0)
+            {
+                return 0;
+            }
+            return Items[idx].Amount;
+        }
+
         private void OnItemAdded(int idx)
         {
             // TODO: remove once signals are resolved

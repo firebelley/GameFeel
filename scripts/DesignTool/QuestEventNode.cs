@@ -5,6 +5,18 @@ namespace GameFeel.DesignTool
 {
     public class QuestEventNode : QuestNode
     {
+        protected new QuestEventModel Model
+        {
+            get
+            {
+                return (QuestEventModel) base.Model;
+            }
+            set
+            {
+                base.Model = value;
+            }
+        }
+
         public override void _Ready()
         {
             base._Ready();

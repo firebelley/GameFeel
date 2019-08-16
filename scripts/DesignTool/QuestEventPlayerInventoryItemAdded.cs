@@ -12,7 +12,7 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             base._Ready();
-            ((QuestEventModel) Model).EventId = GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED;
+            Model.EventId = GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED;
 
             _idLineEdit = GetNode<LineEdit>("VBoxContainer/HBoxContainer/LineEdit");
             _requiredSpinBox = GetNode<SpinBox>("VBoxContainer/HBoxContainer2/SpinBox");
@@ -25,18 +25,18 @@ namespace GameFeel.DesignTool
 
         protected override void UpdateControls()
         {
-            _idLineEdit.Text = ((QuestEventModel) Model).ItemId;
-            _requiredSpinBox.Value = ((QuestEventModel) Model).Required;
+            _idLineEdit.Text = Model.ItemId;
+            _requiredSpinBox.Value = Model.Required;
         }
 
         private void OnIdChanged(string newText)
         {
-            ((QuestEventModel) Model).ItemId = _idLineEdit.Text;
+            Model.ItemId = _idLineEdit.Text;
         }
 
         private void OnRequiredChanged(float value)
         {
-            ((QuestEventModel) Model).Required = (int) value;
+            Model.Required = (int) value;
         }
     }
 }

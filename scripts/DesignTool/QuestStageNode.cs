@@ -8,6 +8,18 @@ namespace GameFeel.DesignTool
         private LineEdit _nameLineEdit;
         private LineEdit _idLineEdit;
 
+        protected new QuestStageModel Model
+        {
+            get
+            {
+                return (QuestStageModel) base.Model;
+            }
+            set
+            {
+                base.Model = value;
+            }
+        }
+
         public override void _Ready()
         {
             base._Ready();
@@ -29,8 +41,8 @@ namespace GameFeel.DesignTool
 
         private void UpdateControls()
         {
-            _nameLineEdit.Text = ((QuestStageModel) Model).DisplayName;
-            _idLineEdit.Text = ((QuestStageModel) Model).Id;
+            _nameLineEdit.Text = Model.DisplayName;
+            _idLineEdit.Text = Model.Id;
         }
 
         private void OnNameChanged(string newText)

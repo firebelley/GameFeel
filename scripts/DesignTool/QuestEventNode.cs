@@ -5,7 +5,7 @@ namespace GameFeel.DesignTool
 {
     public class QuestEventNode : QuestNode
     {
-        protected new QuestEventModel Model
+        public new QuestEventModel Model
         {
             get
             {

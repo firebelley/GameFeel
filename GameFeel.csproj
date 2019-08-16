@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -78,6 +78,7 @@
     <Compile Include="scripts\Component\State\EnemyStateSpawn.cs" />
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
     <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />
+    <Compile Include="scripts\DesignTool\QuestCompleteNode.cs" />
     <Compile Include="scripts\DesignTool\QuestDesigner.cs" />
     <Compile Include="scripts\DesignTool\QuestEventEntityKilled.cs" />
     <Compile Include="scripts\DesignTool\QuestEventNode.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="scripts\Data\Model\QuestEventModel.cs" />
     <Compile Include="scripts\Data\Model\QuestStageModel.cs" />
     <Compile Include="scripts\Data\Model\QuestStartModel.cs" />
+    <Compile Include="scripts\Data\Model\QuestCompleteModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

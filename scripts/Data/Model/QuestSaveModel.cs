@@ -10,6 +10,7 @@ namespace GameFeel.Data.Model
 
         public List<QuestStageModel> Stages = new List<QuestStageModel>();
         public List<QuestEventModel> Events = new List<QuestEventModel>();
+        public List<QuestCompleteModel> Completions = new List<QuestCompleteModel>();
         public Dictionary<string, List<string>> RightConnections = new Dictionary<string, List<string>>();
 
         [JsonIgnore]
@@ -46,6 +47,14 @@ namespace GameFeel.Data.Model
             if (!Stages.Any(x => x.Id == stage.Id))
             {
                 Stages.Add(stage);
+            }
+        }
+
+        public void AddComplete(QuestCompleteModel complete)
+        {
+            if (!Completions.Any(x => x.Id == complete.Id))
+            {
+                Completions.Add(complete);
             }
         }
     }

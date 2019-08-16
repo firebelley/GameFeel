@@ -37,8 +37,9 @@ namespace GameFeel.DesignTool
 
             var nodeItemList = _nodeSelectorDialog.GetNode<ItemList>("VBoxContainer/ItemList");
             nodeItemList.AddItem(nameof(QuestStartNode));
-            nodeItemList.AddItem(nameof(QuestEventNode));
             nodeItemList.AddItem(nameof(QuestStageNode));
+            nodeItemList.AddItem(nameof(QuestEventNode));
+            nodeItemList.AddItem(nameof(QuestCompleteNode));
             nodeItemList.Connect("item_activated", this, nameof(OnNodeSelectorSelected));
 
             GetNode("VBoxContainer/HBoxContainer/AddNode").Connect("pressed", this, nameof(OnAddNodePressed));
@@ -82,18 +83,19 @@ namespace GameFeel.DesignTool
         {
             if (node is QuestStartNode qsn)
             {
-                var fromModel = qsn.Model;
-                saveModel.Start = (QuestStartModel) fromModel;
+                saveModel.Start = qsn.Model;
             }
             else if (node is QuestEventNode qen)
             {
-                var fromModel = qen.Model;
-                saveModel.AddEvent((QuestEventModel) fromModel);
+                saveModel.AddEvent(qen.Model);
             }
             else if (node is QuestStageNode qstn)
             {
-                var fromModel = qstn.Model;
-                saveModel.AddStage((QuestStageModel) fromModel);
+                saveModel.AddStage(qstn.Model);
+            }
+            else if (node is QuestCompleteNode qcn)
+            {
+                saveModel.AddComplete(qcn.Model);
             }
         }
 
@@ -133,6 +135,13 @@ namespace GameFeel.DesignTool
                 var stage = AddQuestNode<QuestStageNode>();
                 stage.LoadModel(model);
                 idToNodeMappings.Add(stage.Model.Id, stage);
+            }
+
+            foreach (var model in saveModel.Completions)
+            {
+                var completion = AddQuestNode<QuestCompleteNode>();
+                completion.LoadModel(model);
+                idToNodeMappings.Add(completion.Model.Id, completion);
             }
 
             foreach (var sourceId in saveModel.RightConnections.Keys)

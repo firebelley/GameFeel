@@ -8,7 +8,7 @@ namespace GameFeel.DesignTool
         private LineEdit _nameLineEdit;
         private LineEdit _idLineEdit;
 
-        protected new QuestStageModel Model
+        public new QuestStageModel Model
         {
             get
             {

@@ -15,16 +15,22 @@ namespace GameFeel.DesignTool
             Connect("close_request", this, nameof(OnCloseRequest));
             Connect("dragged", this, nameof(OnDragged));
             CallDeferred(nameof(Reposition));
+            CallDeferred(nameof(UpdateControls));
         }
 
         public virtual void LoadModel(QuestModel questModel)
         {
-
+            CallDeferred(nameof(UpdateControls));
         }
 
         private void Reposition()
         {
             Offset = Model.NodePosition;
+        }
+
+        protected virtual void UpdateControls()
+        {
+
         }
 
         protected virtual void OnCloseRequest()

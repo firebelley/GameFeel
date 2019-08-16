@@ -27,13 +27,8 @@ namespace GameFeel.DesignTool
 
         public override void LoadModel(QuestModel questModel)
         {
+            base.LoadModel(questModel);
             Model = (QuestEventModel) questModel;
-            UpdateControls();
-        }
-
-        protected virtual void UpdateControls()
-        {
-
         }
 
         private void SetNodeTitle()

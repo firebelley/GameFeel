@@ -19,8 +19,6 @@ namespace GameFeel.DesignTool
 
             _idLineEdit.Connect("text_changed", this, nameof(OnIdChanged));
             _requiredSpinBox.Connect("value_changed", this, nameof(OnRequiredChanged));
-
-            UpdateControls();
         }
 
         protected override void UpdateControls()

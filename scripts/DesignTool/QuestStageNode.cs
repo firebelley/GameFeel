@@ -29,17 +29,15 @@ namespace GameFeel.DesignTool
             _idLineEdit = GetNode<LineEdit>("VBoxContainer/HBoxContainer2/LineEdit");
             _nameLineEdit.Connect("text_changed", this, nameof(OnNameChanged));
             _idLineEdit.Connect("text_changed", this, nameof(OnIdChanged));
-
-            UpdateControls();
         }
 
         public override void LoadModel(QuestModel questModel)
         {
+            base.LoadModel(questModel);
             Model = (QuestStageModel) questModel;
-            UpdateControls();
         }
 
-        private void UpdateControls()
+        protected override void UpdateControls()
         {
             _nameLineEdit.Text = Model.DisplayName;
             _idLineEdit.Text = Model.Id;

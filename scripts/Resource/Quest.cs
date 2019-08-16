@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameFeel.DesignTool;
+using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
 
@@ -10,7 +9,7 @@ namespace GameFeel.Resource
     public class Quest : Node
     {
         private QuestSaveModel _questSaveModel;
-        private List<QuestEventNode.QuestEventModel> _trackedEvents = new List<QuestEventNode.QuestEventModel>();
+        private List<QuestEventModel> _trackedEvents = new List<QuestEventModel>();
 
         public override void _Ready()
         {
@@ -23,7 +22,7 @@ namespace GameFeel.Resource
             BeginEventListen(_questSaveModel.Events[0]);
         }
 
-        private void BeginEventListen(QuestEventNode.QuestEventModel eventModel)
+        private void BeginEventListen(QuestEventModel eventModel)
         {
             switch (eventModel.EventId)
             {

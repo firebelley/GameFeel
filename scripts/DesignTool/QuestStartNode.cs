@@ -1,3 +1,4 @@
+using GameFeel.Data.Model;
 using Godot;
 
 namespace GameFeel.DesignTool
@@ -6,11 +7,6 @@ namespace GameFeel.DesignTool
     {
         private LineEdit _nameLineEdit;
         private LineEdit _idLineEdit;
-
-        public class QuestStartModel : QuestNode.QuestModel
-        {
-
-        }
 
         public override void _Ready()
         {

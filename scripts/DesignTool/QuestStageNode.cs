@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using GameFeel.Data.Model;
 using Godot;
 
 namespace GameFeel.DesignTool
@@ -7,11 +7,6 @@ namespace GameFeel.DesignTool
     {
         private LineEdit _nameLineEdit;
         private LineEdit _idLineEdit;
-
-        public class QuestStageModel : QuestNode.QuestModel
-        {
-
-        }
 
         public override void _Ready()
         {

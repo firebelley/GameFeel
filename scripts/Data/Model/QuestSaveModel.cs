@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameFeel.DesignTool
+namespace GameFeel.Data.Model
 {
     public class QuestSaveModel
     {
-        public QuestStartNode.QuestStartModel Start = new QuestStartNode.QuestStartModel();
+        public QuestStartModel Start = new QuestStartModel();
 
-        public List<QuestStageNode.QuestStageModel> Stages = new List<QuestStageNode.QuestStageModel>();
-        public List<QuestEventNode.QuestEventModel> Events = new List<QuestEventNode.QuestEventModel>();
+        public List<QuestStageModel> Stages = new List<QuestStageModel>();
+        public List<QuestEventModel> Events = new List<QuestEventModel>();
         public Dictionary<string, List<string>> RightConnections = new Dictionary<string, List<string>>();
 
         public void AddRightConnection(string fromId, string toId)
@@ -20,7 +20,7 @@ namespace GameFeel.DesignTool
             RightConnections[fromId].Add(toId);
         }
 
-        public void AddEvent(QuestEventNode.QuestEventModel evt)
+        public void AddEvent(QuestEventModel evt)
         {
             if (!Events.Any(x => x.Id == evt.Id))
             {
@@ -28,7 +28,7 @@ namespace GameFeel.DesignTool
             }
         }
 
-        public void AddStage(QuestStageNode.QuestStageModel stage)
+        public void AddStage(QuestStageModel stage)
         {
             if (!Stages.Any(x => x.Id == stage.Id))
             {

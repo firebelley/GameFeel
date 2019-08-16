@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -165,17 +166,17 @@ namespace GameFeel.DesignTool
             if (node is QuestStartNode qsn)
             {
                 var fromModel = qsn.Model;
-                saveModel.Start = (QuestStartNode.QuestStartModel) fromModel;
+                saveModel.Start = (QuestStartModel) fromModel;
             }
             else if (node is QuestEventNode qen)
             {
                 var fromModel = qen.Model;
-                saveModel.AddEvent((QuestEventNode.QuestEventModel) fromModel);
+                saveModel.AddEvent((QuestEventModel) fromModel);
             }
             else if (node is QuestStageNode qstn)
             {
                 var fromModel = qstn.Model;
-                saveModel.AddStage((QuestStageNode.QuestStageModel) fromModel);
+                saveModel.AddStage((QuestStageModel) fromModel);
             }
         }
 

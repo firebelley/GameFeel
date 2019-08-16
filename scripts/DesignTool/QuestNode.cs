@@ -1,4 +1,4 @@
-using System;
+using GameFeel.Data.Model;
 using Godot;
 
 namespace GameFeel.DesignTool
@@ -6,18 +6,6 @@ namespace GameFeel.DesignTool
     public class QuestNode : GraphNode
     {
         public QuestModel Model { get; protected set; } = new QuestModel();
-
-        public class QuestModel
-        {
-            public string Id;
-            public string DisplayName;
-            public Vector2 NodePosition;
-
-            public QuestModel()
-            {
-                Id = Guid.NewGuid().ToString();
-            }
-        }
 
         [Signal]
         public delegate void CloseRequest(QuestNode questNode);

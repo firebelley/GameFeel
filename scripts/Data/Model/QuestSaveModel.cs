@@ -8,9 +8,9 @@ namespace GameFeel.Data.Model
     {
         public QuestStartModel Start = new QuestStartModel();
 
-        public List<QuestStageModel> Stages = new List<QuestStageModel>();
-        public List<QuestEventModel> Events = new List<QuestEventModel>();
-        public List<QuestCompleteModel> Completions = new List<QuestCompleteModel>();
+        public HashSet<QuestStageModel> Stages = new HashSet<QuestStageModel>();
+        public HashSet<QuestEventModel> Events = new HashSet<QuestEventModel>();
+        public HashSet<QuestCompleteModel> Completions = new HashSet<QuestCompleteModel>();
         public Dictionary<string, List<string>> RightConnections = new Dictionary<string, List<string>>();
 
         [JsonIgnore]
@@ -19,8 +19,11 @@ namespace GameFeel.Data.Model
             get
             {
                 var dict = new Dictionary<string, QuestModel>();
-                Stages.ForEach(x => dict.Add(x.Id, x));
-                Events.ForEach(x => dict.Add(x.Id, x));
+                List<QuestModel> questModels = new List<QuestModel>();
+                questModels.AddRange(Stages);
+                questModels.AddRange(Events);
+                questModels.AddRange(Completions);
+                questModels.ForEach(x => dict.Add(x.Id, x));
                 return dict;
             }
         }
@@ -32,30 +35,6 @@ namespace GameFeel.Data.Model
                 RightConnections.Add(fromId, new List<string>());
             }
             RightConnections[fromId].Add(toId);
-        }
-
-        public void AddEvent(QuestEventModel evt)
-        {
-            if (!Events.Any(x => x.Id == evt.Id))
-            {
-                Events.Add(evt);
-            }
-        }
-
-        public void AddStage(QuestStageModel stage)
-        {
-            if (!Stages.Any(x => x.Id == stage.Id))
-            {
-                Stages.Add(stage);
-            }
-        }
-
-        public void AddComplete(QuestCompleteModel complete)
-        {
-            if (!Completions.Any(x => x.Id == complete.Id))
-            {
-                Completions.Add(complete);
-            }
         }
     }
 }

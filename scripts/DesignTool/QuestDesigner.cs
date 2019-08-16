@@ -87,15 +87,15 @@ namespace GameFeel.DesignTool
             }
             else if (node is QuestEventNode qen)
             {
-                saveModel.AddEvent(qen.Model);
+                saveModel.Events.Add(qen.Model);
             }
             else if (node is QuestStageNode qstn)
             {
-                saveModel.AddStage(qstn.Model);
+                saveModel.Stages.Add(qstn.Model);
             }
             else if (node is QuestCompleteNode qcn)
             {
-                saveModel.AddComplete(qcn.Model);
+                saveModel.Completions.Add(qcn.Model);
             }
         }
 

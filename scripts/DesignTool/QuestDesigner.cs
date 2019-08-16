@@ -9,11 +9,10 @@ namespace GameFeel.DesignTool
 {
     public class QuestDesigner : Control
     {
-        private const string QUEST_PATH = "res://resources/quests/";
-
         private GraphEdit _graphEdit;
         private WindowDialog _questEventDialog;
         private FileDialog _openFileDialog;
+        private FileDialog _saveFileDialog;
         private ResourcePreloader _resourcePreloader;
 
         public override void _Ready()
@@ -24,6 +23,7 @@ namespace GameFeel.DesignTool
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _questEventDialog = GetNode<WindowDialog>("WindowDialog");
             _openFileDialog = GetNode<FileDialog>("OpenFileDialog");
+            _saveFileDialog = GetNode<FileDialog>("SaveFileDialog");
 
             var itemList = _questEventDialog.GetNode<ItemList>("VBoxContainer/ItemList");
             foreach (var key in GameEventDispatcher.GameEventMapping.Keys)
@@ -43,6 +43,7 @@ namespace GameFeel.DesignTool
             _graphEdit.Connect("disconnection_request", this, nameof(OnDisconnectRequest));
 
             _openFileDialog.Connect("file_selected", this, nameof(OnFileSelected));
+            _saveFileDialog.Connect("file_selected", this, nameof(OnSaveFileSelected));
         }
 
         private QuestEventNode GetQuestEventNodeFromGuid(string guid)
@@ -69,96 +70,6 @@ namespace GameFeel.DesignTool
             _graphEdit.AddChild(n);
             n.Connect(nameof(QuestNode.CloseRequest), this, nameof(OnCloseRequest));
             return n;
-        }
-
-        private void OnAddStageNodePressed()
-        {
-            AddQuestNode<QuestStageNode>();
-        }
-
-        private void OnAddStartNodePressed()
-        {
-            AddQuestNode<QuestStartNode>();
-        }
-
-        private void OnAddEventNodePressed()
-        {
-            _questEventDialog.PopupCentered();
-        }
-
-        private void OnConnectionRequest(string from, int fromPort, string to, int toPort)
-        {
-            _graphEdit.ConnectNode(from, fromPort, to, toPort);
-        }
-
-        private void OnDisconnectRequest(string from, int fromPort, string to, int toPort)
-        {
-            _graphEdit.DisconnectNode(from, fromPort, to, toPort);
-        }
-
-        private void OnCloseRequest(QuestNode questNode)
-        {
-            foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
-            {
-                var from = (string) connection["from"];
-                var to = (string) connection["to"];
-                var fromPort = (int) connection["from_port"];
-                var toPort = (int) connection["to_port"];
-                if (from == questNode.GetName() || to == questNode.GetName())
-                {
-                    if (_graphEdit.IsNodeConnected(from, fromPort, to, toPort))
-                    {
-                        _graphEdit.DisconnectNode(from, fromPort, to, toPort);
-                    }
-                }
-            }
-            questNode.QueueFree();
-        }
-
-        private void OnQuestEventItemActivated(int idx)
-        {
-            var keylist = new List<string>(GameEventDispatcher.GameEventMapping.Keys);
-            var guid = keylist[idx];
-            var node = GetQuestEventNodeFromGuid(guid);
-            if (node != null)
-            {
-                AddQuestNode(node);
-            }
-            _questEventDialog.Hide();
-        }
-
-        private void OnSaveButtonPressed()
-        {
-            var saveModel = new QuestSaveModel();
-            // save all node data
-            foreach (var node in _graphEdit.GetChildren())
-            {
-                if (node is QuestNode qn)
-                {
-                    StoreData(saveModel, qn);
-                }
-            }
-
-            // establish connections
-            foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
-            {
-                var from = (string) connection["from"];
-                var to = (string) connection["to"];
-                var fromPort = (int) connection["from_port"];
-                var toPort = (int) connection["to_port"];
-
-                var fromQuestNode = _graphEdit.GetNode(from) as QuestNode;
-                var fromModel = fromQuestNode.Model;
-                var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
-                var toModel = toQuestNode.Model;
-
-                saveModel.AddRightConnection(fromModel.Id, toModel.Id);
-            }
-            var json = JsonConvert.SerializeObject(saveModel);
-            var file = new File();
-            file.OpenCompressed(QUEST_PATH + "test.quest", (int) File.ModeFlags.Write, (int) File.CompressionMode.Gzip);
-            file.StoreLine(json);
-            file.Close();
         }
 
         private void StoreData(QuestSaveModel saveModel, QuestNode node)
@@ -228,6 +139,109 @@ namespace GameFeel.DesignTool
                     _graphEdit.ConnectNode(fromNode.GetName(), 0, toNode.GetName(), 0);
                 }
             }
+            InvalidateFileDialogs();
+        }
+
+        private void Save(string path)
+        {
+            var saveModel = new QuestSaveModel();
+            // save all node data
+            foreach (var node in _graphEdit.GetChildren())
+            {
+                if (node is QuestNode qn)
+                {
+                    StoreData(saveModel, qn);
+                }
+            }
+
+            // establish connections
+            foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
+            {
+                var from = (string) connection["from"];
+                var to = (string) connection["to"];
+                var fromPort = (int) connection["from_port"];
+                var toPort = (int) connection["to_port"];
+
+                var fromQuestNode = _graphEdit.GetNode(from) as QuestNode;
+                var fromModel = fromQuestNode.Model;
+                var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
+                var toModel = toQuestNode.Model;
+
+                saveModel.AddRightConnection(fromModel.Id, toModel.Id);
+            }
+            var json = JsonConvert.SerializeObject(saveModel);
+            var file = new File();
+            file.OpenCompressed(path, (int) File.ModeFlags.Write, (int) File.CompressionMode.Gzip);
+            file.StoreLine(json);
+            file.Close();
+            InvalidateFileDialogs();
+        }
+
+        private void InvalidateFileDialogs()
+        {
+            _saveFileDialog.Invalidate();
+            _openFileDialog.Invalidate();
+        }
+
+        private void OnAddStageNodePressed()
+        {
+            AddQuestNode<QuestStageNode>();
+        }
+
+        private void OnAddStartNodePressed()
+        {
+            AddQuestNode<QuestStartNode>();
+        }
+
+        private void OnAddEventNodePressed()
+        {
+            _questEventDialog.PopupCentered();
+        }
+
+        private void OnConnectionRequest(string from, int fromPort, string to, int toPort)
+        {
+            _graphEdit.ConnectNode(from, fromPort, to, toPort);
+        }
+
+        private void OnDisconnectRequest(string from, int fromPort, string to, int toPort)
+        {
+            _graphEdit.DisconnectNode(from, fromPort, to, toPort);
+        }
+
+        private void OnCloseRequest(QuestNode questNode)
+        {
+            foreach (Godot.Collections.Dictionary connection in _graphEdit.GetConnectionList())
+            {
+                var from = (string) connection["from"];
+                var to = (string) connection["to"];
+                var fromPort = (int) connection["from_port"];
+                var toPort = (int) connection["to_port"];
+                if (from == questNode.GetName() || to == questNode.GetName())
+                {
+                    if (_graphEdit.IsNodeConnected(from, fromPort, to, toPort))
+                    {
+                        _graphEdit.DisconnectNode(from, fromPort, to, toPort);
+                    }
+                }
+            }
+            questNode.QueueFree();
+        }
+
+        private void OnQuestEventItemActivated(int idx)
+        {
+            var keylist = new List<string>(GameEventDispatcher.GameEventMapping.Keys);
+            var guid = keylist[idx];
+            var node = GetQuestEventNodeFromGuid(guid);
+            if (node != null)
+            {
+                AddQuestNode(node);
+            }
+            _questEventDialog.Hide();
+        }
+
+        private void OnSaveButtonPressed()
+        {
+            _saveFileDialog.PopupCenteredRatio();
         }
 
         private void OnOpenButtonPressed()
@@ -238,6 +252,11 @@ namespace GameFeel.DesignTool
         private void OnFileSelected(string path)
         {
             Load(path);
+        }
+
+        private void OnSaveFileSelected(string path)
+        {
+            Save(path);
         }
     }
 }

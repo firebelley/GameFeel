@@ -80,7 +80,11 @@ namespace GameFeel.Singleton
             var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
             if (saveModel != null)
             {
-                _quests.Add(saveModel.Start.Id, saveModel);
+                if (_quests.ContainsKey(saveModel.Start.Id))
+                {
+                    Logger.Error("Quests already has key " + saveModel.Start.Id);
+                }
+                _quests[saveModel.Start.Id] = saveModel;
                 GD.Print(_quests.Count);
             }
             else

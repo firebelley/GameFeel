@@ -17,6 +17,8 @@ _global_script_class_icons={
 
 config/name="GameFeel"
 run/main_scene="res://scenes/Main.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="GameFeel"
 config/icon="res://icon.png"
 
 [autoload]
@@ -121,6 +123,10 @@ deselect={
 2d_physics/layer_5="ENEMY_PATHFINDING"
 2d_physics/layer_6="PLAYER_PATHFINDING"
 2d_physics/layer_20="MOUSE"
+
+[logging]
+
+file_logging/enable_file_logging=true
 
 [physics]
 

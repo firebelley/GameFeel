@@ -86,7 +86,15 @@ margin_bottom = 131.5
 popup_exclusive = true
 window_title = "Open a File"
 mode = 0
-access = 2
 filters = PoolStringArray( "*.quest" )
-current_dir = "C:/Users/Jake/Documents/GitHub/GameFeel/resources/quests"
-current_path = "C:/Users/Jake/Documents/GitHub/GameFeel/resources/quests/"
+current_dir = "res://resources/quests"
+current_path = "res://resources/quests/"
+
+[node name="SaveFileDialog" type="FileDialog" parent="."]
+margin_right = 275.0
+margin_bottom = 130.0
+popup_exclusive = true
+window_title = "Save Quest"
+filters = PoolStringArray( "*.quest" )
+current_dir = "res://resources/quests"
+current_path = "res://resources/quests/"

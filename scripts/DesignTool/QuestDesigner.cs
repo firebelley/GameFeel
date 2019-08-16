@@ -156,7 +156,7 @@ namespace GameFeel.DesignTool
             }
             var json = JsonConvert.SerializeObject(saveModel);
             var file = new File();
-            file.Open(QUEST_PATH + "test.quest", (int) File.ModeFlags.Write);
+            file.OpenCompressed(QUEST_PATH + "test.quest", (int) File.ModeFlags.Write, (int) File.CompressionMode.Gzip);
             file.StoreLine(json);
             file.Close();
         }
@@ -191,7 +191,7 @@ namespace GameFeel.DesignTool
                 }
             }
             var file = new File();
-            file.Open(path, (int) File.ModeFlags.Read);
+            file.OpenCompressed(path, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
             var json = file.GetAsText();
             file.Close();
             var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);

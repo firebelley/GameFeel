@@ -68,7 +68,7 @@ namespace GameFeel.Singleton
         private void LoadQuest(string fileName)
         {
             var file = new File();
-            var err = file.Open(QUESTS_PATH + fileName, (int) File.ModeFlags.Read);
+            var err = file.OpenCompressed(QUESTS_PATH + fileName, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
             if (err != Error.Ok)
             {
                 Logger.Error("Could not load quest " + fileName + " error code " + err);

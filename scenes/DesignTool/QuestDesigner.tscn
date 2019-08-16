@@ -26,32 +26,20 @@ anchor_bottom = 1.0
 margin_right = 1280.0
 margin_bottom = 20.0
 
-[node name="AddStartNode" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_right = 113.0
+[node name="AddNode" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 75.0
 margin_bottom = 20.0
-text = "Add Quest Start"
-
-[node name="AddStageNode" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 117.0
-margin_right = 235.0
-margin_bottom = 20.0
-text = "Add Quest Stage"
-
-[node name="AddEventNode" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 239.0
-margin_right = 358.0
-margin_bottom = 20.0
-text = "Add Quest Event"
+text = "Add Node"
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 362.0
-margin_right = 403.0
+margin_left = 79.0
+margin_right = 120.0
 margin_bottom = 20.0
 text = "Save"
 
 [node name="OpenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 407.0
-margin_right = 454.0
+margin_left = 124.0
+margin_right = 171.0
 margin_bottom = 20.0
 text = "Open"
 
@@ -63,7 +51,7 @@ size_flags_vertical = 3
 right_disconnects = true
 scroll_offset = Vector2( -358, -16 )
 
-[node name="WindowDialog" type="WindowDialog" parent="."]
+[node name="EventSelectorDialog" type="WindowDialog" parent="."]
 editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -71,11 +59,27 @@ rect_min_size = Vector2( 500, 500 )
 popup_exclusive = true
 window_title = "Quest Event Select"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowDialog"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EventSelectorDialog"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="ItemList" type="ItemList" parent="WindowDialog/VBoxContainer"]
+[node name="ItemList" type="ItemList" parent="EventSelectorDialog/VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_vertical = 3
+
+[node name="NodeSelectorDialog" type="WindowDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 500, 500 )
+popup_exclusive = true
+window_title = "Quest Event Select"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NodeSelectorDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ItemList" type="ItemList" parent="NodeSelectorDialog/VBoxContainer"]
 margin_right = 1280.0
 margin_bottom = 720.0
 size_flags_vertical = 3

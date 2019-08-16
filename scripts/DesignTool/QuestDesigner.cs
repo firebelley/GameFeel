@@ -10,7 +10,8 @@ namespace GameFeel.DesignTool
     public class QuestDesigner : Control
     {
         private GraphEdit _graphEdit;
-        private WindowDialog _questEventDialog;
+        private WindowDialog _eventSelectorDialog;
+        private WindowDialog _nodeSelectorDialog;
         private FileDialog _openFileDialog;
         private FileDialog _saveFileDialog;
         private ResourcePreloader _resourcePreloader;
@@ -21,21 +22,26 @@ namespace GameFeel.DesignTool
             OS.SetWindowMaximized(true);
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
-            _questEventDialog = GetNode<WindowDialog>("WindowDialog");
+            _eventSelectorDialog = GetNode<WindowDialog>("EventSelectorDialog");
+            _nodeSelectorDialog = GetNode<WindowDialog>("NodeSelectorDialog");
             _openFileDialog = GetNode<FileDialog>("OpenFileDialog");
             _saveFileDialog = GetNode<FileDialog>("SaveFileDialog");
 
-            var itemList = _questEventDialog.GetNode<ItemList>("VBoxContainer/ItemList");
+            var eventItemList = _eventSelectorDialog.GetNode<ItemList>("VBoxContainer/ItemList");
             foreach (var key in GameEventDispatcher.GameEventMapping.Keys)
             {
                 var evt = GameEventDispatcher.GameEventMapping[key];
-                itemList.AddItem(evt.DisplayName);
+                eventItemList.AddItem(evt.DisplayName);
             }
-            itemList.Connect("item_activated", this, nameof(OnQuestEventItemActivated));
+            eventItemList.Connect("item_activated", this, nameof(OnQuestEventItemActivated));
 
-            GetNode("VBoxContainer/HBoxContainer/AddStageNode").Connect("pressed", this, nameof(OnAddStageNodePressed));
-            GetNode("VBoxContainer/HBoxContainer/AddStartNode").Connect("pressed", this, nameof(OnAddStartNodePressed));
-            GetNode("VBoxContainer/HBoxContainer/AddEventNode").Connect("pressed", this, nameof(OnAddEventNodePressed));
+            var nodeItemList = _nodeSelectorDialog.GetNode<ItemList>("VBoxContainer/ItemList");
+            nodeItemList.AddItem(nameof(QuestStartNode));
+            nodeItemList.AddItem(nameof(QuestEventNode));
+            nodeItemList.AddItem(nameof(QuestStageNode));
+            nodeItemList.Connect("item_activated", this, nameof(OnNodeSelectorSelected));
+
+            GetNode("VBoxContainer/HBoxContainer/AddNode").Connect("pressed", this, nameof(OnAddNodePressed));
             GetNode("VBoxContainer/HBoxContainer/SaveButton").Connect("pressed", this, nameof(OnSaveButtonPressed));
             GetNode("VBoxContainer/HBoxContainer/OpenButton").Connect("pressed", this, nameof(OnOpenButtonPressed));
 
@@ -183,19 +189,9 @@ namespace GameFeel.DesignTool
             _openFileDialog.Invalidate();
         }
 
-        private void OnAddStageNodePressed()
+        private void OnAddNodePressed()
         {
-            AddQuestNode<QuestStageNode>();
-        }
-
-        private void OnAddStartNodePressed()
-        {
-            AddQuestNode<QuestStartNode>();
-        }
-
-        private void OnAddEventNodePressed()
-        {
-            _questEventDialog.PopupCentered();
+            _nodeSelectorDialog.PopupCenteredRatio();
         }
 
         private void OnConnectionRequest(string from, int fromPort, string to, int toPort)
@@ -236,7 +232,7 @@ namespace GameFeel.DesignTool
             {
                 AddQuestNode(node);
             }
-            _questEventDialog.Hide();
+            _eventSelectorDialog.Hide();
         }
 
         private void OnSaveButtonPressed()
@@ -257,6 +253,19 @@ namespace GameFeel.DesignTool
         private void OnSaveFileSelected(string path)
         {
             Save(path);
+        }
+
+        private void OnNodeSelectorSelected(int idx)
+        {
+            _nodeSelectorDialog.Hide();
+            var nodeName = _nodeSelectorDialog.GetNode<ItemList>("VBoxContainer/ItemList").GetItemText(idx);
+            if (nodeName == nameof(QuestEventNode))
+            {
+                _eventSelectorDialog.PopupCentered();
+                return;
+            }
+            var node = _resourcePreloader.InstanceScene<QuestNode>(nodeName);
+            AddQuestNode(node);
         }
     }
 }

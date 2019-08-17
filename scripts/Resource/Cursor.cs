@@ -16,10 +16,10 @@ namespace GameFeel.Resource
         {
             _instance = this;
             Input.SetMouseMode(Input.MouseMode.Hidden);
-            _cursorRoot = GetNode<Node2D>("Cursor");
-            _primary = GetNode<Sprite>("Cursor/PrimarySprite");
-            _secondary = GetNode<Sprite>("Cursor/SecondarySprite");
-            _animationPlayer = GetNode<AnimationPlayer>("Cursor/AnimationPlayer");
+            _cursorRoot = GetNode<Node2D>("Scaler/Cursor");
+            _primary = GetNode<Sprite>("Scaler/Cursor/PrimarySprite");
+            _secondary = GetNode<Sprite>("Scaler/Cursor/SecondarySprite");
+            _animationPlayer = GetNode<AnimationPlayer>("Scaler/Cursor/AnimationPlayer");
         }
 
         public override void _Process(float delta)
@@ -37,6 +37,12 @@ namespace GameFeel.Resource
             _instance._secondary.Texture = texture;
             _instance._secondary.Modulate = new Color(1f, 1f, 1f, .75f);
             _instance._primary.Visible = texture == null;
+        }
+
+        public static Vector2 GetAdjustedGlobalMousePosition(Node2D n)
+        {
+            var mousePos = n.GetTree().GetRoot().GetMousePosition() * .5f;
+            return n.GetCanvasTransform().AffineInverse().Xform(mousePos);
         }
     }
 }

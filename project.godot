@@ -29,11 +29,11 @@ QuestTracker="*res://scripts/Singleton/QuestTracker.cs"
 
 [display]
 
-window/size/width=320
-window/size/height=180
+window/size/width=640
+window/size/height=360
 window/size/test_width=1920
 window/size/test_height=1080
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [gui]

@@ -1,4 +1,5 @@
 using GameFeel.Component;
+using GameFeel.Resource;
 using Godot;
 using GodotTools.Extension;
 
@@ -128,7 +129,7 @@ namespace GameFeel.GameObject
         {
             var centerPosition = new Vector2(0, _weaponHeight);
             var globalCenterPosition = GlobalPosition + centerPosition;
-            var direction = (GetGlobalMousePosition() - globalCenterPosition).Normalized();
+            var direction = (Cursor.GetAdjustedGlobalMousePosition(this) - globalCenterPosition).Normalized();
             _weaponPosition2d.GlobalPosition = globalCenterPosition + _weaponRadius * direction;
             _weaponPosition2d.Rotation = direction.Angle();
 

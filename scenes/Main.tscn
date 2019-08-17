@@ -27,8 +27,6 @@ audio_listener_enable_2d = true
 physics_object_picking = true
 gui_snap_controls_to_pixels = false
 
-[node name="InputTransformer" type="Node2D" parent="ViewportContainer/Viewport"]
-
 [node name="TestZone" parent="ViewportContainer/Viewport" instance=ExtResource( 2 )]
 
 [node name="Cursor" parent="." instance=ExtResource( 3 )]

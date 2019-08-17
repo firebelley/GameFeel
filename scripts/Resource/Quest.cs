@@ -14,8 +14,9 @@ namespace GameFeel.Resource
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
-        private List<QuestEventModel> _trackedEvents = new List<QuestEventModel>();
         private Stack<QuestStageModel> _stageStack = new Stack<QuestStageModel>();
+        private HashSet<QuestModel> _activeModels = new HashSet<QuestModel>();
+        private HashSet<QuestModel> _oldModels = new HashSet<QuestModel>();
 
         public override void _Ready()
         {
@@ -27,44 +28,45 @@ namespace GameFeel.Resource
         {
             _questSaveModel = questSaveModel;
             _idToModelMap = _questSaveModel.IdToModelMap;
-            var start = _questSaveModel.Start;
+            Activate(questSaveModel.Start);
+        }
 
-            if (_questSaveModel.RightConnections.ContainsKey(start.Id))
+        private void Activate(QuestModel model)
+        {
+            _activeModels.Add(model);
+            if (model is QuestStartModel qsm)
             {
-                foreach (var rightConnectionId in _questSaveModel.RightConnections[start.Id])
+                AdvanceFromModel(qsm);
+            }
+            else if (model is QuestStageModel qstm)
+            {
+                _stageStack.Push(qstm);
+                AdvanceFromModel(qstm);
+                EmitSignal(nameof(StageStarted));
+            }
+            else if (model is QuestEventModel qem)
+            {
+                CheckEventCompletion(qem);
+            }
+        }
+
+        private void AdvanceFromModel(QuestModel model)
+        {
+            _oldModels.Add(model);
+            _activeModels.Remove(model);
+
+            if (_questSaveModel.RightConnections.ContainsKey(model.Id))
+            {
+                foreach (var rightConnectionId in _questSaveModel.RightConnections[model.Id])
                 {
                     var toModel = _idToModelMap[rightConnectionId];
-                    if (toModel is QuestStageModel qsm)
-                    {
-                        StartStage(qsm);
-                        break;
-                    }
+                    Activate(toModel);
                 }
             }
         }
 
-        private void StartStage(QuestStageModel questStageModel)
+        private void CheckEventCompletion(QuestEventModel eventModel)
         {
-            ClearTrackedEvents();
-            _stageStack.Push(questStageModel);
-
-            if (_questSaveModel.RightConnections.ContainsKey(questStageModel.Id))
-            {
-                foreach (var rightConnectionId in _questSaveModel.RightConnections[questStageModel.Id])
-                {
-                    var toModel = _idToModelMap[rightConnectionId];
-                    if (toModel is QuestEventModel qem)
-                    {
-                        TrackEvent(qem);
-                    }
-                }
-            }
-            EmitSignal(nameof(StageStarted));
-        }
-
-        private void TrackEvent(QuestEventModel eventModel)
-        {
-            _trackedEvents.Add(eventModel);
             switch (eventModel.EventId)
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
@@ -76,30 +78,21 @@ namespace GameFeel.Resource
             }
         }
 
-        private void ClearTrackedEvents()
-        {
-            _trackedEvents.Clear();
-        }
-
-        private void AttemptAdvance(QuestEventModel questEventModel)
-        {
-            GD.Print("holy moly!");
-        }
-
         private void CheckInventoryItemAddedCompletion(string eventGuid, string itemId)
         {
-            var evt = _trackedEvents.Find(x => x.EventId == eventGuid && x.ItemId == itemId);
+            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == itemId).Select(x => x as QuestEventModel).FirstOrDefault();
             if (evt != null && PlayerInventory.GetItemCount(itemId) == evt.Required)
             {
-                AttemptAdvance(evt);
+                AdvanceFromModel(evt);
             }
         }
 
         private void CheckEntityKilledCompletion(string eventGuid, string entityId)
         {
-            if (_trackedEvents.Any(x => x.EventId == eventGuid && x.Id == entityId))
+            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == entityId).Select(x => x as QuestEventModel).FirstOrDefault();
+            if (evt != null)
             {
-                GD.Print("entity killed");
+                // TODO: track the kills somehow
             }
         }
     }

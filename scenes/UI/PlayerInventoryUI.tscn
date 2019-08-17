@@ -56,10 +56,10 @@ mouse_filter = 1
 theme = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_left = 230.0
-margin_top = 133.0
-margin_right = 312.0
-margin_bottom = 172.0
+margin_left = 550.0
+margin_top = 313.0
+margin_right = 632.0
+margin_bottom = 352.0
 mouse_filter = 1
 size_flags_horizontal = 8
 size_flags_vertical = 8

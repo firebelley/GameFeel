@@ -4,7 +4,6 @@
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=2]
 [ext_resource path="res://assets/art/ui/ui-widgets.png" type="Texture" id=3]
 
-
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 3 )
 region_rect = Rect2( 53, 6, 6, 5 )
@@ -152,9 +151,9 @@ text = "15/15"
 align = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer"]
-margin_left = 212.0
+margin_left = 532.0
 margin_top = 8.0
-margin_right = 312.0
+margin_right = 632.0
 margin_bottom = 25.0
 mouse_filter = 2
 size_flags_horizontal = 8

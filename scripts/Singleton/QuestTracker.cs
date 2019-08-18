@@ -14,7 +14,7 @@ namespace GameFeel.Singleton
         private const string QUEST_NODE_PATH = "res://scenes/Resource/Quest.tscn";
 
         [Signal]
-        public delegate void QuestStarted(string questId);
+        public delegate void QuestAdded(Quest quest);
 
         public static QuestTracker Instance { get; private set; }
 
@@ -27,7 +27,7 @@ namespace GameFeel.Singleton
             Instance = this;
             _questScene = GD.Load(QUEST_NODE_PATH) as PackedScene;
             LoadQuests();
-            StartQuest("388998cb-c2c9-43ae-9a5f-de1c450fef5d");
+            CallDeferred(nameof(StartQuest), "388998cb-c2c9-43ae-9a5f-de1c450fef5d");
         }
 
         public static void StartQuest(string questGuid)
@@ -36,6 +36,7 @@ namespace GameFeel.Singleton
             {
                 var quest = _questScene.Instance() as Quest;
                 Instance.AddChild(quest);
+                Instance.EmitSignal(nameof(QuestAdded), quest);
                 quest.Start(_quests[questGuid]);
             }
             else

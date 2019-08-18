@@ -15,11 +15,6 @@ namespace GameFeel
             _gameViewport = GetNode<Viewport>("ViewportContainer/Viewport");
         }
 
-        public override void _Input(InputEvent evt)
-        {
-            _gameViewport.Input(TransformInput(evt));
-        }
-
         public override void _UnhandledInput(InputEvent evt)
         {
             _gameViewport.UnhandledInput(TransformInput(evt));

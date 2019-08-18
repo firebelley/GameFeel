@@ -23,6 +23,7 @@ namespace GameFeel.Data.Model
                 questModels.AddRange(Stages);
                 questModels.AddRange(Events);
                 questModels.AddRange(Completions);
+                questModels.Add(Start);
                 questModels.ForEach(x => dict.Add(x.Id, x));
                 return dict;
             }

@@ -3,14 +3,19 @@ using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Resource
 {
     public class Quest : Node
     {
         [Signal]
-        public delegate void StageStarted();
+        public delegate void QuestStageStarted(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestStarted(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestEventCompleted(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestEventStarted(Quest quest, string modelGuid);
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
@@ -31,6 +36,11 @@ namespace GameFeel.Resource
             Activate(questSaveModel.Start);
         }
 
+        public QuestModel GetQuestModel(string modelId)
+        {
+            return _idToModelMap[modelId];
+        }
+
         private void Activate(QuestModel model)
         {
             _activeModels.Add(model);
@@ -42,10 +52,10 @@ namespace GameFeel.Resource
             {
                 _stageStack.Push(qstm);
                 AdvanceFromModel(qstm);
-                EmitSignal(nameof(StageStarted));
             }
             else if (model is QuestEventModel qem)
             {
+                EmitSignal(nameof(QuestEventStarted), this, qem.Id);
                 CheckEventCompletion(qem);
             }
         }
@@ -54,6 +64,19 @@ namespace GameFeel.Resource
         {
             _oldModels.Add(model);
             _activeModels.Remove(model);
+
+            if (model is QuestStartModel questStart)
+            {
+                EmitSignal(nameof(QuestStarted), this, model.Id);
+            }
+            else if (model is QuestEventModel questEvent)
+            {
+                EmitSignal(nameof(QuestEventCompleted), this, model.Id);
+            }
+            else if (model is QuestStageModel questStage)
+            {
+                EmitSignal(nameof(QuestStageStarted), this, model.Id);
+            }
 
             if (_questSaveModel.RightConnections.ContainsKey(model.Id))
             {

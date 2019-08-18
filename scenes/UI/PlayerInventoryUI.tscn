@@ -84,17 +84,20 @@ margin_left = 7.0
 margin_top = 3.0
 margin_right = 67.0
 margin_bottom = 19.0
+mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
 margin_right = 16.0
 margin_bottom = 16.0
+mouse_filter = 2
 texture = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
 margin_left = 16.0
 margin_right = 60.0
 margin_bottom = 16.0
+mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 2
 alignment = 2
@@ -102,6 +105,7 @@ alignment = 2
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
 margin_right = 10.0
 margin_bottom = 16.0
+mouse_filter = 2
 texture = ExtResource( 5 )
 stretch_mode = 4
 

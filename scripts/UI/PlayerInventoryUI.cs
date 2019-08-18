@@ -143,6 +143,7 @@ namespace GameFeel.UI
             else if (evt.IsActionPressed(INPUT_SELECT))
             {
                 _rootControl.Visible = false;
+                _rootControl.AcceptEvent();
             }
         }
 

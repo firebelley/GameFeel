@@ -155,7 +155,8 @@ namespace GameFeel
                     continue;
                 }
 
-                var poly = worldTileSet.AutotileGetNavigationPolygon(cellId, Vector2.Zero);
+                var cellCoord = worldTileMap.GetCellAutotileCoord((int) cellv.x, (int) cellv.y);
+                var poly = worldTileSet.AutotileGetNavigationPolygon(cellId, cellCoord);
                 if (poly == null)
                 {
                     poly = worldTileSet.TileGetNavigationPolygon(cellId);

@@ -22,6 +22,14 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="DetailTileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Navigation2D" type="Navigation2D" parent="."]
 __meta__ = {
 "_edit_lock_": true

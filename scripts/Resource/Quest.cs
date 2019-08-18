@@ -16,12 +16,15 @@ namespace GameFeel.Resource
         public delegate void QuestEventCompleted(Quest quest, string modelGuid);
         [Signal]
         public delegate void QuestEventStarted(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestCompleted(Quest quest, string modelGuid);
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
         private Stack<QuestStageModel> _stageStack = new Stack<QuestStageModel>();
         private HashSet<QuestModel> _activeModels = new HashSet<QuestModel>();
         private HashSet<QuestModel> _oldModels = new HashSet<QuestModel>();
+        private Dictionary<string, int> _eventProgress = new Dictionary<string, int>();
 
         public override void _Ready()
         {
@@ -56,7 +59,11 @@ namespace GameFeel.Resource
             else if (model is QuestEventModel qem)
             {
                 EmitSignal(nameof(QuestEventStarted), this, qem.Id);
-                CheckEventCompletion(qem);
+                InitializeEvent(qem);
+            }
+            else if (model is QuestCompleteModel qcm)
+            {
+                EmitSignal(nameof(QuestCompleted), this, qcm.Id);
             }
         }
 
@@ -88,7 +95,7 @@ namespace GameFeel.Resource
             }
         }
 
-        private void CheckEventCompletion(QuestEventModel eventModel)
+        private void InitializeEvent(QuestEventModel eventModel)
         {
             switch (eventModel.EventId)
             {
@@ -96,7 +103,7 @@ namespace GameFeel.Resource
                     CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.Id);
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
-                    CheckEntityKilledCompletion(eventModel.EventId, eventModel.Id);
+                    _eventProgress[eventModel.Id] = 0;
                     break;
             }
         }
@@ -113,9 +120,13 @@ namespace GameFeel.Resource
         private void CheckEntityKilledCompletion(string eventGuid, string entityId)
         {
             var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == entityId).Select(x => x as QuestEventModel).FirstOrDefault();
-            if (evt != null)
+            if (evt != null && _eventProgress.ContainsKey(evt.Id))
             {
-                // TODO: track the kills somehow
+                _eventProgress[evt.Id]++;
+                if (_eventProgress[evt.Id] == evt.Required)
+                {
+                    AdvanceFromModel(evt);
+                }
             }
         }
     }

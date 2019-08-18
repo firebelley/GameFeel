@@ -22,6 +22,7 @@ namespace GameFeel.DesignTool
 
         protected override void UpdateControls()
         {
+            base.UpdateControls();
             _idLineEdit.Text = Model.ItemId;
             _requiredSpinBox.Value = Model.Required;
         }

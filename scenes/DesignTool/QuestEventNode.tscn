@@ -19,4 +19,20 @@ script = ExtResource( 1 )
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 304.0
+margin_bottom = 48.0
+
+[node name="PromptContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 288.0
 margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="VBoxContainer/PromptContainer"]
+margin_top = 5.0
+margin_right = 78.0
+margin_bottom = 19.0
+text = "Prompt Text"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PromptContainer"]
+margin_left = 82.0
+margin_right = 288.0
+margin_bottom = 24.0
+size_flags_horizontal = 3

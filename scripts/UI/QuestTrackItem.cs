@@ -46,7 +46,7 @@ namespace GameFeel.UI
         public void SetQuestPrompt(QuestEventModel questEventModel)
         {
             var prefix = questEventModel.Required > 0 ? string.Format(NUMBER_TRACKER_FORMAT, 0, questEventModel.Required) : string.Empty;
-            _questPromptLabel.Text = prefix + questEventModel.DisplayName;
+            _questPromptLabel.Text = prefix + questEventModel.PromptText;
             _questPromptLabel.Visible = !string.IsNullOrEmpty(_questPromptLabel.Text);
         }
 

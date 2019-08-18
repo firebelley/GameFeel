@@ -2,12 +2,12 @@
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/InventoryCell.cs" type="Script" id=2]
-[ext_resource path="res://assets/art/ui/inventory-widgets.png" type="Texture" id=3]
+[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=3]
 [ext_resource path="res://resources/InventoryFont.tres" type="DynamicFont" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
-region = Rect2( 32, 0, 16, 16 )
+region = Rect2( 64, 0, 32, 32 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "hover"
@@ -42,10 +42,10 @@ tracks/1/keys = {
 [node name="InventoryCell" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -304.0
-margin_bottom = -164.0
-rect_min_size = Vector2( 16, 16 )
-rect_pivot_offset = Vector2( 8, 8 )
+margin_right = -608.0
+margin_bottom = -328.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 16, 16 )
 mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -53,21 +53,26 @@ theme = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="TextureRectForeground" type="TextureRect" parent="."]
-margin_right = 16.0
-margin_bottom = 16.0
-rect_pivot_offset = Vector2( 8, 8 )
+margin_right = 32.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( 16, 16 )
 texture = SubResource( 1 )
 
 [node name="TextureRectBackground" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 8, 8 )
+margin_right = -304.0
+margin_bottom = -164.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 16, 16 )
 mouse_filter = 2
+expand = true
+stretch_mode = 1
 
 [node name="CountLabel" type="Label" parent="."]
-margin_top = 12.0
-margin_right = 16.0
-margin_bottom = 20.0
+margin_top = 28.0
+margin_right = 32.0
+margin_bottom = 36.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 0.956863, 0.890196, 1 )
 align = 1

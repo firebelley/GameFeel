@@ -159,7 +159,7 @@ namespace GameFeel.UI
         {
             _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
             Camera.ClearShift();
-            Camera.AddShift(_panelContainer.RectSize * Vector2.Right / 2f);
+            Camera.AddShift(Main.UI_TO_GAME_DISPLAY_RATIO * _panelContainer.RectSize * Vector2.Right / 2f);
         }
     }
 }

@@ -3,41 +3,41 @@
 [ext_resource path="res://scripts/UI/PlayerInventoryUI.cs" type="Script" id=1]
 [ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=3]
-[ext_resource path="res://assets/art/ui/inventory-widgets.png" type="Texture" id=4]
+[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=4]
 [ext_resource path="res://assets/art/ui/currency.png" type="Texture" id=5]
 [ext_resource path="res://resources/InventoryFont.tres" type="DynamicFont" id=6]
 [ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=7]
 
 [sub_resource type="StyleBoxTexture" id=1]
-content_margin_left = 4.0
-content_margin_right = 4.0
-content_margin_top = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
 texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 28, 28 )
-margin_left = 6.0
-margin_right = 6.0
-margin_top = 6.0
-margin_bottom = 6.0
+region_rect = Rect2( 0, 0, 56, 56 )
+margin_left = 12.0
+margin_right = 12.0
+margin_top = 12.0
+margin_bottom = 12.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxTexture" id=2]
-content_margin_bottom = 4.0
+content_margin_bottom = 8.0
 texture = ExtResource( 4 )
-region_rect = Rect2( 48, 4, 28, 6 )
-margin_left = 7.0
-margin_right = 7.0
-margin_top = 3.0
-margin_bottom = 4.0
-expand_margin_left = 4.0
-expand_margin_right = 4.0
+region_rect = Rect2( 96, 8, 56, 12 )
+margin_left = 14.0
+margin_right = 14.0
+margin_top = 6.0
+margin_bottom = 8.0
+expand_margin_left = 8.0
+expand_margin_right = 8.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 4 )
-region = Rect2( 0, 32, 16, 16 )
+region = Rect2( 0, 64, 32, 32 )
 
 [node name="PlayerInventoryUI" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -56,8 +56,8 @@ mouse_filter = 1
 theme = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_left = 550.0
-margin_top = 313.0
+margin_left = 512.0
+margin_top = 282.0
 margin_right = 632.0
 margin_bottom = 352.0
 mouse_filter = 1
@@ -66,37 +66,37 @@ size_flags_vertical = 8
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 78.0
-margin_bottom = 35.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 112.0
+margin_bottom = 62.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 74.0
-margin_bottom = 23.0
+margin_right = 104.0
+margin_bottom = 46.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
-margin_left = 7.0
-margin_top = 3.0
-margin_right = 67.0
-margin_bottom = 19.0
+margin_left = 14.0
+margin_top = 6.0
+margin_right = 90.0
+margin_bottom = 38.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
-margin_right = 16.0
-margin_bottom = 16.0
+margin_right = 32.0
+margin_bottom = 32.0
 mouse_filter = 2
 texture = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
-margin_left = 16.0
-margin_right = 60.0
-margin_bottom = 16.0
+margin_left = 32.0
+margin_right = 76.0
+margin_bottom = 32.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 2
@@ -104,16 +104,16 @@ alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
 margin_right = 10.0
-margin_bottom = 16.0
+margin_bottom = 32.0
 mouse_filter = 2
 texture = ExtResource( 5 )
 stretch_mode = 4
 
 [node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
 margin_left = 12.0
-margin_top = 4.0
+margin_top = 12.0
 margin_right = 44.0
-margin_bottom = 12.0
+margin_bottom = 20.0
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 1, 0.956863, 0.890196, 1 )
 text = "1000"
@@ -121,9 +121,9 @@ align = 2
 valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_top = 23.0
-margin_right = 74.0
-margin_bottom = 31.0
+margin_top = 46.0
+margin_right = 104.0
+margin_bottom = 54.0
 mouse_filter = 2
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
@@ -131,9 +131,9 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer/MarginContainer"]
-margin_left = 37.0
+margin_left = 52.0
 margin_top = 4.0
-margin_right = 37.0
+margin_right = 52.0
 margin_bottom = 4.0
 mouse_filter = 2
 size_flags_horizontal = 4

@@ -115,7 +115,7 @@ namespace GameFeel.GameObject
             _velocity = MoveAndSlide(_velocity);
 
             var spriteScale = _animatedSprite.Scale;
-            spriteScale.x = GetGlobalMousePosition().x < GlobalPosition.x ? -1f : 1f;
+            spriteScale.x = Cursor.GetAdjustedGlobalMousePosition(this).x < GlobalPosition.x ? -1f : 1f;
             _animatedSprite.Scale = spriteScale;
         }
 

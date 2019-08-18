@@ -1,6 +1,7 @@
 using GameFeel.Data.Model;
 using GameFeel.Resource;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
@@ -11,12 +12,14 @@ namespace GameFeel.UI
         private Label _questNameLabel;
         private Label _questStageNameLabel;
         private Label _questPromptLabel;
+        private ResourcePreloader _resourcePreloader;
 
         public override void _Ready()
         {
             _questNameLabel = GetNode<Label>("QuestNameLabel");
             _questStageNameLabel = GetNode<Label>("QuestStageNameLabel");
             _questPromptLabel = GetNode<Label>("QuestPromptLabel");
+            _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
 
             _questNameLabel.Visible = false;
             _questPromptLabel.Visible = false;
@@ -50,24 +53,30 @@ namespace GameFeel.UI
             _questPromptLabel.Visible = !string.IsNullOrEmpty(_questPromptLabel.Text);
         }
 
-        public void AddQuestStage()
+        public void AddQuestStage(QuestStageModel questStageModel)
         {
-
+            var qti = GD.Load(Filename) as PackedScene;
+            var qtis = qti.Instance() as QuestTrackItem;
+            AddChild(qtis);
+            qtis.SetQuestStage(questStageModel);
         }
 
-        public void AddQuestPrompt()
+        public void AddQuestPrompt(QuestEventModel questEventModel)
         {
-
+            var qti = GD.Load(Filename) as PackedScene;
+            var qtis = qti.Instance() as QuestTrackItem;
+            AddChild(qtis);
+            qtis.SetQuestPrompt(questEventModel);
         }
 
         private void OnQuestStageStarted(Quest quest, string modelId)
         {
-            SetQuestStage(quest.GetQuestModel(modelId) as QuestStageModel);
+            AddQuestStage(quest.GetQuestModel(modelId) as QuestStageModel);
         }
 
         private void OnQuestEventStarted(Quest quest, string modelId)
         {
-            SetQuestPrompt(quest.GetQuestModel(modelId) as QuestEventModel);
+            AddQuestPrompt(quest.GetQuestModel(modelId) as QuestEventModel);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
+using GodotTools.Util;
 
 namespace GameFeel.Resource
 {
@@ -18,6 +19,8 @@ namespace GameFeel.Resource
         public delegate void QuestEventStarted(Quest quest, string modelGuid);
         [Signal]
         public delegate void QuestCompleted(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestEventProgress(Quest quest, string modelGuid);
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
@@ -42,6 +45,15 @@ namespace GameFeel.Resource
         public QuestModel GetQuestModel(string modelId)
         {
             return _idToModelMap[modelId];
+        }
+
+        public int GetEventProgress(string modelId)
+        {
+            if (_eventProgress.ContainsKey(modelId))
+            {
+                return _eventProgress[modelId];
+            }
+            return 0;
         }
 
         private void Activate(QuestModel model)
@@ -97,13 +109,13 @@ namespace GameFeel.Resource
 
         private void InitializeEvent(QuestEventModel eventModel)
         {
+            _eventProgress[eventModel.Id] = 0;
             switch (eventModel.EventId)
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
                     CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.Id);
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
-                    _eventProgress[eventModel.Id] = 0;
                     break;
             }
         }
@@ -111,9 +123,15 @@ namespace GameFeel.Resource
         private void CheckInventoryItemAddedCompletion(string eventGuid, string itemId)
         {
             var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == itemId).Select(x => x as QuestEventModel).FirstOrDefault();
-            if (evt != null && PlayerInventory.GetItemCount(itemId) == evt.Required)
+            if (evt != null && _eventProgress.ContainsKey(evt.Id))
             {
-                AdvanceFromModel(evt);
+                var count = Mathf.Clamp(PlayerInventory.GetItemCount(itemId), 0, evt.Required);
+                _eventProgress[evt.Id] = count;
+                EmitSignal(nameof(QuestEventProgress), this, evt.Id);
+                if (count == evt.Required)
+                {
+                    AdvanceFromModel(evt);
+                }
             }
         }
 
@@ -123,6 +141,7 @@ namespace GameFeel.Resource
             if (evt != null && _eventProgress.ContainsKey(evt.Id))
             {
                 _eventProgress[evt.Id]++;
+                EmitSignal(nameof(QuestEventProgress), this, evt.Id);
                 if (_eventProgress[evt.Id] == evt.Required)
                 {
                     AdvanceFromModel(evt);

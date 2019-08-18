@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameFeel.Data.Model;
 using GameFeel.Resource;
 using Godot;
@@ -13,6 +14,8 @@ namespace GameFeel.UI
         private Label _questStageNameLabel;
         private Label _questPromptLabel;
         private ResourcePreloader _resourcePreloader;
+
+        private Dictionary<string, QuestTrackItem> _eventTrackItemMap = new Dictionary<string, QuestTrackItem>();
 
         public override void _Ready()
         {
@@ -30,6 +33,7 @@ namespace GameFeel.UI
         {
             quest.Connect(nameof(Quest.QuestStageStarted), this, nameof(OnQuestStageStarted));
             quest.Connect(nameof(Quest.QuestEventStarted), this, nameof(OnQuestEventStarted));
+            quest.Connect(nameof(Quest.QuestEventProgress), this, nameof(OnQuestEventProgress));
 
             SetQuestStart(quest.GetQuestModel(modelId) as QuestStartModel);
         }
@@ -46,9 +50,10 @@ namespace GameFeel.UI
             _questStageNameLabel.Visible = !string.IsNullOrEmpty(_questStageNameLabel.Text);
         }
 
-        public void SetQuestPrompt(QuestEventModel questEventModel)
+        public void SetQuestPrompt(Quest quest, QuestEventModel questEventModel)
         {
-            var prefix = questEventModel.Required > 0 ? string.Format(NUMBER_TRACKER_FORMAT, 0, questEventModel.Required) : string.Empty;
+            var progress = quest.GetEventProgress(questEventModel.Id);
+            var prefix = questEventModel.Required > 0 ? string.Format(NUMBER_TRACKER_FORMAT, progress, questEventModel.Required) : string.Empty;
             _questPromptLabel.Text = prefix + questEventModel.PromptText;
             _questPromptLabel.Visible = !string.IsNullOrEmpty(_questPromptLabel.Text);
         }
@@ -61,12 +66,13 @@ namespace GameFeel.UI
             qtis.SetQuestStage(questStageModel);
         }
 
-        public void AddQuestPrompt(QuestEventModel questEventModel)
+        public void AddQuestPrompt(Quest quest, QuestEventModel questEventModel)
         {
             var qti = GD.Load(Filename) as PackedScene;
             var qtis = qti.Instance() as QuestTrackItem;
             AddChild(qtis);
-            qtis.SetQuestPrompt(questEventModel);
+            qtis.SetQuestPrompt(quest, questEventModel);
+            _eventTrackItemMap[questEventModel.Id] = qtis;
         }
 
         private void OnQuestStageStarted(Quest quest, string modelId)
@@ -76,7 +82,16 @@ namespace GameFeel.UI
 
         private void OnQuestEventStarted(Quest quest, string modelId)
         {
-            AddQuestPrompt(quest.GetQuestModel(modelId) as QuestEventModel);
+            AddQuestPrompt(quest, quest.GetQuestModel(modelId) as QuestEventModel);
+        }
+
+        private void OnQuestEventProgress(Quest quest, string modelId)
+        {
+            if (_eventTrackItemMap.ContainsKey(modelId))
+            {
+                var model = quest.GetQuestModel(modelId) as QuestEventModel;
+                _eventTrackItemMap[modelId].SetQuestPrompt(quest, model);
+            }
         }
     }
 }

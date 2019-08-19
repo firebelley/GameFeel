@@ -1,14 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
+using GodotTools.Util;
 using Newtonsoft.Json;
 
 namespace GameFeel.DesignTool
 {
     public class QuestDesigner : Control
     {
+        public static Dictionary<string, string> ItemIdToDisplayName = new Dictionary<string, string>();
+
         private GraphEdit _graphEdit;
         private WindowDialog _eventSelectorDialog;
         private WindowDialog _nodeSelectorDialog;
@@ -20,6 +24,9 @@ namespace GameFeel.DesignTool
         {
             GetTree().SetScreenStretch(SceneTree.StretchMode.Mode2d, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
             OS.SetWindowMaximized(true);
+
+            LoadItems();
+
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _eventSelectorDialog = GetNode<WindowDialog>("EventSelectorDialog");
@@ -196,6 +203,58 @@ namespace GameFeel.DesignTool
         {
             _saveFileDialog.Invalidate();
             _openFileDialog.Invalidate();
+        }
+
+        private void LoadItems()
+        {
+            var dir = new Directory();
+            var err = dir.Open("res://scenes/GameObject/Loot/");
+            if (err != Error.Ok)
+            {
+                Logger.Error("Could not load quests code " + (int) err);
+                return;
+            }
+
+            dir.ListDirBegin();
+
+            while (true)
+            {
+                var path = dir.GetNext();
+                if (string.IsNullOrEmpty(path))
+                {
+                    break;
+                }
+
+                if (path.EndsWith(".tscn"))
+                {
+                    LoadItem("res://scenes/GameObject/Loot/" + path);
+                }
+            }
+
+            dir.ListDirEnd();
+        }
+
+        private void LoadItem(string fullPath)
+        {
+            var scene = GD.Load(fullPath) as PackedScene;
+            var bundled = scene._Bundled;
+            var displayNameIdx = (bundled["names"] as string[]).ToList().FindIndex(x => x == "DisplayName");
+            var idIdx = (bundled["names"] as string[]).ToList().FindIndex(x => x == "Id");
+
+            if (displayNameIdx < 0 || idIdx < 0)
+            {
+                return;
+            }
+
+            var displayName = (bundled["variants"] as Godot.Collections.Array).ElementAt(displayNameIdx);
+            var id = (bundled["variants"] as Godot.Collections.Array).ElementAt(idIdx);
+
+            if (!(displayName is string) || !(id is string))
+            {
+                return;
+            }
+
+            ItemIdToDisplayName[id as string] = displayName as string;
         }
 
         private void OnAddNodePressed()

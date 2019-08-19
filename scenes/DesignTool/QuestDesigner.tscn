@@ -53,7 +53,6 @@ right_disconnects = true
 scroll_offset = Vector2( -358, -16 )
 
 [node name="EventSelectorDialog" type="WindowDialog" parent="."]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 500, 500 )

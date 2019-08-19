@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+MetadataLoader="*res://scripts/Singleton/MetadataLoader.cs"
 GameEventDispatcher="*res://scripts/Singleton/GameEventDispatcher.cs"
 PlayerInventory="*res://scripts/Singleton/PlayerInventory.cs"
 QuestTracker="*res://scripts/Singleton/QuestTracker.cs"

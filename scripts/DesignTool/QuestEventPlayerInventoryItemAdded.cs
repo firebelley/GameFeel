@@ -11,7 +11,7 @@ namespace GameFeel.DesignTool
         private SpinBox _requiredSpinBox;
         private ItemList _itemList;
         private WindowDialog _windowDialog;
-        private List<KeyValuePair<string, string>> _items;
+        private List<KeyValuePair<string, MetadataLoader.ResourceInfo>> _items;
 
         public override void _Ready()
         {
@@ -26,7 +26,7 @@ namespace GameFeel.DesignTool
             _itemButton.Connect("pressed", this, nameof(OnItemButtonPressed));
             _requiredSpinBox.Connect("value_changed", this, nameof(OnRequiredChanged));
 
-            _items = QuestDesigner.ItemIdToDisplayName.OrderBy(x => x.Value).ToList();
+            _items = MetadataLoader.LootItemIdToInfo.OrderBy(x => x.Value.DisplayName).ToList();
             foreach (var item in _items)
             {
                 _itemList.AddItem(FormatButtonText(item.Key));
@@ -43,9 +43,9 @@ namespace GameFeel.DesignTool
 
         private string FormatButtonText(string id)
         {
-            if (QuestDesigner.ItemIdToDisplayName.ContainsKey(id))
+            if (MetadataLoader.LootItemIdToInfo.ContainsKey(id))
             {
-                return QuestDesigner.ItemIdToDisplayName[id] + " (" + id + ")";
+                return MetadataLoader.LootItemIdToInfo[id].DisplayName + " (" + id + ")";
             }
             return id;
         }

@@ -1,36 +1,25 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using GameFeel.Component;
 using GameFeel.Data.Model;
-using GameFeel.GameObject.Loot;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
-using GodotTools.Util;
 using Newtonsoft.Json;
 
 namespace GameFeel.DesignTool
 {
     public class QuestDesigner : Control
     {
-        public static Dictionary<string, string> ItemIdToDisplayName = new Dictionary<string, string>();
-        public static Dictionary<string, string> EntityIdToDisplayName = new Dictionary<string, string>();
-
         private GraphEdit _graphEdit;
         private WindowDialog _eventSelectorDialog;
         private WindowDialog _nodeSelectorDialog;
         private FileDialog _openFileDialog;
         private FileDialog _saveFileDialog;
         private ResourcePreloader _resourcePreloader;
-        private delegate void FullPathLoader(string fullPath);
 
         public override void _Ready()
         {
             GetTree().SetScreenStretch(SceneTree.StretchMode.Mode2d, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
             OS.SetWindowMaximized(true);
-
-            LoadMetadata();
 
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
@@ -208,63 +197,6 @@ namespace GameFeel.DesignTool
         {
             _saveFileDialog.Invalidate();
             _openFileDialog.Invalidate();
-        }
-
-        private void LoadMetadata()
-        {
-            LoadScenesInDir("res://scenes/GameObject/Loot/", LoadItem);
-            LoadScenesInDir("res://scenes/GameObject/", LoadEntity);
-        }
-
-        private void LoadScenesInDir(string dirPath, FullPathLoader fullPathLoader)
-        {
-            var dir = new Directory();
-            var err = dir.Open(dirPath);
-            if (err != Error.Ok)
-            {
-                Logger.Error("Could not load items code " + (int) err);
-                return;
-            }
-
-            dir.ListDirBegin();
-
-            while (true)
-            {
-                var path = dir.GetNext();
-                if (string.IsNullOrEmpty(path))
-                {
-                    break;
-                }
-
-                if (path.EndsWith(".tscn"))
-                {
-                    fullPathLoader(dirPath + path);
-                }
-            }
-
-            dir.ListDirEnd();
-        }
-
-        private void LoadItem(string fullPath)
-        {
-            var node = GD.Load<PackedScene>(fullPath).Instance();
-            if (node is LootItem li && li.Id != "Null")
-            {
-                ItemIdToDisplayName[li.Id] = li.DisplayName;
-            }
-            node.QueueFree();
-        }
-
-        private void LoadEntity(string fullPath)
-        {
-            // TODO: use an entity data component to store data about an entity
-            var node = GD.Load<PackedScene>(fullPath).Instance();
-            var entityId = node.GetFirstNodeOfType<DeathEffectComponent>()?.EntityId ?? string.Empty;
-            if (!string.IsNullOrEmpty(entityId))
-            {
-                EntityIdToDisplayName[entityId] = node.GetName();
-            }
-            node.QueueFree();
         }
 
         private void OnAddNodePressed()

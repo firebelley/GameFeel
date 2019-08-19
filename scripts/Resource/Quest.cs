@@ -3,7 +3,6 @@ using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Util;
 
 namespace GameFeel.Resource
 {
@@ -76,6 +75,7 @@ namespace GameFeel.Resource
             else if (model is QuestCompleteModel qcm)
             {
                 EmitSignal(nameof(QuestCompleted), this, qcm.Id);
+                QueueFree();
             }
         }
 
@@ -113,7 +113,7 @@ namespace GameFeel.Resource
             switch (eventModel.EventId)
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
-                    CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.Id);
+                    CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.ItemId);
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
                     break;

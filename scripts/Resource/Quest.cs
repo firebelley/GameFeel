@@ -74,8 +74,7 @@ namespace GameFeel.Resource
             }
             else if (model is QuestCompleteModel qcm)
             {
-                EmitSignal(nameof(QuestCompleted), this, qcm.Id);
-                QueueFree();
+                Complete(qcm);
             }
         }
 
@@ -118,6 +117,13 @@ namespace GameFeel.Resource
                 case GameEventDispatcher.ENTITY_KILLED:
                     break;
             }
+        }
+
+        private void Complete(QuestCompleteModel questComplete)
+        {
+            PlayerInventory.AddItem(questComplete.RewardItemId, questComplete.RewardItemAmount);
+            EmitSignal(nameof(QuestCompleted), this, questComplete.Id);
+            QueueFree();
         }
 
         private void CheckInventoryItemAddedCompletion(string eventGuid, string itemId)

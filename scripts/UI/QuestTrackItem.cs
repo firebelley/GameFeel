@@ -34,6 +34,7 @@ namespace GameFeel.UI
             quest.Connect(nameof(Quest.QuestStageStarted), this, nameof(OnQuestStageStarted));
             quest.Connect(nameof(Quest.QuestEventStarted), this, nameof(OnQuestEventStarted));
             quest.Connect(nameof(Quest.QuestEventProgress), this, nameof(OnQuestEventProgress));
+            quest.Connect(nameof(Quest.QuestCompleted), this, nameof(OnQuestCompleted));
 
             SetQuestStart(quest.GetQuestModel(modelId) as QuestStartModel);
         }
@@ -92,6 +93,11 @@ namespace GameFeel.UI
                 var model = quest.GetQuestModel(modelId) as QuestEventModel;
                 _eventTrackItemMap[modelId].SetQuestPrompt(quest, model);
             }
+        }
+
+        private void OnQuestCompleted(Quest quest, string modelId)
+        {
+            QueueFree();
         }
     }
 }

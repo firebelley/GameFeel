@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GameFeel.Data;
 using GameFeel.GameObject.Loot;
 using Godot;
+using GodotTools.Util;
 
 namespace GameFeel.Singleton
 {
@@ -35,12 +36,22 @@ namespace GameFeel.Singleton
             AddItem(item);
         }
 
-        public static void AddItem(string itemId, Texture texture)
+        public static void AddItem(string itemId, int amount)
         {
+            if (!MetadataLoader.LootItemIdToInfo.ContainsKey(itemId))
+            {
+                Logger.Error("No item with id " + itemId + " was loaded");
+                return;
+            }
+            var info = MetadataLoader.LootItemIdToInfo[itemId];
+            var lootItem = (GD.Load(info.ResourcePath) as PackedScene).Instance() as LootItem;
+
             var item = new InventoryItem();
-            item.Amount = 1;
-            item.Icon = texture;
+            item.Amount = amount;
+            item.Icon = lootItem.Icon;
             item.Id = itemId;
+
+            lootItem.QueueFree();
             AddItem(item);
         }
 

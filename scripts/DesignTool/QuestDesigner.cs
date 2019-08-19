@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameFeel.Component;
 using GameFeel.Data.Model;
+using GameFeel.GameObject.Loot;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -12,6 +15,7 @@ namespace GameFeel.DesignTool
     public class QuestDesigner : Control
     {
         public static Dictionary<string, string> ItemIdToDisplayName = new Dictionary<string, string>();
+        public static Dictionary<string, string> EntityIdToDisplayName = new Dictionary<string, string>();
 
         private GraphEdit _graphEdit;
         private WindowDialog _eventSelectorDialog;
@@ -19,13 +23,14 @@ namespace GameFeel.DesignTool
         private FileDialog _openFileDialog;
         private FileDialog _saveFileDialog;
         private ResourcePreloader _resourcePreloader;
+        private delegate void FullPathLoader(string fullPath);
 
         public override void _Ready()
         {
             GetTree().SetScreenStretch(SceneTree.StretchMode.Mode2d, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
             OS.SetWindowMaximized(true);
 
-            LoadItems();
+            LoadMetadata();
 
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
@@ -205,13 +210,19 @@ namespace GameFeel.DesignTool
             _openFileDialog.Invalidate();
         }
 
-        private void LoadItems()
+        private void LoadMetadata()
+        {
+            LoadScenesInDir("res://scenes/GameObject/Loot/", LoadItem);
+            LoadScenesInDir("res://scenes/GameObject/", LoadEntity);
+        }
+
+        private void LoadScenesInDir(string dirPath, FullPathLoader fullPathLoader)
         {
             var dir = new Directory();
-            var err = dir.Open("res://scenes/GameObject/Loot/");
+            var err = dir.Open(dirPath);
             if (err != Error.Ok)
             {
-                Logger.Error("Could not load quests code " + (int) err);
+                Logger.Error("Could not load items code " + (int) err);
                 return;
             }
 
@@ -227,7 +238,7 @@ namespace GameFeel.DesignTool
 
                 if (path.EndsWith(".tscn"))
                 {
-                    LoadItem("res://scenes/GameObject/Loot/" + path);
+                    fullPathLoader(dirPath + path);
                 }
             }
 
@@ -236,25 +247,24 @@ namespace GameFeel.DesignTool
 
         private void LoadItem(string fullPath)
         {
-            var scene = GD.Load(fullPath) as PackedScene;
-            var bundled = scene._Bundled;
-            var displayNameIdx = (bundled["names"] as string[]).ToList().FindIndex(x => x == "DisplayName");
-            var idIdx = (bundled["names"] as string[]).ToList().FindIndex(x => x == "Id");
-
-            if (displayNameIdx < 0 || idIdx < 0)
+            var node = GD.Load<PackedScene>(fullPath).Instance();
+            if (node is LootItem li && li.Id != "Null")
             {
-                return;
+                ItemIdToDisplayName[li.Id] = li.DisplayName;
             }
+            node.QueueFree();
+        }
 
-            var displayName = (bundled["variants"] as Godot.Collections.Array).ElementAt(displayNameIdx);
-            var id = (bundled["variants"] as Godot.Collections.Array).ElementAt(idIdx);
-
-            if (!(displayName is string) || !(id is string))
+        private void LoadEntity(string fullPath)
+        {
+            // TODO: use an entity data component to store data about an entity
+            var node = GD.Load<PackedScene>(fullPath).Instance();
+            var entityId = node.GetFirstNodeOfType<DeathEffectComponent>()?.EntityId ?? string.Empty;
+            if (!string.IsNullOrEmpty(entityId))
             {
-                return;
+                EntityIdToDisplayName[entityId] = node.GetName();
             }
-
-            ItemIdToDisplayName[id as string] = displayName as string;
+            node.QueueFree();
         }
 
         private void OnAddNodePressed()

@@ -7,9 +7,11 @@ namespace GameFeel.Component
     public class DeathEffectComponent : Node2D
     {
         [Export]
-        private string _entityId;
+        public string EntityId { get; private set; }
+
         [Export]
         private PackedScene _deathScene;
+
         [Export]
         private NodePath _healthComponentPath;
 
@@ -24,7 +26,7 @@ namespace GameFeel.Component
             {
                 return "Must have a " + nameof(HealthComponent);
             }
-            if (string.IsNullOrEmpty(_entityId))
+            if (string.IsNullOrEmpty(EntityId))
             {
                 return "Must define an ID";
             }
@@ -46,7 +48,7 @@ namespace GameFeel.Component
             var death = _deathScene.Instance() as Node2D;
             GameZone.EffectsLayer.AddChild(death);
             death.GlobalPosition = GlobalPosition;
-            GameEventDispatcher.DispatchEntityKilledEvent(_entityId);
+            GameEventDispatcher.DispatchEntityKilledEvent(EntityId);
             GetOwner().QueueFree();
         }
     }

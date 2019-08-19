@@ -27,7 +27,6 @@ namespace GameFeel.Singleton
             Instance = this;
             _questScene = GD.Load(QUEST_NODE_PATH) as PackedScene;
             LoadQuests();
-            CallDeferred(nameof(StartQuest), "388998cb-c2c9-43ae-9a5f-de1c450fef5d");
         }
 
         public static void StartQuest(string questGuid)

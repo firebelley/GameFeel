@@ -1,20 +1,40 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/GameObject/Loot/LootItem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/art/loot/loot-spider-legs.png" type="Texture" id=2]
-[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=3]
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="Shader" id=1]
 resource_local_to_scene = true
-shader = ExtResource( 3 )
-shader_param/_outlineColor = Color( 1, 1, 1, 1 )
-shader_param/_enabled = null
+code = "shader_type canvas_item;
+
+uniform vec4 _outlineColor : hint_color = vec4(1, 1, 1, 1);
+uniform vec4 _invalidOutlineColor : hint_color = vec4(.5, 0, 0, 1);
+uniform bool _enabled;
+uniform bool _valid;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	float alpha = COLOR.a;
+	
+	if (alpha == 0.0 && _enabled) {
+		float adjacentAlpha = 0.0;
+		adjacentAlpha += texture(TEXTURE, UV + vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
+		adjacentAlpha += texture(TEXTURE, UV - vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
+		adjacentAlpha += texture(TEXTURE, UV + vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
+		adjacentAlpha += texture(TEXTURE, UV - vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
+		if (adjacentAlpha > 0.0) {
+			COLOR.rgba = _valid ? _outlineColor : _invalidOutlineColor;
+		}
+	}
+}"
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = ExtResource( 3 )
+shader = SubResource( 1 )
 shader_param/_outlineColor = Color( 1, 1, 1, 1 )
+shader_param/_invalidOutlineColor = Color( 0.7, 0, 0, 1 )
 shader_param/_enabled = null
+shader_param/_valid = null
 
 [sub_resource type="CircleShape2D" id=3]
 resource_local_to_scene = true
@@ -30,17 +50,13 @@ Icon = ExtResource( 2 )
 DisplayName = "Spider Legs"
 
 [node name="SelectableComponent" parent="." index="1"]
-material = SubResource( 1 )
-_shaderMaterial = SubResource( 2 )
+material = SubResource( 2 )
 
 [node name="CollisionShape2D" parent="SelectableComponent" index="0"]
 shape = SubResource( 3 )
 
 [node name="CollisionShape2D" parent="." index="5"]
 shape = SubResource( 4 )
-
-[node name="Sprite" parent="." index="6"]
-material = SubResource( 2 )
 
 [node name="DisplayName" parent="PanelContainer" index="0"]
 text = "Spider Legs"

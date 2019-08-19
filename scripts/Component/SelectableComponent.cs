@@ -15,21 +15,24 @@ namespace GameFeel.Component
         public delegate void SelectLeave();
 
         [Export]
-        private ShaderMaterial _shaderMaterial;
-        [Export]
         private NodePath _shadedNodePath;
+
+        [Export]
+        private bool _requirePlayerNear;
+        [Export]
+        private int _playerNearDistance = 50;
 
         private static SelectableComponent _selected;
 
         private Node2D _shadedNode;
-        private bool _hovered;
+        private bool _valid;
 
         public override void _Ready()
         {
-            if (_shadedNodePath != null)
+            if (!Engine.IsEditorHint() && _shadedNodePath != null)
             {
                 _shadedNode = GetNode<Node2D>(_shadedNodePath);
-                _shadedNode.Material = _shaderMaterial;
+                _shadedNode.Material = Material.Duplicate() as Material;
             }
 
             GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.Connect(nameof(Player.Interact), this, nameof(OnPlayerInteract));
@@ -37,6 +40,20 @@ namespace GameFeel.Component
             Connect("mouse_entered", this, nameof(OnMouseEntered));
             Connect("mouse_exited", this, nameof(OnMouseExited));
             Connect("input_event", this, nameof(OnInputEvent));
+
+            SetProcess(false);
+        }
+
+        public override void _Process(float delta)
+        {
+            var playerPos = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero;
+            var prevValid = _valid;
+            _valid = !_requirePlayerNear || GlobalPosition.DistanceSquaredTo(playerPos) <= _playerNearDistance * _playerNearDistance;
+
+            if (!prevValid == _valid)
+            {
+                ToggleHighlight(true);
+            }
         }
 
         public void ToggleHighlight(bool hovered)
@@ -45,6 +62,7 @@ namespace GameFeel.Component
             {
                 var material = _shadedNode.Material as ShaderMaterial;
                 material.SetShaderParam("_enabled", hovered);
+                material.SetShaderParam("_valid", _valid);
             }
         }
 
@@ -66,6 +84,8 @@ namespace GameFeel.Component
                 EmitSignal(nameof(SelectLeave));
             }
             ToggleHighlight(false);
+            SetProcess(false);
+            _valid = false;
         }
 
         public void Select()
@@ -77,6 +97,7 @@ namespace GameFeel.Component
             }
             _selected = this;
             ToggleHighlight(true);
+            SetProcess(true);
 
             if (wasSelected != this)
             {
@@ -104,7 +125,7 @@ namespace GameFeel.Component
 
         private void OnPlayerInteract()
         {
-            if (_selected == this)
+            if (_selected == this && _valid)
             {
                 EmitSignal(nameof(Selected));
             }

@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=3]
+[ext_resource path="res://assets/art/sorcerer1.png" type="Texture" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/_outlineColor = Color( 1, 1, 1, 1 )
+shader_param/_invalidOutlineColor = Color( 0.5, 0, 0, 1 )
+shader_param/_enabled = null
+shader_param/_valid = null
+
+[sub_resource type="CircleShape2D" id=2]
+
+[node name="TestQuestGiver" type="Node2D"]
+
+[node name="QuestStarterComponent" parent="." instance=ExtResource( 1 )]
+_questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
+_selectableComponentPath = NodePath("../SelectableComponent")
+
+[node name="SelectableComponent" parent="." instance=ExtResource( 2 )]
+editor/display_folded = true
+material = SubResource( 1 )
+_requirePlayerNear = true
+_shadedNodePath = NodePath("../Sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
+position = Vector2( 0, -12 )
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+texture = ExtResource( 4 )
+centered = false
+offset = Vector2( -16, -32 )

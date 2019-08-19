@@ -1,88 +1,23 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/GameObject/Loot/LootItem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/art/loot/loot-money.png" type="Texture" id=2]
 
-[sub_resource type="Shader" id=1]
-resource_local_to_scene = true
-code = "shader_type canvas_item;
-
-uniform vec4 _outlineColor : hint_color = vec4(1, 1, 1, 1);
-uniform bool _enabled;
-
-void fragment() {
-	COLOR = texture(TEXTURE, UV);
-	float alpha = COLOR.a;
-	
-	if (alpha == 0.0 && _enabled) {
-		float adjacentAlpha = 0.0;
-		adjacentAlpha += texture(TEXTURE, UV + vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
-		adjacentAlpha += texture(TEXTURE, UV - vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
-		adjacentAlpha += texture(TEXTURE, UV + vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
-		adjacentAlpha += texture(TEXTURE, UV - vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
-		if (adjacentAlpha > 0.0) {
-			COLOR.rgba = _outlineColor;
-		}
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-resource_local_to_scene = true
-shader = SubResource( 1 )
-shader_param/_outlineColor = Color( 1, 1, 1, 1 )
-shader_param/_enabled = null
-
-[sub_resource type="Shader" id=3]
-resource_local_to_scene = true
-code = "shader_type canvas_item;
-
-uniform vec4 _outlineColor : hint_color = vec4(1, 1, 1, 1);
-uniform bool _enabled;
-
-void fragment() {
-	COLOR = texture(TEXTURE, UV);
-	float alpha = COLOR.a;
-	
-	if (alpha == 0.0 && _enabled) {
-		float adjacentAlpha = 0.0;
-		adjacentAlpha += texture(TEXTURE, UV + vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
-		adjacentAlpha += texture(TEXTURE, UV - vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
-		adjacentAlpha += texture(TEXTURE, UV + vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
-		adjacentAlpha += texture(TEXTURE, UV - vec2(0, TEXTURE_PIXEL_SIZE.y)).a;
-		if (adjacentAlpha > 0.0) {
-			COLOR.rgba = _outlineColor;
-		}
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id=4]
-resource_local_to_scene = true
-shader = SubResource( 3 )
-shader_param/_outlineColor = Color( 1, 1, 1, 1 )
-shader_param/_enabled = null
-
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=3]
 resource_local_to_scene = true
 radius = 15.0
 
-[sub_resource type="CircleShape2D" id=6]
+[sub_resource type="CircleShape2D" id=4]
 resource_local_to_scene = true
 radius = 5.0
 
-[node name="LootItem" instance=ExtResource( 1 )]
+[node name="Money" index="0" instance=ExtResource( 1 )]
 Id = "9e330832-9c33-5874-81f8-9539845acd1f"
 Icon = ExtResource( 2 )
 DisplayName = "Money"
 
-[node name="SelectableComponent" parent="." index="1"]
-material = SubResource( 2 )
-_shaderMaterial = SubResource( 4 )
-
 [node name="CollisionShape2D" parent="SelectableComponent" index="0"]
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="CollisionShape2D" parent="." index="5"]
-shape = SubResource( 6 )
-
-[node name="Sprite" parent="." index="6"]
-material = SubResource( 4 )
+shape = SubResource( 4 )

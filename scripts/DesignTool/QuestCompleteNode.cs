@@ -1,4 +1,3 @@
-using System;
 using GameFeel.Data.Model;
 using Godot;
 
@@ -6,7 +5,7 @@ namespace GameFeel.DesignTool
 {
     public class QuestCompleteNode : QuestNode
     {
-        private LineEdit _rewardLineEdit;
+        private QuestItemSelector _rewardItemSelector;
         private SpinBox _rewardAmountSpinBox;
 
         public new QuestCompleteModel Model
@@ -25,10 +24,10 @@ namespace GameFeel.DesignTool
         {
             base._Ready();
             Model = new QuestCompleteModel();
-            _rewardLineEdit = GetNode<LineEdit>("VBoxContainer/HBoxContainer/LineEdit");
+            _rewardItemSelector = GetNode<QuestItemSelector>("VBoxContainer/HBoxContainer/QuestItemSelector");
             _rewardAmountSpinBox = GetNode<SpinBox>("VBoxContainer/HBoxContainer2/SpinBox");
 
-            _rewardLineEdit.Connect("text_changed", this, nameof(OnTextChanged));
+            _rewardItemSelector.Connect(nameof(QuestItemSelector.ItemSelected), this, nameof(OnItemSelected));
             _rewardAmountSpinBox.Connect("value_changed", this, nameof(OnValueChanged));
         }
 
@@ -40,13 +39,13 @@ namespace GameFeel.DesignTool
 
         protected override void UpdateControls()
         {
-            _rewardLineEdit.Text = Model.RewardItemId;
+            _rewardItemSelector.SetItemId(Model.RewardItemId);
             _rewardAmountSpinBox.Value = Model.RewardItemAmount;
         }
 
-        private void OnTextChanged(string text)
+        private void OnItemSelected(string id)
         {
-            Model.RewardItemId = _rewardLineEdit.Text;
+            Model.RewardItemId = id;
         }
 
         private void OnValueChanged(float value)

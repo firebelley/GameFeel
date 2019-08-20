@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GameFeel.Data.Model;
 using GameFeel.Resource;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.UI
 {

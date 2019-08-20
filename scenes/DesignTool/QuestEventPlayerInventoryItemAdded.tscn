@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/DesignTool/QuestEventNode.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/DesignTool/QuestEventPlayerInventoryItemAdded.cs" type="Script" id=2]
+[ext_resource path="res://scenes/DesignTool/QuestItemSelector.tscn" type="PackedScene" id=3]
 
 [node name="QuestEventPlayerInventoryItemAdded" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -20,11 +21,9 @@ margin_right = 31.0
 margin_bottom = 17.0
 text = "Item"
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" index="1"]
+[node name="QuestItemSelector" parent="VBoxContainer/HBoxContainer" index="1" instance=ExtResource( 3 )]
 margin_left = 35.0
 margin_right = 288.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" index="2"]
 margin_top = 52.0
@@ -41,13 +40,3 @@ text = "Required"
 margin_left = 61.0
 margin_right = 135.0
 margin_bottom = 24.0
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="1"]
-
-[node name="WindowDialog" type="WindowDialog" parent="CanvasLayer" index="0"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="ItemList" type="ItemList" parent="CanvasLayer/WindowDialog" index="1"]
-anchor_right = 1.0
-anchor_bottom = 1.0

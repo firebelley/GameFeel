@@ -9,6 +9,8 @@ namespace GameFeel.Singleton
 {
     public class MetadataLoader : Node
     {
+        public const string PRIMARY_CURRENCY_ID = "64d66021-351d-571b-8af4-97c503155558";
+
         public static Dictionary<string, ResourceInfo> LootItemIdToInfo = new Dictionary<string, ResourceInfo>();
         public static Dictionary<string, ResourceInfo> EntityIdToInfo = new Dictionary<string, ResourceInfo>();
 

@@ -116,8 +116,8 @@ _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
-_acceleration = 500.0
 _maxSpeed = 100.0
+_acceleration = 500.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
 _shaderMaterial = SubResource( 1 )
@@ -154,7 +154,6 @@ _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 11 )]
-editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Money" parent="LootTableComponent" instance=ExtResource( 12 )]

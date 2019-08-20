@@ -45,6 +45,7 @@ _gridContainerPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/Marg
 _rootControlPath = NodePath("MarginContainer")
 _animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
 _panelContainerPath = NodePath("MarginContainer/PanelContainer")
+_currencyLabelPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer/CurrencyLabel")
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "InventoryCell" ), [ ExtResource( 2 ) ] ]
@@ -56,7 +57,7 @@ mouse_filter = 1
 theme = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_left = 512.0
+margin_left = 536.0
 margin_top = 282.0
 margin_right = 632.0
 margin_bottom = 352.0
@@ -68,13 +69,13 @@ custom_styles/panel = SubResource( 1 )
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 112.0
+margin_right = 88.0
 margin_bottom = 62.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 104.0
+margin_right = 80.0
 margin_bottom = 46.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
@@ -82,7 +83,7 @@ custom_styles/panel = SubResource( 2 )
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
 margin_left = 14.0
 margin_top = 6.0
-margin_right = 90.0
+margin_right = 66.0
 margin_bottom = 38.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -95,7 +96,7 @@ texture = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer"]
 margin_left = 32.0
-margin_right = 76.0
+margin_right = 52.0
 margin_bottom = 32.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -109,20 +110,20 @@ mouse_filter = 2
 texture = ExtResource( 5 )
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
+[node name="CurrencyLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_top = 12.0
-margin_right = 44.0
+margin_right = 20.0
 margin_bottom = 20.0
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 1, 0.956863, 0.890196, 1 )
-text = "1000"
+text = "0"
 align = 2
 valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 46.0
-margin_right = 104.0
+margin_right = 80.0
 margin_bottom = 54.0
 mouse_filter = 2
 custom_constants/margin_right = 4
@@ -131,9 +132,9 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer/MarginContainer"]
-margin_left = 52.0
+margin_left = 40.0
 margin_top = 4.0
-margin_right = 52.0
+margin_right = 40.0
 margin_bottom = 4.0
 mouse_filter = 2
 size_flags_horizontal = 4

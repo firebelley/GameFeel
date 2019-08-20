@@ -11,11 +11,26 @@ namespace GameFeel.Singleton
         // TODO: make new signal for cell updating and item adding
         [Signal]
         public delegate void ItemAdded(int idx);
+        [Signal]
+        public delegate void CurrencyChanged();
 
         private const int MAX_SIZE = 25;
 
         public static PlayerInventory Instance { get; private set; }
         public static List<InventoryItem> Items { get; private set; } = new List<InventoryItem>();
+        public static int PrimaryCurrency
+        {
+            get
+            {
+                return _primaryCurrency;
+            }
+            set
+            {
+                _primaryCurrency = value;
+                Instance?.EmitSignal(nameof(CurrencyChanged));
+            }
+        }
+        private static int _primaryCurrency;
 
         public override void _Ready()
         {
@@ -57,6 +72,12 @@ namespace GameFeel.Singleton
 
         public static void AddItem(InventoryItem inventoryItem)
         {
+            if (inventoryItem.Id == MetadataLoader.PRIMARY_CURRENCY_ID)
+            {
+                PrimaryCurrency += inventoryItem.Amount;
+                return;
+            }
+
             var itemIndex = FindItemIndex(inventoryItem.Id);
             if (itemIndex >= 0)
             {

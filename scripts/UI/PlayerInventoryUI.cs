@@ -20,12 +20,15 @@ namespace GameFeel.UI
         private NodePath _animationPlayerPath;
         [Export]
         private NodePath _panelContainerPath;
+        [Export]
+        private NodePath _currencyLabelPath;
 
         private ResourcePreloader _resourcePreloader;
         private GridContainer _gridContainer;
         private AnimationPlayer _animationPlayer;
         private Control _panelContainer;
         private Control _rootControl;
+        private Label _currencyLabel;
         private int _selectedIndex = -1;
 
         public override void _Ready()
@@ -36,6 +39,7 @@ namespace GameFeel.UI
 
             _rootControl.Visible = false;
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemAdded));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.CurrencyChanged), this, nameof(OnCurrencyChanged));
             _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
             _panelContainer.Connect("resized", this, nameof(OnPanelResized));
@@ -160,6 +164,11 @@ namespace GameFeel.UI
             _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
             Camera.ClearShift();
             Camera.AddShift(Main.UI_TO_GAME_DISPLAY_RATIO * _panelContainer.RectSize * Vector2.Right / 2f);
+        }
+
+        private void OnCurrencyChanged()
+        {
+            _currencyLabel.Text = PlayerInventory.PrimaryCurrency.ToString();
         }
     }
 }

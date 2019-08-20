@@ -38,7 +38,8 @@ namespace GameFeel.UI
             CreateInventoryCells();
 
             _rootControl.Visible = false;
-            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemAdded));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemUpdated));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemUpdated), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.CurrencyChanged), this, nameof(OnCurrencyChanged));
             _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
@@ -94,7 +95,7 @@ namespace GameFeel.UI
             ClearCell(idx);
         }
 
-        private void OnItemAdded(int idx)
+        private void OnItemUpdated(int idx)
         {
             ClearCell(idx);
             var cell = _gridContainer.GetChild<InventoryCell>(idx);

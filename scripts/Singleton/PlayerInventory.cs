@@ -12,6 +12,8 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void ItemAdded(int idx);
         [Signal]
+        public delegate void ItemUpdated(int idx);
+        [Signal]
         public delegate void CurrencyChanged();
 
         private const int MAX_SIZE = 25;
@@ -94,6 +96,7 @@ namespace GameFeel.Singleton
                 }
                 else
                 {
+                    // TODO: inventory is full
                     // throw some kind of full error here
                 }
             }
@@ -105,8 +108,8 @@ namespace GameFeel.Singleton
             var val2 = Items[idx2];
             Items[idx1] = val2;
             Items[idx2] = val1;
-            Instance.EmitSignal(nameof(ItemAdded), idx1);
-            Instance.EmitSignal(nameof(ItemAdded), idx2);
+            Instance.EmitSignal(nameof(ItemUpdated), idx1);
+            Instance.EmitSignal(nameof(ItemUpdated), idx2);
         }
 
         public static int FindItemIndex(string itemId)
@@ -138,11 +141,7 @@ namespace GameFeel.Singleton
 
         private void OnItemAdded(int idx)
         {
-            // TODO: remove once signals are resolved
-            if (Items[idx] != null)
-            {
-                GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
-            }
+            GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
         }
     }
 }

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Component/DialogueComponent.cs" type="Script" id=1]
+
+[node name="DialogueComponent" type="Position2D"]
+position = Vector2( 0, -32 )
+script = ExtResource( 1 )

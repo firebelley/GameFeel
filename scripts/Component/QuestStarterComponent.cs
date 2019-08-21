@@ -18,9 +18,14 @@ namespace GameFeel.Component
             }
         }
 
-        private void OnSelected()
+        public void StartQuest()
         {
             QuestTracker.StartQuest(_questId);
+        }
+
+        private void OnSelected()
+        {
+            StartQuest();
         }
     }
 }

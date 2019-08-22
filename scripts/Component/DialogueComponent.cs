@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using GameFeel.UI;
@@ -11,7 +9,9 @@ namespace GameFeel.Component
     public class DialogueComponent : Position2D
     {
         [Signal]
-        public delegate void DialogueOptionsPresented();
+        public delegate void DialogueOptionsPresented(Godot.Collections.Array<string> options);
+        [Signal]
+        public delegate void DialogueItemPresented(DialogueItem dialogueItem);
 
         [Export]
         private NodePath _selectableComponentPath;
@@ -48,7 +48,8 @@ namespace GameFeel.Component
 
         private void OnDialogueOptionSelected(int idx)
         {
-
+            var dialogueItem = GetChild<DialogueItem>(idx);
+            EmitSignal(nameof(DialogueItemPresented), dialogueItem);
         }
     }
 }

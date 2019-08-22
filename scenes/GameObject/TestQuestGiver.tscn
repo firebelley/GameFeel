@@ -27,9 +27,8 @@ _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 3 )]
-editor/display_folded = true
-QuestStarterComponentPath = NodePath("../../QuestStarterComponent")
 Title = "Spider Leg Soup"
+_questStarterComponentPath = NodePath("../../QuestStarterComponent")
 
 [node name="DialogueLine" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]
 Text = "Ah an adventurer!"

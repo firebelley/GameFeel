@@ -1,4 +1,5 @@
 using GameFeel.Component;
+using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -11,6 +12,8 @@ namespace GameFeel.UI
 
         [Signal]
         public delegate void DialogueOptionSelected(int idx);
+        [Signal]
+        public delegate void LineAdvanceRequested(int idx);
 
         [Export]
         private NodePath _rootControlPath;
@@ -23,6 +26,7 @@ namespace GameFeel.UI
         private Control _rootControl;
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
+        private DialogueItem _activeDialogueItem;
 
         public override void _Ready()
         {
@@ -49,12 +53,26 @@ namespace GameFeel.UI
         {
             this.DisconnectAllSignals(dialogueComponent);
             dialogueComponent.Connect(nameof(DialogueComponent.DialogueOptionsPresented), this, nameof(OnDialogueOptionsPresented));
+            dialogueComponent.Connect(nameof(DialogueComponent.DialogueItemPresented), this, nameof(OnDialogueItemPresented));
+        }
+
+        private void ClearContainer()
+        {
+            foreach (var child in _dialogueContent.GetChildren())
+            {
+                if (child is Node n)
+                {
+                    n.GetParent().RemoveChild(n);
+                    n.QueueFree();
+                }
+            }
         }
 
         private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
         {
             _activeDialogueComponent = dialogueComponent;
             ConnectDialogueSignals(dialogueComponent);
+            dialogueComponent.ConnectDialogueUISignals(this);
             _dialogueWindow.Show();
             _rootControl.Show();
         }
@@ -82,6 +100,35 @@ namespace GameFeel.UI
                 _dialogueContent.AddChild(button);
                 button.Connect("pressed", this, nameof(OnDialogueItemButtonPressed), new Godot.Collections.Array() { i });
             }
+        }
+
+        private void OnDialogueItemPresented(DialogueItem dialogueItem)
+        {
+            _activeDialogueItem = dialogueItem;
+            ClearContainer();
+
+            this.DisconnectAllSignals(dialogueItem);
+            dialogueItem.Connect(nameof(DialogueItem.LinePresented), this, nameof(OnDialogueLinePresented));
+            dialogueItem.ConnectDialogueUISignals(this);
+            dialogueItem.StartLines();
+        }
+
+        private void OnDialogueLinePresented(string line, int lineIdx)
+        {
+            ClearContainer();
+            var label = new Label();
+            label.Text = line;
+            _dialogueContent.AddChild(label);
+
+            var button = new Button();
+            button.Text = "Next";
+            _dialogueContent.AddChild(button);
+            button.Connect("pressed", this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { lineIdx + 1 });
+        }
+
+        private void OnNextLineButtonPressed(int nextIdx)
+        {
+            EmitSignal(nameof(LineAdvanceRequested), nextIdx);
         }
     }
 }

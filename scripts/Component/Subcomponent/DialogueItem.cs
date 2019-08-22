@@ -1,19 +1,76 @@
+using GameFeel.UI;
 using Godot;
+using GodotTools.Extension;
+using GodotTools.Util;
 
 namespace GameFeel.Component.Subcomponent
 {
     public class DialogueItem : Node
     {
-        [Export]
-        // start a quest on dialogue finish
-        public NodePath QuestStarterComponentPath { get; private set; }
+        [Signal]
+        public delegate void LinePresented(string line, int lineIdx);
+        [Signal]
+        public delegate void LinesFinished();
 
         [Export]
         public string Title { get; private set; }
 
+        // start a quest on dialogue finish
+        [Export]
+        private NodePath _questStarterComponentPath;
+
+        private QuestStarterComponent _questStarterComponent;
+
         public override void _Ready()
         {
+            if (_questStarterComponentPath != null)
+            {
+                _questStarterComponent = GetNode<QuestStarterComponent>(_questStarterComponentPath);
+            }
+        }
 
+        public void StartLines()
+        {
+            PresentLine(0);
+            CheckCompletion(0);
+        }
+
+        public void ConnectDialogueUISignals(DialogueUI dialogueUI)
+        {
+            this.DisconnectAllSignals(dialogueUI);
+            dialogueUI.Connect(nameof(DialogueUI.LineAdvanceRequested), this, nameof(OnLineAdvanceRequested));
+        }
+
+        private bool CheckCompletion(int childIdx)
+        {
+            if (GetChildCount() == childIdx)
+            {
+                _questStarterComponent?.StartQuest();
+                EmitSignal(nameof(LinesFinished));
+                return true;
+            }
+            return false;
+        }
+
+        private void PresentLine(int idx)
+        {
+            if (idx < GetChildCount())
+            {
+                var line = GetChild<DialogueLine>(idx).Text;
+                EmitSignal(nameof(LinePresented), line, idx);
+            }
+            else
+            {
+                Logger.Error("Tried to present dialogue line that was out of range with idx " + idx + " for owner " + GetOwner().GetName());
+            }
+        }
+
+        private void OnLineAdvanceRequested(int idx)
+        {
+            if (!CheckCompletion(idx))
+            {
+                PresentLine(idx);
+            }
         }
     }
 }

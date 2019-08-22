@@ -4,7 +4,7 @@ namespace GameFeel.Component.Subcomponent
 {
     public class DialogueLine : Node
     {
-        [Export]
+        [Export(PropertyHint.MultilineText)]
         public string Text { get; private set; }
 
         public override void _Ready()

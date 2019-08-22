@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/UI/DialogueLineContainer.cs" type="Script" id=1]
+
+[node name="DialogueLineContainer" type="VBoxContainer"]
+margin_right = 180.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+_dialogueLabelPath = NodePath("DialogueLabel")
+_acceptButtonPath = NodePath("ButtonContainer/AcceptButton")
+_declineButtonPath = NodePath("ButtonContainer/DeclineButton")
+_nextButtonPath = NodePath("ButtonContainer/NextButton")
+
+[node name="DialogueLabel" type="Label" parent="."]
+margin_right = 180.0
+margin_bottom = 14.0
+autowrap = true
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+margin_top = 44.0
+margin_right = 180.0
+margin_bottom = 64.0
+size_flags_vertical = 10
+
+[node name="DeclineButton" type="Button" parent="ButtonContainer"]
+margin_right = 61.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Decline"
+
+[node name="AcceptButton" type="Button" parent="ButtonContainer"]
+margin_left = 65.0
+margin_right = 121.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Accept"
+
+[node name="NextButton" type="Button" parent="ButtonContainer"]
+margin_left = 125.0
+margin_right = 180.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Next"

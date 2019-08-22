@@ -22,6 +22,7 @@ namespace GameFeel.UI
         [Export]
         private NodePath _dialogueContentPath;
 
+        private ResourcePreloader _resourcePreloader;
         private Control _dialogueWindow;
         private Control _rootControl;
         private Control _dialogueContent;
@@ -31,9 +32,11 @@ namespace GameFeel.UI
         public override void _Ready()
         {
             this.SetNodesByDeclaredNodePaths();
+            _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _dialogueWindow.Hide();
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventDialogueStarted), this, nameof(OnDialogueStarted));
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
+            _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
         }
 
         public override void _Process(float delta)
@@ -66,10 +69,20 @@ namespace GameFeel.UI
                     n.QueueFree();
                 }
             }
+            _dialogueWindow.RectSize = Vector2.Zero;
+        }
+
+        private void OnRootControlVisibilityChanged()
+        {
+            if (!_rootControl.Visible)
+            {
+                ClearContainer();
+            }
         }
 
         private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
         {
+            ClearContainer();
             _activeDialogueComponent = dialogueComponent;
             ConnectDialogueSignals(dialogueComponent);
             dialogueComponent.ConnectDialogueUISignals(this);
@@ -86,49 +99,72 @@ namespace GameFeel.UI
             }
         }
 
-        private void OnDialogueItemButtonPressed(int buttonIdx)
+        private void OnDialogueOptionSelected(int buttonIdx)
         {
             EmitSignal(nameof(DialogueOptionSelected), buttonIdx);
         }
 
         private void OnDialogueOptionsPresented(Godot.Collections.Array<string> options)
         {
-            for (int i = 0; i < options.Count; i++)
-            {
-                var button = new Button();
-                button.Text = options[i];
-                _dialogueContent.AddChild(button);
-                button.Connect("pressed", this, nameof(OnDialogueItemButtonPressed), new Godot.Collections.Array() { i });
-            }
+            var container = _resourcePreloader.InstanceScene<DialogueOptionsContainer>();
+            _dialogueContent.AddChild(container);
+            container.LoadOptions(options);
+            container.Connect(nameof(DialogueOptionsContainer.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 
         private void OnDialogueItemPresented(DialogueItem dialogueItem)
         {
+            if (IsInstanceValid(_activeDialogueItem))
+            {
+                _activeDialogueItem.DisconnectAllSignals(this);
+            }
+
             _activeDialogueItem = dialogueItem;
             ClearContainer();
 
             this.DisconnectAllSignals(dialogueItem);
             dialogueItem.Connect(nameof(DialogueItem.LinePresented), this, nameof(OnDialogueLinePresented));
+            dialogueItem.Connect(nameof(DialogueItem.LinesFinished), this, nameof(OnDialogueLinesFinished));
             dialogueItem.ConnectDialogueUISignals(this);
             dialogueItem.StartLines();
         }
 
-        private void OnDialogueLinePresented(string line, int lineIdx)
+        private void OnDialogueLinePresented(DialogueItem dialogueItem, DialogueLine dialogueLine)
         {
             ClearContainer();
-            var label = new Label();
-            label.Text = line;
-            _dialogueContent.AddChild(label);
+            var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
+            _dialogueContent.AddChild(container);
+            container.DisplayLine(dialogueLine.Text);
 
-            var button = new Button();
-            button.Text = "Next";
-            _dialogueContent.AddChild(button);
-            button.Connect("pressed", this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { lineIdx + 1 });
+            if (dialogueItem.LineStartsQuest(dialogueLine.GetIndex()))
+            {
+                container.ShowQuestAcceptanceButtons();
+            }
+
+            container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { dialogueLine.GetIndex() + 1 });
+            container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { dialogueLine.GetIndex() + 1 });
         }
 
         private void OnNextLineButtonPressed(int nextIdx)
         {
             EmitSignal(nameof(LineAdvanceRequested), nextIdx);
+        }
+
+        private void OnQuestAcceptanceIndicated(bool accepted, int nextIdx)
+        {
+            if (accepted)
+            {
+                EmitSignal(nameof(LineAdvanceRequested), nextIdx);
+            }
+            else
+            {
+                _rootControl.Hide();
+            }
+        }
+
+        private void OnDialogueLinesFinished()
+        {
+            _rootControl.Hide();
         }
     }
 }

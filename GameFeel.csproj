@@ -98,6 +98,8 @@
     <Compile Include="scripts\GameObject\Player.cs" />
     <Compile Include="scripts\GameObject\SpawnZone.cs" />
     <Compile Include="scripts\Resource\Quest.cs" />
+    <Compile Include="scripts\UI\DialogueLineContainer.cs" />
+    <Compile Include="scripts\UI\DialogueOptionsContainer.cs" />
     <Compile Include="scripts\UI\DialogueUI.cs" />
     <Compile Include="scripts\UI\InventoryCell.cs" />
     <Compile Include="scripts\UI\PlayerInventoryUI.cs" />

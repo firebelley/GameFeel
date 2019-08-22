@@ -8,7 +8,7 @@ namespace GameFeel.Component.Subcomponent
     public class DialogueItem : Node
     {
         [Signal]
-        public delegate void LinePresented(string line, int lineIdx);
+        public delegate void LinePresented(DialogueItem dialogueItem, DialogueLine dialogueLine);
         [Signal]
         public delegate void LinesFinished();
 
@@ -41,6 +41,11 @@ namespace GameFeel.Component.Subcomponent
             dialogueUI.Connect(nameof(DialogueUI.LineAdvanceRequested), this, nameof(OnLineAdvanceRequested));
         }
 
+        public bool LineStartsQuest(int idx)
+        {
+            return GetChildCount() - 1 == idx && IsInstanceValid(_questStarterComponent);
+        }
+
         private bool CheckCompletion(int childIdx)
         {
             if (GetChildCount() == childIdx)
@@ -56,8 +61,8 @@ namespace GameFeel.Component.Subcomponent
         {
             if (idx < GetChildCount())
             {
-                var line = GetChild<DialogueLine>(idx).Text;
-                EmitSignal(nameof(LinePresented), line, idx);
+                var line = GetChild<DialogueLine>(idx);
+                EmitSignal(nameof(LinePresented), this, line);
             }
             else
             {
@@ -65,11 +70,11 @@ namespace GameFeel.Component.Subcomponent
             }
         }
 
-        private void OnLineAdvanceRequested(int idx)
+        private void OnLineAdvanceRequested(int toIdx)
         {
-            if (!CheckCompletion(idx))
+            if (!CheckCompletion(toIdx))
             {
-                PresentLine(idx);
+                PresentLine(toIdx);
             }
         }
     }

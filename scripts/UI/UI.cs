@@ -1,66 +1,27 @@
-using GameFeel.GameObject;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
     public class UI : CanvasLayer
     {
-        private const string ANIM_DEFAULT = "default";
-        private const float RESOURCE_ANIM_THRESHHOLD = .01f;
-        private const string RESOURCE_LABEL_FORMAT = "{0:0}/{1:0}";
-
-        [Export]
-        private NodePath _manaBarPath;
-        [Export]
-        private NodePath _manaLabelPath;
-        [Export]
-        private NodePath _manaBarAnimationPlayerPath;
-
-        [Export]
-        private NodePath _healthBarPath;
-        [Export]
-        private NodePath _healthLabelPath;
-        [Export]
-        private NodePath _healthBarAnimationPlayerPath;
-
-        private ProgressBar _manaBar;
-        private AnimationPlayer _manaBarAnimationPlayer;
-        private AnimationPlayer _healthBarAnimationPlayer;
-        private Label _manaLabel;
-        private ProgressBar _healthBar;
-        private Label _healthLabel;
+        // TODO: get paths to various ui
+        // TODO: define Opened and Closed signals on toggle able ui elements
+        // TODO: define signal here to close all ui panels
+        // TODO: on dependent ui's, listen to close signal from here to toggle panel
+        // TODO: forward all unhandled events to main
+        private Control _rootControl;
 
         public override void _Ready()
         {
-            this.SetNodesByDeclaredNodePaths();
+            _rootControl = GetNode<Control>("Control");
+            _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
         }
 
-        public override void _Process(float delta)
+        private void OnGuiInput(InputEvent evt)
         {
-            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            if (player == null)
+            if (evt.IsActionPressed("select"))
             {
-                return;
-            }
-            var prevManaValue = _manaBar.Value;
-            _manaBar.Value = player.Mana / (player.MaxMana > 0f ? player.MaxMana : 1f);
-            _manaLabel.Text = string.Format(RESOURCE_LABEL_FORMAT, Mathf.Floor(player.Mana), player.MaxMana);
 
-            if (prevManaValue > _manaBar.Value + RESOURCE_ANIM_THRESHHOLD)
-            {
-                _manaBarAnimationPlayer.Stop();
-                _manaBarAnimationPlayer.Play(ANIM_DEFAULT);
-            }
-
-            var prevHealthValue = _healthBar.Value;
-            _healthBar.Value = player.Health / (player.MaxHealth > 0f ? player.MaxHealth : 1f);
-            _healthLabel.Text = string.Format(RESOURCE_LABEL_FORMAT, Mathf.Floor(player.Health), player.MaxHealth);
-
-            if (prevHealthValue > _healthBar.Value + RESOURCE_ANIM_THRESHHOLD)
-            {
-                _healthBarAnimationPlayer.Stop();
-                _healthBarAnimationPlayer.Play(ANIM_DEFAULT);
             }
         }
     }

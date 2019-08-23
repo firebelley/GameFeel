@@ -5,7 +5,7 @@ using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
-    public class PlayerInventoryUI : CanvasLayer
+    public class PlayerInventoryUI : Control
     {
         private const string INPUT_INVENTORY = "inventory";
         private const string INPUT_DESELECT = "deselect";

@@ -6,34 +6,32 @@
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=4]
 [ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=5]
 
-[node name="DialogueUI" type="CanvasLayer"]
+[node name="DialogueUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 1 )
-_rootControlPath = NodePath("Control")
-_dialogueWindowPath = NodePath("Control/PanelContainer")
-_dialogueContentPath = NodePath("Control/PanelContainer/MarginContainer/ContentContainer")
+_rootControlPath = NodePath(".")
+_dialogueWindowPath = NodePath("PanelContainer")
+_dialogueContentPath = NodePath("PanelContainer/MarginContainer/ContentContainer")
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "DialogueLineContainer", "DialogueOptionsContainer" ), [ ExtResource( 2 ), ExtResource( 3 ) ] ]
 
-[node name="Control" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 192.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 192, 96 )
 theme = ExtResource( 4 )
 custom_styles/panel = ExtResource( 5 )
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 184.0
 margin_bottom = 88.0
 
-[node name="ContentContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+[node name="ContentContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 168.0

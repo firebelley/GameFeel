@@ -6,7 +6,7 @@ using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
-    public class DialogueUI : CanvasLayer
+    public class DialogueUI : Control
     {
         private const string INPUT_SELECT = "select";
 
@@ -16,15 +16,12 @@ namespace GameFeel.UI
         public delegate void LineAdvanceRequested(int idx);
 
         [Export]
-        private NodePath _rootControlPath;
-        [Export]
         private NodePath _dialogueWindowPath;
         [Export]
         private NodePath _dialogueContentPath;
 
         private ResourcePreloader _resourcePreloader;
         private Control _dialogueWindow;
-        private Control _rootControl;
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
         private DialogueItem _activeDialogueItem;
@@ -35,8 +32,8 @@ namespace GameFeel.UI
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _dialogueWindow.Hide();
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventDialogueStarted), this, nameof(OnDialogueStarted));
-            _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
-            _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
+            Connect("gui_input", this, nameof(OnGuiInput));
+            Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
         }
 
         public override void _Process(float delta)
@@ -48,7 +45,7 @@ namespace GameFeel.UI
             }
             else
             {
-                _rootControl.Hide();
+                Hide();
             }
         }
 
@@ -74,7 +71,7 @@ namespace GameFeel.UI
 
         private void OnRootControlVisibilityChanged()
         {
-            if (!_rootControl.Visible)
+            if (!Visible)
             {
                 ClearContainer();
             }
@@ -87,15 +84,15 @@ namespace GameFeel.UI
             ConnectDialogueSignals(dialogueComponent);
             dialogueComponent.ConnectDialogueUISignals(this);
             _dialogueWindow.Show();
-            _rootControl.Show();
+            Show();
         }
 
         private void OnGuiInput(InputEvent evt)
         {
             if (evt.IsActionPressed(INPUT_SELECT))
             {
-                _rootControl.Hide();
-                _rootControl.AcceptEvent();
+                Hide();
+                AcceptEvent();
             }
         }
 
@@ -158,13 +155,13 @@ namespace GameFeel.UI
             }
             else
             {
-                _rootControl.Hide();
+                Hide();
             }
         }
 
         private void OnDialogueLinesFinished()
         {
-            _rootControl.Hide();
+            Hide();
         }
     }
 }

@@ -105,11 +105,12 @@
     <Compile Include="scripts\UI\PlayerInventoryUI.cs" />
     <Compile Include="scripts\UI\QuestTrackerUI.cs" />
     <Compile Include="scripts\UI\QuestTrackItem.cs" />
+    <Compile Include="scripts\UI\UI.cs" />
     <Compile Include="scripts\Zone\GameZone.cs" />
     <Compile Include="scripts\Main.cs" />
     <Compile Include="scripts\Resource\Cursor.cs" />
     <Compile Include="scripts\Component\HealthBarComponent.cs" />
-    <Compile Include="scripts\UI\UI.cs" />
+    <Compile Include="scripts\UI\PlayerUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="scripts\Component\State\EnemyStatePursue.cs" />

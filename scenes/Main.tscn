@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/Main.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Zone/TestZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Resource/Cursor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/UI/UI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/UI/PlayerInventoryUI.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/UI/DialogueUI.tscn" type="PackedScene" id=6]
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -33,7 +31,3 @@ gui_snap_controls_to_pixels = false
 [node name="Cursor" parent="." instance=ExtResource( 3 )]
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
-
-[node name="PlayerInventoryUI" parent="." instance=ExtResource( 5 )]
-
-[node name="DialogueUI" parent="." instance=ExtResource( 6 )]

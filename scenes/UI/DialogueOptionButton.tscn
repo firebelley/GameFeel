@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
-[ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=2]
+[ext_resource path="res://scripts/UI/DialogueOptionButton.cs" type="Script" id=2]
+[ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -30,8 +31,8 @@ void fragment() {
 resource_local_to_scene = true
 shader = SubResource( 2 )
 shader_param/_cutoff = 0.0
-shader_param/_shadeColor = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
-shader_param/_sampleTexture = ExtResource( 2 )
+shader_param/_shadeColor = Color( 0.929412, 0.929412, 0.929412, 1 )
+shader_param/_sampleTexture = ExtResource( 3 )
 
 [node name="DialogueOptionButton" type="Button"]
 margin_right = 44.0
@@ -40,9 +41,13 @@ theme = ExtResource( 1 )
 custom_styles/focus = SubResource( 1 )
 text = "test"
 flat = true
+script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 show_behind_parent = true
 material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Tween" type="Tween" parent="."]

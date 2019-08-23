@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/DialogueOptionsContainer.cs" type="Script" id=2]
+[ext_resource path="res://scenes/UI/DialogueOptionButton.tscn" type="PackedScene" id=3]
 
 [node name="DialogueOptionsContainer" type="VBoxContainer"]
 margin_right = 180.0
@@ -10,3 +11,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
+
+[node name="ResourcePreloader" type="ResourcePreloader" parent="."]
+resources = [ PoolStringArray( "DialogueOptionButton" ), [ ExtResource( 3 ) ] ]

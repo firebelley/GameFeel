@@ -5,7 +5,7 @@ using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
-    public class PlayerInventoryUI : Control
+    public class PlayerInventoryUI : ToggleUI
     {
         private const string INPUT_INVENTORY = "inventory";
         private const string INPUT_DESELECT = "deselect";
@@ -14,8 +14,6 @@ namespace GameFeel.UI
 
         [Export]
         private NodePath _gridContainerPath;
-        [Export]
-        private NodePath _rootControlPath;
         [Export]
         private NodePath _animationPlayerPath;
         [Export]
@@ -27,24 +25,21 @@ namespace GameFeel.UI
         private GridContainer _gridContainer;
         private AnimationPlayer _animationPlayer;
         private Control _panelContainer;
-        private Control _rootControl;
         private Label _currencyLabel;
         private int _selectedIndex = -1;
 
         public override void _Ready()
         {
+            base._Ready();
             this.SetNodesByDeclaredNodePaths();
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             CreateInventoryCells();
 
-            _rootControl.Visible = false;
+            Close();
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemUpdated), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.CurrencyChanged), this, nameof(OnCurrencyChanged));
-            _rootControl.Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
-            _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
             _panelContainer.Connect("resized", this, nameof(OnPanelResized));
-            _panelContainer.Connect("gui_input", this, nameof(OnPanelGuiInput));
         }
 
         public override void _UnhandledInput(InputEvent evt)
@@ -52,8 +47,40 @@ namespace GameFeel.UI
             if (evt.IsActionPressed(INPUT_INVENTORY))
             {
                 GetTree().SetInputAsHandled();
-                _rootControl.Visible = !_rootControl.Visible;
+                if (Visible)
+                {
+                    Close();
+                }
+                else
+                {
+                    Open();
+                }
             }
+        }
+
+        protected override void Open()
+        {
+            base.Open();
+            Show();
+            if (_animationPlayer.IsPlaying())
+            {
+                _animationPlayer.Seek(0f, true);
+            }
+            _animationPlayer.Play(ANIM_BOUNCE_IN);
+            Camera.ClearShift();
+        }
+
+        protected override void Deselect()
+        {
+            base.Deselect();
+            CancelSelection();
+        }
+
+        protected override void Close()
+        {
+            base.Close();
+            Hide();
+            CancelSelection();
         }
 
         private void CreateInventoryCells()
@@ -118,45 +145,6 @@ namespace GameFeel.UI
             else if (PlayerInventory.Items[idx] != null)
             {
                 SelectIndex(idx);
-            }
-        }
-
-        private void OnRootControlVisibilityChanged()
-        {
-            if (!_rootControl.IsVisibleInTree())
-            {
-                CancelSelection();
-            }
-            else
-            {
-                if (_animationPlayer.IsPlaying())
-                {
-                    _animationPlayer.Seek(0f, true);
-                }
-                _animationPlayer.Play(ANIM_BOUNCE_IN);
-                Camera.ClearShift();
-            }
-        }
-
-        private void OnGuiInput(InputEvent evt)
-        {
-            if (evt.IsActionPressed(INPUT_DESELECT))
-            {
-                _rootControl.AcceptEvent();
-                CancelSelection();
-            }
-            else if (evt.IsActionPressed(INPUT_SELECT))
-            {
-                _rootControl.Visible = false;
-                _rootControl.AcceptEvent();
-            }
-        }
-
-        private void OnPanelGuiInput(InputEvent evt)
-        {
-            if (evt.IsActionPressed(INPUT_SELECT))
-            {
-                _panelContainer.AcceptEvent();
             }
         }
 

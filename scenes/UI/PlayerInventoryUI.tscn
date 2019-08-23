@@ -32,7 +32,6 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
 _gridContainerPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/MarginContainer/GridContainer")
-_rootControlPath = NodePath("MarginContainer")
 _animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
 _panelContainerPath = NodePath("MarginContainer/PanelContainer")
 _currencyLabelPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer/CurrencyLabel")

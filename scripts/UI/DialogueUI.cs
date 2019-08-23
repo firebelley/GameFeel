@@ -6,7 +6,7 @@ using GodotTools.Extension;
 
 namespace GameFeel.UI
 {
-    public class DialogueUI : Control
+    public class DialogueUI : ToggleUI
     {
         private const string INPUT_SELECT = "select";
 
@@ -28,12 +28,11 @@ namespace GameFeel.UI
 
         public override void _Ready()
         {
+            base._Ready();
             this.SetNodesByDeclaredNodePaths();
+            Close();
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
-            _dialogueWindow.Hide();
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventDialogueStarted), this, nameof(OnDialogueStarted));
-            Connect("gui_input", this, nameof(OnGuiInput));
-            Connect("visibility_changed", this, nameof(OnRootControlVisibilityChanged));
         }
 
         public override void _Process(float delta)
@@ -45,8 +44,22 @@ namespace GameFeel.UI
             }
             else
             {
-                Hide();
+                Close();
             }
+        }
+
+        protected override void Open()
+        {
+            base.Open();
+            Show();
+            ClearContainer();
+        }
+
+        protected override void Close()
+        {
+            base.Close();
+            Hide();
+            ClearContainer();
         }
 
         private void ConnectDialogueSignals(DialogueComponent dialogueComponent)
@@ -69,31 +82,13 @@ namespace GameFeel.UI
             _dialogueWindow.RectSize = Vector2.Zero;
         }
 
-        private void OnRootControlVisibilityChanged()
-        {
-            if (!Visible)
-            {
-                ClearContainer();
-            }
-        }
-
         private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
         {
-            ClearContainer();
+            Open();
             _activeDialogueComponent = dialogueComponent;
             ConnectDialogueSignals(dialogueComponent);
             dialogueComponent.ConnectDialogueUISignals(this);
             _dialogueWindow.Show();
-            Show();
-        }
-
-        private void OnGuiInput(InputEvent evt)
-        {
-            if (evt.IsActionPressed(INPUT_SELECT))
-            {
-                Hide();
-                AcceptEvent();
-            }
         }
 
         private void OnDialogueOptionSelected(int buttonIdx)
@@ -155,13 +150,13 @@ namespace GameFeel.UI
             }
             else
             {
-                Hide();
+                Close();
             }
         }
 
         private void OnDialogueLinesFinished()
         {
-            Hide();
+            Close();
         }
     }
 }

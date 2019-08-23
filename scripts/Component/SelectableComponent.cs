@@ -20,7 +20,7 @@ namespace GameFeel.Component
         [Export]
         private bool _requirePlayerNear;
         [Export]
-        private int _playerNearDistance = 50;
+        private int _playerNearDistance = 75;
 
         private static SelectableComponent _selected;
 

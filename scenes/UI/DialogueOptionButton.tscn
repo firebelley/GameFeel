@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="Shader" id=2]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float _cutoff : hint_range(0, 1);
+uniform vec4 _shadeColor : hint_color;
+uniform sampler2D _sampleTexture;
+
+void fragment() {
+	vec4 texColor = texture(TEXTURE, UV);
+	vec4 fadeColor = texture(_sampleTexture, UV);
+	
+	if (_cutoff <= fadeColor.r) {
+		COLOR.a = 0.0;
+	}
+	else {
+		COLOR.rgba = _shadeColor;
+		COLOR.a = 1.0 - fadeColor.r;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = SubResource( 2 )
+shader_param/_cutoff = 0.0
+shader_param/_shadeColor = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
+shader_param/_sampleTexture = ExtResource( 2 )
+
+[node name="DialogueOptionButton" type="Button"]
+margin_right = 44.0
+margin_bottom = 14.0
+theme = ExtResource( 1 )
+custom_styles/focus = SubResource( 1 )
+text = "test"
+flat = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+material = SubResource( 3 )
+anchor_right = 1.0
+anchor_bottom = 1.0

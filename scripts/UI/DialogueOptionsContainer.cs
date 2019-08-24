@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameFeel.Component.Subcomponent;
 using Godot;
 using GodotTools.Extension;
@@ -16,7 +17,7 @@ namespace GameFeel.UI
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
         }
 
-        public void LoadOptions(Godot.Collections.Array<DialogueItem> items)
+        public void LoadOptions(List<DialogueItem> items)
         {
             for (int i = 0; i < items.Count; i++)
             {

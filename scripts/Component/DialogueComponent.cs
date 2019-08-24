@@ -1,7 +1,6 @@
-using System.Linq;
+using System.Collections.Generic;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
-using GameFeel.UI;
 using Godot;
 using GodotTools.Extension;
 
@@ -25,15 +24,9 @@ namespace GameFeel.Component
             }
         }
 
-        public void ConnectDialogueUISignals(DialogueUI dialogueUI)
+        public List<DialogueItem> GetValidDialogueItems()
         {
-            this.DisconnectAllSignals(dialogueUI);
-            dialogueUI.Connect(nameof(DialogueUI.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
-        }
-
-        private Godot.Collections.Array<DialogueItem> GetValidDialogueItems()
-        {
-            var arrayOptions = new Godot.Collections.Array<DialogueItem>();
+            var arrayOptions = new List<DialogueItem>();
             foreach (var child in this.GetChildren<DialogueItem>())
             {
                 var valid = true;
@@ -53,16 +46,6 @@ namespace GameFeel.Component
         private void OnSelected()
         {
             GameEventDispatcher.DispatchDialogueStartedEvent(this);
-            EmitSignal(nameof(DialogueOptionsPresented), GetValidDialogueItems());
-        }
-
-        private void OnDialogueOptionSelected(DialogueItem dialogueItem)
-        {
-            var item = this.GetChildren<DialogueItem>().FirstOrDefault(x => x == dialogueItem);
-            if (IsInstanceValid(item))
-            {
-                EmitSignal(nameof(DialogueItemPresented), item);
-            }
         }
     }
 }

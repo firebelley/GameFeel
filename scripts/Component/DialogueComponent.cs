@@ -1,3 +1,4 @@
+using System.Linq;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using GameFeel.UI;
@@ -9,7 +10,7 @@ namespace GameFeel.Component
     public class DialogueComponent : Position2D
     {
         [Signal]
-        public delegate void DialogueOptionsPresented(Godot.Collections.Array<string> options);
+        public delegate void DialogueOptionsPresented(Godot.Collections.Array<DialogueItem> dialogueItems);
         [Signal]
         public delegate void DialogueItemPresented(DialogueItem dialogueItem);
 
@@ -30,12 +31,21 @@ namespace GameFeel.Component
             dialogueUI.Connect(nameof(DialogueUI.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 
-        private Godot.Collections.Array<string> GetDialogueOptionTitles()
+        private Godot.Collections.Array<DialogueItem> GetValidDialogueItems()
         {
-            var arrayOptions = new Godot.Collections.Array<string>();
+            var arrayOptions = new Godot.Collections.Array<DialogueItem>();
             foreach (var child in this.GetChildren<DialogueItem>())
             {
-                arrayOptions.Add(child.Title);
+                var valid = true;
+                if (!string.IsNullOrEmpty(child.RequiredQuestStageId))
+                {
+                    valid = QuestTracker.IsStageActive(child.RequiredQuestStageId);
+                }
+
+                if (valid)
+                {
+                    arrayOptions.Add(child);
+                }
             }
             return arrayOptions;
         }
@@ -43,13 +53,16 @@ namespace GameFeel.Component
         private void OnSelected()
         {
             GameEventDispatcher.DispatchDialogueStartedEvent(this);
-            EmitSignal(nameof(DialogueOptionsPresented), GetDialogueOptionTitles());
+            EmitSignal(nameof(DialogueOptionsPresented), GetValidDialogueItems());
         }
 
-        private void OnDialogueOptionSelected(int idx)
+        private void OnDialogueOptionSelected(DialogueItem dialogueItem)
         {
-            var dialogueItem = GetChild<DialogueItem>(idx);
-            EmitSignal(nameof(DialogueItemPresented), dialogueItem);
+            var item = this.GetChildren<DialogueItem>().FirstOrDefault(x => x == dialogueItem);
+            if (IsInstanceValid(item))
+            {
+                EmitSignal(nameof(DialogueItemPresented), item);
+            }
         }
     }
 }

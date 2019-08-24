@@ -16,6 +16,7 @@ namespace GameFeel.Singleton
         public const string PLAYER_INVENTORY_ITEM_ADDED = "aaa35184-7b8d-5544-a642-722a842e6b27";
         public const string ENTITY_KILLED = "2e51c8d6-47ab-55aa-a274-66ff242365d7";
         public const string DIALOGUE_STARTED = "a5fc634c-b6bb-5976-ab80-44bc7b9f7318";
+        public const string ITEM_TURNED_IN = "b9c562bc-d71c-5870-8c52-ea7e4ba5d81f";
 
         public static Dictionary<string, GameEvent> GameEventMapping { get; private set; } = new Dictionary<string, GameEvent>();
         public static GameEventDispatcher Instance { get; private set; }
@@ -37,6 +38,7 @@ namespace GameFeel.Singleton
             Instance = this;
             GameEventMapping.Add(PLAYER_INVENTORY_ITEM_ADDED, new GameEvent(PLAYER_INVENTORY_ITEM_ADDED, nameof(PLAYER_INVENTORY_ITEM_ADDED)));
             GameEventMapping.Add(ENTITY_KILLED, new GameEvent(ENTITY_KILLED, nameof(ENTITY_KILLED)));
+            GameEventMapping.Add(ITEM_TURNED_IN, new GameEvent(ITEM_TURNED_IN, nameof(ITEM_TURNED_IN)));
         }
 
         public static void DispatchEntityKilledEvent(string entityGuid)

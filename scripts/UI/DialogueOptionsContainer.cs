@@ -1,3 +1,4 @@
+using GameFeel.Component.Subcomponent;
 using Godot;
 using GodotTools.Extension;
 
@@ -6,7 +7,7 @@ namespace GameFeel.UI
     public class DialogueOptionsContainer : VBoxContainer
     {
         [Signal]
-        public delegate void DialogueOptionSelected(int idx);
+        public delegate void DialogueOptionSelected(DialogueItem dialogueItem);
 
         private ResourcePreloader _resourcePreloader;
 
@@ -15,14 +16,14 @@ namespace GameFeel.UI
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
         }
 
-        public void LoadOptions(Godot.Collections.Array<string> options)
+        public void LoadOptions(Godot.Collections.Array<DialogueItem> items)
         {
-            for (int i = 0; i < options.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 var button = _resourcePreloader.InstanceScene<DialogueOptionButton>();
-                button.Text = options[i];
+                button.Text = items[i].Title;
                 AddChild(button);
-                button.Connect("pressed", this, nameof(OnButtonPressed), new Godot.Collections.Array() { i });
+                button.Connect("pressed", this, nameof(OnButtonPressed), new Godot.Collections.Array() { items[i] });
 
                 if (i % 2 == 0)
                 {
@@ -31,9 +32,9 @@ namespace GameFeel.UI
             }
         }
 
-        private void OnButtonPressed(int idx)
+        private void OnButtonPressed(DialogueItem dialogueItem)
         {
-            EmitSignal(nameof(DialogueOptionSelected), idx);
+            EmitSignal(nameof(DialogueOptionSelected), dialogueItem);
         }
     }
 }

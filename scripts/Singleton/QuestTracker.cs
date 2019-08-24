@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Resource;
 using Godot;
+using GodotTools.Extension;
 using GodotTools.Util;
 using Newtonsoft.Json;
 
@@ -42,6 +44,11 @@ namespace GameFeel.Singleton
             {
                 Logger.Error("No quest with id " + questGuid + " exists");
             }
+        }
+
+        public static bool IsStageActive(string stageId)
+        {
+            return Instance.GetChildren<Quest>().FirstOrDefault(x => x.IsStageActive(stageId)) != null;
         }
 
         private void LoadQuests()

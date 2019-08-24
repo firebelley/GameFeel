@@ -26,7 +26,15 @@ _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
 _selectableComponentPath = NodePath("../SelectableComponent")
 
+[node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 3 )]
+Title = "Turn in Spider Legs"
+RequiredQuestStageId = "09b8ec61-14c0-49f7-9a5b-e9095a78dba0"
+
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 4 )]
+Text = "Do you have my spider legs?"
+
 [node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 3 )]
+editor/display_folded = true
 Title = "Spider Leg Soup"
 _questStarterComponentPath = NodePath("../../QuestStarterComponent")
 

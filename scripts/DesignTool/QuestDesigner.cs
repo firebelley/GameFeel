@@ -62,6 +62,8 @@ namespace GameFeel.DesignTool
                     return _resourcePreloader.InstanceScene<QuestEventPlayerInventoryItemAdded>();
                 case GameEventDispatcher.ENTITY_KILLED:
                     return _resourcePreloader.InstanceScene<QuestEventEntityKilled>();
+                case GameEventDispatcher.ITEM_TURNED_IN:
+                    return _resourcePreloader.InstanceScene<QuestEventItemTurnedIn>();
             }
             return null;
         }

@@ -15,6 +15,9 @@ namespace GameFeel.Component.Subcomponent
         [Export]
         public string Title { get; private set; }
 
+        [Export]
+        public string RequiredQuestStageId { get; private set; }
+
         // start a quest on dialogue finish
         [Export]
         private NodePath _questStarterComponentPath;

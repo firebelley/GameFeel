@@ -11,7 +11,7 @@ namespace GameFeel.UI
         private const string INPUT_SELECT = "select";
 
         [Signal]
-        public delegate void DialogueOptionSelected(int idx);
+        public delegate void DialogueOptionSelected(DialogueItem dialogueItem);
         [Signal]
         public delegate void LineAdvanceRequested(int idx);
 
@@ -91,16 +91,16 @@ namespace GameFeel.UI
             _dialogueWindow.Show();
         }
 
-        private void OnDialogueOptionSelected(int buttonIdx)
+        private void OnDialogueOptionSelected(DialogueComponent dialogueItem)
         {
-            EmitSignal(nameof(DialogueOptionSelected), buttonIdx);
+            EmitSignal(nameof(DialogueOptionSelected), dialogueItem);
         }
 
-        private void OnDialogueOptionsPresented(Godot.Collections.Array<string> options)
+        private void OnDialogueOptionsPresented(Godot.Collections.Array<DialogueItem> dialogueItems)
         {
             var container = _resourcePreloader.InstanceScene<DialogueOptionsContainer>();
             _dialogueContent.AddChild(container);
-            container.LoadOptions(options);
+            container.LoadOptions(dialogueItems);
             container.Connect(nameof(DialogueOptionsContainer.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 

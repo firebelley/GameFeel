@@ -36,6 +36,7 @@ Text = "Do you have my spider legs?"
 [node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 3 )]
 editor/display_folded = true
 Title = "Spider Leg Soup"
+ShowImmediately = true
 _questStarterComponentPath = NodePath("../../QuestStarterComponent")
 
 [node name="DialogueLine" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]

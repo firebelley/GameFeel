@@ -3,7 +3,8 @@
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/InventoryCell.cs" type="Script" id=2]
 [ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=3]
-[ext_resource path="res://resources/InventoryFont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=4]
+
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/UI/DialogueLineContainer.cs" type="Script" id=1]
+[ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=2]
 
 [node name="DialogueLineContainer" type="VBoxContainer"]
 margin_right = 180.0
@@ -15,7 +16,9 @@ _nextButtonPath = NodePath("ButtonContainer/NextButton")
 
 [node name="DialogueLabel" type="Label" parent="."]
 margin_right = 180.0
-margin_bottom = 14.0
+margin_bottom = 8.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 autowrap = true
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]

@@ -39,7 +39,6 @@ theme = ExtResource( 4 )
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-editor/display_folded = true
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 182.0
@@ -50,6 +49,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 164.0
 margin_bottom = 68.0
+custom_constants/separation = 0
+alignment = 1
 
 [node name="Control" type="Control" parent="PanelContainer"]
 margin_left = 10.0

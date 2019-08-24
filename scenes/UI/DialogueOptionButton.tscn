@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/UI/DialogueOptionButton.cs" type="Script" id=2]
-[ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=3]
+[ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/UI/DialogueOptionButton.cs" type="Script" id=3]
+[ext_resource path="res://resources/fonts/DialogueFontHover.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -32,16 +34,35 @@ resource_local_to_scene = true
 shader = SubResource( 2 )
 shader_param/_cutoff = 0.0
 shader_param/_shadeColor = Color( 0.929412, 0.929412, 0.929412, 1 )
-shader_param/_sampleTexture = ExtResource( 3 )
+shader_param/_sampleTexture = ExtResource( 5 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "breathe"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.05, 1.05 ), Vector2( 1, 1 ) ]
+}
 
 [node name="DialogueOptionButton" type="Button"]
 margin_right = 44.0
 margin_bottom = 14.0
 theme = ExtResource( 1 )
 custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 text = "test"
 flat = true
-script = ExtResource( 2 )
+script = ExtResource( 3 )
+_hoverFont = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -51,3 +72,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "breathe"
+anims/breathe = SubResource( 4 )

@@ -6,8 +6,9 @@
 [ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=4]
 [ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=5]
 [ext_resource path="res://assets/art/ui/currency.png" type="Texture" id=6]
-[ext_resource path="res://resources/InventoryFont.tres" type="DynamicFont" id=7]
+[ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=7]
 [ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
+
 
 [sub_resource type="StyleBoxTexture" id=1]
 content_margin_bottom = 8.0

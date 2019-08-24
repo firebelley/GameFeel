@@ -23,6 +23,11 @@ namespace GameFeel.UI
                 button.Text = options[i];
                 AddChild(button);
                 button.Connect("pressed", this, nameof(OnButtonPressed), new Godot.Collections.Array() { i });
+
+                if (i % 2 == 0)
+                {
+                    button.OffsetAnimation();
+                }
             }
         }
 

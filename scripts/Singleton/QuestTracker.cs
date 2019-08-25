@@ -21,6 +21,7 @@ namespace GameFeel.Singleton
         public static QuestTracker Instance { get; private set; }
 
         private static Dictionary<string, QuestSaveModel> _quests = new Dictionary<string, QuestSaveModel>();
+        private static HashSet<string> _unavailableQuests = new HashSet<string>();
 
         private static PackedScene _questScene;
 
@@ -35,10 +36,16 @@ namespace GameFeel.Singleton
         {
             if (_quests.ContainsKey(questGuid))
             {
+                if (!IsQuestAvailable(questGuid))
+                {
+                    return;
+                }
+
                 var quest = _questScene.Instance() as Quest;
                 Instance.AddChild(quest);
                 Instance.EmitSignal(nameof(QuestAdded), quest);
                 quest.Start(_quests[questGuid]);
+                _unavailableQuests.Add(questGuid);
             }
             else
             {
@@ -49,6 +56,11 @@ namespace GameFeel.Singleton
         public static bool IsStageActive(string stageId)
         {
             return Instance.GetChildren<Quest>().FirstOrDefault(x => x.IsStageActive(stageId)) != null;
+        }
+
+        public static bool IsQuestAvailable(string questGuid)
+        {
+            return !_unavailableQuests.Contains(questGuid);
         }
 
         private void LoadQuests()

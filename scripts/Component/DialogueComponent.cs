@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using Godot;
@@ -8,11 +9,6 @@ namespace GameFeel.Component
 {
     public class DialogueComponent : Position2D
     {
-        [Signal]
-        public delegate void DialogueOptionsPresented(Godot.Collections.Array<DialogueItem> dialogueItems);
-        [Signal]
-        public delegate void DialogueItemPresented(DialogueItem dialogueItem);
-
         [Export]
         private NodePath _selectableComponentPath;
 
@@ -27,20 +23,28 @@ namespace GameFeel.Component
         public List<DialogueItem> GetValidDialogueItems()
         {
             var arrayOptions = new List<DialogueItem>();
-            foreach (var child in this.GetChildren<DialogueItem>())
+            foreach (var di in this.GetChildren<DialogueItem>())
             {
                 var valid = true;
-                if (!string.IsNullOrEmpty(child.RequiredQuestStageId))
+                if (!string.IsNullOrEmpty(di.RequiredQuestStageId))
                 {
-                    valid = QuestTracker.IsStageActive(child.RequiredQuestStageId);
+                    valid = QuestTracker.IsStageActive(di.RequiredQuestStageId);
                 }
+
+                valid = valid && !HasActiveQuest(di);
 
                 if (valid)
                 {
-                    arrayOptions.Add(child);
+                    arrayOptions.Add(di);
                 }
             }
             return arrayOptions;
+        }
+
+        private bool HasActiveQuest(DialogueItem dialogueItem)
+        {
+            var questStarters = dialogueItem.GetValidLines().Where(x => x.IsQuestStarter() && !x.IsQuestAvailable());
+            return questStarters.Count() > 0;
         }
 
         private void OnSelected()

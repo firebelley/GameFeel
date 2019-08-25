@@ -12,11 +12,6 @@ namespace GameFeel.UI
     {
         private const string INPUT_SELECT = "select";
 
-        [Signal]
-        public delegate void DialogueOptionSelected(DialogueItem dialogueItem);
-        [Signal]
-        public delegate void LineAdvanceRequested(int idx);
-
         [Export]
         private NodePath _dialogueWindowPath;
         [Export]
@@ -147,12 +142,18 @@ namespace GameFeel.UI
                 _dialogueContent.AddChild(container);
                 container.DisplayLine(line.Text);
 
-                // if (line.LineStartsQuest(dialogueLine.GetIndex()))
-                // {
-                //     container.ShowQuestAcceptanceButtons();
-                // }
-                container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
-                // container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { dialogueLine.GetIndex() + 1 });
+                switch (line.LineContainerType)
+                {
+                    case DialogueLine.LineType.NORMAL:
+                        container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
+                        break;
+                    case DialogueLine.LineType.QUEST_ACCEPTANCE:
+                        container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
+                        container.ShowQuestAcceptanceButtons();
+                        break;
+                    case DialogueLine.LineType.TURN_IN:
+                        break;
+                }
             }
             else
             {
@@ -171,15 +172,16 @@ namespace GameFeel.UI
             ShowLine();
         }
 
-        private void OnQuestAcceptanceIndicated(bool accepted, int nextIdx)
+        private void OnQuestAcceptanceIndicated(bool accepted, DialogueLine dialogueLine)
         {
             if (accepted)
             {
-                EmitSignal(nameof(LineAdvanceRequested), nextIdx);
+                dialogueLine.StartQuest();
+                ShowLine();
             }
             else
             {
-                Close();
+                ShowItem();
             }
         }
     }

@@ -24,14 +24,16 @@ shader_param/_valid = null
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 2 )]
+editor/display_folded = true
 Title = "Turn in Spider Legs"
 RequiredQuestStageId = "214d983c-541e-43f9-a55e-51d2be5ad646"
 ShowImmediately = true
 
 [node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 3 )]
-Text = "Do you have my spider legs?"
+Text = "I told you to get spider legs!"
 
 [node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 2 )]
+editor/display_folded = true
 Title = "Spider Leg Soup"
 ShowImmediately = true
 
@@ -46,7 +48,13 @@ LineContainerType = 2
 _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 
 [node name="DialogueItem2" parent="DialogueComponent" instance=ExtResource( 2 )]
-Title = "Second Option"
+Title = "Turn in Spider Legs"
+RequiredQuestStageId = "09b8ec61-14c0-49f7-9a5b-e9095a78dba0"
+ShowImmediately = true
+
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem2" instance=ExtResource( 3 )]
+Text = "I'll take those!"
+LineContainerType = 1
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 5 )]
 editor/display_folded = true

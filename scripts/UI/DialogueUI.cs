@@ -140,20 +140,9 @@ namespace GameFeel.UI
                 var line = _linesToDisplay.Dequeue();
                 var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
                 _dialogueContent.AddChild(container);
-                container.DisplayLine(line.Text);
-
-                switch (line.LineContainerType)
-                {
-                    case DialogueLine.LineType.NORMAL:
-                        container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
-                        break;
-                    case DialogueLine.LineType.QUEST_ACCEPTANCE:
-                        container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
-                        container.ShowQuestAcceptanceButtons();
-                        break;
-                    case DialogueLine.LineType.TURN_IN:
-                        break;
-                }
+                container.DisplayLine(line);
+                container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
+                container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
             }
             else
             {

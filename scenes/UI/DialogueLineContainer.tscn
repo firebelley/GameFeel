@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/UI/DialogueLineContainer.cs" type="Script" id=1]
 [ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scenes/UI/DialogueOptionButton.tscn" type="PackedScene" id=3]
 
 [node name="DialogueLineContainer" type="VBoxContainer"]
 margin_right = 180.0
@@ -22,27 +23,24 @@ custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 autowrap = true
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
-margin_top = 44.0
+margin_top = 50.0
 margin_right = 180.0
 margin_bottom = 64.0
 size_flags_vertical = 10
 
-[node name="DeclineButton" type="Button" parent="ButtonContainer"]
-margin_right = 61.0
-margin_bottom = 20.0
+[node name="DeclineButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+margin_right = 68.0
 size_flags_horizontal = 3
 text = "Decline"
 
-[node name="AcceptButton" type="Button" parent="ButtonContainer"]
-margin_left = 65.0
-margin_right = 121.0
-margin_bottom = 20.0
+[node name="AcceptButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+margin_left = 72.0
+margin_right = 132.0
 size_flags_horizontal = 3
 text = "Accept"
 
-[node name="NextButton" type="Button" parent="ButtonContainer"]
-margin_left = 125.0
+[node name="NextButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+margin_left = 136.0
 margin_right = 180.0
-margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Next"

@@ -1,3 +1,4 @@
+using GameFeel.Component.Subcomponent;
 using Godot;
 using GodotTools.Extension;
 
@@ -31,16 +32,31 @@ namespace GameFeel.UI
             _nextButton.Connect("pressed", this, nameof(OnNextButtonPressed));
             _acceptButton.Connect("pressed", this, nameof(OnAcceptButtonPressed));
             _declineButton.Connect("pressed", this, nameof(OnDeclineButtonPressed));
+
+            _nextButton.RectPivotOffset = _nextButton.RectSize / 2f;
+            _acceptButton.RectPivotOffset = _acceptButton.RectSize / 2f;
+            _declineButton.RectPivotOffset = _declineButton.RectSize / 2f;
         }
 
-        public void DisplayLine(string line)
+        public void DisplayLine(DialogueLine line)
         {
             HideButtons();
-            _dialogueLabel.Text = line;
-            _nextButton.Show();
+            _dialogueLabel.Text = line.Text;
+            switch (line.LineContainerType)
+            {
+                case DialogueLine.LineType.NORMAL:
+                    _nextButton.Show();
+                    break;
+                case DialogueLine.LineType.QUEST_ACCEPTANCE:
+                    ShowQuestAcceptanceButtons();
+                    break;
+                case DialogueLine.LineType.TURN_IN:
+                    break;
+            }
+
         }
 
-        public void ShowQuestAcceptanceButtons()
+        private void ShowQuestAcceptanceButtons()
         {
             HideButtons();
             _acceptButton.Show();

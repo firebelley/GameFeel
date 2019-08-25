@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/UI/DialogueLineContainer.cs" type="Script" id=1]
 [ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=2]
-[ext_resource path="res://scenes/UI/DialogueOptionButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/UI/DialogueOptionButton.tscn" type="PackedScene" id=4]
 
 [node name="DialogueLineContainer" type="VBoxContainer"]
 margin_right = 180.0
@@ -10,37 +11,73 @@ margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
-_dialogueLabelPath = NodePath("DialogueLabel")
-_acceptButtonPath = NodePath("ButtonContainer/AcceptButton")
-_declineButtonPath = NodePath("ButtonContainer/DeclineButton")
-_nextButtonPath = NodePath("ButtonContainer/NextButton")
+_dialogueLabelPath = NodePath("VBoxContainer/DialogueLabel")
+_acceptButtonPath = NodePath("VBoxContainer/ButtonContainer/AcceptButton")
+_declineButtonPath = NodePath("VBoxContainer/ButtonContainer/DeclineButton")
+_nextButtonPath = NodePath("VBoxContainer/ButtonContainer/NextButton")
+_turnInButtonPath = NodePath("VBoxContainer/ButtonContainer/TurnInButton")
+_notYetButtonPath = NodePath("VBoxContainer/ButtonContainer/NotYetButton")
+_turnInContainerPath = NodePath("VBoxContainer/TurnInContainer")
+_inventoryCellPath = NodePath("VBoxContainer/TurnInContainer/InventoryCell")
 
-[node name="DialogueLabel" type="Label" parent="."]
-margin_right = 180.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 324.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DialogueLabel" type="Label" parent="VBoxContainer"]
+margin_right = 324.0
 margin_bottom = 8.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 autowrap = true
 
-[node name="ButtonContainer" type="HBoxContainer" parent="."]
+[node name="TurnInContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_left = 146.0
+margin_top = 12.0
+margin_right = 178.0
+margin_bottom = 44.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="InventoryCell" parent="VBoxContainer/TurnInContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 32.0
+margin_bottom = 32.0
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 50.0
-margin_right = 180.0
+margin_right = 324.0
 margin_bottom = 64.0
 size_flags_vertical = 10
 
-[node name="DeclineButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+[node name="DeclineButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
 margin_right = 68.0
 size_flags_horizontal = 3
 text = "Decline"
 
-[node name="AcceptButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+[node name="AcceptButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
 margin_left = 72.0
 margin_right = 132.0
 size_flags_horizontal = 3
 text = "Accept"
 
-[node name="NextButton" parent="ButtonContainer" instance=ExtResource( 3 )]
+[node name="NextButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
 margin_left = 136.0
 margin_right = 180.0
 size_flags_horizontal = 3
 text = "Next"
+
+[node name="TurnInButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
+margin_left = 184.0
+margin_right = 252.0
+size_flags_horizontal = 3
+text = "Turn In"
+
+[node name="NotYetButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
+margin_left = 256.0
+margin_right = 324.0
+size_flags_horizontal = 3
+text = "Not Yet"

@@ -11,20 +11,22 @@ namespace GameFeel.Singleton
     {
         public const string PRIMARY_CURRENCY_ID = "64d66021-351d-571b-8af4-97c503155558";
 
-        public static Dictionary<string, ResourceInfo> LootItemIdToInfo = new Dictionary<string, ResourceInfo>();
-        public static Dictionary<string, ResourceInfo> EntityIdToInfo = new Dictionary<string, ResourceInfo>();
+        public static Dictionary<string, Metadata> LootItemIdToMetadata = new Dictionary<string, Metadata>();
+        public static Dictionary<string, Metadata> EntityIdToMetadata = new Dictionary<string, Metadata>();
 
-        public struct ResourceInfo
+        public struct Metadata
         {
             public string Id { get; private set; }
             public string DisplayName { get; private set; }
             public string ResourcePath { get; private set; }
+            public Texture Icon { get; private set; }
 
-            public ResourceInfo(string id, string displayName, string resourcePath)
+            public Metadata(string id, string displayName, string resourcePath, Texture icon)
             {
                 Id = id;
                 DisplayName = displayName;
                 ResourcePath = resourcePath;
+                Icon = icon;
             }
         }
 
@@ -75,8 +77,8 @@ namespace GameFeel.Singleton
             var node = GD.Load<PackedScene>(fullPath).Instance();
             if (node is LootItem li && li.Id != "Null")
             {
-                var info = new ResourceInfo(li.Id, li.DisplayName, fullPath);
-                LootItemIdToInfo[li.Id] = info;
+                var info = new Metadata(li.Id, li.DisplayName, fullPath, li.Icon);
+                LootItemIdToMetadata[li.Id] = info;
             }
             node.QueueFree();
         }
@@ -88,8 +90,8 @@ namespace GameFeel.Singleton
             var entityId = node.GetFirstNodeOfType<DeathEffectComponent>()?.EntityId ?? string.Empty;
             if (!string.IsNullOrEmpty(entityId))
             {
-                var info = new ResourceInfo(entityId, node.GetName(), fullPath);
-                EntityIdToInfo[entityId] = info;
+                var info = new Metadata(entityId, node.GetName(), fullPath, null);
+                EntityIdToMetadata[entityId] = info;
             }
             node.QueueFree();
         }

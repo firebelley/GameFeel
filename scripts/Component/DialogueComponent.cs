@@ -26,9 +26,9 @@ namespace GameFeel.Component
             foreach (var di in this.GetChildren<DialogueItem>())
             {
                 var valid = true;
-                if (!string.IsNullOrEmpty(di.RequiredQuestStageId))
+                if (!string.IsNullOrEmpty(di.ActiveQuestModelId))
                 {
-                    valid = QuestTracker.IsStageActive(di.RequiredQuestStageId);
+                    valid = QuestTracker.GetActiveModel(di.ActiveQuestModelId) != null;
                 }
 
                 valid = valid && !HasActiveQuest(di);

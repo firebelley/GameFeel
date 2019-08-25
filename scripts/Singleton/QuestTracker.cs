@@ -53,9 +53,9 @@ namespace GameFeel.Singleton
             }
         }
 
-        public static bool IsStageActive(string stageId)
+        public static QuestModel GetActiveModel(string modelId)
         {
-            return Instance.GetChildren<Quest>().FirstOrDefault(x => x.IsStageActive(stageId)) != null;
+            return Instance.GetChildren<Quest>().Select(x => x.GetActiveModel(modelId)).FirstOrDefault(x => x != null);
         }
 
         public static bool IsQuestAvailable(string questGuid)

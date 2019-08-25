@@ -10,7 +10,7 @@ namespace GameFeel.Component.Subcomponent
         public string Title { get; private set; }
 
         [Export]
-        public string RequiredQuestStageId { get; private set; }
+        public string ActiveQuestModelId { get; private set; }
 
         [Export]
         public bool ShowImmediately { get; private set; }

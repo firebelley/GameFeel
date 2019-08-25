@@ -55,9 +55,14 @@ namespace GameFeel.Resource
             return 0;
         }
 
-        public bool IsStageActive(string stageId)
+        public QuestModel GetActiveModel(string modelId)
         {
-            return _stageStack.Peek().Id == stageId;
+            QuestModel result = null;
+            if (_stageStack.Count > 0)
+            {
+                result = _stageStack.Peek().Id == modelId ? _stageStack.Peek() : null;
+            }
+            return result ?? _activeModels.FirstOrDefault(x => x.Id == modelId);
         }
 
         private void Activate(QuestModel model)

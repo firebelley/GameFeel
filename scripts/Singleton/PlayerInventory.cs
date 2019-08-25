@@ -44,6 +44,14 @@ namespace GameFeel.Singleton
             Connect(nameof(ItemAdded), this, nameof(OnItemAdded));
         }
 
+        public static InventoryItem InventoryItemFromLootMetadata(MetadataLoader.Metadata resource)
+        {
+            var item = new InventoryItem();
+            item.Icon = resource.Icon;
+            item.Id = resource.Id;
+            return item;
+        }
+
         public static void AddItem(LootItem lootItem)
         {
             var item = new InventoryItem();
@@ -55,20 +63,9 @@ namespace GameFeel.Singleton
 
         public static void AddItem(string itemId, int amount)
         {
-            if (!MetadataLoader.LootItemIdToInfo.ContainsKey(itemId))
-            {
-                Logger.Error("No item with id " + itemId + " was loaded");
-                return;
-            }
-            var info = MetadataLoader.LootItemIdToInfo[itemId];
-            var lootItem = (GD.Load(info.ResourcePath) as PackedScene).Instance() as LootItem;
-
-            var item = new InventoryItem();
+            var metaData = MetadataLoader.LootItemIdToMetadata[itemId];
+            var item = InventoryItemFromLootMetadata(metaData);
             item.Amount = amount;
-            item.Icon = lootItem.Icon;
-            item.Id = itemId;
-
-            lootItem.QueueFree();
             AddItem(item);
         }
 

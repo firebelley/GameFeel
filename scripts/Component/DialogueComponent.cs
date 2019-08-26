@@ -34,7 +34,7 @@ namespace GameFeel.Component
                     valid = QuestTracker.GetActiveModel(di.ActiveQuestModelId) != null;
                 }
 
-                valid = valid && !HasActiveQuest(di);
+                valid = valid && !IsQuestActive(di);
 
                 if (valid)
                 {
@@ -44,7 +44,7 @@ namespace GameFeel.Component
             return arrayOptions;
         }
 
-        private bool HasActiveQuest(DialogueItem dialogueItem)
+        private bool IsQuestActive(DialogueItem dialogueItem)
         {
             var questStarters = dialogueItem.GetValidLines().Where(x => x.IsQuestStarter() && !x.IsQuestAvailable());
             return questStarters.Count() > 0;

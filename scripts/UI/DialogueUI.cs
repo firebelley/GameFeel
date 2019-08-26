@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GameFeel.Component;
 using GameFeel.Component.Subcomponent;
+using GameFeel.Data.Model;
+using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -178,11 +180,13 @@ namespace GameFeel.UI
 
         private void OnQuestTurnInIndicated(DialogueLine dialogueLine)
         {
-            // TODO: figure out how to actually send the event to remove the player items
-            // I don't want to work with models in here
-            // Find another way to check turn in validity and accept the event and advance the quest
-            // maybe create a method in Quest.cs that can check the validity of a quest event model's completion
-            // emit the turn in signal from the quest itself (?)
+            var model = dialogueLine.GetAssociatedQuestModel();
+            if (Quest.IsQuestEventReadyForCompletion(model))
+            {
+                var evt = model as QuestEventModel;
+                GameEventDispatcher.DispatchItemTurnedInEvent(evt.Id, evt.ItemId, evt.Required);
+                AdvanceLine();
+            }
         }
     }
 }

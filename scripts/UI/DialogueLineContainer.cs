@@ -1,5 +1,6 @@
 using GameFeel.Component.Subcomponent;
 using GameFeel.Data.Model;
+using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -71,7 +72,7 @@ namespace GameFeel.UI
                     break;
                 case DialogueLine.LineType.TURN_IN:
                     SetupInventoryCell(line);
-                    ShowTurnIn();
+                    ShowTurnIn(line);
                     break;
             }
         }
@@ -83,12 +84,16 @@ namespace GameFeel.UI
             _declineButton.Show();
         }
 
-        private void ShowTurnIn()
+        private void ShowTurnIn(DialogueLine line)
         {
             HideButtons();
             _turnInContainer.Show();
-            _turnInButton.Show();
             _notYetButton.Show();
+
+            if (Quest.IsQuestEventReadyForCompletion(line.GetAssociatedQuestModel()))
+            {
+                _turnInButton.Show();
+            }
         }
 
         private void HideButtons()

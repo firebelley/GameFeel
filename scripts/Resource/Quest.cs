@@ -35,6 +35,19 @@ namespace GameFeel.Resource
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
         }
 
+        public static bool IsQuestEventReadyForCompletion(QuestModel questModel)
+        {
+            if (questModel is QuestEventModel qem)
+            {
+                switch (qem.EventId)
+                {
+                    case GameEventDispatcher.ITEM_TURNED_IN:
+                        return PlayerInventory.GetItemCount(qem.ItemId) >= qem.Required;
+                }
+            }
+            return false;
+        }
+
         public void Start(QuestSaveModel questSaveModel)
         {
             _questSaveModel = questSaveModel;

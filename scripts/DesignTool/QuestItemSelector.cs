@@ -15,8 +15,8 @@ namespace GameFeel.DesignTool
 
         private ItemList _itemList;
         private WindowDialog _windowDialog;
-        private List<MetadataLoader.ResourceInfo> _items;
-        private Dictionary<string, MetadataLoader.ResourceInfo> _sourceDict = new Dictionary<string, MetadataLoader.ResourceInfo>();
+        private List<MetadataLoader.Metadata> _items;
+        private Dictionary<string, MetadataLoader.Metadata> _sourceDict = new Dictionary<string, MetadataLoader.Metadata>();
 
         private enum ItemType
         {
@@ -32,10 +32,10 @@ namespace GameFeel.DesignTool
             switch (_itemType)
             {
                 case ItemType.LOOT:
-                    _sourceDict = MetadataLoader.LootItemIdToInfo;
+                    _sourceDict = MetadataLoader.LootItemIdToMetadata;
                     break;
                 case ItemType.ENTITY:
-                    _sourceDict = MetadataLoader.EntityIdToInfo;
+                    _sourceDict = MetadataLoader.EntityIdToMetadata;
                     break;
             }
 

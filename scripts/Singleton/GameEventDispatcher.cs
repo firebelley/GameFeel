@@ -11,6 +11,8 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void EventPlayerInventoryItemAdded(string eventGuid, string itemGuid);
         [Signal]
+        public delegate void EventItemTurnedIn(string eventGuid, string modelId, string itemGuid, int amount);
+        [Signal]
         public delegate void EventDialogueStarted(string eventGuid, DialogueComponent dialogueComponent);
 
         public const string PLAYER_INVENTORY_ITEM_ADDED = "aaa35184-7b8d-5544-a642-722a842e6b27";
@@ -39,6 +41,7 @@ namespace GameFeel.Singleton
             GameEventMapping.Add(PLAYER_INVENTORY_ITEM_ADDED, new GameEvent(PLAYER_INVENTORY_ITEM_ADDED, nameof(PLAYER_INVENTORY_ITEM_ADDED)));
             GameEventMapping.Add(ENTITY_KILLED, new GameEvent(ENTITY_KILLED, nameof(ENTITY_KILLED)));
             GameEventMapping.Add(ITEM_TURNED_IN, new GameEvent(ITEM_TURNED_IN, nameof(ITEM_TURNED_IN)));
+            GameEventMapping.Add(DIALOGUE_STARTED, new GameEvent(DIALOGUE_STARTED, nameof(DIALOGUE_STARTED)));
         }
 
         public static void DispatchEntityKilledEvent(string entityGuid)
@@ -49,6 +52,11 @@ namespace GameFeel.Singleton
         public static void DispatchPlayerInventoryItemAddedEvent(string itemGuid)
         {
             Instance.EmitSignal(nameof(EventPlayerInventoryItemAdded), PLAYER_INVENTORY_ITEM_ADDED, itemGuid);
+        }
+
+        public static void DispatchItemTurnedInEvent(string modelId, string itemGuid, int amount)
+        {
+            Instance.EmitSignal(nameof(EventItemTurnedIn), ITEM_TURNED_IN, modelId, itemGuid, amount);
         }
 
         public static void DispatchDialogueStartedEvent(DialogueComponent dialogueComponent)

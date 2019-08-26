@@ -1,5 +1,10 @@
+using GameFeel.Component.Subcomponent;
+using GameFeel.Data.Model;
+using GameFeel.Resource;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
+using GodotTools.Util;
 
 namespace GameFeel.UI
 {
@@ -9,6 +14,8 @@ namespace GameFeel.UI
         public delegate void NextButtonPressed();
         [Signal]
         public delegate void QuestAcceptanceIndicated(bool accepted);
+        [Signal]
+        public delegate void QuestTurnInIndicated();
 
         [Export]
         private NodePath _dialogueLabelPath;
@@ -18,11 +25,23 @@ namespace GameFeel.UI
         private NodePath _declineButtonPath;
         [Export]
         private NodePath _nextButtonPath;
+        [Export]
+        private NodePath _turnInButtonPath;
+        [Export]
+        private NodePath _notYetButtonPath;
+        [Export]
+        private NodePath _turnInContainerPath;
+        [Export]
+        private NodePath _inventoryCellPath;
 
         private Label _dialogueLabel;
         private Button _acceptButton;
         private Button _declineButton;
         private Button _nextButton;
+        private Button _turnInButton;
+        private Button _notYetButton;
+        private Container _turnInContainer;
+        private InventoryCell _inventoryCell;
 
         public override void _Ready()
         {
@@ -31,20 +50,50 @@ namespace GameFeel.UI
             _nextButton.Connect("pressed", this, nameof(OnNextButtonPressed));
             _acceptButton.Connect("pressed", this, nameof(OnAcceptButtonPressed));
             _declineButton.Connect("pressed", this, nameof(OnDeclineButtonPressed));
+            _turnInButton.Connect("pressed", this, nameof(OnTurnInButtonPressed));
+            _notYetButton.Connect("pressed", this, nameof(OnNextButtonPressed));
+
+            _nextButton.RectPivotOffset = _nextButton.RectSize / 2f;
+            _acceptButton.RectPivotOffset = _acceptButton.RectSize / 2f;
+            _declineButton.RectPivotOffset = _declineButton.RectSize / 2f;
         }
 
-        public void DisplayLine(string line)
+        public void DisplayLine(DialogueLine line)
         {
             HideButtons();
-            _dialogueLabel.Text = line;
-            _nextButton.Show();
+            _dialogueLabel.Text = line.Text;
+            switch (line.LineContainerType)
+            {
+                case DialogueLine.LineType.NORMAL:
+                    _nextButton.Show();
+                    break;
+                case DialogueLine.LineType.QUEST_ACCEPTANCE:
+                    ShowQuestAcceptanceButtons();
+                    break;
+                case DialogueLine.LineType.TURN_IN:
+                    SetupInventoryCell(line);
+                    ShowTurnIn(line);
+                    break;
+            }
         }
 
-        public void ShowQuestAcceptanceButtons()
+        private void ShowQuestAcceptanceButtons()
         {
             HideButtons();
             _acceptButton.Show();
             _declineButton.Show();
+        }
+
+        private void ShowTurnIn(DialogueLine line)
+        {
+            HideButtons();
+            _turnInContainer.Show();
+            _notYetButton.Show();
+
+            if (Quest.IsQuestEventReadyForCompletion(line.GetAssociatedQuestModel()))
+            {
+                _turnInButton.Show();
+            }
         }
 
         private void HideButtons()
@@ -52,6 +101,30 @@ namespace GameFeel.UI
             _acceptButton.Hide();
             _declineButton.Hide();
             _nextButton.Hide();
+            _turnInButton.Hide();
+            _notYetButton.Hide();
+            _turnInContainer.Hide();
+        }
+
+        private void SetupInventoryCell(DialogueLine dialogueLine)
+        {
+            var model = dialogueLine.GetAssociatedQuestModel();
+            if (model == null)
+            {
+                Logger.Error("Could not find associated quest model");
+                return;
+            }
+            if (model is QuestEventModel qem)
+            {
+                var metadata = MetadataLoader.LootItemIdToMetadata[qem.ItemId];
+                var item = PlayerInventory.InventoryItemFromLootMetadata(metadata);
+                item.Amount = qem.Required;
+                _inventoryCell.SetInventoryItem(item);
+            }
+            else
+            {
+                Logger.Error("Could not parse model as an event model " + model.Id);
+            }
         }
 
         private void OnNextButtonPressed()
@@ -67,6 +140,11 @@ namespace GameFeel.UI
         private void OnDeclineButtonPressed()
         {
             EmitSignal(nameof(QuestAcceptanceIndicated), false);
+        }
+
+        private void OnTurnInButtonPressed()
+        {
+            EmitSignal(nameof(QuestTurnInIndicated));
         }
     }
 }

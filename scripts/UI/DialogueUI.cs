@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using GameFeel.Component;
 using GameFeel.Component.Subcomponent;
+using GameFeel.Data.Model;
+using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -10,21 +14,17 @@ namespace GameFeel.UI
     {
         private const string INPUT_SELECT = "select";
 
-        [Signal]
-        public delegate void DialogueOptionSelected(DialogueItem dialogueItem);
-        [Signal]
-        public delegate void LineAdvanceRequested(int idx);
-
         [Export]
         private NodePath _dialogueWindowPath;
         [Export]
         private NodePath _dialogueContentPath;
 
+        private Queue<DialogueItem> _itemsToDisplay = new Queue<DialogueItem>();
+        private Queue<DialogueLine> _linesToDisplay = new Queue<DialogueLine>();
         private ResourcePreloader _resourcePreloader;
         private Control _dialogueWindow;
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
-        private DialogueItem _activeDialogueItem;
 
         public override void _Ready()
         {
@@ -39,8 +39,7 @@ namespace GameFeel.UI
         {
             if (IsInstanceValid(_activeDialogueComponent))
             {
-                var pos = _activeDialogueComponent.GetGlobalTransformWithCanvas().origin / Main.UI_TO_GAME_DISPLAY_RATIO;
-                _dialogueWindow.RectPosition = pos - new Vector2(_dialogueWindow.RectSize.x / 2f, _dialogueWindow.RectSize.y);
+                UpdateBubblePosition();
             }
             else
             {
@@ -52,21 +51,22 @@ namespace GameFeel.UI
         {
             base.Open();
             Show();
-            ClearContainer();
+            ClearAll();
+            SetProcess(true);
         }
 
         protected override void Close()
         {
             base.Close();
             Hide();
-            ClearContainer();
+            ClearAll();
+            SetProcess(false);
         }
 
-        private void ConnectDialogueSignals(DialogueComponent dialogueComponent)
+        private void UpdateBubblePosition()
         {
-            this.DisconnectAllSignals(dialogueComponent);
-            dialogueComponent.Connect(nameof(DialogueComponent.DialogueOptionsPresented), this, nameof(OnDialogueOptionsPresented));
-            dialogueComponent.Connect(nameof(DialogueComponent.DialogueItemPresented), this, nameof(OnDialogueItemPresented));
+            var pos = _activeDialogueComponent.GetGlobalTransformWithCanvas().origin / Main.UI_TO_GAME_DISPLAY_RATIO;
+            _dialogueWindow.RectPosition = pos - new Vector2(_dialogueWindow.RectSize.x / 2f, _dialogueWindow.RectSize.y);
         }
 
         private void ClearContainer()
@@ -82,81 +82,111 @@ namespace GameFeel.UI
             _dialogueWindow.RectSize = Vector2.Zero;
         }
 
+        private void ClearAll()
+        {
+            ClearContainer();
+            _activeDialogueComponent = null;
+            _itemsToDisplay.Clear();
+            _linesToDisplay.Clear();
+        }
+
         private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
         {
             Open();
             _activeDialogueComponent = dialogueComponent;
-            ConnectDialogueSignals(dialogueComponent);
-            dialogueComponent.ConnectDialogueUISignals(this);
-            _dialogueWindow.Show();
+            InitializeContent();
         }
 
-        private void OnDialogueOptionSelected(DialogueComponent dialogueItem)
+        private void InitializeContent()
         {
-            EmitSignal(nameof(DialogueOptionSelected), dialogueItem);
+            var validItems = _activeDialogueComponent.GetValidDialogueItems();
+            foreach (var item in validItems.Where(x => x.ShowImmediately))
+            {
+                _itemsToDisplay.Enqueue(item);
+            }
+            AdvanceItem();
+            UpdateBubblePosition();
         }
 
-        private void OnDialogueOptionsPresented(Godot.Collections.Array<DialogueItem> dialogueItems)
+        private void ShowNavigation()
         {
+            ClearContainer();
             var container = _resourcePreloader.InstanceScene<DialogueOptionsContainer>();
             _dialogueContent.AddChild(container);
-            container.LoadOptions(dialogueItems);
+            container.LoadOptions(_activeDialogueComponent.GetValidDialogueItems());
+            container.SetIntroductionText(_activeDialogueComponent.Introduction);
             container.Connect(nameof(DialogueOptionsContainer.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 
-        private void OnDialogueItemPresented(DialogueItem dialogueItem)
+        private void AdvanceItem()
         {
-            if (IsInstanceValid(_activeDialogueItem))
+            if (_itemsToDisplay.Count > 0)
             {
-                _activeDialogueItem.DisconnectAllSignals(this);
-            }
-
-            _activeDialogueItem = dialogueItem;
-            ClearContainer();
-
-            this.DisconnectAllSignals(dialogueItem);
-            dialogueItem.Connect(nameof(DialogueItem.LinePresented), this, nameof(OnDialogueLinePresented));
-            dialogueItem.Connect(nameof(DialogueItem.LinesFinished), this, nameof(OnDialogueLinesFinished));
-            dialogueItem.ConnectDialogueUISignals(this);
-            dialogueItem.StartLines();
-        }
-
-        private void OnDialogueLinePresented(DialogueItem dialogueItem, DialogueLine dialogueLine)
-        {
-            ClearContainer();
-            var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
-            _dialogueContent.AddChild(container);
-            container.DisplayLine(dialogueLine.Text);
-
-            if (dialogueItem.LineStartsQuest(dialogueLine.GetIndex()))
-            {
-                container.ShowQuestAcceptanceButtons();
-            }
-
-            container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { dialogueLine.GetIndex() + 1 });
-            container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { dialogueLine.GetIndex() + 1 });
-        }
-
-        private void OnNextLineButtonPressed(int nextIdx)
-        {
-            EmitSignal(nameof(LineAdvanceRequested), nextIdx);
-        }
-
-        private void OnQuestAcceptanceIndicated(bool accepted, int nextIdx)
-        {
-            if (accepted)
-            {
-                EmitSignal(nameof(LineAdvanceRequested), nextIdx);
+                var item = _itemsToDisplay.Dequeue();
+                foreach (var line in item.GetValidLines())
+                {
+                    _linesToDisplay.Enqueue(line);
+                }
+                AdvanceLine();
             }
             else
             {
-                Close();
+                ShowNavigation();
             }
         }
 
-        private void OnDialogueLinesFinished()
+        private void AdvanceLine()
         {
-            Close();
+            if (_linesToDisplay.Count > 0)
+            {
+                ClearContainer();
+                var line = _linesToDisplay.Dequeue();
+                var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
+                _dialogueContent.AddChild(container);
+                container.DisplayLine(line);
+                container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
+                container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
+                container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { line });
+            }
+            else
+            {
+                AdvanceItem();
+            }
+        }
+
+        private void OnDialogueOptionSelected(DialogueItem dialogueItem)
+        {
+            _itemsToDisplay.Enqueue(dialogueItem);
+            AdvanceItem();
+        }
+
+        private void OnNextLineButtonPressed()
+        {
+            AdvanceLine();
+        }
+
+        private void OnQuestAcceptanceIndicated(bool accepted, DialogueLine dialogueLine)
+        {
+            if (accepted)
+            {
+                dialogueLine.StartQuest();
+                AdvanceLine();
+            }
+            else
+            {
+                AdvanceItem();
+            }
+        }
+
+        private void OnQuestTurnInIndicated(DialogueLine dialogueLine)
+        {
+            var model = dialogueLine.GetAssociatedQuestModel();
+            if (Quest.IsQuestEventReadyForCompletion(model))
+            {
+                var evt = model as QuestEventModel;
+                GameEventDispatcher.DispatchItemTurnedInEvent(evt.Id, evt.ItemId, evt.Required);
+                AdvanceLine();
+            }
         }
     }
 }

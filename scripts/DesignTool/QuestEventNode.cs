@@ -7,6 +7,7 @@ namespace GameFeel.DesignTool
     public class QuestEventNode : QuestNode
     {
         private LineEdit _promptLineEdit;
+        private LineEdit _idLineEdit;
 
         public new QuestEventModel Model
         {
@@ -25,6 +26,7 @@ namespace GameFeel.DesignTool
             base._Ready();
 
             _promptLineEdit = GetNode<LineEdit>("VBoxContainer/PromptContainer/LineEdit");
+            _idLineEdit = GetNode<LineEdit>("VBoxContainer/IdContainer/LineEdit");
             _promptLineEdit.Connect("text_changed", this, nameof(OnTextChanged));
 
             Model = new QuestEventModel();
@@ -41,6 +43,7 @@ namespace GameFeel.DesignTool
         protected override void UpdateControls()
         {
             _promptLineEdit.Text = Model.PromptText;
+            _idLineEdit.Text = Model.Id;
         }
 
         private void SetNodeTitle()

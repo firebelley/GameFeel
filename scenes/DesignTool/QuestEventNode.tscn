@@ -19,11 +19,30 @@ script = ExtResource( 1 )
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 304.0
-margin_bottom = 48.0
+margin_bottom = 76.0
 
-[node name="PromptContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="IdContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 288.0
 margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="VBoxContainer/IdContainer"]
+margin_top = 5.0
+margin_right = 59.0
+margin_bottom = 19.0
+text = "Model ID"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/IdContainer"]
+margin_left = 63.0
+margin_right = 288.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="PromptContainer" type="HBoxContainer" parent="VBoxContainer"]
+editor/display_folded = true
+margin_top = 28.0
+margin_right = 288.0
+margin_bottom = 52.0
 
 [node name="Label" type="Label" parent="VBoxContainer/PromptContainer"]
 margin_top = 5.0

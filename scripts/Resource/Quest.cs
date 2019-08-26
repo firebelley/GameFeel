@@ -32,6 +32,20 @@ namespace GameFeel.Resource
         {
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemAdded), this, nameof(CheckInventoryItemAddedCompletion));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
+        }
+
+        public static bool IsQuestEventReadyForCompletion(QuestModel questModel)
+        {
+            if (questModel is QuestEventModel qem)
+            {
+                switch (qem.EventId)
+                {
+                    case GameEventDispatcher.ITEM_TURNED_IN:
+                        return PlayerInventory.GetItemCount(qem.ItemId) >= qem.Required;
+                }
+            }
+            return false;
         }
 
         public void Start(QuestSaveModel questSaveModel)
@@ -55,9 +69,14 @@ namespace GameFeel.Resource
             return 0;
         }
 
-        public bool IsStageActive(string stageId)
+        public QuestModel GetActiveModel(string modelId)
         {
-            return _stageStack.Peek().Id == stageId;
+            QuestModel result = null;
+            if (_stageStack.Count > 0)
+            {
+                result = _stageStack.Peek().Id == modelId ? _stageStack.Peek() : null;
+            }
+            return result ?? _activeModels.FirstOrDefault(x => x.Id == modelId);
         }
 
         private void Activate(QuestModel model)
@@ -121,6 +140,8 @@ namespace GameFeel.Resource
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
                     break;
+                case GameEventDispatcher.ITEM_TURNED_IN:
+                    break;
             }
         }
 
@@ -153,6 +174,19 @@ namespace GameFeel.Resource
             {
                 _eventProgress[evt.Id]++;
                 EmitSignal(nameof(QuestEventProgress), this, evt.Id);
+                if (_eventProgress[evt.Id] == evt.Required)
+                {
+                    AdvanceFromModel(evt);
+                }
+            }
+        }
+
+        private void CheckTurnInCompletion(string eventGuid, string modelId, string itemId, int amount)
+        {
+            var evt = _activeModels.Where(x => x is QuestEventModel && x.Id == modelId).Select(x => x as QuestEventModel).FirstOrDefault();
+            if (evt != null && _eventProgress.ContainsKey(evt.Id))
+            {
+                _eventProgress[evt.Id] += amount;
                 if (_eventProgress[evt.Id] == evt.Required)
                 {
                     AdvanceFromModel(evt);

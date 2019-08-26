@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/Component/DialogueComponent.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Component/Subcomponent/DialogueItem.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/Component/Subcomponent/DialogueLine.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Component/DialogueComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Component/Subcomponent/DialogueItem.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Component/Subcomponent/DialogueLine.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=6]
 [ext_resource path="res://assets/art/sorcerer1.png" type="Texture" id=7]
@@ -20,33 +20,43 @@ shader_param/_valid = null
 
 [node name="TestQuestGiver" type="Node2D"]
 
-[node name="QuestStarterComponent" parent="." instance=ExtResource( 1 )]
-_questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
-
-[node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
+[node name="DialogueComponent" parent="." instance=ExtResource( 1 )]
+Introduction = "Welcome back, adventurer."
 _selectableComponentPath = NodePath("../SelectableComponent")
 
-[node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 2 )]
 Title = "Turn in Spider Legs"
-RequiredQuestStageId = "09b8ec61-14c0-49f7-9a5b-e9095a78dba0"
+ActiveQuestModelId = "214d983c-541e-43f9-a55e-51d2be5ad646"
+ShowImmediately = true
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 4 )]
-Text = "Do you have my spider legs?"
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 3 )]
+Text = "I told you to get spider legs!"
 
-[node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 2 )]
 editor/display_folded = true
 Title = "Spider Leg Soup"
 ShowImmediately = true
-_questStarterComponentPath = NodePath("../../QuestStarterComponent")
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem" instance=ExtResource( 3 )]
 Text = "Ah an adventurer!"
 
-[node name="DialogueLine2" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]
+[node name="DialogueLine2" parent="DialogueComponent/DialogueItem" instance=ExtResource( 3 )]
+editor/display_folded = true
 Text = "Why don't you collect some spider legs for me?"
+LineContainerType = 2
 
-[node name="DialogueItem2" parent="DialogueComponent" instance=ExtResource( 3 )]
-Title = "Second Option"
+[node name="QuestStarterComponent" parent="DialogueComponent/DialogueItem/DialogueLine2" instance=ExtResource( 4 )]
+_questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
+
+[node name="DialogueItem2" parent="DialogueComponent" instance=ExtResource( 2 )]
+editor/display_folded = true
+Title = "Turn in Spider Legs"
+ActiveQuestModelId = "556840d9-e203-4590-9e10-1ba5b298faa8"
+ShowImmediately = true
+
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem2" instance=ExtResource( 3 )]
+Text = "I'll take those!"
+LineContainerType = 1
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 5 )]
 editor/display_folded = true

@@ -42,6 +42,15 @@ namespace GameFeel.Singleton
                 Items.Add(null);
             }
             Connect(nameof(ItemAdded), this, nameof(OnItemAdded));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(OnItemTurnedInEvent));
+        }
+
+        public static InventoryItem InventoryItemFromLootMetadata(MetadataLoader.Metadata resource)
+        {
+            var item = new InventoryItem();
+            item.Icon = resource.Icon;
+            item.Id = resource.Id;
+            return item;
         }
 
         public static void AddItem(LootItem lootItem)
@@ -55,20 +64,9 @@ namespace GameFeel.Singleton
 
         public static void AddItem(string itemId, int amount)
         {
-            if (!MetadataLoader.LootItemIdToInfo.ContainsKey(itemId))
-            {
-                Logger.Error("No item with id " + itemId + " was loaded");
-                return;
-            }
-            var info = MetadataLoader.LootItemIdToInfo[itemId];
-            var lootItem = (GD.Load(info.ResourcePath) as PackedScene).Instance() as LootItem;
-
-            var item = new InventoryItem();
+            var metaData = MetadataLoader.LootItemIdToMetadata[itemId];
+            var item = InventoryItemFromLootMetadata(metaData);
             item.Amount = amount;
-            item.Icon = lootItem.Icon;
-            item.Id = itemId;
-
-            lootItem.QueueFree();
             AddItem(item);
         }
 
@@ -139,9 +137,34 @@ namespace GameFeel.Singleton
             return Items[idx].Amount;
         }
 
+        public static void RemoveItem(string itemId, int amount)
+        {
+            var idx = FindItemIndex(itemId);
+            if (idx < 0)
+            {
+                Logger.Error("Attempted to remove item from player inventory that did not exist " + itemId);
+                return;
+            }
+            Items[idx].Amount -= amount;
+            if (Items[idx].Amount <= 0)
+            {
+                if (Items[idx].Amount < 0)
+                {
+                    Logger.Error("Player inventory item amount larger than requested removal amount item id " + itemId + " amount " + amount);
+                }
+                Items[idx] = null;
+            }
+            Instance.EmitSignal(nameof(ItemUpdated), idx);
+        }
+
         private void OnItemAdded(int idx)
         {
             GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
+        }
+
+        private void OnItemTurnedInEvent(string eventGuid, string modelId, string itemGuid, int amount)
+        {
+            RemoveItem(itemGuid, amount);
         }
     }
 }

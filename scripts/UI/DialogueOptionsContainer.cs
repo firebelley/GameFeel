@@ -23,7 +23,7 @@ namespace GameFeel.UI
 
         public void SetIntroductionText(string text)
         {
-            _introLabel.Text = text;
+            _introLabel.Text = text ?? string.Empty;
         }
 
         public void LoadOptions(List<DialogueItem> items)

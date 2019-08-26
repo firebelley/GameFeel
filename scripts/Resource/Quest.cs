@@ -32,6 +32,7 @@ namespace GameFeel.Resource
         {
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemAdded), this, nameof(CheckInventoryItemAddedCompletion));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
         }
 
         public void Start(QuestSaveModel questSaveModel)
@@ -126,6 +127,8 @@ namespace GameFeel.Resource
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
                     break;
+                case GameEventDispatcher.ITEM_TURNED_IN:
+                    break;
             }
         }
 
@@ -158,6 +161,19 @@ namespace GameFeel.Resource
             {
                 _eventProgress[evt.Id]++;
                 EmitSignal(nameof(QuestEventProgress), this, evt.Id);
+                if (_eventProgress[evt.Id] == evt.Required)
+                {
+                    AdvanceFromModel(evt);
+                }
+            }
+        }
+
+        private void CheckTurnInCompletion(string eventGuid, string modelId, string itemId, int amount)
+        {
+            var evt = _activeModels.Where(x => x is QuestEventModel && x.Id == modelId).Select(x => x as QuestEventModel).FirstOrDefault();
+            if (evt != null && _eventProgress.ContainsKey(evt.Id))
+            {
+                _eventProgress[evt.Id] += amount;
                 if (_eventProgress[evt.Id] == evt.Required)
                 {
                     AdvanceFromModel(evt);

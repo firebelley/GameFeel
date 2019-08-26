@@ -13,6 +13,8 @@ namespace GameFeel.UI
         public delegate void NextButtonPressed();
         [Signal]
         public delegate void QuestAcceptanceIndicated(bool accepted);
+        [Signal]
+        public delegate void QuestTurnInIndicated();
 
         [Export]
         private NodePath _dialogueLabelPath;
@@ -47,6 +49,8 @@ namespace GameFeel.UI
             _nextButton.Connect("pressed", this, nameof(OnNextButtonPressed));
             _acceptButton.Connect("pressed", this, nameof(OnAcceptButtonPressed));
             _declineButton.Connect("pressed", this, nameof(OnDeclineButtonPressed));
+            _turnInButton.Connect("pressed", this, nameof(OnTurnInButtonPressed));
+            _notYetButton.Connect("pressed", this, nameof(OnNextButtonPressed));
 
             _nextButton.RectPivotOffset = _nextButton.RectSize / 2f;
             _acceptButton.RectPivotOffset = _acceptButton.RectSize / 2f;
@@ -70,7 +74,6 @@ namespace GameFeel.UI
                     ShowTurnIn();
                     break;
             }
-
         }
 
         private void ShowQuestAcceptanceButtons()
@@ -100,13 +103,12 @@ namespace GameFeel.UI
 
         private void SetupInventoryCell(DialogueLine dialogueLine)
         {
-            var parent = dialogueLine.GetParentOrNull<DialogueItem>();
-            if (parent == null)
+            var model = dialogueLine.GetAssociatedQuestModel();
+            if (model == null)
             {
-                Logger.Error("Dialogue line had no parent of type " + nameof(DialogueItem));
+                Logger.Error("Could not find associated quest model");
                 return;
             }
-            var model = QuestTracker.GetActiveModel(parent.ActiveQuestModelId);
             if (model is QuestEventModel qem)
             {
                 var metadata = MetadataLoader.LootItemIdToMetadata[qem.ItemId];
@@ -116,7 +118,7 @@ namespace GameFeel.UI
             }
             else
             {
-                Logger.Error("Could not parse model as an event model " + parent.ActiveQuestModelId);
+                Logger.Error("Could not parse model as an event model " + model.Id);
             }
         }
 
@@ -133,6 +135,11 @@ namespace GameFeel.UI
         private void OnDeclineButtonPressed()
         {
             EmitSignal(nameof(QuestAcceptanceIndicated), false);
+        }
+
+        private void OnTurnInButtonPressed()
+        {
+            EmitSignal(nameof(QuestTurnInIndicated));
         }
     }
 }

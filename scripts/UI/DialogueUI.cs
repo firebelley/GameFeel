@@ -102,7 +102,7 @@ namespace GameFeel.UI
             {
                 _itemsToDisplay.Enqueue(item);
             }
-            ShowItem();
+            AdvanceItem();
             UpdateBubblePosition();
         }
 
@@ -116,7 +116,7 @@ namespace GameFeel.UI
             container.Connect(nameof(DialogueOptionsContainer.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 
-        private void ShowItem()
+        private void AdvanceItem()
         {
             if (_itemsToDisplay.Count > 0)
             {
@@ -125,7 +125,7 @@ namespace GameFeel.UI
                 {
                     _linesToDisplay.Enqueue(line);
                 }
-                ShowLine();
+                AdvanceLine();
             }
             else
             {
@@ -133,7 +133,7 @@ namespace GameFeel.UI
             }
         }
 
-        private void ShowLine()
+        private void AdvanceLine()
         {
             if (_linesToDisplay.Count > 0)
             {
@@ -144,22 +144,23 @@ namespace GameFeel.UI
                 container.DisplayLine(line);
                 container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
                 container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
+                container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { line });
             }
             else
             {
-                ShowItem();
+                AdvanceItem();
             }
         }
 
         private void OnDialogueOptionSelected(DialogueItem dialogueItem)
         {
             _itemsToDisplay.Enqueue(dialogueItem);
-            ShowItem();
+            AdvanceItem();
         }
 
         private void OnNextLineButtonPressed()
         {
-            ShowLine();
+            AdvanceLine();
         }
 
         private void OnQuestAcceptanceIndicated(bool accepted, DialogueLine dialogueLine)
@@ -167,12 +168,21 @@ namespace GameFeel.UI
             if (accepted)
             {
                 dialogueLine.StartQuest();
-                ShowLine();
+                AdvanceLine();
             }
             else
             {
-                ShowItem();
+                AdvanceItem();
             }
+        }
+
+        private void OnQuestTurnInIndicated(DialogueLine dialogueLine)
+        {
+            // TODO: figure out how to actually send the event to remove the player items
+            // I don't want to work with models in here
+            // Find another way to check turn in validity and accept the event and advance the quest
+            // maybe create a method in Quest.cs that can check the validity of a quest event model's completion
+            // emit the turn in signal from the quest itself (?)
         }
     }
 }

@@ -70,14 +70,14 @@ margin_right = 180.0
 size_flags_horizontal = 3
 text = "Next"
 
-[node name="TurnInButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
+[node name="NotYetButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
 margin_left = 184.0
 margin_right = 252.0
 size_flags_horizontal = 3
-text = "Turn In"
+text = "Not Yet"
 
-[node name="NotYetButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
+[node name="TurnInButton" parent="VBoxContainer/ButtonContainer" instance=ExtResource( 4 )]
 margin_left = 256.0
 margin_right = 324.0
 size_flags_horizontal = 3
-text = "Not Yet"
+text = "Turn In"

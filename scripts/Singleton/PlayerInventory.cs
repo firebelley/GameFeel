@@ -42,6 +42,7 @@ namespace GameFeel.Singleton
                 Items.Add(null);
             }
             Connect(nameof(ItemAdded), this, nameof(OnItemAdded));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(OnItemTurnedInEvent));
         }
 
         public static InventoryItem InventoryItemFromLootMetadata(MetadataLoader.Metadata resource)
@@ -136,9 +137,34 @@ namespace GameFeel.Singleton
             return Items[idx].Amount;
         }
 
+        public static void RemoveItem(string itemId, int amount)
+        {
+            var idx = FindItemIndex(itemId);
+            if (idx < 0)
+            {
+                Logger.Error("Attempted to remove item from player inventory that did not exist " + itemId);
+                return;
+            }
+            Items[idx].Amount -= amount;
+            if (Items[idx].Amount <= 0)
+            {
+                if (Items[idx].Amount < 0)
+                {
+                    Logger.Error("Player inventory item amount larger than requested removal amount item id " + itemId + " amount " + amount);
+                }
+                Items[idx] = null;
+            }
+            Instance.EmitSignal(nameof(ItemUpdated), idx);
+        }
+
         private void OnItemAdded(int idx)
         {
             GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
+        }
+
+        private void OnItemTurnedInEvent(string eventGuid, string modelId, string itemGuid, int amount)
+        {
+            RemoveItem(itemGuid, amount);
         }
     }
 }

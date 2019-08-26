@@ -1,3 +1,5 @@
+using GameFeel.Data.Model;
+using GameFeel.Singleton;
 using Godot;
 
 namespace GameFeel.Component.Subcomponent
@@ -36,6 +38,17 @@ namespace GameFeel.Component.Subcomponent
                 return "Must have a quest starter component if Quest Acceptance type";
             }
             return string.Empty;
+        }
+
+        public QuestModel GetAssociatedQuestModel()
+        {
+            var parent = GetParentOrNull<DialogueItem>();
+            if (parent == null)
+            {
+                return null;
+            }
+
+            return QuestTracker.GetActiveModel(parent.ActiveQuestModelId);
         }
 
         public bool IsQuestStarter()

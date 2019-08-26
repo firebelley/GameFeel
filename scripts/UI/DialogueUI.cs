@@ -112,6 +112,7 @@ namespace GameFeel.UI
             var container = _resourcePreloader.InstanceScene<DialogueOptionsContainer>();
             _dialogueContent.AddChild(container);
             container.LoadOptions(_activeDialogueComponent.GetValidDialogueItems());
+            container.SetIntroductionText(_activeDialogueComponent.Introduction);
             container.Connect(nameof(DialogueOptionsContainer.DialogueOptionSelected), this, nameof(OnDialogueOptionSelected));
         }
 

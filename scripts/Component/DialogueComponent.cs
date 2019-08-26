@@ -9,6 +9,9 @@ namespace GameFeel.Component
 {
     public class DialogueComponent : Position2D
     {
+        [Export(PropertyHint.MultilineText)]
+        public string Introduction { get; private set; }
+
         [Export]
         private NodePath _selectableComponentPath;
 

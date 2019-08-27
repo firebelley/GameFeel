@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace GameFeel.Data.Model
@@ -12,6 +12,7 @@ namespace GameFeel.Data.Model
         public HashSet<QuestEventModel> Events = new HashSet<QuestEventModel>();
         public HashSet<QuestCompleteModel> Completions = new HashSet<QuestCompleteModel>();
         public Dictionary<string, List<string>> RightConnections = new Dictionary<string, List<string>>();
+        public Dictionary<string, Dictionary<string, Tuple<int, int>>> RightConnectionPorts = new Dictionary<string, Dictionary<string, Tuple<int, int>>>();
 
         [JsonIgnore]
         public Dictionary<string, QuestModel> IdToModelMap
@@ -29,13 +30,15 @@ namespace GameFeel.Data.Model
             }
         }
 
-        public void AddRightConnection(string fromId, string toId)
+        public void AddRightConnection(string fromId, string toId, int fromPort, int toPort)
         {
             if (!RightConnections.ContainsKey(fromId))
             {
                 RightConnections.Add(fromId, new List<string>());
+                RightConnectionPorts.Add(fromId, new Dictionary<string, Tuple<int, int>>());
             }
             RightConnections[fromId].Add(toId);
+            RightConnectionPorts[fromId].Add(toId, Tuple.Create(fromPort, toPort));
         }
     }
 }

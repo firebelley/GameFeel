@@ -153,8 +153,17 @@ namespace GameFeel.DesignTool
                 {
                     var fromNode = idToNodeMappings[sourceId];
                     var toNode = idToNodeMappings[toId];
+                    var fromPort = 0;
+                    var toPort = 0;
 
-                    _graphEdit.ConnectNode(fromNode.GetName(), 0, toNode.GetName(), 0);
+                    if (saveModel.RightConnectionPorts.ContainsKey(sourceId) && saveModel.RightConnectionPorts[sourceId].ContainsKey(toId))
+                    {
+                        var tuple = saveModel.RightConnectionPorts[sourceId][toId];
+                        fromPort = tuple.Item1;
+                        toPort = tuple.Item2;
+                    }
+
+                    _graphEdit.ConnectNode(fromNode.GetName(), fromPort, toNode.GetName(), toPort);
                 }
             }
             InvalidateFileDialogs();
@@ -185,7 +194,7 @@ namespace GameFeel.DesignTool
                 var toQuestNode = _graphEdit.GetNode(to) as QuestNode;
                 var toModel = toQuestNode.Model;
 
-                saveModel.AddRightConnection(fromModel.Id, toModel.Id);
+                saveModel.AddRightConnection(fromModel.Id, toModel.Id, fromPort, toPort);
             }
             var json = JsonConvert.SerializeObject(saveModel);
             var file = new File();

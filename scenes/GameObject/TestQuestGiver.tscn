@@ -25,8 +25,9 @@ Introduction = "Welcome back, adventurer."
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 2 )]
+editor/display_folded = true
 Title = "Turn in Spider Legs"
-ActiveQuestModelId = "214d983c-541e-43f9-a55e-51d2be5ad646"
+ActiveQuestModelId = "082e092e-4978-4844-b30d-5c0c3da8a8e4"
 ShowImmediately = true
 
 [node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 3 )]
@@ -41,9 +42,8 @@ ShowImmediately = true
 Text = "Ah an adventurer!"
 
 [node name="DialogueLine2" parent="DialogueComponent/DialogueItem" instance=ExtResource( 3 )]
-editor/display_folded = true
-Text = "Why don't you collect some spider legs for me?"
 LineContainerType = 2
+Text = "Why don't you collect some spider legs for me?"
 
 [node name="QuestStarterComponent" parent="DialogueComponent/DialogueItem/DialogueLine2" instance=ExtResource( 4 )]
 _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
@@ -55,14 +55,22 @@ ActiveQuestModelId = "556840d9-e203-4590-9e10-1ba5b298faa8"
 ShowImmediately = true
 
 [node name="DialogueLine" parent="DialogueComponent/DialogueItem2" instance=ExtResource( 3 )]
-Text = "I'll take those!"
 LineContainerType = 1
+Text = "I'll take those!"
+
+[node name="DialogueItem4" parent="DialogueComponent" instance=ExtResource( 2 )]
+Title = "A Strange Occurence"
+ActiveQuestModelId = "26bc7617-8824-45ae-8b9e-77c2c6352f87"
+ShowImmediately = true
+
+[node name="DialogueLine" parent="DialogueComponent/DialogueItem4" instance=ExtResource( 3 )]
+Text = "We've received reports of a disturbance in the force. Please investigate."
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 5 )]
 editor/display_folded = true
 material = SubResource( 1 )
-_shadedNodePath = NodePath("../Sprite")
 _requirePlayerNear = true
+_shadedNodePath = NodePath("../Sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )

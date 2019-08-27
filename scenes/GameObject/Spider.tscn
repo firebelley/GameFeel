@@ -112,12 +112,12 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="HealthComponent" parent="." instance=ExtResource( 1 )]
-_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 3.0
+_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
-_maxSpeed = 100.0
 _acceleration = 500.0
+_maxSpeed = 100.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
 _shaderMaterial = SubResource( 1 )
@@ -125,7 +125,6 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="EnemyAIComponent" parent="." instance=ExtResource( 5 )]
-editor/display_folded = true
 
 [node name="EnemyStateSpawn" parent="EnemyAIComponent" instance=ExtResource( 6 )]
 _wanderStateNodePath = NodePath("../EnemyStateWander")
@@ -154,6 +153,7 @@ _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 11 )]
+editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Money" parent="LootTableComponent" instance=ExtResource( 12 )]
@@ -170,8 +170,8 @@ Weight = 5
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 16 )]
 position = Vector2( 0, -6 )
-EntityId = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _healthComponentPath = NodePath("../HealthComponent")
+EntityId = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 
 [node name="AttackIntentComponent" parent="." instance=ExtResource( 17 )]
 position = Vector2( 0, -6 )

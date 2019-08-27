@@ -44,6 +44,7 @@ namespace GameFeel.Component
         public override void _Ready()
         {
             _collisionShape2d = GetNode<CollisionShape2D>("CollisionShape2D");
+            _collisionShape2d.Shape = _realShape;
             Connect("body_entered", this, nameof(OnBodyEntered));
         }
 

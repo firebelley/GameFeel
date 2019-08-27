@@ -29,6 +29,7 @@ color_ramp = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
+editor/display_folded = true
 emitting = false
 amount = 3
 lifetime = 0.5

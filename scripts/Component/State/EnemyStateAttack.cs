@@ -25,19 +25,11 @@ namespace GameFeel.Component.State
         public override void _Ready()
         {
             base._Ready();
-            _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
-            _attackIntentComponent = GetNode<AttackIntentComponent>(_attackIntentComponentPath);
-            _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>(_projectileSpawnComponentPath);
-
-            if (_pursueStateNodePath != null)
-            {
-                _pursueState = GetNode(_pursueStateNodePath) as IStateExector;
-            }
-
-            if (_animatedSprite != null)
-            {
-                _animatedSprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
-            }
+            _animatedSprite = GetNodeOrNull<AnimatedSprite>(_animatedSpritePath ?? string.Empty);
+            _projectileSpawnComponent = GetNodeOrNull<ProjectileSpawnComponent>(_projectileSpawnComponentPath ?? string.Empty);
+            _pursueState = GetNodeOrNull(_pursueStateNodePath ?? string.Empty) as IStateExector;
+            _attackIntentComponent = GetNodeOrNull<AttackIntentComponent>(_attackIntentComponentPath ?? string.Empty);
+            _animatedSprite?.Connect("animation_finished", this, nameof(OnAnimationFinished));
         }
 
         public override void StateActive()
@@ -57,7 +49,7 @@ namespace GameFeel.Component.State
 
         private void OnAnimationFinished()
         {
-            if (_animatedSprite.Animation == EnemyAIComponent.META_ANIM_ATTACK)
+            if (_animatedSprite?.Animation == EnemyAIComponent.META_ANIM_ATTACK)
             {
                 _parent.StateMachine.ChangeState(_pursueState);
 

@@ -19,7 +19,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
 }
 
-[node name="HealthBar" type="Node2D"]
+[node name="HealthBarComponent" type="Node2D"]
 z_index = 4000
 script = ExtResource( 1 )
 _healthComponentPath = NodePath("")

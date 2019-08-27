@@ -58,7 +58,7 @@ namespace GameFeel.DesignTool
         {
             switch (guid.ToString())
             {
-                case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
+                case GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED:
                     return _resourcePreloader.InstanceScene<QuestEventPlayerInventoryItemAdded>();
                 case GameEventDispatcher.ENTITY_KILLED:
                     return _resourcePreloader.InstanceScene<QuestEventEntityKilled>();

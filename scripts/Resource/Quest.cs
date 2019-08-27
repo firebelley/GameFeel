@@ -23,14 +23,12 @@ namespace GameFeel.Resource
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
-        private Stack<QuestStageModel> _stageStack = new Stack<QuestStageModel>();
         private HashSet<QuestModel> _activeModels = new HashSet<QuestModel>();
-        private HashSet<QuestModel> _oldModels = new HashSet<QuestModel>();
         private Dictionary<string, int> _eventProgress = new Dictionary<string, int>();
 
         public override void _Ready()
         {
-            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemAdded), this, nameof(CheckInventoryItemAddedCompletion));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemUpdated), this, nameof(CheckInventoryItemUpdatedCompletion));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
         }
@@ -71,12 +69,7 @@ namespace GameFeel.Resource
 
         public QuestModel GetActiveModel(string modelId)
         {
-            QuestModel result = null;
-            if (_stageStack.Count > 0)
-            {
-                result = _stageStack.Peek().Id == modelId ? _stageStack.Peek() : null;
-            }
-            return result ?? _activeModels.FirstOrDefault(x => x.Id == modelId);
+            return _activeModels.FirstOrDefault(x => x.Id == modelId);
         }
 
         private void Activate(QuestModel model)
@@ -88,7 +81,6 @@ namespace GameFeel.Resource
             }
             else if (model is QuestStageModel qstm)
             {
-                _stageStack.Push(qstm);
                 AdvanceFromModel(qstm);
             }
             else if (model is QuestEventModel qem)
@@ -104,8 +96,14 @@ namespace GameFeel.Resource
 
         private void AdvanceFromModel(QuestModel model)
         {
-            _oldModels.Add(model);
             _activeModels.Remove(model);
+
+            if (_activeModels.Count > 0)
+            {
+                // we still have models to process (most likely events)
+                // so don't advance just yet
+                return;
+            }
 
             if (model is QuestStartModel questStart)
             {
@@ -135,8 +133,8 @@ namespace GameFeel.Resource
             _eventProgress[eventModel.Id] = 0;
             switch (eventModel.EventId)
             {
-                case GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED:
-                    CheckInventoryItemAddedCompletion(eventModel.EventId, eventModel.ItemId);
+                case GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED:
+                    CheckInventoryItemUpdatedCompletion(eventModel.EventId, eventModel.ItemId);
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
                     break;
@@ -152,7 +150,7 @@ namespace GameFeel.Resource
             QueueFree();
         }
 
-        private void CheckInventoryItemAddedCompletion(string eventGuid, string itemId)
+        private void CheckInventoryItemUpdatedCompletion(string eventGuid, string itemId)
         {
             var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == itemId).Select(x => x as QuestEventModel).FirstOrDefault();
             if (evt != null && _eventProgress.ContainsKey(evt.Id))

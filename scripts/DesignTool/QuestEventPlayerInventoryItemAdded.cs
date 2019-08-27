@@ -11,7 +11,7 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             base._Ready();
-            Model.EventId = GameEventDispatcher.PLAYER_INVENTORY_ITEM_ADDED;
+            Model.EventId = GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED;
 
             _itemSelector = GetNode<QuestItemSelector>("VBoxContainer/HBoxContainer/QuestItemSelector");
             _requiredSpinBox = GetNode<SpinBox>("VBoxContainer/HBoxContainer2/SpinBox");

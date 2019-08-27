@@ -36,7 +36,6 @@ namespace GameFeel.UI
             CreateInventoryCells();
 
             Close();
-            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemAdded), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemUpdated), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.CurrencyChanged), this, nameof(OnCurrencyChanged));
             _panelContainer.Connect("resized", this, nameof(OnPanelResized));

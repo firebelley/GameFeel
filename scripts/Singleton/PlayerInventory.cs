@@ -10,9 +10,9 @@ namespace GameFeel.Singleton
     {
         // TODO: make new signal for cell updating and item adding
         [Signal]
-        public delegate void ItemAdded(int idx);
-        [Signal]
         public delegate void ItemUpdated(int idx);
+        [Signal]
+        public delegate void ItemCleared(string itemId);
         [Signal]
         public delegate void CurrencyChanged();
 
@@ -41,7 +41,8 @@ namespace GameFeel.Singleton
             {
                 Items.Add(null);
             }
-            Connect(nameof(ItemAdded), this, nameof(OnItemAdded));
+            Connect(nameof(ItemUpdated), this, nameof(OnItemUpdated));
+            Connect(nameof(ItemCleared), this, nameof(OnItemCleared));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(OnItemTurnedInEvent));
         }
 
@@ -82,7 +83,7 @@ namespace GameFeel.Singleton
             if (itemIndex >= 0)
             {
                 Items[itemIndex].Amount += inventoryItem.Amount;
-                Instance.EmitSignal(nameof(ItemAdded), itemIndex);
+                Instance.EmitSignal(nameof(ItemUpdated), itemIndex);
             }
             else
             {
@@ -90,7 +91,7 @@ namespace GameFeel.Singleton
                 if (idx >= 0)
                 {
                     Items[idx] = inventoryItem;
-                    Instance.EmitSignal(nameof(ItemAdded), idx);
+                    Instance.EmitSignal(nameof(ItemUpdated), idx);
                 }
                 else
                 {
@@ -152,14 +153,24 @@ namespace GameFeel.Singleton
                 {
                     Logger.Error("Player inventory item amount larger than requested removal amount item id " + itemId + " amount " + amount);
                 }
+                var id = Items[idx].Id;
                 Items[idx] = null;
+                Instance.EmitSignal(nameof(ItemCleared), id);
             }
             Instance.EmitSignal(nameof(ItemUpdated), idx);
         }
 
-        private void OnItemAdded(int idx)
+        private void OnItemUpdated(int idx)
         {
-            GameEventDispatcher.DispatchPlayerInventoryItemAddedEvent(Items[idx].Id);
+            if (Items[idx] != null)
+            {
+                GameEventDispatcher.DispatchPlayerInventoryItemUpdatedEvent(Items[idx].Id);
+            }
+        }
+
+        private void OnItemCleared(string itemId)
+        {
+            GameEventDispatcher.DispatchPlayerInventoryItemUpdatedEvent(itemId);
         }
 
         private void OnItemTurnedInEvent(string eventGuid, string modelId, string itemGuid, int amount)

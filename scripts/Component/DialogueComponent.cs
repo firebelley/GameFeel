@@ -26,28 +26,14 @@ namespace GameFeel.Component
         public List<DialogueItem> GetValidDialogueItems()
         {
             var arrayOptions = new List<DialogueItem>();
-            foreach (var di in this.GetChildren<DialogueItem>())
+            foreach (var dialogueItem in this.GetChildren<DialogueItem>())
             {
-                var valid = true;
-                if (!string.IsNullOrEmpty(di.ActiveQuestModelId))
+                if (dialogueItem.IsValid())
                 {
-                    valid = QuestTracker.GetActiveModel(di.ActiveQuestModelId) != null;
-                }
-
-                valid = valid && !IsQuestActive(di);
-
-                if (valid)
-                {
-                    arrayOptions.Add(di);
+                    arrayOptions.Add(dialogueItem);
                 }
             }
             return arrayOptions;
-        }
-
-        private bool IsQuestActive(DialogueItem dialogueItem)
-        {
-            var questStarters = dialogueItem.GetValidLines().Where(x => x.IsQuestStarter() && !x.IsQuestAvailable());
-            return questStarters.Count() > 0;
         }
 
         private void OnSelected()

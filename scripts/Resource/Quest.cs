@@ -53,6 +53,11 @@ namespace GameFeel.Resource
             Activate(questSaveModel.Start);
         }
 
+        public QuestSaveModel GetQuestSaveModel()
+        {
+            return _questSaveModel;
+        }
+
         public QuestModel GetQuestModel(string modelId)
         {
             return _idToModelMap[modelId];

@@ -22,6 +22,7 @@ namespace GameFeel.Singleton
 
         private static Dictionary<string, QuestSaveModel> _quests = new Dictionary<string, QuestSaveModel>();
         private static HashSet<string> _unavailableQuests = new HashSet<string>();
+        private static HashSet<string> _completedQuests = new HashSet<string>();
 
         private static PackedScene _questScene;
 
@@ -46,6 +47,7 @@ namespace GameFeel.Singleton
                 Instance.EmitSignal(nameof(QuestAdded), quest);
                 quest.Start(_quests[questGuid]);
                 _unavailableQuests.Add(questGuid);
+                quest.Connect(nameof(Quest.QuestCompleted), Instance, nameof(OnQuestCompleted));
             }
             else
             {
@@ -61,6 +63,11 @@ namespace GameFeel.Singleton
         public static bool IsQuestAvailable(string questGuid)
         {
             return !_unavailableQuests.Contains(questGuid);
+        }
+
+        public static bool IsQuestCompleted(string questGuid)
+        {
+            return _completedQuests.Contains(questGuid);
         }
 
         private void LoadQuests()
@@ -118,6 +125,12 @@ namespace GameFeel.Singleton
             {
                 Logger.Error("Could not deserialize quest " + fileName);
             }
+        }
+
+        private void OnQuestCompleted(Quest quest, string modelId)
+        {
+            var questId = quest.GetQuestSaveModel().Start.Id;
+            _completedQuests.Add(questId);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace GameFeel.Component.Subcomponent
         public override void _Ready()
         {
             _requiredCompletedQuestIds = !string.IsNullOrEmpty(RequiredCompletedQuestIds) ? RequiredCompletedQuestIds.Split(",", false) : null;
-            _requiredCompletedQuestIds = _requiredCompletedQuestIds.Select(x => x.Trim()).ToArray();
+            _requiredCompletedQuestIds = _requiredCompletedQuestIds?.Select(x => x.Trim()).ToArray() ?? null;
         }
 
         public List<DialogueLine> GetValidLines()

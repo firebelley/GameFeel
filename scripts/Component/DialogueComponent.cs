@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using Godot;
@@ -28,6 +27,7 @@ namespace GameFeel.Component
             var arrayOptions = new List<DialogueItem>();
             foreach (var dialogueItem in this.GetChildren<DialogueItem>())
             {
+                if (dialogueItem == null) continue;
                 if (dialogueItem.IsValid())
                 {
                     arrayOptions.Add(dialogueItem);

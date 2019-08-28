@@ -61,7 +61,6 @@ namespace GameFeel.UI
             Show();
             ClearAll();
             SetProcess(true);
-            _animationPlayer.Seek(0f, true);
             _animationPlayer.SetSpeedScale(1f);
             _animationPlayer.Play(ANIM_BOUNCE_IN);
         }
@@ -78,6 +77,7 @@ namespace GameFeel.UI
             ClearAll();
             Hide();
             SetProcess(false);
+            _dialogueWindow.RectScale = Vector2.Zero;
         }
 
         private void UpdateBubblePosition()

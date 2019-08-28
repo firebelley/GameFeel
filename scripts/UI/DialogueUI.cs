@@ -13,11 +13,15 @@ namespace GameFeel.UI
     public class DialogueUI : ToggleUI
     {
         private const string INPUT_SELECT = "select";
+        private const string ANIM_BOUNCE_IN = "ControlBounceIn";
+        private const string ANIM_BOUNCE_IN_SECONDARY = "ControlBounceInSecondary";
 
         [Export]
         private NodePath _dialogueWindowPath;
         [Export]
         private NodePath _dialogueContentPath;
+        [Export]
+        private NodePath _animationPlayerPath;
 
         private Queue<DialogueItem> _itemsToDisplay = new Queue<DialogueItem>();
         private Queue<DialogueLine> _linesToDisplay = new Queue<DialogueLine>();
@@ -25,6 +29,7 @@ namespace GameFeel.UI
         private Control _dialogueWindow;
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
+        private AnimationPlayer _animationPlayer;
 
         private bool _closeAfterLinesShown = false;
 
@@ -32,9 +37,10 @@ namespace GameFeel.UI
         {
             base._Ready();
             this.SetNodesByDeclaredNodePaths();
-            Close();
+            CloseImmediate();
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventDialogueStarted), this, nameof(OnDialogueStarted));
+            _animationPlayer.Connect("animation_finished", this, nameof(OnAnimationFinished));
         }
 
         public override void _Process(float delta)
@@ -55,18 +61,28 @@ namespace GameFeel.UI
             Show();
             ClearAll();
             SetProcess(true);
+            _animationPlayer.Seek(0f, true);
+            _animationPlayer.SetSpeedScale(1f);
+            _animationPlayer.Play(ANIM_BOUNCE_IN);
         }
 
         protected override void Close()
         {
             base.Close();
-            Hide();
+            _animationPlayer.SetSpeedScale(2f);
+            _animationPlayer.PlayBackwards(ANIM_BOUNCE_IN_SECONDARY);
+        }
+
+        private void CloseImmediate()
+        {
             ClearAll();
+            Hide();
             SetProcess(false);
         }
 
         private void UpdateBubblePosition()
         {
+            _dialogueWindow.RectPivotOffset = _dialogueWindow.RectSize / 2f;
             var pos = _activeDialogueComponent.GetGlobalTransformWithCanvas().origin / Main.UI_TO_GAME_DISPLAY_RATIO;
             _dialogueWindow.RectPosition = pos - new Vector2(_dialogueWindow.RectSize.x / 2f, _dialogueWindow.RectSize.y);
         }
@@ -201,6 +217,14 @@ namespace GameFeel.UI
                 GameEventDispatcher.DispatchItemTurnedInEvent(evt.Id, evt.ItemId, evt.Required);
                 _closeAfterLinesShown = true;
                 AdvanceLine();
+            }
+        }
+
+        private void OnAnimationFinished(string anim)
+        {
+            if (anim == ANIM_BOUNCE_IN_SECONDARY)
+            {
+                CloseImmediate();
             }
         }
     }

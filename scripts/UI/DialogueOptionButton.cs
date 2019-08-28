@@ -25,7 +25,6 @@ namespace GameFeel.UI
 
             Connect("mouse_entered", this, nameof(OnMouseEntered));
             Connect("mouse_exited", this, nameof(OnMouseExited));
-            Connect("resized", this, nameof(OnResized));
         }
 
         public void OffsetAnimation()
@@ -63,11 +62,6 @@ namespace GameFeel.UI
         {
             AddFontOverride("font", _normalFont);
             PlayShaderEffect(true);
-        }
-
-        private void OnResized()
-        {
-            CenterPivot();
         }
     }
 }

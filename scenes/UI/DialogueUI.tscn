@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/UI/DialogueUI.cs" type="Script" id=1]
 [ext_resource path="res://scenes/UI/DialogueLineContainer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/UI/DialogueOptionsContainer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=4]
 [ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=5]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=6]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 5 )
@@ -20,31 +21,61 @@ expand_margin_top = 2.0
 atlas = ExtResource( 5 )
 region = Rect2( 64, 64, 32, 32 )
 
+[sub_resource type="Animation" id=3]
+resource_name = "ControlBounceInSecondary"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.09, 0.18, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="DialogueUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
-_dialogueWindowPath = NodePath("PanelContainer")
-_dialogueContentPath = NodePath("PanelContainer/MarginContainer/ContentContainer")
+_dialogueWindowPath = NodePath("DialogueWindowContainer")
+_dialogueContentPath = NodePath("DialogueWindowContainer/MarginContainer/ContentContainer")
+_animationPlayerPath = NodePath("DialogueWindowContainer/AnimationPlayer")
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
 resources = [ PoolStringArray( "DialogueLineContainer", "DialogueOptionsContainer" ), [ ExtResource( 2 ), ExtResource( 3 ) ] ]
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="DialogueWindowContainer" type="PanelContainer" parent="."]
 margin_right = 192.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 192, 96 )
 theme = ExtResource( 4 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="DialogueWindowContainer"]
+editor/display_folded = true
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 182.0
 margin_bottom = 86.0
 
-[node name="ContentContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="ContentContainer" type="VBoxContainer" parent="DialogueWindowContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 164.0
@@ -52,21 +83,25 @@ margin_bottom = 68.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="Control" type="Control" parent="PanelContainer"]
+[node name="Control" type="Control" parent="DialogueWindowContainer"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 182.0
 margin_bottom = 86.0
 mouse_filter = 2
 
-[node name="QuotePointer" type="TextureRect" parent="PanelContainer/Control"]
+[node name="QuotePointer" type="TextureRect" parent="DialogueWindowContainer/Control"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -16.0
-margin_top = -18.0
+margin_top = -19.0
 margin_right = 16.0
-margin_bottom = 14.0
+margin_bottom = 13.0
 mouse_filter = 2
 texture = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DialogueWindowContainer"]
+anims/ControlBounceIn = ExtResource( 6 )
+anims/ControlBounceInSecondary = SubResource( 3 )

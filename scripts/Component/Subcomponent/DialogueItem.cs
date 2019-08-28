@@ -19,15 +19,7 @@ namespace GameFeel.Component.Subcomponent
 
         // comma-separated list of ids
         [Export(PropertyHint.MultilineText)]
-        public string RequiredCompletedQuestIds { get; private set; }
-
-        private string[] _requiredCompletedQuestIds;
-
-        public override void _Ready()
-        {
-            _requiredCompletedQuestIds = !string.IsNullOrEmpty(RequiredCompletedQuestIds) ? RequiredCompletedQuestIds.Split(",", false) : null;
-            _requiredCompletedQuestIds = _requiredCompletedQuestIds?.Select(x => x.Trim()).ToArray() ?? null;
-        }
+        public string[] RequiredCompletedQuestIds { get; private set; }
 
         public List<DialogueLine> GetValidLines()
         {
@@ -41,9 +33,9 @@ namespace GameFeel.Component.Subcomponent
             {
                 valid = valid && QuestTracker.GetActiveModel(ActiveQuestModelId) != null;
             }
-            if (_requiredCompletedQuestIds != null)
+            if (RequiredCompletedQuestIds != null)
             {
-                valid = valid && _requiredCompletedQuestIds.All(x => QuestTracker.IsQuestCompleted(x));
+                valid = valid && RequiredCompletedQuestIds.All(x => QuestTracker.IsQuestCompleted(x));
             }
             return valid && !IsQuestActive();
         }

@@ -26,6 +26,8 @@ namespace GameFeel.UI
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
 
+        private bool _closeAfterLinesShown = false;
+
         public override void _Ready()
         {
             base._Ready();
@@ -86,6 +88,7 @@ namespace GameFeel.UI
         {
             ClearContainer();
             _activeDialogueComponent = null;
+            _closeAfterLinesShown = false;
             _itemsToDisplay.Clear();
             _linesToDisplay.Clear();
         }
@@ -143,10 +146,20 @@ namespace GameFeel.UI
                 var line = _linesToDisplay.Dequeue();
                 var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
                 _dialogueContent.AddChild(container);
+
+                if (_linesToDisplay.Count == 0)
+                {
+                    container.SetupLastLine();
+                }
+
                 container.DisplayLine(line);
                 container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
                 container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
                 container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { line });
+            }
+            else if (_closeAfterLinesShown)
+            {
+                Close();
             }
             else
             {
@@ -170,6 +183,7 @@ namespace GameFeel.UI
             if (accepted)
             {
                 dialogueLine.StartQuest();
+                _closeAfterLinesShown = true;
                 AdvanceLine();
             }
             else
@@ -185,6 +199,7 @@ namespace GameFeel.UI
             {
                 var evt = model as QuestEventModel;
                 GameEventDispatcher.DispatchItemTurnedInEvent(evt.Id, evt.ItemId, evt.Required);
+                _closeAfterLinesShown = true;
                 AdvanceLine();
             }
         }

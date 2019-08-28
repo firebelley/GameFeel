@@ -77,6 +77,11 @@ namespace GameFeel.UI
             }
         }
 
+        public void SetupLastLine()
+        {
+            _nextButton.Text = "Continue";
+        }
+
         private void ShowQuestAcceptanceButtons()
         {
             HideButtons();

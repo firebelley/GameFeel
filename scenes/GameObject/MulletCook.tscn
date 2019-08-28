@@ -19,7 +19,7 @@ shader_param/_invalidOutlineColor = Color( 0.5, 0, 0, 1 )
 shader_param/_enabled = null
 shader_param/_valid = null
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=2]
 height = 10.0
 
 [sub_resource type="SpriteFrames" id=3]
@@ -35,51 +35,64 @@ animations = [ {
 [node name="ShadowComponent" parent="." instance=ExtResource( 1 )]
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
-editor/display_folded = true
-Introduction = "Welcome back, adventurer."
+Introduction = "What?"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
-[node name="DialogueItem3" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="TurnInSpiderLegsIncomplete" parent="DialogueComponent" instance=ExtResource( 3 )]
 editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "082e092e-4978-4844-b30d-5c0c3da8a8e4"
 ShowImmediately = true
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem3" instance=ExtResource( 4 )]
-Text = "I told you to get spider legs!"
+[node name="DialogueLine" parent="DialogueComponent/TurnInSpiderLegsIncomplete" instance=ExtResource( 4 )]
+Text = "Where's my spider legs?"
 
-[node name="DialogueItem" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="SpiderLegSoup" parent="DialogueComponent" instance=ExtResource( 3 )]
 editor/display_folded = true
 Title = "Spider Leg Soup"
 ShowImmediately = true
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]
-Text = "Ah an adventurer!"
+[node name="DialogueLine" parent="DialogueComponent/SpiderLegSoup" instance=ExtResource( 4 )]
+Text = "* Heavy breathing *"
 
-[node name="DialogueLine2" parent="DialogueComponent/DialogueItem" instance=ExtResource( 4 )]
-Text = "Why don't you collect some spider legs for me?"
+[node name="DialogueLine3" parent="DialogueComponent/SpiderLegSoup" instance=ExtResource( 4 )]
+Text = "Ey, you! Spirit! I been waitin' for you for ages!"
+
+[node name="DialogueLine4" parent="DialogueComponent/SpiderLegSoup" instance=ExtResource( 4 )]
+Text = "I'm over here tryin' to make my famous Spider Leg Soup, and not one of you no good spirits has shown up!"
+
+[node name="DialogueLine2" parent="DialogueComponent/SpiderLegSoup" instance=ExtResource( 4 )]
+Text = "Fetch me ten spider legs. And why don't ya kill twenty in total as payment for keepin' me waitin'."
 LineContainerType = 2
 
-[node name="QuestStarterComponent" parent="DialogueComponent/DialogueItem/DialogueLine2" instance=ExtResource( 5 )]
+[node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegSoup/DialogueLine2" instance=ExtResource( 5 )]
 _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 
-[node name="DialogueItem2" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="TurnInSpiderLegs" parent="DialogueComponent" instance=ExtResource( 3 )]
 editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "556840d9-e203-4590-9e10-1ba5b298faa8"
 ShowImmediately = true
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem2" instance=ExtResource( 4 )]
-Text = "I'll take those!"
+[node name="DialogueLine" parent="DialogueComponent/TurnInSpiderLegs" instance=ExtResource( 4 )]
+Text = "Took you long enough!"
 LineContainerType = 1
 
-[node name="DialogueItem4" parent="DialogueComponent" instance=ExtResource( 3 )]
+[node name="AStrangeOccurrence" parent="DialogueComponent" instance=ExtResource( 3 )]
+editor/display_folded = true
 Title = "A Strange Occurence"
-ActiveQuestModelId = "26bc7617-8824-45ae-8b9e-77c2c6352f87"
 ShowImmediately = true
+RequiredCompletedQuestIds = PoolStringArray( "388998cb-c2c9-43ae-9a5f-de1c450fef5d" )
 
-[node name="DialogueLine" parent="DialogueComponent/DialogueItem4" instance=ExtResource( 4 )]
-Text = "We've received reports of a disturbance in the force. Please investigate."
+[node name="DialogueLine" parent="DialogueComponent/AStrangeOccurrence" instance=ExtResource( 4 )]
+Text = "Ack! The spider legs were no good. Probably 'cause you touched 'em with your grubby spirit phalanges..."
+
+[node name="DialogueLine2" parent="DialogueComponent/AStrangeOccurrence" instance=ExtResource( 4 )]
+Text = "Go find a better source of spider legs. Once you do, bring me those instead!"
+LineContainerType = 2
+
+[node name="QuestStarterComponent" parent="DialogueComponent/AStrangeOccurrence/DialogueLine2" instance=ExtResource( 5 )]
+_questId = "e7567d20-8f70-46be-9eb1-003d548e48bb"
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 6 )]
 material = SubResource( 1 )
@@ -88,7 +101,7 @@ _requirePlayerNear = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )

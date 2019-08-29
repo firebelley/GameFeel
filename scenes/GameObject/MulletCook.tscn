@@ -41,8 +41,10 @@ DisplayName = "Mullet Cook"
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 3 )]
+editor/display_folded = true
 Introduction = "What?"
 _selectableComponentPath = NodePath("../SelectableComponent")
+_entityDataComponentPath = NodePath("../EntityDataComponent")
 
 [node name="TurnInSpiderLegsIncomplete" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "Turn in Spider Legs"

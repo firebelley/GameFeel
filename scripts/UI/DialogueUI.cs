@@ -22,6 +22,8 @@ namespace GameFeel.UI
         private NodePath _dialogueContentPath;
         [Export]
         private NodePath _animationPlayerPath;
+        [Export]
+        private NodePath _nameplatePath;
 
         private Queue<DialogueItem> _itemsToDisplay = new Queue<DialogueItem>();
         private Queue<DialogueLine> _linesToDisplay = new Queue<DialogueLine>();
@@ -30,6 +32,7 @@ namespace GameFeel.UI
         private Control _dialogueContent;
         private DialogueComponent _activeDialogueComponent;
         private AnimationPlayer _animationPlayer;
+        private Label _nameplate;
 
         private bool _closeAfterLinesShown = false;
 
@@ -87,11 +90,23 @@ namespace GameFeel.UI
             _dialogueWindow.RectPosition = pos - new Vector2(_dialogueWindow.RectSize.x / 2f, _dialogueWindow.RectSize.y);
         }
 
+        private void UpdateEntityData(EntityDataComponent entityData)
+        {
+            if (entityData == null)
+            {
+                _nameplate.Hide();
+                return;
+            }
+
+            _nameplate.Show();
+            _nameplate.Text = entityData.DisplayName;
+        }
+
         private void ClearContainer()
         {
             foreach (var child in _dialogueContent.GetChildren())
             {
-                if (child is Node n)
+                if (child is Container n)
                 {
                     n.GetParent().RemoveChild(n);
                     n.QueueFree();
@@ -109,13 +124,6 @@ namespace GameFeel.UI
             _linesToDisplay.Clear();
         }
 
-        private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
-        {
-            Open();
-            _activeDialogueComponent = dialogueComponent;
-            InitializeContent();
-        }
-
         private void InitializeContent()
         {
             var validItems = _activeDialogueComponent.GetValidDialogueItems();
@@ -125,6 +133,7 @@ namespace GameFeel.UI
             }
             AdvanceItem();
             UpdateBubblePosition();
+            UpdateEntityData(_activeDialogueComponent.GetEntityDataComponent());
         }
 
         private void ShowNavigation()
@@ -181,6 +190,13 @@ namespace GameFeel.UI
             {
                 AdvanceItem();
             }
+        }
+
+        private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
+        {
+            Open();
+            _activeDialogueComponent = dialogueComponent;
+            InitializeContent();
         }
 
         private void OnDialogueOptionSelected(DialogueItem dialogueItem)

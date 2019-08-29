@@ -14,13 +14,17 @@ namespace GameFeel.Component
 
         [Export]
         private NodePath _selectableComponentPath;
+        [Export]
+        private NodePath _entityDataComponentPath;
 
         private AnimationPlayer _animationPlayer;
         private Sprite _sprite;
+        private EntityDataComponent _entityDataComponent;
 
         public override void _Ready()
         {
             GetNodeOrNull<SelectableComponent>(_selectableComponentPath ?? string.Empty)?.Connect(nameof(SelectableComponent.Selected), this, nameof(OnSelected));
+            _entityDataComponent = GetNodeOrNull<EntityDataComponent>(_entityDataComponentPath ?? string.Empty);
             _animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
             _sprite = GetNode<Sprite>("Sprite");
             UpdateQuestIndicators();
@@ -39,6 +43,11 @@ namespace GameFeel.Component
                 }
             }
             return arrayOptions;
+        }
+
+        public EntityDataComponent GetEntityDataComponent()
+        {
+            return _entityDataComponent;
         }
 
         private void UpdateQuestIndicators()

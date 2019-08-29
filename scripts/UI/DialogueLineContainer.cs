@@ -52,10 +52,6 @@ namespace GameFeel.UI
             _declineButton.Connect("pressed", this, nameof(OnDeclineButtonPressed));
             _turnInButton.Connect("pressed", this, nameof(OnTurnInButtonPressed));
             _notYetButton.Connect("pressed", this, nameof(OnNextButtonPressed));
-
-            _nextButton.RectPivotOffset = _nextButton.RectSize / 2f;
-            _acceptButton.RectPivotOffset = _acceptButton.RectSize / 2f;
-            _declineButton.RectPivotOffset = _declineButton.RectSize / 2f;
         }
 
         public void DisplayLine(DialogueLine line)

@@ -18,19 +18,19 @@
 [ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/art/spider-queen.png" type="Texture" id=17]
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/_hitShadePercent = null
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=2]
 resource_local_to_scene = true
 radius = 32.0
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=3]
 radius = 4.0
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 17 ) ],
 "loop": true,
@@ -55,11 +55,11 @@ _acceleration = 500.0
 _maxSpeed = 75.0
 
 [node name="HealthComponent" parent="." instance=ExtResource( 2 )]
-_maxHp = 50.0
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
+_maxHp = 50.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
-_shaderMaterial = SubResource( 3 )
+_shaderMaterial = SubResource( 1 )
 _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
@@ -88,7 +88,7 @@ _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 10 )]
 position = Vector2( 0, -32 )
-_shape = SubResource( 4 )
+_shape = SubResource( 2 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 11 )]
 _radius = 20.0
@@ -109,10 +109,10 @@ position = Vector2( 0, -32 )
 scale = Vector2( 5, 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 5 )
+frames = SubResource( 4 )
 animation = "attack"
 centered = false
 offset = Vector2( -32, -64 )

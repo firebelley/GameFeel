@@ -16,12 +16,12 @@ namespace GameFeel.Singleton
         private const string QUEST_NODE_PATH = "res://scenes/Resource/Quest.tscn";
 
         [Signal]
-        public delegate void QuestAdded(Quest quest);
+        public delegate void PreQuestStarted(Quest quest);
 
         public static QuestTracker Instance { get; private set; }
 
         private static Dictionary<string, QuestSaveModel> _quests = new Dictionary<string, QuestSaveModel>();
-        private static HashSet<string> _unavailableQuests = new HashSet<string>();
+        private static HashSet<string> _activeQuests = new HashSet<string>();
         private static HashSet<string> _completedQuests = new HashSet<string>();
 
         private static PackedScene _questScene;
@@ -41,12 +41,12 @@ namespace GameFeel.Singleton
                 {
                     return;
                 }
-
                 var quest = _questScene.Instance() as Quest;
+                _activeQuests.Add(questGuid);
+                Instance.EmitSignal(nameof(PreQuestStarted), quest);
+
                 Instance.AddChild(quest);
-                Instance.EmitSignal(nameof(QuestAdded), quest);
                 quest.Start(_quests[questGuid]);
-                _unavailableQuests.Add(questGuid);
                 quest.Connect(nameof(Quest.QuestCompleted), Instance, nameof(OnQuestCompleted));
             }
             else
@@ -62,7 +62,7 @@ namespace GameFeel.Singleton
 
         public static bool IsQuestAvailable(string questGuid)
         {
-            return !_unavailableQuests.Contains(questGuid);
+            return !_activeQuests.Contains(questGuid) && !IsQuestCompleted(questGuid);
         }
 
         public static bool IsQuestCompleted(string questGuid)

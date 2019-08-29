@@ -13,7 +13,7 @@ namespace GameFeel.UI
         public override void _Ready()
         {
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
-            QuestTracker.Instance.Connect(nameof(QuestTracker.QuestAdded), this, nameof(OnNewQuestStarted));
+            QuestTracker.Instance.Connect(nameof(QuestTracker.PreQuestStarted), this, nameof(OnNewQuestStarted));
         }
 
         private QuestTrackItem AttachQuest(Quest quest, string modelId)

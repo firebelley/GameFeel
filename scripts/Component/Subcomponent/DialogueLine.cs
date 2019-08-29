@@ -51,18 +51,18 @@ namespace GameFeel.Component.Subcomponent
             return QuestTracker.GetActiveModel(parent.ActiveQuestModelId);
         }
 
-        public bool IsQuestStarter()
-        {
-            return IsInstanceValid(_questStarterComponent);
-        }
-
         public bool IsQuestAvailable()
         {
-            if (IsInstanceValid(_questStarterComponent))
+            if (IsQuestStarter())
             {
                 return _questStarterComponent.IsQuestAvailable();
             }
             return false;
+        }
+
+        public bool IsQuestStarter()
+        {
+            return IsInstanceValid(_questStarterComponent);
         }
 
         public void StartQuest()

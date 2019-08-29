@@ -41,7 +41,6 @@ DisplayName = "Mullet Cook"
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 3 )]
-editor/display_folded = true
 Introduction = "What?"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
@@ -54,7 +53,6 @@ ShowImmediately = true
 Text = "Are ya dense? Where's my spider legs?"
 
 [node name="SpiderLegSoup" parent="DialogueComponent" instance=ExtResource( 4 )]
-editor/display_folded = true
 Title = "Spider Leg Soup"
 ShowImmediately = true
 
@@ -75,7 +73,6 @@ LineContainerType = 2
 _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 
 [node name="TurnInSpiderLegs" parent="DialogueComponent" instance=ExtResource( 4 )]
-editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "556840d9-e203-4590-9e10-1ba5b298faa8"
 ShowImmediately = true
@@ -85,7 +82,6 @@ Text = "Took you long enough!"
 LineContainerType = 1
 
 [node name="AStrangeOccurrence" parent="DialogueComponent" instance=ExtResource( 4 )]
-editor/display_folded = true
 Title = "A Strange Occurence"
 ShowImmediately = true
 RequiredCompletedQuestIds = PoolStringArray( "388998cb-c2c9-43ae-9a5f-de1c450fef5d" )
@@ -112,6 +108,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 3
+frame = 1
 playing = true
 offset = Vector2( 0, -13 )

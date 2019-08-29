@@ -37,13 +37,21 @@ namespace GameFeel.Component.Subcomponent
             {
                 valid = valid && RequiredCompletedQuestIds.All(x => QuestTracker.IsQuestCompleted(x));
             }
-            return valid && !IsQuestActive();
+            if (HasQuestStarter())
+            {
+                valid = valid && HasAvailableQuest();
+            }
+            return valid;
         }
 
-        private bool IsQuestActive()
+        public bool HasAvailableQuest()
         {
-            var questStarters = GetValidLines().Where(x => x.IsQuestStarter() && !x.IsQuestAvailable());
-            return questStarters.Count() > 0;
+            return GetValidLines().Any(x => x.IsQuestAvailable());
+        }
+
+        public bool HasQuestStarter()
+        {
+            return GetValidLines().Any(x => x.IsQuestStarter());
         }
     }
 }

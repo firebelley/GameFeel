@@ -4,3 +4,4 @@
 
 [node name="DialogueLine" type="Node"]
 script = ExtResource( 1 )
+Text = "Null"

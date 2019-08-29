@@ -40,13 +40,12 @@ Introduction = "What?"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="TurnInSpiderLegsIncomplete" parent="DialogueComponent" instance=ExtResource( 3 )]
-editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "082e092e-4978-4844-b30d-5c0c3da8a8e4"
 ShowImmediately = true
 
 [node name="DialogueLine" parent="DialogueComponent/TurnInSpiderLegsIncomplete" instance=ExtResource( 4 )]
-Text = "Where's my spider legs?"
+Text = "Are ya dense? Where's my spider legs?"
 
 [node name="SpiderLegSoup" parent="DialogueComponent" instance=ExtResource( 3 )]
 editor/display_folded = true
@@ -107,6 +106,5 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 3
 playing = true
 offset = Vector2( 0, -13 )

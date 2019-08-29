@@ -9,7 +9,6 @@
 [ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=7]
 [ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
 
-
 [sub_resource type="StyleBoxTexture" id=1]
 content_margin_bottom = 8.0
 texture = ExtResource( 5 )
@@ -51,7 +50,6 @@ margin_left = 536.0
 margin_top = 282.0
 margin_right = 632.0
 margin_bottom = 352.0
-mouse_filter = 1
 size_flags_horizontal = 8
 size_flags_vertical = 8
 custom_styles/panel = ExtResource( 4 )

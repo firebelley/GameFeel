@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/the-cook1.png-9e04c653bfa5de2c12173697de7b2177.stex"
+path="res://.import/mullet-cook4.png-fa9c7528608785f5fbc53448a4d530ef.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/the-cook1.png"
-dest_files=[ "res://.import/the-cook1.png-9e04c653bfa5de2c12173697de7b2177.stex" ]
+source_file="res://assets/art/mullet-cook4.png"
+dest_files=[ "res://.import/mullet-cook4.png-fa9c7528608785f5fbc53448a4d530ef.stex" ]
 
 [params]
 

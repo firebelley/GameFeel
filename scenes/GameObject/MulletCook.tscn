@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/DialogueComponent.tscn" type="PackedScene" id=2]
@@ -7,9 +7,10 @@
 [ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=7]
-[ext_resource path="res://assets/art/the-cook1.png" type="Texture" id=8]
-[ext_resource path="res://assets/art/the-cook2.png" type="Texture" id=9]
-[ext_resource path="res://assets/art/the-cook3.png" type="Texture" id=10]
+[ext_resource path="res://assets/art/mullet-cook1.png" type="Texture" id=8]
+[ext_resource path="res://assets/art/mullet-cook2.png" type="Texture" id=9]
+[ext_resource path="res://assets/art/mullet-cook3.png" type="Texture" id=10]
+[ext_resource path="res://assets/art/mullet-cook4.png" type="Texture" id=11]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -24,7 +25,7 @@ height = 10.0
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
 "loop": true,
 "name": "default",
 "speed": 8.0
@@ -106,5 +107,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
+frame = 3
 playing = true
 offset = Vector2( 0, -13 )

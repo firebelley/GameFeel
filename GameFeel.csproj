@@ -65,6 +65,7 @@
     <Compile Include="scripts\Component\DeathEffectComponent.cs" />
     <Compile Include="scripts\Component\DialogueComponent.cs" />
     <Compile Include="scripts\Component\EnemyAIComponent.cs" />
+    <Compile Include="scripts\Component\EntityDataComponent.cs" />
     <Compile Include="scripts\Component\HealthComponent.cs" />
     <Compile Include="scripts\Component\HitEffectComponent.cs" />
     <Compile Include="scripts\Component\IntermittentSoundComponent.cs" />

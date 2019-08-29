@@ -87,7 +87,7 @@ namespace GameFeel.Singleton
         {
             // TODO: use an entity data component to store data about an entity
             var node = GD.Load<PackedScene>(fullPath).Instance();
-            var entityId = node.GetFirstNodeOfType<DeathEffectComponent>()?.EntityId ?? string.Empty;
+            var entityId = node.GetFirstNodeOfType<EntityDataComponent>()?.Id ?? string.Empty;
             if (!string.IsNullOrEmpty(entityId))
             {
                 var info = new Metadata(entityId, node.GetName(), fullPath, null);

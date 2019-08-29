@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GameFeel.Component.Subcomponent;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -14,21 +13,20 @@ namespace GameFeel.Component
         [Export]
         private NodePath _selectableComponentPath;
 
+        private AnimationPlayer _animationPlayer;
+
         public override void _Ready()
         {
-            if (_selectableComponentPath != null)
-            {
-                GetNode<SelectableComponent>(_selectableComponentPath).Connect(nameof(SelectableComponent.Selected), this, nameof(OnSelected));
-            }
+            GetNodeOrNull<SelectableComponent>(_selectableComponentPath ?? string.Empty)?.Connect(nameof(SelectableComponent.Selected), this, nameof(OnSelected));
+            _animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
         }
 
         public List<DialogueItem> GetValidDialogueItems()
         {
             var arrayOptions = new List<DialogueItem>();
-            foreach (var dialogueItem in this.GetChildren<DialogueItem>())
+            foreach (var child in GetChildren())
             {
-                if (dialogueItem == null) continue;
-                if (dialogueItem.IsValid())
+                if (child is DialogueItem dialogueItem && dialogueItem.IsValid())
                 {
                     arrayOptions.Add(dialogueItem);
                 }

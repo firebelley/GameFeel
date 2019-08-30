@@ -41,7 +41,7 @@ DisplayName = "Mullet Cook"
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 3 )]
-Introduction = "What?"
+Introduction = "Ya rotten spirits should be grateful for the work I give you."
 _selectableComponentPath = NodePath("../SelectableComponent")
 _entityDataComponentPath = NodePath("../EntityDataComponent")
 
@@ -109,6 +109,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 1
+frame = 2
 playing = true
 offset = Vector2( 0, -13 )

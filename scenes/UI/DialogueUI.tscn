@@ -18,7 +18,7 @@ margin_bottom = 10.0
 expand_margin_right = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxTexture" id=4]
+[sub_resource type="StyleBoxTexture" id=2]
 texture = ExtResource( 5 )
 region_rect = Rect2( 96, 64, 32, 32 )
 margin_left = 10.0
@@ -26,12 +26,11 @@ margin_right = 10.0
 margin_bottom = 12.0
 axis_stretch_horizontal = 1
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 5 )
 region = Rect2( 64, 64, 32, 32 )
 
-[sub_resource type="Animation" id=3]
-resource_name = "ControlBounceInSecondary"
+[sub_resource type="Animation" id=4]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_scale")
@@ -74,25 +73,25 @@ resources = [ PoolStringArray( "DialogueLineContainer", "DialogueOptionsContaine
 [node name="DialogueWindowContainer" type="PanelContainer" parent="."]
 margin_right = 192.0
 margin_bottom = 96.0
-rect_min_size = Vector2( 192, 96 )
+rect_min_size = Vector2( 224, 96 )
 theme = ExtResource( 4 )
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="DialogueWindowContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 182.0
+margin_right = 214.0
 margin_bottom = 86.0
 custom_constants/margin_top = 0
 
 [node name="ContentContainer" type="VBoxContainer" parent="DialogueWindowContainer/MarginContainer"]
 margin_left = 8.0
-margin_right = 164.0
+margin_right = 196.0
 margin_bottom = 68.0
 custom_constants/separation = 8
 
 [node name="Nameplate" type="Label" parent="DialogueWindowContainer/MarginContainer/ContentContainer"]
-margin_right = 156.0
+margin_right = 188.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 0, 16 )
 custom_fonts/font = ExtResource( 6 )
@@ -103,12 +102,12 @@ align = 1
 [node name="NameplateDecorationContainer" type="PanelContainer" parent="DialogueWindowContainer/MarginContainer/ContentContainer/Nameplate"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Control" type="Control" parent="DialogueWindowContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 182.0
+margin_right = 214.0
 margin_bottom = 86.0
 mouse_filter = 2
 
@@ -122,8 +121,8 @@ margin_top = -19.0
 margin_right = 16.0
 margin_bottom = 13.0
 mouse_filter = 2
-texture = SubResource( 2 )
+texture = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="DialogueWindowContainer"]
 anims/ControlBounceIn = ExtResource( 7 )
-anims/ControlBounceInSecondary = SubResource( 3 )
+anims/ControlBounceInSecondary = SubResource( 4 )

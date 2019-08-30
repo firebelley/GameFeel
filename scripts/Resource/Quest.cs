@@ -3,6 +3,7 @@ using System.Linq;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.Resource
 {
@@ -28,9 +29,7 @@ namespace GameFeel.Resource
 
         public override void _Ready()
         {
-            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemUpdated), this, nameof(CheckInventoryItemUpdatedCompletion));
-            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
-            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
+
         }
 
         public static bool IsQuestEventReadyForCompletion(QuestModel questModel)
@@ -110,6 +109,8 @@ namespace GameFeel.Resource
                 return;
             }
 
+            this.DisconnectAllSignals(GameEventDispatcher.Instance);
+
             if (model is QuestStartModel questStart)
             {
                 EmitSignal(nameof(QuestStarted), this, model.Id);
@@ -139,11 +140,14 @@ namespace GameFeel.Resource
             switch (eventModel.EventId)
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED:
+                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemUpdated), this, nameof(CheckInventoryItemUpdatedCompletion));
                     CheckInventoryItemUpdatedCompletion(eventModel.EventId, eventModel.ItemId);
                     break;
                 case GameEventDispatcher.ENTITY_KILLED:
+                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
                     break;
                 case GameEventDispatcher.ITEM_TURNED_IN:
+                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
                     break;
             }
         }

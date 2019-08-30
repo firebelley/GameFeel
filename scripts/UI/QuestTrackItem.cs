@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GameFeel.Data.Model;
 using GameFeel.Resource;
+using GameFeel.Singleton;
 using Godot;
 
 namespace GameFeel.UI
@@ -53,7 +54,7 @@ namespace GameFeel.UI
         public void SetQuestPrompt(Quest quest, QuestEventModel questEventModel)
         {
             var progress = quest.GetEventProgress(questEventModel.Id);
-            var prefix = questEventModel.Required > 0 ? string.Format(NUMBER_TRACKER_FORMAT, progress, questEventModel.Required) : string.Empty;
+            var prefix = questEventModel.Required > 0 && questEventModel.EventId != GameEventDispatcher.ITEM_TURNED_IN ? string.Format(NUMBER_TRACKER_FORMAT, progress, questEventModel.Required) : string.Empty;
             _questPromptLabel.Text = prefix + questEventModel.PromptText;
             _questPromptLabel.Visible = !string.IsNullOrEmpty(_questPromptLabel.Text);
         }

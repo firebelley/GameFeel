@@ -149,6 +149,9 @@ namespace GameFeel.Resource
                 case GameEventDispatcher.ITEM_TURNED_IN:
                     GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
                     break;
+                case GameEventDispatcher.ENTITY_ENGAGED:
+                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.ENTITY_ENGAGED), this, nameof(CheckEntityEngagedCompletion));
+                    break;
             }
         }
 
@@ -198,6 +201,15 @@ namespace GameFeel.Resource
                 {
                     AdvanceFromModel(evt);
                 }
+            }
+        }
+
+        private void CheckEntityEngagedCompletion(string eventGuid, string entityId)
+        {
+            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == entityId).FirstOrDefault();
+            if (evt != null)
+            {
+                AdvanceFromModel(evt);
             }
         }
     }

@@ -56,7 +56,7 @@ namespace GameFeel.DesignTool
 
         private QuestEventNode GetQuestEventNodeFromGuid(string guid)
         {
-            switch (guid.ToString())
+            switch (guid)
             {
                 case GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED:
                     return _resourcePreloader.InstanceScene<QuestEventPlayerInventoryItemAdded>();
@@ -64,6 +64,8 @@ namespace GameFeel.DesignTool
                     return _resourcePreloader.InstanceScene<QuestEventEntityKilled>();
                 case GameEventDispatcher.ITEM_TURNED_IN:
                     return _resourcePreloader.InstanceScene<QuestEventItemTurnedIn>();
+                case GameEventDispatcher.ENTITY_ENGAGED:
+                    return _resourcePreloader.InstanceScene<QuestEventEntityEngaged>();
             }
             return null;
         }

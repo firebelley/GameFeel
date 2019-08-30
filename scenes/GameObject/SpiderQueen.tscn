@@ -1,26 +1,27 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=4]
-[ext_resource path="res://scenes/Component/EnemyAIComponent.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Component/State/EnemyStateWander.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Component/State/EnemyStatePursue.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/Component/State/EnemyStateAttackPreparation.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/Component/State/EnemyStateAttack.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/Component/ProjectileSpawnComponent.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/Component/DeathEffectComponent.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=16]
-[ext_resource path="res://assets/art/spider-queen.png" type="Texture" id=17]
+[ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=5]
+[ext_resource path="res://scenes/Component/EnemyAIComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Component/State/EnemyStateWander.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/Component/State/EnemyStatePursue.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/Component/State/EnemyStateAttackPreparation.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/Component/State/EnemyStateAttack.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/Component/ProjectileSpawnComponent.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/Component/DeathEffectComponent.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=17]
+[ext_resource path="res://assets/art/spider-queen.png" type="Texture" id=18]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
-shader = ExtResource( 4 )
+shader = ExtResource( 5 )
 shader_param/_hitShadePercent = null
 
 [sub_resource type="CircleShape2D" id=2]
@@ -32,17 +33,17 @@ radius = 4.0
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
-"frames": [ ExtResource( 17 ) ],
+"frames": [ ExtResource( 18 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 17 ) ],
+"frames": [ ExtResource( 18 ) ],
 "loop": true,
 "name": "run",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 17 ) ],
+"frames": [ ExtResource( 18 ) ],
 "loop": true,
 "name": "attack",
 "speed": 5.0
@@ -50,61 +51,66 @@ animations = [ {
 
 [node name="SpiderQueen" type="KinematicBody2D"]
 
-[node name="PathfindComponent" parent="." instance=ExtResource( 1 )]
+[node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
+Id = "7696d797-1260-51bf-a10d-0941f9916122"
+DisplayName = "Spider Queen"
+
+[node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
 _acceleration = 500.0
 _maxSpeed = 75.0
 
-[node name="HealthComponent" parent="." instance=ExtResource( 2 )]
+[node name="HealthComponent" parent="." instance=ExtResource( 3 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 50.0
 
-[node name="HitEffectComponent" parent="." instance=ExtResource( 3 )]
+[node name="HitEffectComponent" parent="." instance=ExtResource( 4 )]
 _shaderMaterial = SubResource( 1 )
 _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
-[node name="EnemyAIComponent" parent="." instance=ExtResource( 5 )]
+[node name="EnemyAIComponent" parent="." instance=ExtResource( 6 )]
 
-[node name="EnemyStateWander" parent="EnemyAIComponent" instance=ExtResource( 6 )]
+[node name="EnemyStateWander" parent="EnemyAIComponent" instance=ExtResource( 7 )]
 _pursueStateNodePath = NodePath("../EnemyStatePursue")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
 _pathfindComponentPath = NodePath("../../PathfindComponent")
 
-[node name="EnemyStatePursue" parent="EnemyAIComponent" instance=ExtResource( 7 )]
+[node name="EnemyStatePursue" parent="EnemyAIComponent" instance=ExtResource( 8 )]
 _attackStateNodePath = NodePath("../EnemyStateAttackPreparation")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
 _pathfindComponentPath = NodePath("../../PathfindComponent")
 
-[node name="EnemyStateAttackPreparation" parent="EnemyAIComponent" instance=ExtResource( 8 )]
+[node name="EnemyStateAttackPreparation" parent="EnemyAIComponent" instance=ExtResource( 9 )]
 _attackStateNodePath = NodePath("../EnemyStateAttack")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
 _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 
-[node name="EnemyStateAttack" parent="EnemyAIComponent" instance=ExtResource( 9 )]
+[node name="EnemyStateAttack" parent="EnemyAIComponent" instance=ExtResource( 10 )]
 _pursueStateNodePath = NodePath("../EnemyStatePursue")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
 _attackIntentComponentPath = NodePath("../../AttackIntentComponent")
 _projectileSpawnComponentPath = NodePath("../../ProjectileSpawnComponent")
 
-[node name="DamageReceiverComponent" parent="." instance=ExtResource( 10 )]
+[node name="DamageReceiverComponent" parent="." instance=ExtResource( 11 )]
 position = Vector2( 0, -32 )
 _shape = SubResource( 2 )
 
-[node name="ShadowComponent" parent="." instance=ExtResource( 11 )]
+[node name="ShadowComponent" parent="." instance=ExtResource( 12 )]
 _radius = 20.0
 
-[node name="HealthBarComponent" parent="." instance=ExtResource( 12 )]
+[node name="HealthBarComponent" parent="." instance=ExtResource( 13 )]
 position = Vector2( 0, -70 )
 _healthComponentPath = NodePath("../HealthComponent")
 
-[node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 13 )]
+[node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 14 )]
 position = Vector2( 0, -32 )
-_scene = ExtResource( 14 )
+_scene = ExtResource( 15 )
 
-[node name="DeathEffectComponent" parent="." instance=ExtResource( 15 )]
+[node name="DeathEffectComponent" parent="." instance=ExtResource( 16 )]
 _healthComponentPath = NodePath("../HealthComponent")
 
-[node name="AttackIntentComponent" parent="." instance=ExtResource( 16 )]
+[node name="AttackIntentComponent" parent="." instance=ExtResource( 17 )]
 position = Vector2( 0, -32 )
 scale = Vector2( 5, 5 )
 

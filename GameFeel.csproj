@@ -86,6 +86,7 @@
     <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />
     <Compile Include="scripts\DesignTool\QuestCompleteNode.cs" />
     <Compile Include="scripts\DesignTool\QuestDesigner.cs" />
+    <Compile Include="scripts\DesignTool\QuestEventEntityEngaged.cs" />
     <Compile Include="scripts\DesignTool\QuestEventEntityKilled.cs" />
     <Compile Include="scripts\DesignTool\QuestEventItemTurnedIn.cs" />
     <Compile Include="scripts\DesignTool\QuestEventNode.cs" />

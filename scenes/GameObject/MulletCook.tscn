@@ -41,7 +41,6 @@ DisplayName = "Mullet Cook"
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 3 )]
-editor/display_folded = true
 Introduction = "What?"
 _selectableComponentPath = NodePath("../SelectableComponent")
 _entityDataComponentPath = NodePath("../EntityDataComponent")
@@ -101,8 +100,8 @@ _questId = "e7567d20-8f70-46be-9eb1-003d548e48bb"
 [node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
 editor/display_folded = true
 material = SubResource( 1 )
-_shadedNodePath = NodePath("../AnimatedSprite")
 _requirePlayerNear = true
+_shadedNodePath = NodePath("../AnimatedSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )

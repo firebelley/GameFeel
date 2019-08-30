@@ -150,7 +150,7 @@ namespace GameFeel.Resource
                     GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
                     break;
                 case GameEventDispatcher.ENTITY_ENGAGED:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.ENTITY_ENGAGED), this, nameof(CheckEntityEngagedCompletion));
+                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityEngaged), this, nameof(CheckEntityEngagedCompletion));
                     break;
             }
         }

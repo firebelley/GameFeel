@@ -30,6 +30,9 @@ namespace GameFeel.Component
             {
                 DrawPolyline(newPoints.ToArray(), new Color(1f, 1f, 1f), 1);
             }
+
+            var targetPoint = GetOwner().GetFirstNodeOfType<PathfindComponent>().GetTargetPoint();
+            DrawCircle(GetGlobalTransform().XformInv(targetPoint), 3f, new Color(0, 0, 1, 1));
         }
     }
 }

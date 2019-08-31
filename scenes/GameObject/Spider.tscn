@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
@@ -31,7 +31,6 @@
 [ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=29]
 [ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=30]
 [ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=31]
-[ext_resource path="res://scenes/Component/PathfindDrawComponent.tscn" type="PackedScene" id=32]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -113,15 +112,16 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 DisplayName = "Spider"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
+Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 2 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 3 )]
+_acceleration = 500.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 4 )]
 _shaderMaterial = SubResource( 1 )
@@ -214,7 +214,5 @@ animation = "idle"
 [node name="AttackDelayTimer" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
-
-[node name="PathfindDrawComponent" parent="." instance=ExtResource( 32 )]
 
 [editable path="EnemyAIComponent"]

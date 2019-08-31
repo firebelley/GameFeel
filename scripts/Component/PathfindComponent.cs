@@ -38,15 +38,6 @@ namespace GameFeel.Component
             UpdateVelocity();
         }
 
-        public override string _GetConfigurationWarning()
-        {
-            if (!IsInstanceValid(GetOwner()) || !(GetOwner() is KinematicBody2D))
-            {
-                return "Owner must be a " + nameof(KinematicBody2D);
-            }
-            return string.Empty;
-        }
-
         public void UpdatePathToPlayer()
         {
             _pathEndReached = false;
@@ -68,6 +59,11 @@ namespace GameFeel.Component
         public void ClearPath()
         {
             Curve.ClearPoints();
+        }
+
+        public Vector2 GetTargetPoint()
+        {
+            return Curve.GetPointCount() > 0 ? Curve.InterpolateBaked(_currentT) : Vector2.Zero;
         }
 
         private void UpdateVelocity()

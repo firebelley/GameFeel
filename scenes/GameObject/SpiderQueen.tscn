@@ -98,7 +98,7 @@ _shape = SubResource( 2 )
 _radius = 20.0
 
 [node name="HealthBarComponent" parent="." instance=ExtResource( 13 )]
-position = Vector2( 0, -70 )
+position = Vector2( 0, -50 )
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 14 )]

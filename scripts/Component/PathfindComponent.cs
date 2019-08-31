@@ -4,10 +4,9 @@ using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
-    [Tool]
     public class PathfindComponent : Node
     {
-        private const float MAX_AHEAD = 10f;
+        private const float MAX_AHEAD = 30f;
         private const float MAX_AHEAD_DELTA = MAX_AHEAD * 100f;
         private const float TIME_DIFF_PERCENT = .25f;
 
@@ -94,9 +93,9 @@ namespace GameFeel.Component
                 {
                     if (!_pathEndReached)
                     {
+                        _pathEndReached = true;
                         EmitSignal(nameof(PathEndReached));
                     }
-                    _pathEndReached = true;
                     Decelerate();
                 }
             }

@@ -28,22 +28,26 @@ namespace GameFeel.GameObject
         [Export]
         private int _maxSpawned = 5;
         [Export]
+        private int _totalToSpawn;
+        [Export]
         private PackedScene _spawnedScene;
 
-        private Timer _timer;
+        private Timer _cullTimer;
         private Timer _spawnTimer;
         private Node2D _worldDetectionArea;
         private List<Node2D> _spawnedNodes = new List<Node2D>();
         private List<RayCast2D> _spawnRaycasts = new List<RayCast2D>();
 
+        private int _currentSpawned;
+
         public override void _Ready()
         {
-            _timer = GetNode<Timer>("Timer");
+            _cullTimer = GetNode<Timer>("Timer");
             _spawnTimer = GetNode<Timer>("SpawnTimer");
             _worldDetectionArea = GetNode<Node2D>("WorldDetectionArea");
             _spawnRaycasts = _worldDetectionArea.GetChildren<RayCast2D>();
 
-            _timer.Connect("timeout", this, nameof(OnTimerTimeout));
+            _cullTimer.Connect("timeout", this, nameof(OnTimerTimeout));
             _spawnTimer.Connect("timeout", this, nameof(OnSpawnTimerTimeout));
 
             if (!Engine.IsEditorHint())
@@ -93,6 +97,7 @@ namespace GameFeel.GameObject
                 GameZone.EntitiesLayer.AddChild(node);
                 node.GlobalPosition = position;
                 _spawnedNodes.Add(node);
+                _currentSpawned++;
 
                 break;
             }
@@ -126,6 +131,15 @@ namespace GameFeel.GameObject
             if (_spawnedNodes.Count < _maxSpawned && _spawnTimer.IsStopped())
             {
                 _spawnTimer.Start();
+            }
+        }
+
+        private void CheckDone()
+        {
+            if (_currentSpawned >= _totalToSpawn && _totalToSpawn > 0)
+            {
+                _spawnTimer.Stop();
+                _cullTimer.Stop();
             }
         }
 

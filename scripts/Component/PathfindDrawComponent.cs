@@ -4,19 +4,8 @@ using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
-    [Tool]
     public class PathfindDrawComponent : Node2D
     {
-        public override string _GetConfigurationWarning()
-        {
-            var pathfindComponent = GetOwner()?.GetFirstNodeOfType<PathfindComponent>();
-            if (pathfindComponent == null)
-            {
-                return "Owner must contain a " + nameof(PathfindComponent);
-            }
-            return string.Empty;
-        }
-
         public override void _Process(float delta)
         {
             Update();

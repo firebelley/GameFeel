@@ -53,16 +53,15 @@ animations = [ {
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
-Id = "7696d797-1260-51bf-a10d-0941f9916122"
 DisplayName = "Spider Queen"
+Id = "7696d797-1260-51bf-a10d-0941f9916122"
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
-_acceleration = 500.0
 _maxSpeed = 75.0
 
 [node name="HealthComponent" parent="." instance=ExtResource( 3 )]
-_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 50.0
+_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 4 )]
 _shaderMaterial = SubResource( 1 )
@@ -70,16 +69,15 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="EnemyAIComponent" parent="." instance=ExtResource( 6 )]
+_pathfindComponentPath = NodePath("../PathfindComponent")
 
 [node name="EnemyStateWander" parent="EnemyAIComponent" instance=ExtResource( 7 )]
 _pursueStateNodePath = NodePath("../EnemyStatePursue")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
-_pathfindComponentPath = NodePath("../../PathfindComponent")
 
 [node name="EnemyStatePursue" parent="EnemyAIComponent" instance=ExtResource( 8 )]
 _attackStateNodePath = NodePath("../EnemyStateAttackPreparation")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
-_pathfindComponentPath = NodePath("../../PathfindComponent")
 
 [node name="EnemyStateAttackPreparation" parent="EnemyAIComponent" instance=ExtResource( 9 )]
 _attackStateNodePath = NodePath("../EnemyStateAttack")

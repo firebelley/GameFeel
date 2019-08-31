@@ -1,6 +1,7 @@
 using Godot;
 using GodotTools.Logic;
 using GodotTools.Logic.Interface;
+using GodotTools.Util;
 
 namespace GameFeel.Component
 {
@@ -13,9 +14,21 @@ namespace GameFeel.Component
         public StateExecutorMachine StateMachine { get; private set; } = new StateExecutorMachine();
 
         public Vector2 MetaSpawnPosition { get; set; }
+        public PathfindComponent MetaPathfindComponent { get; private set; }
+
+        [Export]
+        private NodePath _pathfindComponentPath;
 
         public override void _Ready()
         {
+            MetaPathfindComponent = GetNodeOrNull<PathfindComponent>(_pathfindComponentPath ?? string.Empty);
+            if (MetaPathfindComponent == null)
+            {
+                Logger.Error("No pathfind component set in " + GetOwner().Filename);
+                QueueFree();
+                return;
+            }
+
             if (GetChildCount() > 0)
             {
                 var first = GetChildren() [0] as IStateExector;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=2]
@@ -25,12 +25,13 @@
 [ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=23]
 [ext_resource path="res://assets/sound/spider-02.wav" type="AudioStream" id=24]
 [ext_resource path="res://assets/art/spider1.png" type="Texture" id=25]
-[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=26]
-[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=27]
-[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=28]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=29]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=30]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=31]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=26]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=27]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=28]
+[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=29]
+[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=30]
+[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=31]
+[ext_resource path="res://scenes/Component/PathfindDrawComponent.tscn" type="PackedScene" id=32]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -96,14 +97,14 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
-"loop": false,
-"name": "attack",
-"speed": 10.0
-}, {
-"frames": [ ExtResource( 25 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ) ],
+"frames": [ ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
 "loop": true,
 "name": "run",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ) ],
+"loop": false,
+"name": "attack",
 "speed": 10.0
 } ]
 
@@ -112,17 +113,15 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-DisplayName = "Spider"
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 2 )]
-_maxHp = 3.0
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
+_maxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 3 )]
-_acceleration = 500.0
-_maxSpeed = 100.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 4 )]
 _shaderMaterial = SubResource( 1 )
@@ -130,6 +129,7 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="EnemyAIComponent" parent="." instance=ExtResource( 6 )]
+_pathfindComponentPath = NodePath("../PathfindComponent")
 
 [node name="EnemyStateSpawn" parent="EnemyAIComponent" instance=ExtResource( 7 )]
 _wanderStateNodePath = NodePath("../EnemyStateWander")
@@ -139,12 +139,10 @@ _spawnAnimationPlayerPath = NodePath("../../AnimationPlayer")
 [node name="EnemyStateWander" parent="EnemyAIComponent" instance=ExtResource( 8 )]
 _pursueStateNodePath = NodePath("../EnemyStatePursue")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
-_pathfindComponentPath = NodePath("../../PathfindComponent")
 
 [node name="EnemyStatePursue" parent="EnemyAIComponent" instance=ExtResource( 9 )]
 _attackStateNodePath = NodePath("../EnemyStateAttackPreparation")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
-_pathfindComponentPath = NodePath("../../PathfindComponent")
 
 [node name="EnemyStateAttackPreparation" parent="EnemyAIComponent" instance=ExtResource( 10 )]
 _attackStateNodePath = NodePath("../EnemyStateAttack")
@@ -162,12 +160,12 @@ editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Ruby" parent="LootTableComponent" instance=ExtResource( 13 )]
-Weight = 2
 Scene = ExtResource( 14 )
+Weight = 2
 
 [node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 13 )]
-Weight = 100
 Scene = ExtResource( 15 )
+Weight = 100
 
 [node name="Nothing" parent="LootTableComponent" instance=ExtResource( 13 )]
 Weight = 100
@@ -182,9 +180,6 @@ position = Vector2( 0, -6 )
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 18 )]
 position = Vector2( 0, -6 )
 _scene = ExtResource( 19 )
-_number = 10
-_angleDelta = 25.0
-_delayPerSpawn = 0.05
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 20 )]
 position = Vector2( 0, -1 )
@@ -219,5 +214,7 @@ animation = "idle"
 [node name="AttackDelayTimer" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
+
+[node name="PathfindDrawComponent" parent="." instance=ExtResource( 32 )]
 
 [editable path="EnemyAIComponent"]

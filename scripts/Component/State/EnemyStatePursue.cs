@@ -12,42 +12,40 @@ namespace GameFeel.Component.State
         [Export]
         private NodePath _animatedSpritePath;
         [Export]
-        private NodePath _pathfindComponentPath;
-        [Export]
         private int _initiateAttackRange = 50;
+        [Export]
+        private float _minPathfindTime = 1f;
+        [Export]
+        private float _maxPathfindTime = 2f;
 
-        private PathfindComponent _pathfindComponent;
         private AnimatedSprite _animatedSprite;
         private IStateExector _attackState;
+
+        private Timer _pathUpdateTimer;
 
         public override void _Ready()
         {
             base._Ready();
-            _pathfindComponent = GetNode<PathfindComponent>(_pathfindComponentPath);
             _animatedSprite = GetNode<AnimatedSprite>(_animatedSpritePath);
-
-            if (_attackStateNodePath != null)
-            {
-                _attackState = GetNode(_attackStateNodePath) as IStateExector;
-            }
+            _pathUpdateTimer = GetNode<Timer>("PathUpdateTimer");
+            _attackState = GetNodeOrNull<IStateExector>(_attackStateNodePath ?? string.Empty) as IStateExector;
+            _pathUpdateTimer.Connect("timeout", this, nameof(OnPathfindUpdateTimerTimeout));
         }
 
         public override void StateEntered()
         {
-            _pathfindComponent.EnablePathTimer();
-            _pathfindComponent.UpdatePath();
+            _parent.MetaPathfindComponent.Connect(nameof(PathfindComponent.PathEndReached), this, nameof(OnPathEndReached));
+            UpdatePathAndTimer();
             _animatedSprite.Play(EnemyAIComponent.META_ANIM_RUN);
         }
 
         public override void StateActive()
         {
-            _pathfindComponent.UpdateVelocity();
-
-            if (_pathfindComponent.Velocity.x < -5f)
+            if (_parent.MetaPathfindComponent.Velocity.x < -5f)
             {
                 _animatedSprite.FlipH = true;
             }
-            else if (_pathfindComponent.Velocity.x > 5f)
+            else if (_parent.MetaPathfindComponent.Velocity.x > 5f)
             {
                 _animatedSprite.FlipH = false;
             }
@@ -65,7 +63,26 @@ namespace GameFeel.Component.State
 
         public override void StateLeft()
         {
-            _pathfindComponent.DisablePathTimer();
+            this.DisconnectAllSignals(_parent.MetaPathfindComponent);
+            _pathUpdateTimer.Stop();
+            _parent.MetaPathfindComponent.ClearPath();
+        }
+
+        private void UpdatePathAndTimer()
+        {
+            _pathUpdateTimer.WaitTime = Main.RNG.RandfRange(_minPathfindTime, _maxPathfindTime);
+            _pathUpdateTimer.Start();
+            _parent.MetaPathfindComponent.UpdatePathToPlayer();
+        }
+
+        private void OnPathfindUpdateTimerTimeout()
+        {
+            UpdatePathAndTimer();
+        }
+
+        private void OnPathEndReached()
+        {
+            UpdatePathAndTimer();
         }
     }
 }

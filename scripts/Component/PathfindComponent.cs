@@ -8,31 +8,35 @@ namespace GameFeel.Component
     public class PathfindComponent : Node
     {
         private const float MAX_AHEAD = 10f;
+        private const float MAX_AHEAD_DELTA = MAX_AHEAD * 100f;
         private const float TIME_DIFF_PERCENT = .25f;
 
+        [Signal]
+        public delegate void PathEndReached();
+
         [Export]
-        private float _maxSpeed;
+        private float _maxSpeed = 100f;
         [Export]
-        private float _acceleration;
+        private float _acceleration = 350f;
+        [Export]
+        private float _deceleration = 10f;
 
         public Vector2 Velocity { get; private set; }
 
         public Curve2D Curve { get; private set; } = new Curve2D();
 
-        private Timer _timer;
-
         private float _currentT;
-        private bool _pathTimerEnabled = true;
-        private float _baseWaitTime;
         private KinematicBody2D _owner;
+        private bool _pathEndReached = false;
 
         public override void _Ready()
         {
             _owner = GetOwner<KinematicBody2D>();
-            _timer = GetNode<Timer>("Timer");
+        }
 
-            _baseWaitTime = _timer.WaitTime;
-            _timer.Connect("timeout", this, nameof(OnTimerTimeout));
+        public override void _Process(float delta)
+        {
+            UpdateVelocity();
         }
 
         public override string _GetConfigurationWarning()
@@ -44,42 +48,9 @@ namespace GameFeel.Component
             return string.Empty;
         }
 
-        public void UpdateVelocity()
+        public void UpdatePathToPlayer()
         {
-            var destinationPoint = Curve.InterpolateBaked(_currentT);
-            var acceleration = Vector2.Zero;
-
-            if (_owner.GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
-            {
-                _currentT += MAX_AHEAD;
-            }
-
-            if (_currentT < (Curve.GetBakedLength()))
-            {
-                acceleration = (destinationPoint - _owner.GlobalPosition).Normalized() * _acceleration;
-            }
-            else
-            {
-                Velocity = Vector2.Zero;
-            }
-
-            Velocity += acceleration * GetProcessDeltaTime();
-            Velocity = Velocity.Clamped(_maxSpeed);
-            Velocity = _owner.MoveAndSlide(Velocity);
-        }
-
-        public void DisablePathTimer()
-        {
-            _pathTimerEnabled = false;
-        }
-
-        public void EnablePathTimer()
-        {
-            _pathTimerEnabled = true;
-        }
-
-        public void UpdatePath()
-        {
+            _pathEndReached = false;
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {
@@ -88,24 +59,56 @@ namespace GameFeel.Component
             }
         }
 
-        public void UpdatePath(Vector2 fromPos, Vector2 toPos)
+        public void UpdateStraightPath(Vector2 fromPos, Vector2 toPos)
         {
+            _pathEndReached = false;
             Curve = GameZone.GetPathCurve(fromPos, toPos, 0f);
             _currentT = 0f;
         }
 
-        private void OnTimerTimeout()
+        public void ClearPath()
         {
-            // TODO: ALWAYS ENABLED
-            if (_pathTimerEnabled)
+            Curve.ClearPoints();
+        }
+
+        private void UpdateVelocity()
+        {
+            var acceleration = Vector2.Zero;
+            if (Curve.GetPointCount() == 0)
             {
-                UpdatePath();
+                Decelerate();
+            }
+            else
+            {
+                var destinationPoint = Curve.InterpolateBaked(_currentT);
+                if (_owner.GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
+                {
+                    _currentT += MAX_AHEAD_DELTA * GetProcessDeltaTime();
+                }
+
+                if (_currentT < (Curve.GetBakedLength()))
+                {
+                    acceleration = (destinationPoint - _owner.GlobalPosition).Normalized() * _acceleration;
+                }
+                else
+                {
+                    if (!_pathEndReached)
+                    {
+                        EmitSignal(nameof(PathEndReached));
+                    }
+                    _pathEndReached = true;
+                    Decelerate();
+                }
             }
 
-            var start = _baseWaitTime * (1 - TIME_DIFF_PERCENT);
-            var end = _baseWaitTime + _baseWaitTime * TIME_DIFF_PERCENT;
-            _timer.WaitTime = Main.RNG.RandfRange(start, end);
-            _timer.Start();
+            Velocity += acceleration * GetProcessDeltaTime();
+            Velocity = Velocity.Clamped(_maxSpeed);
+            Velocity = _owner.MoveAndSlide(Velocity);
+        }
+
+        private void Decelerate()
+        {
+            Velocity = Velocity.LinearInterpolate(Vector2.Zero, _deceleration * GetProcessDeltaTime());
         }
     }
 }

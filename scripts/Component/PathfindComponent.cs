@@ -7,7 +7,7 @@ namespace GameFeel.Component
     [Tool]
     public class PathfindComponent : Node
     {
-        private const float MAX_AHEAD = 20f;
+        private const float MAX_AHEAD = 10f;
         private const float TIME_DIFF_PERCENT = .25f;
 
         [Export]
@@ -51,7 +51,7 @@ namespace GameFeel.Component
 
             if (_owner.GlobalPosition.DistanceSquaredTo(destinationPoint) < MAX_AHEAD * MAX_AHEAD)
             {
-                _currentT += _maxSpeed * GetProcessDeltaTime();
+                _currentT += MAX_AHEAD;
             }
 
             if (_currentT < (Curve.GetBakedLength()))

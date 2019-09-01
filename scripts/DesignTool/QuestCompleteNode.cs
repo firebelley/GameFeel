@@ -7,6 +7,7 @@ namespace GameFeel.DesignTool
     {
         private QuestItemSelector _rewardItemSelector;
         private SpinBox _rewardAmountSpinBox;
+        private LineEdit _idLineEdit;
 
         public new QuestCompleteModel Model
         {
@@ -26,6 +27,7 @@ namespace GameFeel.DesignTool
             Model = new QuestCompleteModel();
             _rewardItemSelector = GetNode<QuestItemSelector>("VBoxContainer/HBoxContainer/QuestItemSelector");
             _rewardAmountSpinBox = GetNode<SpinBox>("VBoxContainer/HBoxContainer2/SpinBox");
+            _idLineEdit = GetNode<LineEdit>("VBoxContainer/HBoxContainer3/LineEdit");
 
             _rewardItemSelector.Connect(nameof(QuestItemSelector.ItemSelected), this, nameof(OnItemSelected));
             _rewardAmountSpinBox.Connect("value_changed", this, nameof(OnValueChanged));
@@ -41,6 +43,7 @@ namespace GameFeel.DesignTool
         {
             _rewardItemSelector.SetItemId(Model.RewardItemId);
             _rewardAmountSpinBox.Value = Model.RewardItemAmount;
+            _idLineEdit.Text = Model.Id;
         }
 
         private void OnItemSelected(string id)

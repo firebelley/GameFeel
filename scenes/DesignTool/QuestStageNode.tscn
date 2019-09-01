@@ -27,37 +27,36 @@ margin_top = 24.0
 margin_right = 304.0
 margin_bottom = 76.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 288.0
-margin_bottom = 24.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_top = 5.0
-margin_right = 142.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Display Name"
-
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
-margin_left = 146.0
-margin_right = 288.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 288.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_top = 5.0
+margin_right = 59.0
+margin_bottom = 19.0
+text = "Model ID"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 63.0
+margin_right = 288.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 28.0
 margin_right = 288.0
 margin_bottom = 52.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_top = 5.0
-margin_right = 142.0
+margin_right = 89.0
 margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Stage GUID"
+text = "Display Name"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
-margin_left = 146.0
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+margin_left = 93.0
 margin_right = 288.0
 margin_bottom = 24.0
 size_flags_horizontal = 3

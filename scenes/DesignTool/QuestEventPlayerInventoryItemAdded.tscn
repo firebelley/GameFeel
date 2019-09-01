@@ -8,7 +8,7 @@
 script = ExtResource( 2 )
 
 [node name="VBoxContainer" parent="." index="0"]
-margin_bottom = 100.0
+margin_bottom = 128.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="1"]
 margin_top = 28.0
@@ -40,3 +40,11 @@ text = "Required"
 margin_left = 61.0
 margin_right = 135.0
 margin_bottom = 24.0
+
+[node name="PromptContainer" parent="VBoxContainer" index="3"]
+margin_top = 80.0
+margin_bottom = 104.0
+
+[node name="VBoxContainer2" parent="." index="1"]
+margin_top = 128.0
+margin_bottom = 128.0

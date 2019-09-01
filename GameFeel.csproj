@@ -82,6 +82,8 @@
     <Compile Include="scripts\Component\State\EnemyStateAttackPreparation.cs" />
     <Compile Include="scripts\Component\State\EnemyStateSpawn.cs" />
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\MoveToPlayer.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\Sequence.cs" />
     <Compile Include="scripts\Component\Subcomponent\DialogueItem.cs" />
     <Compile Include="scripts\Component\Subcomponent\DialogueLine.cs" />
     <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />
@@ -141,6 +143,8 @@
     <Compile Include="scripts\Singleton\MetadataLoader.cs" />
     <Compile Include="scripts\UI\ToggleUI.cs" />
     <Compile Include="scripts\Component\QuestTriggerComponent.cs" />
+    <Compile Include="scripts\Component\BehaviorTree.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\BehaviorNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

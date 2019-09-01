@@ -4,6 +4,7 @@ using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
+using GodotTools.Util;
 
 namespace GameFeel.Resource
 {
@@ -21,6 +22,8 @@ namespace GameFeel.Resource
         public delegate void QuestCompleted(Quest quest, string modelGuid);
         [Signal]
         public delegate void QuestEventProgress(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestModelActivated(Quest quest, string modelGuid);
 
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
@@ -45,16 +48,30 @@ namespace GameFeel.Resource
             return false;
         }
 
-        public void Start(QuestSaveModel questSaveModel)
+        public void SetModel(QuestSaveModel questSaveModel)
         {
             _questSaveModel = questSaveModel;
             _idToModelMap = _questSaveModel.IdToModelMap;
-            Activate(questSaveModel.Start);
+        }
+
+        public void Start()
+        {
+            if (_questSaveModel == null)
+            {
+                Logger.Error("No quest save model set before starting!");
+                return;
+            }
+            Activate(_questSaveModel.Start);
         }
 
         public QuestSaveModel GetQuestSaveModel()
         {
             return _questSaveModel;
+        }
+
+        public bool ContainsModelId(string modelId)
+        {
+            return _idToModelMap.ContainsKey(modelId);
         }
 
         public QuestModel GetQuestModel(string modelId)
@@ -96,6 +113,7 @@ namespace GameFeel.Resource
             {
                 Complete(qcm);
             }
+            EmitSignal(nameof(QuestModelActivated), this, model.Id);
         }
 
         private void AdvanceFromModel(QuestModel model)

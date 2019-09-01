@@ -42,12 +42,15 @@ namespace GameFeel.Singleton
                     return;
                 }
                 var quest = _questScene.Instance() as Quest;
+
                 _activeQuests.Add(questGuid);
-                Instance.EmitSignal(nameof(PreQuestStarted), quest);
+                quest.SetModel(_quests[questGuid]);
 
                 Instance.AddChild(quest);
-                quest.Start(_quests[questGuid]);
+                Instance.EmitSignal(nameof(PreQuestStarted), quest);
+
                 quest.Connect(nameof(Quest.QuestCompleted), Instance, nameof(OnQuestCompleted));
+                quest.Start();
             }
             else
             {
@@ -58,6 +61,11 @@ namespace GameFeel.Singleton
         public static QuestModel GetActiveModel(string modelId)
         {
             return Instance.GetChildren<Quest>().Select(x => x.GetActiveModel(modelId)).FirstOrDefault(x => x != null);
+        }
+
+        public static Quest GetActiveQuestContainingModelId(string modelId)
+        {
+            return Instance.GetChildren<Quest>().FirstOrDefault(x => x.ContainsModelId(modelId));
         }
 
         public static bool IsQuestAvailable(string questGuid)

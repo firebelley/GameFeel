@@ -29,7 +29,7 @@ namespace GameFeel.Component
             _sprite = GetNode<Sprite>("Sprite");
             UpdateQuestIndicators();
 
-            QuestTracker.Instance.Connect(nameof(QuestTracker.PreQuestStarted), this, nameof(OnQuestStarted));
+            QuestTracker.Instance.Connect(nameof(QuestTracker.PreQuestStarted), this, nameof(OnPreQuestStarted));
         }
 
         public List<DialogueItem> GetValidDialogueItems()
@@ -114,13 +114,9 @@ namespace GameFeel.Component
             GameEventDispatcher.DispatchDialogueStartedEvent(this);
         }
 
-        private void OnQuestStarted(Quest quest)
+        private void OnPreQuestStarted(Quest quest)
         {
-            quest.Connect(nameof(Quest.QuestCompleted), this, nameof(OnQuestUpdate));
-            quest.Connect(nameof(Quest.QuestEventCompleted), this, nameof(OnQuestUpdate));
-            quest.Connect(nameof(Quest.QuestEventStarted), this, nameof(OnQuestUpdate));
-            quest.Connect(nameof(Quest.QuestStageStarted), this, nameof(OnQuestUpdate));
-            quest.Connect(nameof(Quest.QuestStarted), this, nameof(OnQuestUpdate));
+            quest.Connect(nameof(Quest.QuestModelActivated), this, nameof(OnQuestUpdate));
         }
 
         private void OnQuestUpdate(Quest quest, string modelId)

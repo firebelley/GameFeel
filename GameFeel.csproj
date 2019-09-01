@@ -75,6 +75,7 @@
     <Compile Include="scripts\Component\ProjectileDeleterComponent.cs" />
     <Compile Include="scripts\Component\ProjectileSpawnComponent.cs" />
     <Compile Include="scripts\Component\QuestStarterComponent.cs" />
+    <Compile Include="scripts\Component\QuestTriggerSpawnComponent.cs" />
     <Compile Include="scripts\Component\SelectableComponent.cs" />
     <Compile Include="scripts\Component\ShadowComponent.cs" />
     <Compile Include="scripts\Component\State\EnemyStateAttack.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="scripts\Data\Model\QuestCompleteModel.cs" />
     <Compile Include="scripts\Singleton\MetadataLoader.cs" />
     <Compile Include="scripts\UI\ToggleUI.cs" />
+    <Compile Include="scripts\Component\QuestTriggerComponent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,40 +1,37 @@
 using GameFeel.Component.Subcomponent.Behavior;
-using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
-    public class BehaviorTree : Node
+    public class BehaviorTree : Selector
     {
-        private BehaviorNode _nextToEnter;
+        private bool _shouldEnter = false;
 
         public override void _Ready()
         {
-            BehaviorNode first = null;
-            foreach (var child in this.GetChildren<BehaviorNode>())
-            {
-                if (first == null)
-                {
-                    first = child;
-                }
-                child.Connect(nameof(BehaviorNode.StatusUpdated), this, nameof(OnBehaviorNodeStatusUpdated));
-            }
-            first?.Enter();
+            base._Ready();
+            RequestEnter();
         }
 
-        public override void _Process(float delta)
+        protected override void Enter()
         {
-            if (IsInstanceValid(_nextToEnter))
+            SetProcess(true);
+            base.Enter();
+        }
+
+        protected override void Tick()
+        {
+            if (_shouldEnter)
             {
-                var next = _nextToEnter;
-                _nextToEnter = null;
-                next.Enter();
+                _shouldEnter = false;
+                RequestEnter();
             }
         }
 
-        private void OnBehaviorNodeStatusUpdated(BehaviorNode.Status status)
+        protected override void Leave(Status status)
         {
-            _nextToEnter = this.GetChildren<BehaviorNode>() [0];
+            base.Leave(status);
+            SetProcess(true);
+            _shouldEnter = true;
         }
     }
 }

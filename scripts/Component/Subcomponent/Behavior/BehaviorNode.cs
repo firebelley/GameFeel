@@ -14,6 +14,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
             RUNNING
         }
 
+        protected BehaviorNode _processingNode;
+
         public override void _Ready()
         {
             SetProcess(false);
@@ -24,12 +26,15 @@ namespace GameFeel.Component.Subcomponent.Behavior
             Tick();
         }
 
-        protected BehaviorNode _processingNode;
+        public void RequestEnter()
+        {
+            CallDeferred(nameof(Enter));
+        }
 
-        public abstract void Enter();
         protected abstract void Tick();
+        protected abstract void Enter();
 
-        protected void Leave(Status status)
+        protected virtual void Leave(Status status)
         {
             SetProcess(false);
             EmitSignal(nameof(StatusUpdated), status);

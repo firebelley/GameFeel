@@ -113,6 +113,9 @@ collision_mask = 17
 [node name="Sequence" parent="BehaviorTree" instance=ExtResource( 2 )]
 
 [node name="MoveToPlayer" parent="BehaviorTree/Sequence" instance=ExtResource( 3 )]
+_pathfindComponentPath = NodePath("../../../PathfindComponent")
+_animatedSpritePath = NodePath("../../../AnimatedSprite")
+_targetDistanceFromPlayer = 50.0
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 4 )]
 DisplayName = "Spider"
@@ -136,12 +139,12 @@ editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Ruby" parent="LootTableComponent" instance=ExtResource( 10 )]
-Scene = ExtResource( 11 )
 Weight = 2
+Scene = ExtResource( 11 )
 
 [node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 10 )]
-Scene = ExtResource( 12 )
 Weight = 100
+Scene = ExtResource( 12 )
 
 [node name="Nothing" parent="LootTableComponent" instance=ExtResource( 10 )]
 Weight = 100

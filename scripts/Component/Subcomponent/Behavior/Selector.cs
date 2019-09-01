@@ -3,10 +3,10 @@ using GodotTools.Extension;
 
 namespace GameFeel.Component.Subcomponent.Behavior
 {
-    public class Sequence : BehaviorNode
+    public class Selector : BehaviorNode
     {
-        private List<BehaviorNode> _children;
         private int _processingIndex = 0;
+        protected List<BehaviorNode> _children;
 
         public override void _Ready()
         {
@@ -40,19 +40,19 @@ namespace GameFeel.Component.Subcomponent.Behavior
         {
             if (status == Status.FAIL)
             {
-                Leave(Status.FAIL);
-            }
-            else if (status == Status.SUCCESS)
-            {
                 _processingIndex++;
                 if (_processingIndex >= _children.Count)
                 {
-                    Leave(Status.SUCCESS);
+                    Leave(Status.FAIL);
                 }
                 else
                 {
                     _children[_processingIndex].RequestEnter();
                 }
+            }
+            else if (status == Status.SUCCESS)
+            {
+                Leave(Status.SUCCESS);
             }
         }
     }

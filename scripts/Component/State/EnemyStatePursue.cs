@@ -36,7 +36,6 @@ namespace GameFeel.Component.State
         {
             _parent.MetaPathfindComponent.Connect(nameof(PathfindComponent.PathEndReached), this, nameof(OnPathEndReached));
             UpdatePathAndTimer();
-            _animatedSprite.Play(EnemyAIComponent.META_ANIM_RUN);
         }
 
         public override void StateActive()

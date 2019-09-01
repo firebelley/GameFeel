@@ -40,20 +40,20 @@ animations = [ {
 }, {
 "frames": [ ExtResource( 18 ) ],
 "loop": true,
-"name": "attack",
+"name": "run",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 18 ) ],
 "loop": true,
-"name": "run",
+"name": "attack",
 "speed": 5.0
 } ]
 
 [node name="SpiderQueen" type="KinematicBody2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-Id = "7696d797-1260-51bf-a10d-0941f9916122"
 DisplayName = "Spider Queen"
+Id = "7696d797-1260-51bf-a10d-0941f9916122"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 2 )]
@@ -78,6 +78,7 @@ _animatedSpritePath = NodePath("../../AnimatedSprite")
 [node name="EnemyStatePursue" parent="EnemyAIComponent" instance=ExtResource( 8 )]
 _attackStateNodePath = NodePath("../EnemyStateAttackPreparation")
 _animatedSpritePath = NodePath("../../AnimatedSprite")
+_initiateAttackRange = 100
 
 [node name="EnemyStateAttackPreparation" parent="EnemyAIComponent" instance=ExtResource( 9 )]
 _attackStateNodePath = NodePath("../EnemyStateAttack")
@@ -104,6 +105,10 @@ _healthComponentPath = NodePath("../HealthComponent")
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 14 )]
 position = Vector2( 0, -32 )
 _scene = ExtResource( 15 )
+_speed = 150.0
+_maxDistance = 150.0
+_number = 11
+_angleDelta = 32.72
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 16 )]
 _healthComponentPath = NodePath("../HealthComponent")

@@ -1,4 +1,5 @@
 using Godot;
+using GodotTools.Extension;
 using GodotTools.Logic;
 using GodotTools.Logic.Interface;
 using GodotTools.Util;
@@ -15,6 +16,7 @@ namespace GameFeel.Component
 
         public Vector2 MetaSpawnPosition { get; set; }
         public PathfindComponent MetaPathfindComponent { get; private set; }
+        public EntityDataComponent MetaEntityDataComponent { get; private set; }
 
         [Export]
         private NodePath _pathfindComponentPath;
@@ -22,6 +24,7 @@ namespace GameFeel.Component
         public override void _Ready()
         {
             MetaPathfindComponent = GetNodeOrNull<PathfindComponent>(_pathfindComponentPath ?? string.Empty);
+            MetaEntityDataComponent = GetOwner().GetFirstNodeOfType<EntityDataComponent>();
             if (MetaPathfindComponent == null)
             {
                 Logger.Error("No pathfind component set in " + GetOwner().Filename);

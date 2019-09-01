@@ -1,4 +1,5 @@
 using GameFeel.GameObject;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Logic.Interface;
@@ -51,6 +52,10 @@ namespace GameFeel.Component.State
 
             if (_parentOwner.GlobalPosition.DistanceSquaredTo(GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.GlobalPosition ?? Vector2.Zero) < _detectionDistance * _detectionDistance)
             {
+                if (_parent.MetaEntityDataComponent != null)
+                {
+                    GameEventDispatcher.DispatchEntityEngagedEvent(_parent.MetaEntityDataComponent.Id);
+                }
                 _parent.StateMachine.ChangeState(_pursueState);
             }
 

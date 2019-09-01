@@ -26,6 +26,10 @@ namespace GameFeel.Component.Subcomponent.Behavior
             {
                 _children[_processingIndex].Enter();
             }
+            else
+            {
+                Leave(Status.FAIL);
+            }
         }
 
         protected override void Tick()

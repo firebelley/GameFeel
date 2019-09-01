@@ -29,7 +29,22 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void Tick()
         {
+            // if (_parent.MetaPathfindComponent.Velocity.x < -5f)
+            // {
+            //     _animatedSprite.FlipH = true;
+            // }
+            // else if (_parent.MetaPathfindComponent.Velocity.x > 5f)
+            // {
+            //     _animatedSprite.FlipH = false;
+            // }
 
+            var owner = GetParent().GetOwnerOrNull<Node2D>();
+            if (IsNearPlayer())
+            {
+                GD.Print("it's something");
+                Leave(Status.SUCCESS);
+            }
+            GetOwner<KinematicBody2D>().MoveAndSlide(Vector2.Right * 25);
         }
 
         private bool IsNearPlayer()

@@ -124,21 +124,21 @@ _targetDistanceFromPlayer = 50.0
 
 [node name="WanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
 
-[node name="RunWhile" parent="BehaviorTreeComponent/WanderSequence" instance=ExtResource( 5 )]
+[node name="RunWhileComposite" parent="BehaviorTreeComponent/WanderSequence" instance=ExtResource( 5 )]
 
-[node name="InvertDecorator" parent="BehaviorTreeComponent/WanderSequence/RunWhile" instance=ExtResource( 6 )]
+[node name="InvertDecorator" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite" instance=ExtResource( 6 )]
 editor/display_folded = true
 
-[node name="TestPlayerAggro" parent="BehaviorTreeComponent/WanderSequence/RunWhile/InvertDecorator" instance=ExtResource( 3 )]
+[node name="TestPlayerAggro" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/InvertDecorator" instance=ExtResource( 3 )]
 
-[node name="MoveToPlayer" parent="BehaviorTreeComponent/WanderSequence/RunWhile" instance=ExtResource( 4 )]
+[node name="MoveToPlayer" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite" instance=ExtResource( 4 )]
 _pathfindComponentPath = NodePath("../../../../PathfindComponent")
 _animatedSpritePath = NodePath("../../../../AnimatedSprite")
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 7 )]
+Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 DisplayName = "Spider"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
-Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 8 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")

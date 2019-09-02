@@ -34,13 +34,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
             Tick();
         }
 
-        public void RequestEnter()
-        {
-            CallDeferred(nameof(Enter));
-        }
-
+        public abstract void Enter();
         protected abstract void Tick();
-        protected abstract void Enter();
 
         protected virtual void Leave(Status status)
         {

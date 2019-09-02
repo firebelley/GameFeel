@@ -4,12 +4,12 @@ namespace GameFeel.Component.Subcomponent.Behavior
     {
         private int _processingIndex = 0;
 
-        protected override void Enter()
+        public override void Enter()
         {
             _processingIndex = 0;
             if (_children.Count > 0)
             {
-                _children[_processingIndex].RequestEnter();
+                _children[_processingIndex].Enter();
             }
             else
             {
@@ -37,7 +37,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
                 }
                 else
                 {
-                    _children[_processingIndex].RequestEnter();
+                    _children[_processingIndex].Enter();
                 }
             }
         }

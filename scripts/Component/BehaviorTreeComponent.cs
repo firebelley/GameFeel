@@ -2,17 +2,17 @@ using GameFeel.Component.Subcomponent.Behavior;
 
 namespace GameFeel.Component
 {
-    public class BehaviorTree : Selector
+    public class BehaviorTreeComponent : Selector
     {
         private bool _shouldEnter = false;
 
         public override void _Ready()
         {
             base._Ready();
-            RequestEnter();
+            CallDeferred(nameof(Enter));
         }
 
-        protected override void Enter()
+        public override void Enter()
         {
             SetProcess(true);
             base.Enter();
@@ -20,10 +20,11 @@ namespace GameFeel.Component
 
         protected override void Tick()
         {
+
             if (_shouldEnter)
             {
                 _shouldEnter = false;
-                RequestEnter();
+                Enter();
             }
         }
 

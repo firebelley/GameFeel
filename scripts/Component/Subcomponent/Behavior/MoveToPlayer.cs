@@ -31,7 +31,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
             _pathUpdateTimer.Connect("timeout", this, nameof(OnPathfindUpdateTimerTimeout));
         }
 
-        protected override void Enter()
+        public override void Enter()
         {
             if (IsNearPlayer())
             {

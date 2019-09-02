@@ -39,7 +39,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
                 _processingIndex++;
                 if (_processingIndex < _children.Count)
                 {
-                    if (!_children[_processingIndex].IsProcessing())
+                    if (!_children[_processingIndex].IsRunning)
                     {
                         _children[_processingIndex].Enter();
                     }

@@ -19,6 +19,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
             RUNNING
         }
 
+        public bool IsRunning { get; private set; } = false;
+
         protected List<BehaviorNode> _children;
         private bool _aborting;
 
@@ -40,6 +42,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         public void Enter()
         {
+            IsRunning = true;
             InternalEnter();
         }
 
@@ -48,6 +51,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected virtual void Leave(Status status)
         {
+            IsRunning = false;
             SetProcess(false);
             if (!_aborting)
             {

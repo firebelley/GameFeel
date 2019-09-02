@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Component/Subcomponent/Behavior/RandomWait.cs" type="Script" id=1]
+
+[node name="RandomWait" type="Node"]
+script = ExtResource( 1 )
+_minWait = 10.0
+_maxWait = 11.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

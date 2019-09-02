@@ -9,6 +9,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
     {
         [Signal]
         public delegate void StatusUpdated(Status status);
+        [Signal]
+        public delegate void Aborted();
 
         public enum Status
         {
@@ -18,6 +20,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         }
 
         protected List<BehaviorNode> _children;
+        private bool _aborting;
 
         public override void _Ready()
         {
@@ -25,8 +28,9 @@ namespace GameFeel.Component.Subcomponent.Behavior
             _children = this.GetChildren<BehaviorNode>().Where(x => IsInstanceValid(x)).ToList();
             foreach (var child in _children)
             {
-                child.Connect(nameof(StatusUpdated), this, nameof(OnChildStatusUpdated));
+                child.Connect(nameof(StatusUpdated), this, nameof(ChildStatusUpdated));
             }
+            GetParentOrNull<BehaviorNode>()?.Connect(nameof(Aborted), this, nameof(OnAborted));
         }
 
         public override void _Process(float delta)
@@ -34,15 +38,36 @@ namespace GameFeel.Component.Subcomponent.Behavior
             Tick();
         }
 
-        public abstract void Enter();
+        public void Enter()
+        {
+            InternalEnter();
+        }
+
+        protected abstract void InternalEnter();
         protected abstract void Tick();
 
         protected virtual void Leave(Status status)
         {
             SetProcess(false);
-            EmitSignal(nameof(StatusUpdated), status);
+            if (!_aborting)
+            {
+                EmitSignal(nameof(StatusUpdated), status);
+            }
+            _aborting = false;
         }
 
-        protected virtual void OnChildStatusUpdated(Status status) { }
+        protected void Abort()
+        {
+            _aborting = true;
+            Leave(Status.FAIL);
+        }
+
+        protected virtual void ChildStatusUpdated(Status status) { }
+
+        private void OnAborted()
+        {
+            EmitSignal(nameof(Aborted));
+            Abort();
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         private bool _aggroed;
 
-        public override void Enter()
+        protected override void InternalEnter()
         {
             if (_aggroed || IsPlayerInAggroRange())
             {

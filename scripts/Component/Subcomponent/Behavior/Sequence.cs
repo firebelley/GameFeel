@@ -4,7 +4,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
     {
         private int _processingIndex = 0;
 
-        public override void Enter()
+        protected override void InternalEnter()
         {
             _processingIndex = 0;
             if (_children.Count > 0)
@@ -22,7 +22,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
-        protected override void OnChildStatusUpdated(Status status)
+        protected override void ChildStatusUpdated(Status status)
         {
             if (status == Status.FAIL)
             {

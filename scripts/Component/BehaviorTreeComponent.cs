@@ -12,15 +12,14 @@ namespace GameFeel.Component
             CallDeferred(nameof(Enter));
         }
 
-        public override void Enter()
+        protected override void InternalEnter()
         {
             SetProcess(true);
-            base.Enter();
+            base.InternalEnter();
         }
 
         protected override void Tick()
         {
-
             if (_shouldEnter)
             {
                 _shouldEnter = false;

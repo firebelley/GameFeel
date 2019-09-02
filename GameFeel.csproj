@@ -84,6 +84,7 @@
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\InvertDecorator.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\MoveToPlayer.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\RunWhile.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Selector.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Sequence.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\TestPlayerAggro.cs" />

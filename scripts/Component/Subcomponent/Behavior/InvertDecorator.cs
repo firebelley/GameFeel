@@ -2,7 +2,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 {
     public class InvertDecorator : BehaviorNode
     {
-        public override void Enter()
+        protected override void InternalEnter()
         {
             if (_children.Count > 0)
             {
@@ -19,7 +19,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
-        protected override void OnChildStatusUpdated(Status status)
+        protected override void ChildStatusUpdated(Status status)
         {
             if (status == Status.SUCCESS)
             {

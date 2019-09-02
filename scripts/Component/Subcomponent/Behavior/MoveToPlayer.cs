@@ -74,7 +74,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         private bool IsNearPlayer()
         {
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            var owner = GetOwnerOrNull<KinematicBody2D>();
+            var owner = GetOwnerOrNull<Node2D>();
             return IsInstanceValid(player) && IsInstanceValid(owner) && owner.GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < _targetDistanceFromPlayer * _targetDistanceFromPlayer;
         }
 

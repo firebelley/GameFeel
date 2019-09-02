@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.Component.Subcomponent.Behavior
 {
@@ -14,11 +17,16 @@ namespace GameFeel.Component.Subcomponent.Behavior
             RUNNING
         }
 
-        protected BehaviorNode _processingNode;
+        protected List<BehaviorNode> _children;
 
         public override void _Ready()
         {
             SetProcess(false);
+            _children = this.GetChildren<BehaviorNode>().Where(x => IsInstanceValid(x)).ToList();
+            foreach (var child in _children)
+            {
+                child.Connect(nameof(StatusUpdated), this, nameof(OnChildStatusUpdated));
+            }
         }
 
         public override void _Process(float delta)
@@ -39,5 +47,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
             SetProcess(false);
             EmitSignal(nameof(StatusUpdated), status);
         }
+
+        protected virtual void OnChildStatusUpdated(Status status) { }
     }
 }

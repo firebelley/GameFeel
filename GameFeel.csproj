@@ -85,6 +85,7 @@
     <Compile Include="scripts\Component\Subcomponent\Behavior\MoveToPlayer.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Selector.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Sequence.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\TestPlayerAggro.cs" />
     <Compile Include="scripts\Component\Subcomponent\DialogueItem.cs" />
     <Compile Include="scripts\Component\Subcomponent\DialogueLine.cs" />
     <Compile Include="scripts\Component\Subcomponent\LootTableItem.cs" />

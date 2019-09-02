@@ -1,22 +1,8 @@
-using System.Collections.Generic;
-using GodotTools.Extension;
-
 namespace GameFeel.Component.Subcomponent.Behavior
 {
     public class Selector : BehaviorNode
     {
         private int _processingIndex = 0;
-        protected List<BehaviorNode> _children;
-
-        public override void _Ready()
-        {
-            base._Ready();
-            _children = this.GetChildren<BehaviorNode>();
-            foreach (var child in _children)
-            {
-                child.Connect(nameof(BehaviorNode.StatusUpdated), this, nameof(OnStatusUpdated));
-            }
-        }
 
         protected override void Enter()
         {
@@ -36,7 +22,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
-        private void OnStatusUpdated(Status status)
+        protected override void OnChildStatusUpdated(Status status)
         {
             if (status == Status.FAIL)
             {

@@ -13,11 +13,6 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void Enter()
         {
-            SetProcess(true);
-        }
-
-        protected override void Tick()
-        {
             if (_aggroed || IsPlayerInAggroRange())
             {
                 _aggroed = true;
@@ -27,6 +22,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
             {
                 Leave(Status.FAIL);
             }
+        }
+
+        protected override void Tick()
+        {
+
         }
 
         private bool IsPlayerInAggroRange()

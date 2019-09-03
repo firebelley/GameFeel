@@ -11,6 +11,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void InternalEnter()
         {
+            _processingIndex = 0;
             SetProcess(true);
         }
 

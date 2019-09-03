@@ -50,16 +50,28 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected abstract void InternalEnter();
         protected abstract void Tick();
-
-        protected virtual void Leave(Status status)
+        protected virtual void InternalLeave()
         {
+
+        }
+
+        protected virtual void PostLeave()
+        {
+
+        }
+
+        protected void Leave(Status status)
+        {
+            InternalLeave();
             IsRunning = false;
             SetProcess(false);
-            if (!_aborting)
+            var aborting = _aborting;
+            _aborting = false;
+            if (!aborting)
             {
                 EmitSignal(nameof(StatusUpdated), status);
             }
-            _aborting = false;
+            PostLeave();
         }
 
         protected void Abort()

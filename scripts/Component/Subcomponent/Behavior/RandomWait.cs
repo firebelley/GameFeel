@@ -13,6 +13,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         public override void _Ready()
         {
+            base._Ready();
             _timer = GetNode<Timer>("Timer");
             _timer.Connect("timeout", this, nameof(OnTimerTimeout));
         }
@@ -23,10 +24,9 @@ namespace GameFeel.Component.Subcomponent.Behavior
             _timer.Start();
         }
 
-        protected override void Leave(Status status)
+        protected override void InternalLeave()
         {
             _timer.Stop();
-            base.Leave(status);
         }
 
         protected override void Tick()

@@ -42,11 +42,10 @@ namespace GameFeel.Component.Subcomponent.Behavior
             }
         }
 
-        protected override void Leave(Status status)
+        protected override void InternalLeave()
         {
             _pathfindComponent.ClearPath();
             this.DisconnectAllSignals(_pathfindComponent);
-            base.Leave(status);
         }
 
         private void OnPathEndReached()

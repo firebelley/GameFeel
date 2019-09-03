@@ -32,9 +32,8 @@ namespace GameFeel.Component
             }
         }
 
-        protected override void Leave(Status status)
+        protected override void PostLeave()
         {
-            base.Leave(status);
             SetProcess(true);
             _shouldEnter = true;
         }

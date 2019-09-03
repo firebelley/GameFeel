@@ -62,12 +62,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
             }
         }
 
-        protected override void Leave(Status status)
+        protected override void InternalLeave()
         {
             _pathfindComponent.ClearPath();
             this.DisconnectAllSignals(_pathfindComponent);
             _pathUpdateTimer.Stop();
-            base.Leave(status);
         }
 
         private bool IsNearPlayer()

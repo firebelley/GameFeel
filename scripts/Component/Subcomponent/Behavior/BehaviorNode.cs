@@ -100,8 +100,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         private void OnAborted()
         {
-            EmitSignal(nameof(Aborted));
-            Abort();
+            if (IsRunning)
+            {
+                EmitSignal(nameof(Aborted));
+                Abort();
+            }
         }
     }
 }

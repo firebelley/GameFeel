@@ -39,7 +39,6 @@ namespace GameFeel.Component.Subcomponent.Behavior
             }
             else
             {
-                _animatedSprite.Play(EnemyAIComponent.META_ANIM_RUN);
                 _pathfindComponent.Connect(nameof(PathfindComponent.PathEndReached), this, nameof(OnPathEndReached));
                 UpdatePathAndTimer();
                 SetProcess(true);

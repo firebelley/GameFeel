@@ -22,6 +22,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         public bool IsRunning { get; private set; } = false;
 
         protected List<BehaviorNode> _children;
+        protected BehaviorTreeComponent _root;
         private bool _aborting;
 
         public override void _Ready()
@@ -33,6 +34,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
                 child.Connect(nameof(StatusUpdated), this, nameof(ChildStatusUpdated));
             }
             GetParentOrNull<BehaviorNode>()?.Connect(nameof(Aborted), this, nameof(OnAborted));
+            UpdateRoot();
         }
 
         public override void _Process(float delta)
@@ -67,6 +69,22 @@ namespace GameFeel.Component.Subcomponent.Behavior
         }
 
         protected virtual void ChildStatusUpdated(Status status) { }
+
+        private void UpdateRoot()
+        {
+            if (this is BehaviorTreeComponent bht)
+            {
+                _root = bht;
+                return;
+            }
+
+            var root = GetParent();
+            while (!(root is BehaviorTreeComponent))
+            {
+                root = root.GetParent();
+            }
+            _root = root as BehaviorTreeComponent;
+        }
 
         private void OnAborted()
         {

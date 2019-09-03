@@ -1,4 +1,5 @@
 using GameFeel.Component.Subcomponent.Behavior;
+using Godot;
 
 namespace GameFeel.Component
 {
@@ -6,9 +7,13 @@ namespace GameFeel.Component
     {
         private bool _shouldEnter = false;
 
+        public Blackboard Blackboard { get; private set; } = new Blackboard();
+
         public override void _Ready()
         {
+
             base._Ready();
+            CallDeferred(nameof(InitBlackboard));
             CallDeferred(nameof(Enter));
         }
 
@@ -32,6 +37,11 @@ namespace GameFeel.Component
             base.Leave(status);
             SetProcess(true);
             _shouldEnter = true;
+        }
+
+        private void InitBlackboard()
+        {
+            Blackboard.SpawnPosition = GetOwnerOrNull<Node2D>()?.GlobalPosition ?? Blackboard.SpawnPosition;
         }
     }
 }

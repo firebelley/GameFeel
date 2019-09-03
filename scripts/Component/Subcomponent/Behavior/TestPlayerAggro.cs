@@ -9,13 +9,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
         [Export]
         private int _aggroDistance = 50;
 
-        private bool _aggroed;
-
         protected override void InternalEnter()
         {
-            if (_aggroed || IsPlayerInAggroRange())
+            if (_root.Blackboard.Aggressive || IsPlayerInAggroRange())
             {
-                _aggroed = true;
+                _root.Blackboard.Aggressive = true;
                 Leave(Status.SUCCESS);
             }
             else

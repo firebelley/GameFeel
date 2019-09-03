@@ -1,44 +1,45 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://scenes/Component/BehaviorTreeComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/Sequence.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/TestPlayerAggro.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/PlayAnimation.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveToPlayer.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RunWhileComposite.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/InvertDecorator.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RandomWait.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveAroundSpawn.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=13]
-[ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=14]
-[ext_resource path="res://scenes/Component/LootTableComponent.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scenes/Component/Subcomponent/LootTableItem.tscn" type="PackedScene" id=16]
-[ext_resource path="res://scenes/GameObject/Loot/Ruby.tscn" type="PackedScene" id=17]
-[ext_resource path="res://scenes/GameObject/Loot/SpiderLegs.tscn" type="PackedScene" id=18]
-[ext_resource path="res://scenes/Component/DeathEffectComponent.tscn" type="PackedScene" id=19]
-[ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/Component/ProjectileSpawnComponent.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=22]
-[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=23]
-[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=25]
-[ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=26]
-[ext_resource path="res://assets/sound/spider-02.wav" type="AudioStream" id=27]
-[ext_resource path="res://assets/art/spider1.png" type="Texture" id=28]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=29]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=30]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=31]
-[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=32]
-[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=33]
-[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=34]
-[ext_resource path="res://scenes/Component/PathfindDrawComponent.tscn" type="PackedScene" id=35]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/PrepareAttack.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RunWhileComposite.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/InvertDecorator.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RandomWait.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveAroundSpawn.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=14]
+[ext_resource path="res://resources/shaders/HitEffect.shader" type="Shader" id=15]
+[ext_resource path="res://scenes/Component/LootTableComponent.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/Component/Subcomponent/LootTableItem.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/GameObject/Loot/Ruby.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/GameObject/Loot/SpiderLegs.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scenes/Component/DeathEffectComponent.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/Component/ProjectileSpawnComponent.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=27]
+[ext_resource path="res://assets/sound/spider-02.wav" type="AudioStream" id=28]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=29]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=30]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=31]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=32]
+[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=33]
+[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=34]
+[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=35]
+[ext_resource path="res://scenes/Component/PathfindDrawComponent.tscn" type="PackedScene" id=36]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
-shader = ExtResource( 14 )
+shader = ExtResource( 15 )
 shader_param/_hitShadePercent = null
 
 [sub_resource type="CircleShape2D" id=2]
@@ -95,17 +96,17 @@ shader_param/_hitShadePercent = 0.0
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 28 ) ],
+"frames": [ ExtResource( 29 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ) ],
+"frames": [ ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ) ],
 "loop": true,
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ) ],
+"frames": [ ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ) ],
 "loop": false,
 "name": "attack",
 "speed": 10.0
@@ -117,25 +118,38 @@ collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
 
-[node name="PursueSequence" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
+[node name="AggressiveSequence" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
 
-[node name="TestPlayerAggro" parent="BehaviorTreeComponent/PursueSequence" instance=ExtResource( 3 )]
+[node name="PursueSequence" parent="BehaviorTreeComponent/AggressiveSequence" instance=ExtResource( 2 )]
+editor/display_folded = true
 
-[node name="PlayAnimation" parent="BehaviorTreeComponent/PursueSequence" instance=ExtResource( 4 )]
-_animatedSpritePath = NodePath("../../../AnimatedSprite")
+[node name="TestPlayerAggro" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 3 )]
+
+[node name="PlayAnimation" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 4 )]
+_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _animationName = "run"
 
-[node name="MoveToPlayer" parent="BehaviorTreeComponent/PursueSequence" instance=ExtResource( 5 )]
-_pathfindComponentPath = NodePath("../../../PathfindComponent")
-_animatedSpritePath = NodePath("../../../AnimatedSprite")
+[node name="MoveToPlayer" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 5 )]
+_pathfindComponentPath = NodePath("../../../../PathfindComponent")
+_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _targetDistanceFromPlayer = 50.0
+
+[node name="AttackSequence" parent="BehaviorTreeComponent/AggressiveSequence" instance=ExtResource( 2 )]
+
+[node name="PrepareAttack" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 6 )]
+_attackIntentComponentPath = NodePath("../../../../AttackIntentComponent")
+_waitTime = 0.25
+
+[node name="PlayAnimation" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 4 )]
+_animatedSpritePath = NodePath("../../../../AnimatedSprite")
+_animationName = "attack"
+_waitAnimationFinish = true
 
 [node name="WanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
 
-[node name="RunWhileComposite" parent="BehaviorTreeComponent/WanderSequence" instance=ExtResource( 6 )]
+[node name="RunWhileComposite" parent="BehaviorTreeComponent/WanderSequence" instance=ExtResource( 7 )]
 
-[node name="InvertDecorator" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite" instance=ExtResource( 7 )]
-editor/display_folded = true
+[node name="InvertDecorator" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite" instance=ExtResource( 8 )]
 
 [node name="TestPlayerAggro" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/InvertDecorator" instance=ExtResource( 3 )]
 
@@ -145,7 +159,7 @@ editor/display_folded = true
 _animatedSpritePath = NodePath("../../../../../AnimatedSprite")
 _animationName = "idle"
 
-[node name="RandomWait" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/Sequence" instance=ExtResource( 8 )]
+[node name="RandomWait" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/Sequence" instance=ExtResource( 9 )]
 _minWait = 1.0
 _maxWait = 2.0
 
@@ -153,67 +167,67 @@ _maxWait = 2.0
 _animatedSpritePath = NodePath("../../../../../AnimatedSprite")
 _animationName = "run"
 
-[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/Sequence" instance=ExtResource( 9 )]
+[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/WanderSequence/RunWhileComposite/Sequence" instance=ExtResource( 10 )]
 _pathfindComponentPath = NodePath("../../../../../PathfindComponent")
 _animatedSpritePath = NodePath("../../../../../AnimatedSprite")
 
-[node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
+[node name="EntityDataComponent" parent="." instance=ExtResource( 11 )]
+DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
-DisplayName = "Spider"
 
-[node name="HealthComponent" parent="." instance=ExtResource( 11 )]
+[node name="HealthComponent" parent="." instance=ExtResource( 12 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _maxHp = 3.0
 
-[node name="PathfindComponent" parent="." instance=ExtResource( 12 )]
+[node name="PathfindComponent" parent="." instance=ExtResource( 13 )]
 _acceleration = 500.0
 
-[node name="HitEffectComponent" parent="." instance=ExtResource( 13 )]
+[node name="HitEffectComponent" parent="." instance=ExtResource( 14 )]
 _shaderMaterial = SubResource( 1 )
 _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
-[node name="LootTableComponent" parent="." instance=ExtResource( 15 )]
+[node name="LootTableComponent" parent="." instance=ExtResource( 16 )]
 editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
-[node name="Ruby" parent="LootTableComponent" instance=ExtResource( 16 )]
-Scene = ExtResource( 17 )
+[node name="Ruby" parent="LootTableComponent" instance=ExtResource( 17 )]
 Weight = 2
-
-[node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 16 )]
 Scene = ExtResource( 18 )
+
+[node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 17 )]
+Weight = 100
+Scene = ExtResource( 19 )
+
+[node name="Nothing" parent="LootTableComponent" instance=ExtResource( 17 )]
 Weight = 100
 
-[node name="Nothing" parent="LootTableComponent" instance=ExtResource( 16 )]
-Weight = 100
-
-[node name="DeathEffectComponent" parent="." instance=ExtResource( 19 )]
+[node name="DeathEffectComponent" parent="." instance=ExtResource( 20 )]
 position = Vector2( 0, -6 )
 _healthComponentPath = NodePath("../HealthComponent")
 
-[node name="AttackIntentComponent" parent="." instance=ExtResource( 20 )]
+[node name="AttackIntentComponent" parent="." instance=ExtResource( 21 )]
 position = Vector2( 0, -6 )
 
-[node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 21 )]
+[node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 22 )]
 position = Vector2( 0, -6 )
-_scene = ExtResource( 22 )
+_scene = ExtResource( 23 )
 
-[node name="ShadowComponent" parent="." instance=ExtResource( 23 )]
+[node name="ShadowComponent" parent="." instance=ExtResource( 24 )]
 position = Vector2( 0, -1 )
 _radius = 7.0
 
-[node name="DamageReceiverComponent" parent="." instance=ExtResource( 24 )]
+[node name="DamageReceiverComponent" parent="." instance=ExtResource( 25 )]
 position = Vector2( 0, -6 )
 _shape = SubResource( 2 )
 
-[node name="HealthBarComponent" parent="." instance=ExtResource( 25 )]
+[node name="HealthBarComponent" parent="." instance=ExtResource( 26 )]
 position = Vector2( 0, -15 )
 _healthComponentPath = NodePath("../HealthComponent")
 
-[node name="IntermittentSoundComponent" parent="." instance=ExtResource( 26 )]
-stream = ExtResource( 27 )
+[node name="IntermittentSoundComponent" parent="." instance=ExtResource( 27 )]
+stream = ExtResource( 28 )
 _minTime = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -234,4 +248,4 @@ animation = "idle"
 wait_time = 0.25
 one_shot = true
 
-[node name="PathfindDrawComponent" parent="." instance=ExtResource( 35 )]
+[node name="PathfindDrawComponent" parent="." instance=ExtResource( 36 )]

@@ -27,6 +27,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
+        protected override void InternalLeave()
+        {
+
+        }
+
         private bool IsPlayerInAggroRange()
         {
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);

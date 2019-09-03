@@ -19,6 +19,11 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
+        protected override void InternalLeave()
+        {
+
+        }
+
         protected override void ChildStatusUpdated(Status status)
         {
             if (status == Status.SUCCESS)

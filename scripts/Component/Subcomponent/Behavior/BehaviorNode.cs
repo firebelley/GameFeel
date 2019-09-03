@@ -50,10 +50,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected abstract void InternalEnter();
         protected abstract void Tick();
-        protected virtual void InternalLeave()
-        {
-
-        }
+        protected abstract void InternalLeave();
 
         protected virtual void PostLeave()
         {

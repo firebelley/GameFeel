@@ -31,7 +31,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
             _children = this.GetChildren<BehaviorNode>().Where(x => IsInstanceValid(x)).ToList();
             foreach (var child in _children)
             {
-                child.Connect(nameof(StatusUpdated), this, nameof(ChildStatusUpdated));
+                child.Connect(nameof(StatusUpdated), this, nameof(ChildStatusUpdated), new Godot.Collections.Array() { child });
             }
             GetParentOrNull<BehaviorNode>()?.Connect(nameof(Aborted), this, nameof(OnAborted));
             UpdateRoot();
@@ -77,7 +77,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
             Leave(Status.FAIL);
         }
 
-        protected virtual void ChildStatusUpdated(Status status) { }
+        protected virtual void ChildStatusUpdated(Status status, BehaviorNode behaviorNode) { }
 
         private void UpdateRoot()
         {

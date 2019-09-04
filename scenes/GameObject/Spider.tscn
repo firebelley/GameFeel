@@ -167,9 +167,9 @@ _animatedSpritePath = NodePath("../../../../../AnimatedSprite")
 _radius = 100.0
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
+DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
-DisplayName = "Spider"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")

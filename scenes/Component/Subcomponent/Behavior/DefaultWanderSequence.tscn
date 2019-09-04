@@ -5,10 +5,10 @@
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/InvertDecorator.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/TestPlayerAggro.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/PlayAnimation.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RandomWait.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveAroundSpawn.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveAroundSpawn.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/RandomWait.tscn" type="PackedScene" id=7]
 
-[node name="DefaultWanderSequence" instance=ExtResource( 1 )]
+[node name="DefaultWanderSequence" index="0" instance=ExtResource( 1 )]
 
 [node name="RunWhileComposite" parent="." index="0" instance=ExtResource( 2 )]
 
@@ -18,10 +18,10 @@
 
 [node name="Sequence" parent="RunWhileComposite" index="1" instance=ExtResource( 1 )]
 
-[node name="PlayAnimation" parent="RunWhileComposite/Sequence" index="0" instance=ExtResource( 5 )]
+[node name="PlayAnimation2" parent="RunWhileComposite/Sequence" index="0" instance=ExtResource( 5 )]
 
-[node name="RandomWait" parent="RunWhileComposite/Sequence" index="1" instance=ExtResource( 6 )]
+[node name="MoveAroundSpawn" parent="RunWhileComposite/Sequence" index="1" instance=ExtResource( 6 )]
 
-[node name="PlayAnimation2" parent="RunWhileComposite/Sequence" index="2" instance=ExtResource( 5 )]
+[node name="PlayAnimation" parent="RunWhileComposite/Sequence" index="2" instance=ExtResource( 5 )]
 
-[node name="MoveAroundSpawn" parent="RunWhileComposite/Sequence" index="3" instance=ExtResource( 7 )]
+[node name="RandomWait" parent="RunWhileComposite/Sequence" index="3" instance=ExtResource( 7 )]

@@ -24,7 +24,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         }
 
-        protected override void ChildStatusUpdated(Status status)
+        protected override void ChildStatusUpdated(Status status, BehaviorNode behaviorNode)
         {
             if (status == Status.SUCCESS)
             {

@@ -82,6 +82,8 @@
     <Compile Include="scripts\Component\State\EnemyStateAttackPreparation.cs" />
     <Compile Include="scripts\Component\State\EnemyStateSpawn.cs" />
     <Compile Include="scripts\Component\State\EnemyStateWander.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\AcquireTarget.cs" />
+    <Compile Include="scripts\Component\Subcomponent\Behavior\Attack.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\InvertDecorator.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\MoveAroundSpawn.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\MoveToPlayer.cs" />

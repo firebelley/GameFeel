@@ -20,6 +20,7 @@ curve = SubResource( 3 )
 [sub_resource type="ParticlesMaterial" id=5]
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
+angular_velocity = 1.05
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale_curve = SubResource( 4 )

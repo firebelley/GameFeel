@@ -71,12 +71,6 @@ namespace GameFeel.Component.Subcomponent.Behavior
             PostLeave();
         }
 
-        protected void Abort()
-        {
-            _aborting = true;
-            Leave(Status.FAIL);
-        }
-
         protected virtual void ChildStatusUpdated(Status status, BehaviorNode behaviorNode) { }
 
         private void UpdateRoot()
@@ -93,6 +87,12 @@ namespace GameFeel.Component.Subcomponent.Behavior
                 root = root.GetParent();
             }
             _root = root as BehaviorTreeComponent;
+        }
+
+        private void Abort()
+        {
+            _aborting = true;
+            Leave(Status.FAIL);
         }
 
         private void OnAborted()

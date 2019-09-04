@@ -40,6 +40,7 @@ namespace GameFeel.Component
 
         private void InitBlackboard()
         {
+            Blackboard.Owner = GetOwnerOrNull<Node2D>();
             Blackboard.SpawnPosition = GetOwnerOrNull<Node2D>()?.GlobalPosition ?? Blackboard.SpawnPosition;
         }
     }

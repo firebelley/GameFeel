@@ -7,5 +7,6 @@ namespace GameFeel.Component.Subcomponent.Behavior
         public bool Aggressive = false;
         public Vector2 SpawnPosition = Vector2.Zero;
         public Vector2 AttackTargetPosition = Vector2.Zero;
+        public Node2D Owner;
     }
 }

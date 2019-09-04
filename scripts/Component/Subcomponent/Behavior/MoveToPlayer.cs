@@ -72,8 +72,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         private bool IsNearPlayer()
         {
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            var owner = GetOwnerOrNull<Node2D>();
-            return IsInstanceValid(player) && IsInstanceValid(owner) && owner.GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < _targetDistanceFromPlayer * _targetDistanceFromPlayer;
+            return IsInstanceValid(player) && IsInstanceValid(_root.Blackboard.Owner) && _root.Blackboard.Owner.GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < _targetDistanceFromPlayer * _targetDistanceFromPlayer;
         }
 
         private void UpdatePathAndTimer()

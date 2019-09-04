@@ -6,6 +6,7 @@ namespace GameFeel.Component
 {
     public class PathfindComponent : Node
     {
+        // TODO: figure out how to make this smaller while also tightening the movement of the entity
         private const float MAX_AHEAD = 30f;
         private const float MAX_AHEAD_DELTA = MAX_AHEAD * 100f;
         private const float TIME_DIFF_PERCENT = .25f;

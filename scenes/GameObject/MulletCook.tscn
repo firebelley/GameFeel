@@ -46,6 +46,7 @@ _selectableComponentPath = NodePath("../SelectableComponent")
 _entityDataComponentPath = NodePath("../EntityDataComponent")
 
 [node name="TurnInSpiderLegsIncomplete" parent="DialogueComponent" instance=ExtResource( 4 )]
+editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "082e092e-4978-4844-b30d-5c0c3da8a8e4"
 ShowImmediately = true
@@ -54,6 +55,7 @@ ShowImmediately = true
 Text = "Are ya dense? Where's my spider legs?"
 
 [node name="SpiderLegSoup" parent="DialogueComponent" instance=ExtResource( 4 )]
+editor/display_folded = true
 Title = "Spider Leg Soup"
 ShowImmediately = true
 
@@ -74,6 +76,7 @@ LineContainerType = 2
 _questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
 
 [node name="TurnInSpiderLegs" parent="DialogueComponent" instance=ExtResource( 4 )]
+editor/display_folded = true
 Title = "Turn in Spider Legs"
 ActiveQuestModelId = "556840d9-e203-4590-9e10-1ba5b298faa8"
 ShowImmediately = true
@@ -82,26 +85,42 @@ ShowImmediately = true
 Text = "Took you long enough!"
 LineContainerType = 1
 
-[node name="AStrangeOccurrence" parent="DialogueComponent" instance=ExtResource( 4 )]
+[node name="SpiderLegsSpoiled" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "A Strange Occurence"
 ShowImmediately = true
 RequiredCompletedQuestIds = PoolStringArray( "388998cb-c2c9-43ae-9a5f-de1c450fef5d" )
 
-[node name="DialogueLine" parent="DialogueComponent/AStrangeOccurrence" instance=ExtResource( 5 )]
+[node name="DialogueLine" parent="DialogueComponent/SpiderLegsSpoiled" instance=ExtResource( 5 )]
 Text = "Ack! The spider legs were no good. Probably 'cause you touched 'em with your grubby spirit phalanges..."
 
-[node name="DialogueLine2" parent="DialogueComponent/AStrangeOccurrence" instance=ExtResource( 5 )]
+[node name="DialogueLine2" parent="DialogueComponent/SpiderLegsSpoiled" instance=ExtResource( 5 )]
+editor/display_folded = true
 Text = "Go find a better source of spider legs. Once you do, bring me those instead!"
 LineContainerType = 2
 
-[node name="QuestStarterComponent" parent="DialogueComponent/AStrangeOccurrence/DialogueLine2" instance=ExtResource( 6 )]
+[node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegsSpoiled/DialogueLine2" instance=ExtResource( 6 )]
 _questId = "e7567d20-8f70-46be-9eb1-003d548e48bb"
+
+[node name="ReturnQueenHead" parent="DialogueComponent" instance=ExtResource( 4 )]
+Title = "Spider Queen's Head"
+ActiveQuestModelId = "dd91cc9d-62bc-44ba-962d-3f5ba608f0ad"
+ShowImmediately = true
+
+[node name="DialogueLine" parent="DialogueComponent/ReturnQueenHead" instance=ExtResource( 5 )]
+Text = "Ye killed the Spider Queen? I suppose that's alright, poor thing was gettin' old."
+
+[node name="DialogueLine2" parent="DialogueComponent/ReturnQueenHead" instance=ExtResource( 5 )]
+Text = "Whichever spiderling decides to take up the queenship should be a better source of spider legs..."
+
+[node name="DialogueLine3" parent="DialogueComponent/ReturnQueenHead" instance=ExtResource( 5 )]
+Text = "So in a roundabout way, you did what was asked of ya. I don't like your clever solutions. Follow instructions next time!"
+LineContainerType = 1
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
 editor/display_folded = true
 material = SubResource( 1 )
-_requirePlayerNear = true
 _shadedNodePath = NodePath("../AnimatedSprite")
+_requirePlayerNear = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )

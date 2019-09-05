@@ -3,10 +3,10 @@
 [ext_resource path="res://scenes/Zone/GameZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/GameObject/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/GameObject/MulletCook.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/GameObject/SpiderQueen.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/GameObject/SpawnZone.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/GameObject/SpawnZone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/GameObject/SpiderQueen.tscn" type="PackedScene" id=7]
 
 [node name="TestZone" instance=ExtResource( 1 )]
 
@@ -22,28 +22,25 @@ position = Vector2( 864, 1104 )
 [node name="TestQuestGiver" parent="Entities" index="1" instance=ExtResource( 3 )]
 position = Vector2( 864, 1040 )
 
-[node name="SpiderQueen" parent="Entities" index="2" instance=ExtResource( 4 )]
-position = Vector2( 1008, 832 )
-
-[node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 5 )]
+[node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 4 )]
 position = Vector2( 912, 800 )
 _radius = 100.0
-_maxSpawned = 1
-_spawnedScene = ExtResource( 6 )
+_spawnedScene = ExtResource( 5 )
+_maxSpawned = 10
 
-[node name="SpawnZone2" parent="SpawnZones" index="1" instance=ExtResource( 5 )]
+[node name="SpawnZone2" parent="SpawnZones" index="1" instance=ExtResource( 4 )]
 position = Vector2( 816, 461.6 )
 _radius = 100.0
-_maxSpawned = 0
-_spawnedScene = ExtResource( 6 )
+_spawnedScene = ExtResource( 5 )
+_maxSpawned = 10
 
-[node name="SpawnZone3" parent="SpawnZones" index="2" instance=ExtResource( 5 )]
+[node name="SpawnZone3" parent="SpawnZones" index="2" instance=ExtResource( 4 )]
 position = Vector2( 1216, 592 )
 _radius = 80.0
-_maxSpawned = 0
-_spawnedScene = ExtResource( 6 )
+_spawnedScene = ExtResource( 5 )
+_maxSpawned = 10
 
-[node name="QuestTriggerSpawnComponent" parent="SpawnZones" index="3" instance=ExtResource( 7 )]
+[node name="QuestTriggerSpawnComponent" parent="SpawnZones" index="3" instance=ExtResource( 6 )]
 position = Vector2( 736, 416 )
 _questModelId = "4d379fd1-5e33-4f34-bb2b-d1e49c429d3a"
-_scene = ExtResource( 4 )
+_scene = ExtResource( 7 )

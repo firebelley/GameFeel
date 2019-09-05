@@ -5,7 +5,9 @@ namespace GameFeel.Component.Subcomponent.Behavior
     public class NonblockingTimer : BehaviorNode
     {
         [Export]
-        private float _time;
+        private float _minTime = 1f;
+        [Export]
+        private float _maxTime = 2f;
 
         private Timer _timer;
         private bool _reportSuccess = false;
@@ -21,7 +23,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         {
             if (_timer.IsStopped())
             {
-                _timer.WaitTime = _time;
+                _timer.WaitTime = Main.RNG.RandfRange(_minTime, _maxTime);
                 _timer.Start();
                 if (_reportSuccess)
                 {

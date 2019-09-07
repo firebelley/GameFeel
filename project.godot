@@ -19,7 +19,10 @@ config/name="GameFeel"
 run/main_scene="res://scenes/Main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="GameFeel"
-config/icon="res://icon.png"
+boot_splash/image="res://assets/art/icon160.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+config/icon="res://assets/art/icon16.png"
 
 [autoload]
 

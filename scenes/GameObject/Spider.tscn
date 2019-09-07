@@ -133,7 +133,6 @@ _targetDistanceFromPlayer = 50.0
 [node name="AttackSequence" parent="BehaviorTreeComponent/AggressiveSequence" instance=ExtResource( 2 )]
 
 [node name="PlayAnimationIdle" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 4 )]
-_animationName = "idle"
 
 [node name="PrepareAttack" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 6 )]
 _attackIntentComponentPath = NodePath("../../../../AttackIntentComponent")
@@ -149,15 +148,6 @@ _waitAnimationFinish = true
 _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
-
-[node name="PlayAnimation2" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="0"]
-_animationName = "run"
-
-[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="1"]
-_radius = 100.0
-
-[node name="PlayAnimation" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="2"]
-_animationName = "idle"
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
@@ -235,5 +225,3 @@ animation = "idle"
 [node name="AttackDelayTimer" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
-
-[editable path="BehaviorTreeComponent/DefaultWanderSequence"]

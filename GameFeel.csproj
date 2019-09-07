@@ -92,7 +92,6 @@
     <Compile Include="scripts\Component\Subcomponent\Behavior\PlayAnimation.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\PrepareAttack.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\RandomWait.cs" />
-    <Compile Include="scripts\Component\Subcomponent\Behavior\RunWhileComposite.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Selector.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Sequence.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\TestPlayerAggro.cs" />

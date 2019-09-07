@@ -6,7 +6,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
     public class PlayAnimation : BehaviorNode
     {
         [Export(PropertyHint.Enum, "idle,run,attack")]
-        private string _animationName;
+        private string _animationName = "idle";
         [Export]
         private bool _waitAnimationFinish = false;
 

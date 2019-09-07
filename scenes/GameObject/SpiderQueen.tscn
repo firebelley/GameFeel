@@ -107,19 +107,6 @@ _targetDistanceFromPlayer = 75.0
 
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 10 )]
 
-[node name="PlayAnimation2" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="0"]
-_animationName = "run"
-
-[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="1"]
-_radius = 150.0
-
-[node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="2"]
-_animationName = "idle"
-
-[node name="RandomWait" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="3"]
-_minWait = 2.0
-_maxWait = 4.0
-
 [node name="EntityDataComponent" parent="." instance=ExtResource( 11 )]
 Id = "7696d797-1260-51bf-a10d-0941f9916122"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
@@ -192,5 +179,3 @@ offset = Vector2( -24, -48 )
 _radius = 25.0
 _spawnedScene = ExtResource( 28 )
 _maxSpawned = 3
-
-[editable path="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence"]

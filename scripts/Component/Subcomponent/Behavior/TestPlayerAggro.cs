@@ -1,14 +1,10 @@
 using GameFeel.GameObject;
-using Godot;
 using GodotTools.Extension;
 
 namespace GameFeel.Component.Subcomponent.Behavior
 {
     public class TestPlayerAggro : BehaviorNode
     {
-        [Export]
-        private int _aggroDistance = 50;
-
         protected override void InternalEnter()
         {
             if (_root.Blackboard.Aggressive || IsPlayerInAggroRange())
@@ -35,7 +31,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         private bool IsPlayerInAggroRange()
         {
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            return IsInstanceValid(player) && IsInstanceValid(_root.Blackboard.Owner) && _root.Blackboard.Owner.GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < _aggroDistance * _aggroDistance;
+            return IsInstanceValid(player) && IsInstanceValid(_root.Blackboard.Owner) && _root.Blackboard.Owner.GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < _root.Blackboard.AggroRange * _root.Blackboard.AggroRange;
         }
     }
 }

@@ -64,15 +64,15 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
-editor/display_folded = true
+_aggroRange = 100
+_animatedSpritePath = NodePath("../AnimatedSprite")
+_pathfindComponentPath = NodePath("../PathfindComponent")
 
 [node name="DynamicSelector" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
-editor/display_folded = true
 
 [node name="AggressiveSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 3 )]
 
 [node name="TestPlayerAggro" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence" instance=ExtResource( 4 )]
-_aggroDistance = 100
 
 [node name="DispatchEntityEngagedEvent" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence" instance=ExtResource( 5 )]
 _entityDataComponentPath = NodePath("../../../../EntityDataComponent")
@@ -103,26 +103,17 @@ _projectileSpawnComponentPath = NodePath("../../../../../../ProjectileSpawnCompo
 [node name="AggressiveSequence" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector" instance=ExtResource( 3 )]
 
 [node name="MoveToPlayer" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSequence" instance=ExtResource( 9 )]
-_pathfindComponentPath = NodePath("../../../../../../PathfindComponent")
-_animatedSpritePath = NodePath("../../../../../../AnimatedSprite")
 _targetDistanceFromPlayer = 75.0
 
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 10 )]
 
-[node name="TestPlayerAggro" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/InvertDecorator" index="0"]
-_aggroDistance = 100
-
 [node name="PlayAnimation2" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="0"]
-_animatedSpritePath = NodePath("../../../../../../AnimatedSprite")
 _animationName = "run"
 
 [node name="MoveAroundSpawn" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="1"]
-_pathfindComponentPath = NodePath("../../../../../../PathfindComponent")
-_animatedSpritePath = NodePath("../../../../../../AnimatedSprite")
 _radius = 150.0
 
 [node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="2"]
-_animatedSpritePath = NodePath("../../../../../../AnimatedSprite")
 _animationName = "idle"
 
 [node name="RandomWait" parent="BehaviorTreeComponent/DynamicSelector/DefaultWanderSequence/RunWhileComposite/Sequence" index="3"]
@@ -130,8 +121,8 @@ _minWait = 2.0
 _maxWait = 4.0
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 11 )]
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 Id = "7696d797-1260-51bf-a10d-0941f9916122"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 DisplayName = "Spider Queen"
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 12 )]
@@ -150,8 +141,8 @@ _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 17 )]
-Weight = 1
 Scene = ExtResource( 18 )
+Weight = 1
 
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 19 )]
 position = Vector2( 0, -24 )

@@ -115,6 +115,8 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
+_animatedSpritePath = NodePath("../AnimatedSprite")
+_pathfindComponentPath = NodePath("../PathfindComponent")
 
 [node name="AggressiveSequence" parent="BehaviorTreeComponent" instance=ExtResource( 2 )]
 
@@ -123,18 +125,14 @@ collision_mask = 17
 [node name="TestPlayerAggro" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 3 )]
 
 [node name="PlayAnimation" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 4 )]
-_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _animationName = "run"
 
 [node name="MoveToPlayer" parent="BehaviorTreeComponent/AggressiveSequence/PursueSequence" instance=ExtResource( 5 )]
-_pathfindComponentPath = NodePath("../../../../PathfindComponent")
-_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _targetDistanceFromPlayer = 50.0
 
 [node name="AttackSequence" parent="BehaviorTreeComponent/AggressiveSequence" instance=ExtResource( 2 )]
 
 [node name="PlayAnimationIdle" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 4 )]
-_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _animationName = "idle"
 
 [node name="PrepareAttack" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 6 )]
@@ -142,7 +140,6 @@ _attackIntentComponentPath = NodePath("../../../../AttackIntentComponent")
 _waitTime = 0.35
 
 [node name="PlayAnimationAttack" parent="BehaviorTreeComponent/AggressiveSequence/AttackSequence" instance=ExtResource( 4 )]
-_animatedSpritePath = NodePath("../../../../AnimatedSprite")
 _animationName = "attack"
 _waitAnimationFinish = true
 
@@ -153,23 +150,19 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
 
-[node name="PlayAnimation" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="0"]
-_animatedSpritePath = NodePath("../../../../../AnimatedSprite")
-_animationName = "idle"
-
-[node name="PlayAnimation2" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="2"]
-_animatedSpritePath = NodePath("../../../../../AnimatedSprite")
+[node name="PlayAnimation2" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="0"]
 _animationName = "run"
 
-[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="3"]
-_pathfindComponentPath = NodePath("../../../../../PathfindComponent")
-_animatedSpritePath = NodePath("../../../../../AnimatedSprite")
+[node name="MoveAroundSpawn" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="1"]
 _radius = 100.0
 
+[node name="PlayAnimation" parent="BehaviorTreeComponent/DefaultWanderSequence/RunWhileComposite/Sequence" index="2"]
+_animationName = "idle"
+
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
-DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")

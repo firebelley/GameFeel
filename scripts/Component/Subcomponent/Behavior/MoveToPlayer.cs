@@ -7,27 +7,18 @@ namespace GameFeel.Component.Subcomponent.Behavior
     public class MoveToPlayer : BehaviorNode
     {
         [Export]
-        private NodePath _pathfindComponentPath;
-        [Export]
-        private NodePath _animatedSpritePath;
-        [Export]
         private float _targetDistanceFromPlayer = 10;
         [Export]
         private float _minPathfindTime = 1f;
         [Export]
         private float _maxPathfindTime = 2f;
 
-        private AnimatedSprite _animatedSprite;
-        private PathfindComponent _pathfindComponent;
-
         private Timer _pathUpdateTimer;
 
         public override void _Ready()
         {
             base._Ready();
-            _animatedSprite = GetNodeOrNull<AnimatedSprite>(_animatedSpritePath ?? string.Empty);
             _pathUpdateTimer = GetNode<Timer>("PathUpdateTimer");
-            _pathfindComponent = GetNodeOrNull<PathfindComponent>(_pathfindComponentPath ?? string.Empty);
             _pathUpdateTimer.Connect("timeout", this, nameof(OnPathfindUpdateTimerTimeout));
         }
 
@@ -39,7 +30,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
             }
             else
             {
-                _pathfindComponent.Connect(nameof(PathfindComponent.PathEndReached), this, nameof(OnPathEndReached));
+                _root.Blackboard.PathfindComponent.Connect(nameof(PathfindComponent.PathEndReached), this, nameof(OnPathEndReached));
                 UpdatePathAndTimer();
                 SetProcess(true);
             }
@@ -47,13 +38,13 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void Tick()
         {
-            if (_pathfindComponent.Velocity.x < -5f)
+            if (_root.Blackboard.PathfindComponent.Velocity.x < -5f)
             {
-                _animatedSprite.FlipH = true;
+                _root.Blackboard.AnimatedSprite.FlipH = true;
             }
-            else if (_pathfindComponent.Velocity.x > 5f)
+            else if (_root.Blackboard.PathfindComponent.Velocity.x > 5f)
             {
-                _animatedSprite.FlipH = false;
+                _root.Blackboard.AnimatedSprite.FlipH = false;
             }
 
             if (IsNearPlayer())
@@ -64,8 +55,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void InternalLeave()
         {
-            _pathfindComponent.ClearPath();
-            this.DisconnectAllSignals(_pathfindComponent);
+            _root.Blackboard.PathfindComponent.ClearPath();
+            this.DisconnectAllSignals(_root.Blackboard.PathfindComponent);
             _pathUpdateTimer.Stop();
         }
 
@@ -79,7 +70,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
         {
             _pathUpdateTimer.WaitTime = Main.RNG.RandfRange(_minPathfindTime, _maxPathfindTime);
             _pathUpdateTimer.Start();
-            _pathfindComponent.UpdatePathToPlayer();
+            _root.Blackboard.PathfindComponent.UpdatePathToPlayer();
         }
 
         private void OnPathfindUpdateTimerTimeout()

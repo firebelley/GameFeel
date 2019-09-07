@@ -5,6 +5,13 @@ namespace GameFeel.Component
 {
     public class BehaviorTreeComponent : Selector
     {
+        [Export]
+        private int _aggroRange = 50;
+        [Export]
+        private NodePath _animatedSpritePath;
+        [Export]
+        private NodePath _pathfindComponentPath;
+
         private bool _shouldEnter = false;
 
         public Blackboard Blackboard { get; private set; } = new Blackboard();
@@ -42,6 +49,9 @@ namespace GameFeel.Component
         {
             Blackboard.Owner = GetOwnerOrNull<Node2D>();
             Blackboard.SpawnPosition = GetOwnerOrNull<Node2D>()?.GlobalPosition ?? Blackboard.SpawnPosition;
+            Blackboard.AnimatedSprite = GetNodeOrNull<AnimatedSprite>(_animatedSpritePath ?? string.Empty);
+            Blackboard.PathfindComponent = GetNodeOrNull<PathfindComponent>(_pathfindComponentPath ?? string.Empty);
+            Blackboard.AggroRange = _aggroRange;
         }
     }
 }

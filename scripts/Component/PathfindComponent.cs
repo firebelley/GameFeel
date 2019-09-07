@@ -53,8 +53,10 @@ namespace GameFeel.Component
         public void UpdateStraightPath(Vector2 fromPos, Vector2 toPos)
         {
             _pathEndReached = false;
-            Curve = GameZone.GetPathCurve(fromPos, toPos, 0f);
             _currentT = 0f;
+
+            var result = GetViewport().GetWorld2d().DirectSpaceState.Raycast(fromPos, toPos, null, 1 << 0);
+            Curve = GameZone.GetPathCurve(fromPos, result?.Position ?? toPos, 0f);
         }
 
         public void ClearPath()

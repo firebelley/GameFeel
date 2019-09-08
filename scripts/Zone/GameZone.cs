@@ -132,7 +132,7 @@ namespace GameFeel
                     {
                         // normalize the polygon
                         var newPoint = point - centroid;
-                        newPoint *= .99f;
+                        newPoint *= .9f;
                         scaledPolygonPoints.Add(newPoint + centroid);
                     }
 

@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/EquipmentUI.cs" type="Script" id=2]
+[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=3]
+[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=4]
+
+[node name="EquipmentUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+_slot1Path = NodePath("PanelContainer/MarginContainer/HBoxContainer/InventoryCell")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -64.0
+margin_right = 32.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 56.0
+margin_bottom = 56.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="InventoryCell" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 32.0
+margin_bottom = 32.0

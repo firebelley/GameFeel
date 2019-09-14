@@ -26,7 +26,6 @@ namespace GameFeel.UI
         private AnimationPlayer _animationPlayer;
         private Control _panelContainer;
         private Label _currencyLabel;
-        private int _selectedIndex = -1;
 
         public override void _Ready()
         {
@@ -92,31 +91,25 @@ namespace GameFeel.UI
             }
         }
 
-        private void ClearSelection()
-        {
-            Cursor.SetSecondaryTexture(null);
-            _selectedIndex = -1;
-        }
-
         private void CancelSelection()
         {
-            if (_selectedIndex >= 0)
+            if (Cursor.InventorySelectedIndex >= 0)
             {
-                PlayerInventory.SwapIndices(_selectedIndex, _selectedIndex);
+                PlayerInventory.SwapIndices(Cursor.InventorySelectedIndex, Cursor.InventorySelectedIndex);
             }
-            ClearSelection();
+            Cursor.ClearInventorySelection();
         }
 
         private void SwapIndices(int idx1, int idx2)
         {
             PlayerInventory.SwapIndices(idx1, idx2);
-            ClearSelection();
+            Cursor.ClearInventorySelection();
         }
 
         private void SelectIndex(int idx)
         {
             var item = PlayerInventory.Items[idx];
-            _selectedIndex = idx;
+            Cursor.InventorySelectedIndex = idx;
             Cursor.SetSecondaryTexture(item?.Icon ?? null);
             ClearCell(idx);
         }
@@ -137,9 +130,9 @@ namespace GameFeel.UI
 
         private void OnCellSelected(int idx)
         {
-            if (_selectedIndex >= 0)
+            if (Cursor.InventorySelectedIndex >= 0)
             {
-                SwapIndices(_selectedIndex, idx);
+                SwapIndices(Cursor.InventorySelectedIndex, idx);
             }
             else if (PlayerInventory.Items[idx] != null)
             {

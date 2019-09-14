@@ -146,12 +146,32 @@ namespace GameFeel.Singleton
                 Logger.Error("Attempted to remove item from player inventory that did not exist " + itemId);
                 return;
             }
+            RemoveItemAtIndex(idx, amount);
+        }
+
+        public static InventoryItem GetItemAtIndex(int idx)
+        {
+            if (idx < Items.Count)
+            {
+                return Items[idx];
+            }
+            return null;
+        }
+
+        public static void RemoveItemAtIndex(int idx, int amount)
+        {
+            if (idx < 0 || idx >= Items.Count)
+            {
+                Logger.Error("Tried to remove an item index which was out of the array bounds");
+                return;
+            }
+
             Items[idx].Amount -= amount;
             if (Items[idx].Amount <= 0)
             {
                 if (Items[idx].Amount < 0)
                 {
-                    Logger.Error("Player inventory item amount larger than requested removal amount item id " + itemId + " amount " + amount);
+                    Logger.Error("Player inventory item amount larger than requested removal amount item id " + Items[idx].Id + " amount " + amount);
                 }
                 var id = Items[idx].Id;
                 Items[idx] = null;

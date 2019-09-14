@@ -6,6 +6,8 @@ namespace GameFeel.Resource
     {
         private const string ANIM_DEFAULT = "default";
 
+        public static int InventorySelectedIndex { get; set; }
+
         private static Cursor _instance;
         private AnimationPlayer _animationPlayer;
         private Node2D _cursorRoot;
@@ -43,6 +45,12 @@ namespace GameFeel.Resource
         {
             var mousePos = n.GetTree().GetRoot().GetMousePosition() * Main.UI_TO_GAME_DISPLAY_RATIO;
             return n.GetCanvasTransform().AffineInverse().Xform(mousePos);
+        }
+
+        public static void ClearInventorySelection()
+        {
+            SetSecondaryTexture(null);
+            InventorySelectedIndex = -1;
         }
     }
 }

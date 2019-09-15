@@ -49,6 +49,9 @@ namespace GameFeel.GameObject.Loot
         [Export]
         public string DisplayName { get; private set; }
 
+        [Export]
+        public PackedScene EquipmentScene { get; private set; }
+
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
         private AnimationPlayer _animationPlayer;

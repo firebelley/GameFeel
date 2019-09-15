@@ -13,6 +13,7 @@ namespace GameFeel.Singleton
 
         public static Dictionary<string, Metadata> LootItemIdToMetadata = new Dictionary<string, Metadata>();
         public static Dictionary<string, Metadata> EntityIdToMetadata = new Dictionary<string, Metadata>();
+        public static Dictionary<string, Metadata> LootItemIdToEquipmentMetadata = new Dictionary<string, Metadata>();
 
         public struct Metadata
         {
@@ -79,6 +80,12 @@ namespace GameFeel.Singleton
             {
                 var info = new Metadata(li.Id, li.DisplayName, fullPath, li.Icon);
                 LootItemIdToMetadata[li.Id] = info;
+                if (li.EquipmentScene != null)
+                {
+                    var equipment = li.EquipmentScene.Instance();
+                    var equipmentInfo = new Metadata(li.Id, li.DisplayName, equipment.Filename, li.Icon);
+                    equipment.QueueFree();
+                }
             }
             node.QueueFree();
         }

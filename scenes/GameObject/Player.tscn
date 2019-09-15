@@ -9,7 +9,9 @@
 [ext_resource path="res://assets/art/sorcerer2.png" type="Texture" id=7]
 [ext_resource path="res://assets/art/sorcerer3.png" type="Texture" id=8]
 [ext_resource path="res://assets/art/sorcerer4.png" type="Texture" id=9]
-[ext_resource path="res://scenes/GameObject/Book.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/GameObject/Loot/Equipment/FireTome.tscn" type="PackedScene" id=10]
+
+
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true

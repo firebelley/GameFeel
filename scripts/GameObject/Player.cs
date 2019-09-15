@@ -1,5 +1,7 @@
 using GameFeel.Component;
+using GameFeel.GameObject.Loot;
 using GameFeel.Resource;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
 
@@ -58,6 +60,7 @@ namespace GameFeel.GameObject
             AddToGroup(GROUP);
 
             _damageReceiverComponent.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemEquipped), this, nameof(OnItemEquipped));
         }
 
         public override void _Process(float delta)
@@ -68,6 +71,8 @@ namespace GameFeel.GameObject
 
             if (Input.IsActionJustPressed(INPUT_INTERACT))
             {
+                // TODO: uncomment for testing
+                //PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
                 EmitSignal(nameof(Interact));
             }
         }
@@ -149,6 +154,11 @@ namespace GameFeel.GameObject
         private void OnDamageReceived(float damage)
         {
             Health -= damage;
+        }
+
+        private void OnItemEquipped(Equipment equipment)
+        {
+            // TODO: do stuff here
         }
     }
 }

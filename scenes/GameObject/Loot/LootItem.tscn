@@ -1,18 +1,27 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=4]
-[ext_resource path="res://assets/effect/star16.png" type="Texture" id=5]
-[ext_resource path="res://resources/Theme.tres" type="Theme" id=6]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=7]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
+[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
+[ext_resource path="res://assets/effect/star16.png" type="Texture" id=6]
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=7]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/_outlineColor = Color( 1, 1, 1, 1 )
+shader_param/_invalidOutlineColor = Color( 0.7, 0, 0, 1 )
+shader_param/_enabled = null
+shader_param/_valid = null
+
+[sub_resource type="CircleShape2D" id=2]
 resource_local_to_scene = true
 radius = 15.0
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
@@ -27,7 +36,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -5 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:scale")
@@ -104,7 +113,7 @@ tracks/5/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=5]
 length = 4.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
@@ -133,49 +142,48 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="CircleShape2D" id=8]
+[sub_resource type="CircleShape2D" id=6]
 resource_local_to_scene = true
 radius = 5.0
 
-[sub_resource type="Gradient" id=9]
+[sub_resource type="Gradient" id=7]
 offsets = PoolRealArray( 0, 0.211196, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=10]
-gradient = SubResource( 9 )
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
 
-[sub_resource type="Curve" id=11]
+[sub_resource type="Curve" id=9]
 max_value = 2.0
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.15097, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=12]
-curve = SubResource( 11 )
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
 
-[sub_resource type="ParticlesMaterial" id=13]
+[sub_resource type="ParticlesMaterial" id=11]
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
 angular_velocity = 100.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale_curve = SubResource( 12 )
-color_ramp = SubResource( 10 )
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 8 )
 
 [node name="LootItem" type="KinematicBody2D"]
 collision_layer = 0
 script = ExtResource( 1 )
-Id = "Null"
-DisplayName = "Null"
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
+material = SubResource( 1 )
 position = Vector2( 0, -8 )
-_requirePlayerNear = true
 _shadedNodePath = NodePath("../Sprite")
+_requirePlayerNear = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -183,15 +191,15 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "BounceIn"
-anims/BounceIn = ExtResource( 4 )
-anims/idle = SubResource( 5 )
-anims/pickup = SubResource( 6 )
+anims/BounceIn = ExtResource( 5 )
+anims/idle = SubResource( 3 )
+anims/pickup = SubResource( 4 )
 
 [node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/default = SubResource( 7 )
+anims/default = SubResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 8 )
+shape = SubResource( 6 )
 
 [node name="Sprite" type="Sprite" parent="."]
 centered = false
@@ -205,8 +213,8 @@ emitting = false
 amount = 5
 lifetime = 1.5
 preprocess = 1.0
-process_material = SubResource( 13 )
-texture = ExtResource( 5 )
+process_material = SubResource( 11 )
+texture = ExtResource( 6 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 visible = false
@@ -216,7 +224,7 @@ margin_bottom = -18.0
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = ExtResource( 6 )
+theme = ExtResource( 7 )
 
 [node name="DisplayName" type="Label" parent="PanelContainer"]
 margin_left = 3.0
@@ -230,4 +238,4 @@ align = 1
 valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
-anims/ControlBounceIn = ExtResource( 7 )
+anims/ControlBounceIn = ExtResource( 8 )

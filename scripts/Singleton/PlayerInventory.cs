@@ -15,11 +15,16 @@ namespace GameFeel.Singleton
         public delegate void ItemCleared(string itemId);
         [Signal]
         public delegate void CurrencyChanged();
+        [Signal]
+        public delegate void ItemEquipped(Equipment equipment);
 
         private const int MAX_SIZE = 25;
+        private const int EQUIPMENT_SLOT_COUNT = 1;
 
         public static PlayerInventory Instance { get; private set; }
         public static List<InventoryItem> Items { get; private set; } = new List<InventoryItem>();
+        public static InventoryItem[] EquipmentSlots { get; private set; } = new InventoryItem[EQUIPMENT_SLOT_COUNT];
+
         public static int PrimaryCurrency
         {
             get
@@ -178,6 +183,31 @@ namespace GameFeel.Singleton
                 Instance.EmitSignal(nameof(ItemCleared), id);
             }
             Instance.EmitSignal(nameof(ItemUpdated), idx);
+        }
+
+        public static void EquipInventoryItem(string itemId, int slot)
+        {
+            if (slot >= EquipmentSlots.Length)
+            {
+                Logger.Error("Tried to equip item out of bounds of array");
+                return;
+            }
+
+            if (MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(itemId))
+            {
+                var itemIdx = FindItemIndex(itemId);
+                if (itemIdx >= 0)
+                {
+                    var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
+                    if (equipmentMetadata.SlotIndex == slot)
+                    {
+                        RemoveItemAtIndex(itemIdx, 1);
+                        var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
+                        var equipment = equipmentScene.Instance() as Equipment;
+                        Instance.EmitSignal(nameof(ItemEquipped), equipment);
+                    }
+                }
+            }
         }
 
         private void OnItemUpdated(int idx)

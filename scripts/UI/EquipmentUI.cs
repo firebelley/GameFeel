@@ -58,7 +58,8 @@ namespace GameFeel.UI
                 var item = PlayerInventory.GetItemAtIndex(Cursor.InventorySelectedIndex);
                 if (item != null)
                 {
-                    PlayerInventory.RemoveItemAtIndex(Cursor.InventorySelectedIndex, 1);
+                    var slotIdx = inventoryCell.GetIndex();
+                    PlayerInventory.EquipInventoryItem(item.Id, slotIdx);
                     inventoryCell.SetInventoryItem(item);
                     Cursor.ClearInventorySelection();
                 }

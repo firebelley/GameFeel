@@ -13,9 +13,9 @@ namespace GameFeel.Singleton
 
         public static Dictionary<string, Metadata> LootItemIdToMetadata = new Dictionary<string, Metadata>();
         public static Dictionary<string, Metadata> EntityIdToMetadata = new Dictionary<string, Metadata>();
-        public static Dictionary<string, Metadata> LootItemIdToEquipmentMetadata = new Dictionary<string, Metadata>();
+        public static Dictionary<string, EquipmentMetadata> LootItemIdToEquipmentMetadata = new Dictionary<string, EquipmentMetadata>();
 
-        public struct Metadata
+        public class Metadata
         {
             public string Id { get; private set; }
             public string DisplayName { get; private set; }
@@ -28,6 +28,16 @@ namespace GameFeel.Singleton
                 DisplayName = displayName;
                 ResourcePath = resourcePath;
                 Icon = icon;
+            }
+        }
+
+        public class EquipmentMetadata : Metadata
+        {
+            public int SlotIndex { get; private set; }
+
+            public EquipmentMetadata(string id, string displayName, string resourcePath, Texture icon, int slotIdx) : base(id, displayName, resourcePath, icon)
+            {
+                SlotIndex = slotIdx;
             }
         }
 
@@ -76,14 +86,22 @@ namespace GameFeel.Singleton
         private void LoadItem(string fullPath)
         {
             var node = GD.Load<PackedScene>(fullPath).Instance();
-            if (node is LootItem li && li.Id != "Null")
+            if (node is LootItem li && li.Id != null && li.Id.ToLower() != "null")
             {
                 var info = new Metadata(li.Id, li.DisplayName, fullPath, li.Icon);
                 LootItemIdToMetadata[li.Id] = info;
                 if (li.EquipmentScene != null)
                 {
                     var equipment = li.EquipmentScene.Instance();
-                    var equipmentInfo = new Metadata(li.Id, li.DisplayName, equipment.Filename, li.Icon);
+                    if (equipment is Equipment e)
+                    {
+                        var equipmentInfo = new EquipmentMetadata(li.Id, li.DisplayName, equipment.Filename, li.Icon, e.SlotIndex);
+                        LootItemIdToEquipmentMetadata[li.Id] = equipmentInfo;
+                    }
+                    else
+                    {
+                        Logger.Error("Tried to load equipment that is not equipment with item id" + li.Id);
+                    }
                     equipment.QueueFree();
                 }
             }

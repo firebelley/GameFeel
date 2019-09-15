@@ -1,10 +1,13 @@
 using GameFeel.Component;
 using Godot;
 
-namespace GameFeel.GameObject
+namespace GameFeel.GameObject.Loot
 {
-    public class Book : Sprite
+    public class Equipment : Node2D
     {
+        [Export(PropertyHint.Enum, "1,2,3,4")]
+        public int SlotIndex { get; private set; }
+
         private ProjectileSpawnComponent _projectileSpawnComponent;
 
         public override void _Ready()

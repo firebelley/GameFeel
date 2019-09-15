@@ -1,3 +1,4 @@
+using GameFeel.Data;
 using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
@@ -59,8 +60,9 @@ namespace GameFeel.UI
                 if (item != null)
                 {
                     var slotIdx = inventoryCell.GetIndex();
+                    var swapItem = InventoryItem.FromItemId(item.Id);
                     PlayerInventory.EquipInventoryItem(item.Id, slotIdx);
-                    inventoryCell.SetInventoryItem(item);
+                    inventoryCell.SetInventoryItem(swapItem);
                     Cursor.ClearInventorySelection();
                 }
             }

@@ -1,5 +1,6 @@
 using GameFeel.Component;
 using Godot;
+using GodotTools.Extension;
 
 namespace GameFeel.GameObject.Loot
 {
@@ -12,11 +13,11 @@ namespace GameFeel.GameObject.Loot
 
         public override void _Ready()
         {
-            if (GetOwner() is Player p)
+            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
+            if (player != null)
             {
-                p.Connect(nameof(Player.Attack), this, nameof(OnPlayerAttack));
+                player.Connect(nameof(Player.Attack), this, nameof(OnPlayerAttack));
             }
-
             _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>("ProjectileSpawnComponent");
         }
 

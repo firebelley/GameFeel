@@ -1,4 +1,5 @@
 using GameFeel.Component.Subcomponent;
+using GameFeel.Data;
 using GameFeel.Data.Model;
 using GameFeel.Resource;
 using GameFeel.Singleton;
@@ -118,7 +119,7 @@ namespace GameFeel.UI
             if (model is QuestEventModel qem)
             {
                 var metadata = MetadataLoader.LootItemIdToMetadata[qem.ItemId];
-                var item = PlayerInventory.InventoryItemFromLootMetadata(metadata);
+                var item = InventoryItem.FromMetadata(metadata);
                 item.Amount = qem.Required;
                 _inventoryCell.SetInventoryItem(item);
             }

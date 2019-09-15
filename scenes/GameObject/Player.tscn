@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/GameObject/Player.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/HitEffectComponent.tscn" type="PackedScene" id=2]
@@ -9,9 +9,6 @@
 [ext_resource path="res://assets/art/sorcerer2.png" type="Texture" id=7]
 [ext_resource path="res://assets/art/sorcerer3.png" type="Texture" id=8]
 [ext_resource path="res://assets/art/sorcerer4.png" type="Texture" id=9]
-[ext_resource path="res://scenes/GameObject/Loot/Equipment/FireTome.tscn" type="PackedScene" id=10]
-
-
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -50,9 +47,9 @@ _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -11 )
 collision_layer = 2
-_showDamageNumber = false
 _cameraShakeMagnitude = 1.5
 _flashScreen = true
+_showDamageNumber = false
 _shape = SubResource( 2 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 5 )]
@@ -62,7 +59,6 @@ _radius = 7.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
 animation = "run"
-frame = 3
 playing = true
 offset = Vector2( 0, -16 )
 
@@ -71,8 +67,6 @@ position = Vector2( 0, -16 )
 
 [node name="WeaponPosition2D" type="Position2D" parent="."]
 position = Vector2( 14, -11 )
-
-[node name="Book" parent="WeaponPosition2D" instance=ExtResource( 10 )]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -4 )

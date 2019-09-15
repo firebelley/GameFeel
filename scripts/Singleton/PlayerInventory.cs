@@ -51,18 +51,9 @@ namespace GameFeel.Singleton
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(OnItemTurnedInEvent));
         }
 
-        public static InventoryItem InventoryItemFromLootMetadata(MetadataLoader.Metadata resource)
-        {
-            var item = new InventoryItem();
-            item.Icon = resource.Icon;
-            item.Id = resource.Id;
-            return item;
-        }
-
         public static void AddItem(LootItem lootItem)
         {
             var item = new InventoryItem();
-            item.Amount = 1;
             item.Icon = lootItem.Icon;
             item.Id = lootItem.Id;
             AddItem(item);
@@ -71,7 +62,7 @@ namespace GameFeel.Singleton
         public static void AddItem(string itemId, int amount)
         {
             var metaData = MetadataLoader.LootItemIdToMetadata[itemId];
-            var item = InventoryItemFromLootMetadata(metaData);
+            var item = InventoryItem.FromMetadata(metaData);
             item.Amount = amount;
             AddItem(item);
         }
@@ -102,6 +93,7 @@ namespace GameFeel.Singleton
                 {
                     // TODO: inventory is full
                     // throw some kind of full error here
+                    Logger.Error("Inventory was full, could not add item with id " + inventoryItem.Id);
                 }
             }
         }
@@ -202,6 +194,12 @@ namespace GameFeel.Singleton
                     if (equipmentMetadata.SlotIndex == slot)
                     {
                         RemoveItemAtIndex(itemIdx, 1);
+                        if (EquipmentSlots[slot] != null)
+                        {
+                            AddItem(EquipmentSlots[slot].Id, 1);
+                        }
+                        EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
+
                         var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
                         var equipment = equipmentScene.Instance() as Equipment;
                         Instance.EmitSignal(nameof(ItemEquipped), equipment);

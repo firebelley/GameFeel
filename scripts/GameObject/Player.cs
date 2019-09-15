@@ -72,7 +72,7 @@ namespace GameFeel.GameObject
             if (Input.IsActionJustPressed(INPUT_INTERACT))
             {
                 // TODO: uncomment for testing
-                //PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
+                PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
                 EmitSignal(nameof(Interact));
             }
         }
@@ -159,6 +159,12 @@ namespace GameFeel.GameObject
         private void OnItemEquipped(Equipment equipment)
         {
             // TODO: do stuff here
+            foreach (var child in _weaponPosition2d.GetChildren<Node>())
+            {
+                child.GetParent().RemoveChild(child);
+                child.QueueFree();
+            }
+            _weaponPosition2d.AddChild(equipment);
         }
     }
 }

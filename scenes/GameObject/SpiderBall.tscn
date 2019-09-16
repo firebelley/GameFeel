@@ -44,9 +44,9 @@ gravity_scale = 0.0
 continuous_cd = 1
 
 [node name="DamageDealerComponent" parent="." instance=ExtResource( 1 )]
-_hitEffect = ExtResource( 2 )
 _projectileDeleterComponentPath = NodePath("../ProjectileDeleterComponent")
 Damage = 1.0
+_hitEffect = ExtResource( 2 )
 
 [node name="ProjectileDeleterComponent" parent="." instance=ExtResource( 3 )]
 _hideOnDeletePath = NodePath("../Sprite")

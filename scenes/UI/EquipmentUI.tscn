@@ -1,9 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/EquipmentUI.cs" type="Script" id=2]
 [ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=3]
-[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=4]
+[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=6]
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 4 )
+region = Rect2( 72, 104, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 4 )
+region = Rect2( 106, 104, 14, 16 )
 
 [node name="EquipmentUI" type="Control"]
 anchor_right = 1.0
@@ -11,7 +21,10 @@ anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
-_slot1Path = NodePath("MarginContainer/PanelContainer/MarginContainer/HBoxContainer/InventoryCell")
+_slot1Path = NodePath("MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/Slot1InventoryCell")
+_slot2Path = NodePath("MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer2/Slot2InventoryCell")
+_animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
+_panelContainerPath = NodePath("MarginContainer/PanelContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -19,9 +32,9 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_left = 288.0
-margin_top = 288.0
-margin_right = 352.0
+margin_left = 270.0
+margin_top = 268.0
+margin_right = 370.0
 margin_bottom = 352.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -30,17 +43,49 @@ custom_styles/panel = ExtResource( 3 )
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 56.0
-margin_bottom = 56.0
+margin_right = 92.0
+margin_bottom = 76.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 76.0
+margin_bottom = 60.0
 
-[node name="InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 52.0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+margin_right = 32.0
+margin_bottom = 16.0
+texture = SubResource( 2 )
+stretch_mode = 4
+
+[node name="Slot1InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_top = 20.0
 margin_right = 32.0
-margin_bottom = 32.0
+margin_bottom = 52.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 52.0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 32.0
+margin_bottom = 16.0
+texture = SubResource( 1 )
+stretch_mode = 4
+
+[node name="Slot2InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 20.0
+margin_right = 32.0
+margin_bottom = 52.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
+anims/ControlBounceIn = ExtResource( 6 )

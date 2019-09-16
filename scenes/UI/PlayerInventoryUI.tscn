@@ -132,4 +132,4 @@ custom_constants/hseparation = 2
 columns = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
-anims/BounceIn = ExtResource( 8 )
+anims/ControlBounceIn = ExtResource( 8 )

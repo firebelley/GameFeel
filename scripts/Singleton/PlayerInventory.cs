@@ -19,7 +19,7 @@ namespace GameFeel.Singleton
         public delegate void ItemEquipped(Equipment equipment);
 
         private const int MAX_SIZE = 25;
-        private const int EQUIPMENT_SLOT_COUNT = 1;
+        private const int EQUIPMENT_SLOT_COUNT = 2;
 
         public static PlayerInventory Instance { get; private set; }
         public static List<InventoryItem> Items { get; private set; } = new List<InventoryItem>();
@@ -182,6 +182,16 @@ namespace GameFeel.Singleton
             return MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(itemId);
         }
 
+        public static bool ItemCanBeSlotted(string itemId, int slotIdx)
+        {
+            if (IsItemEquippable(itemId))
+            {
+                var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
+                return equipmentMetadata.SlotIndex == slotIdx;
+            }
+            return false;
+        }
+
         public static void EquipInventoryItem(string itemId, int slot)
         {
             if (slot >= EquipmentSlots.Length)
@@ -190,25 +200,22 @@ namespace GameFeel.Singleton
                 return;
             }
 
-            if (IsItemEquippable(itemId))
+            if (ItemCanBeSlotted(itemId, slot))
             {
                 var itemIdx = FindItemIndex(itemId);
                 if (itemIdx >= 0)
                 {
                     var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
-                    if (equipmentMetadata.SlotIndex == slot)
+                    RemoveItemAtIndex(itemIdx, 1);
+                    if (EquipmentSlots[slot] != null)
                     {
-                        RemoveItemAtIndex(itemIdx, 1);
-                        if (EquipmentSlots[slot] != null)
-                        {
-                            AddItem(EquipmentSlots[slot].Id, 1);
-                        }
-                        EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
-
-                        var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
-                        var equipment = equipmentScene.Instance() as Equipment;
-                        Instance.EmitSignal(nameof(ItemEquipped), equipment);
+                        AddItem(EquipmentSlots[slot].Id, 1);
                     }
+                    EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
+
+                    var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
+                    var equipment = equipmentScene.Instance() as Equipment;
+                    Instance.EmitSignal(nameof(ItemEquipped), equipment);
                 }
             }
         }

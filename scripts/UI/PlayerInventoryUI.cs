@@ -10,7 +10,7 @@ namespace GameFeel.UI
         private const string INPUT_INVENTORY = "inventory";
         private const string INPUT_DESELECT = "deselect";
         private const string INPUT_SELECT = "select";
-        private const string ANIM_BOUNCE_IN = "BounceIn";
+        private const string ANIM_BOUNCE_IN = "ControlBounceIn";
 
         [Export]
         private NodePath _gridContainerPath;
@@ -93,24 +93,23 @@ namespace GameFeel.UI
 
         private void CancelSelection()
         {
-            if (Cursor.InventorySelectedIndex >= 0)
+            if (Cursor.DragIndex >= 0)
             {
-                PlayerInventory.SwapIndices(Cursor.InventorySelectedIndex, Cursor.InventorySelectedIndex);
+                PlayerInventory.SwapIndices(Cursor.DragIndex, Cursor.DragIndex);
             }
-            Cursor.ClearInventorySelection();
+            Cursor.ClearDragSelection();
         }
 
         private void SwapIndices(int idx1, int idx2)
         {
             PlayerInventory.SwapIndices(idx1, idx2);
-            Cursor.ClearInventorySelection();
+            Cursor.ClearDragSelection();
         }
 
         private void SelectIndex(int idx)
         {
             var item = PlayerInventory.Items[idx];
-            Cursor.InventorySelectedIndex = idx;
-            Cursor.SetSecondaryTexture(item?.Icon ?? null);
+            Cursor.StartDrag(Cursor.DragSource.INVENTORY, item, idx);
             ClearCell(idx);
         }
 
@@ -130,9 +129,9 @@ namespace GameFeel.UI
 
         private void OnCellSelected(int idx)
         {
-            if (Cursor.InventorySelectedIndex >= 0)
+            if (Cursor.DragIndex >= 0)
             {
-                SwapIndices(Cursor.InventorySelectedIndex, idx);
+                SwapIndices(Cursor.DragIndex, idx);
             }
             else if (PlayerInventory.Items[idx] != null)
             {

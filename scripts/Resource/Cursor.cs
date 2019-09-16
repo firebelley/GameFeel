@@ -1,3 +1,4 @@
+using GameFeel.Data;
 using Godot;
 
 namespace GameFeel.Resource
@@ -6,13 +7,35 @@ namespace GameFeel.Resource
     {
         private const string ANIM_DEFAULT = "default";
 
-        public static int InventorySelectedIndex { get; set; }
+        public static int DragIndex { get; private set; }
+        public static DragSource DragFrom { get; private set; }
+        public static InventoryItem Dragging
+        {
+            get
+            {
+                return _dragging;
+            }
+            private set
+            {
+                _dragging = value;
+                SetSecondaryTexture(_dragging?.Icon ?? null);
+            }
+        }
 
         private static Cursor _instance;
+        private static InventoryItem _dragging;
+
         private AnimationPlayer _animationPlayer;
         private Node2D _cursorRoot;
         private Sprite _primary;
         private Sprite _secondary;
+
+        public enum DragSource
+        {
+            NONE,
+            INVENTORY,
+            EQUIPMENT
+        }
 
         public override void _Ready()
         {
@@ -34,11 +57,11 @@ namespace GameFeel.Resource
             }
         }
 
-        public static void SetSecondaryTexture(Texture texture)
+        public static void StartDrag(DragSource from, InventoryItem dragging, int dragIndex)
         {
-            _instance._secondary.Texture = texture;
-            _instance._secondary.Modulate = new Color(1f, 1f, 1f, .75f);
-            _instance._primary.Visible = texture == null;
+            DragFrom = from;
+            Dragging = dragging;
+            DragIndex = dragIndex;
         }
 
         public static Vector2 GetAdjustedGlobalMousePosition(Node2D n)
@@ -47,10 +70,18 @@ namespace GameFeel.Resource
             return n.GetCanvasTransform().AffineInverse().Xform(mousePos);
         }
 
-        public static void ClearInventorySelection()
+        public static void ClearDragSelection()
         {
-            SetSecondaryTexture(null);
-            InventorySelectedIndex = -1;
+            DragIndex = -1;
+            DragFrom = DragSource.NONE;
+            Dragging = null;
+        }
+
+        private static void SetSecondaryTexture(Texture texture)
+        {
+            _instance._secondary.Texture = texture;
+            _instance._secondary.Modulate = new Color(1f, 1f, 1f, .75f);
+            _instance._primary.Visible = texture == null;
         }
     }
 }

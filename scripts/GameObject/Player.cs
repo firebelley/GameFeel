@@ -10,7 +10,11 @@ namespace GameFeel.GameObject
     public class Player : KinematicBody2D
     {
         [Signal]
-        public delegate void Attack(Player p);
+        public delegate void AttackStart(Player p);
+        [Signal]
+        public delegate void AttackEnd(Player p);
+        [Signal]
+        public delegate void Attacking(Player p);
         [Signal]
         public delegate void Interact();
 
@@ -40,6 +44,7 @@ namespace GameFeel.GameObject
 
         private float _weaponRadius;
         private float _weaponHeight;
+        private bool _attacking;
 
         public float Mana { get; private set; } = 15f;
         public float MaxMana { get; private set; } = 15f;
@@ -72,8 +77,14 @@ namespace GameFeel.GameObject
             if (Input.IsActionJustPressed(INPUT_INTERACT))
             {
                 // TODO: uncomment for testing
+                PlayerInventory.AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
                 PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
                 EmitSignal(nameof(Interact));
+            }
+
+            if (_attacking)
+            {
+                EmitSignal(nameof(Attacking), this);
             }
         }
 
@@ -82,7 +93,14 @@ namespace GameFeel.GameObject
             if (evt.IsActionPressed(INPUT_ATTACK))
             {
                 GetTree().SetInputAsHandled();
-                EmitSignal(nameof(Attack), this);
+                _attacking = true;
+                EmitSignal(nameof(AttackStart), this);
+            }
+            else if (evt.IsActionReleased(INPUT_ATTACK))
+            {
+                GetTree().SetInputAsHandled();
+                _attacking = false;
+                EmitSignal(nameof(AttackEnd), this);
             }
         }
 
@@ -158,7 +176,7 @@ namespace GameFeel.GameObject
 
         private void OnItemEquipped(Equipment equipment)
         {
-            // TODO: do stuff here
+            // TODO: account for equipment slots here
             foreach (var child in _weaponPosition2d.GetChildren<Node>())
             {
                 child.GetParent().RemoveChild(child);

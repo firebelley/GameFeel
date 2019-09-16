@@ -57,7 +57,7 @@ namespace GameFeel.UI
             if (Cursor.InventorySelectedIndex > -1)
             {
                 var item = PlayerInventory.GetItemAtIndex(Cursor.InventorySelectedIndex);
-                if (item != null)
+                if (item != null && PlayerInventory.IsItemEquippable(item.Id))
                 {
                     var slotIdx = inventoryCell.GetIndex();
                     var swapItem = InventoryItem.FromItemId(item.Id);

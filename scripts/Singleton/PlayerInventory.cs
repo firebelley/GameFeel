@@ -177,6 +177,11 @@ namespace GameFeel.Singleton
             Instance.EmitSignal(nameof(ItemUpdated), idx);
         }
 
+        public static bool IsItemEquippable(string itemId)
+        {
+            return MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(itemId);
+        }
+
         public static void EquipInventoryItem(string itemId, int slot)
         {
             if (slot >= EquipmentSlots.Length)
@@ -185,7 +190,7 @@ namespace GameFeel.Singleton
                 return;
             }
 
-            if (MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(itemId))
+            if (IsItemEquippable(itemId))
             {
                 var itemIdx = FindItemIndex(itemId);
                 if (itemIdx >= 0)

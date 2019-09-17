@@ -65,6 +65,11 @@ namespace GameFeel.Resource
             DragIndex = dragIndex;
         }
 
+        public static Vector2 GetUIPosition()
+        {
+            return _instance._cursorRoot.GlobalPosition;
+        }
+
         public static Vector2 GetAdjustedGlobalMousePosition(Node2D n)
         {
             var mousePos = n.GetTree().GetRoot().GetMousePosition() * Main.UI_TO_GAME_DISPLAY_RATIO;

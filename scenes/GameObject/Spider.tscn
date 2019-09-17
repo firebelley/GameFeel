@@ -115,6 +115,7 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
+editor/display_folded = true
 _animatedSpritePath = NodePath("../AnimatedSprite")
 _pathfindComponentPath = NodePath("../PathfindComponent")
 
@@ -150,8 +151,8 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
-DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
+DisplayName = "Spider"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
@@ -171,12 +172,12 @@ editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Ruby" parent="LootTableComponent" instance=ExtResource( 16 )]
-Scene = ExtResource( 17 )
 Weight = 2
+Scene = ExtResource( 17 )
 
 [node name="SpiderLegs" parent="LootTableComponent" instance=ExtResource( 16 )]
-Scene = ExtResource( 18 )
 Weight = 100
+Scene = ExtResource( 18 )
 
 [node name="Nothing" parent="LootTableComponent" instance=ExtResource( 16 )]
 Weight = 100

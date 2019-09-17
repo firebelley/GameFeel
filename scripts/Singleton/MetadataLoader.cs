@@ -110,12 +110,13 @@ namespace GameFeel.Singleton
 
         private void LoadEntity(string fullPath)
         {
-            // TODO: use an entity data component to store data about an entity
             var node = GD.Load<PackedScene>(fullPath).Instance();
-            var entityId = node.GetFirstNodeOfType<EntityDataComponent>()?.Id ?? string.Empty;
+            var entityData = node.GetFirstNodeOfType<EntityDataComponent>();
+            var entityId = entityData?.Id ?? string.Empty;
+            var displayName = entityData?.DisplayName ?? string.Empty;
             if (!string.IsNullOrEmpty(entityId))
             {
-                var info = new Metadata(entityId, node.GetName(), fullPath, null);
+                var info = new Metadata(entityId, displayName, fullPath, null);
                 EntityIdToMetadata[entityId] = info;
             }
             node.QueueFree();

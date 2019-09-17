@@ -57,6 +57,3 @@ shape = SubResource( 3 )
 
 [node name="CollisionShape2D" parent="." index="5"]
 shape = SubResource( 4 )
-
-[node name="DisplayName" parent="PanelContainer" index="0"]
-text = "Spider Legs"

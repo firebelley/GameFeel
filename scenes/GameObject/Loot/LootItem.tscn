@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
 [ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
 [ext_resource path="res://assets/effect/star16.png" type="Texture" id=6]
-[ext_resource path="res://resources/Theme.tres" type="Theme" id=7]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -215,27 +213,3 @@ lifetime = 1.5
 preprocess = 1.0
 process_material = SubResource( 11 )
 texture = ExtResource( 6 )
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-visible = false
-margin_top = -32.0
-margin_right = 38.0
-margin_bottom = -18.0
-mouse_filter = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme = ExtResource( 7 )
-
-[node name="DisplayName" type="Label" parent="PanelContainer"]
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 35.0
-margin_bottom = 11.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Null"
-align = 1
-valign = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
-anims/ControlBounceIn = ExtResource( 8 )

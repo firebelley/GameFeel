@@ -5,7 +5,6 @@
 [ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=3]
 [ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=4]
 
-
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
 region = Rect2( 64, 0, 32, 32 )

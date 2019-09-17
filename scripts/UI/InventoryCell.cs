@@ -15,6 +15,8 @@ namespace GameFeel.UI
         private TextureRect _foregroundTextureRect;
         private AnimationPlayer _animationPlayer;
         private Label _countLabel;
+        private InventoryItem _inventoryItem;
+        private bool _mouseHovered;
 
         public override void _Ready()
         {
@@ -31,15 +33,22 @@ namespace GameFeel.UI
 
         public void SetInventoryItem(InventoryItem inventoryItem)
         {
-            if (inventoryItem == null)
+            _inventoryItem = inventoryItem;
+            if (_inventoryItem == null)
             {
                 Clear();
                 return;
             }
-            _backgroundTextureRect.Texture = inventoryItem.Icon;
-            if (inventoryItem.Amount > 1)
+
+            _backgroundTextureRect.Texture = _inventoryItem.Icon;
+            if (_inventoryItem.Amount > 1)
             {
-                _countLabel.Text = inventoryItem.Amount.ToString();
+                _countLabel.Text = _inventoryItem.Amount.ToString();
+            }
+
+            if (_mouseHovered)
+            {
+                TooltipUI.ShowItemTooltip(_inventoryItem.Id);
             }
         }
 
@@ -69,12 +78,19 @@ namespace GameFeel.UI
 
         private void OnMouseEntered()
         {
+            _mouseHovered = true;
             _animationPlayer.Play(ANIM_HOVER);
+            if (_inventoryItem != null)
+            {
+                TooltipUI.ShowItemTooltip(_inventoryItem.Id);
+            }
         }
 
         private void OnMouseExited()
         {
+            _mouseHovered = false;
             StopAnimation();
+            TooltipUI.HideTooltip();
         }
 
         private void OnVisibilityChanged()

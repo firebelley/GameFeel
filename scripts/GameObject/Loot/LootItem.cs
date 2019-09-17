@@ -1,5 +1,6 @@
 using GameFeel.Component;
 using GameFeel.Singleton;
+using GameFeel.UI;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Logic;
@@ -57,13 +58,10 @@ namespace GameFeel.GameObject.Loot
         private AnimationPlayer _animationPlayer;
         private CollisionShape2D _collisionShape2d;
         private AnimationPlayer _blinkAnimationPlayer;
-        private AnimationPlayer _labelAnimationPlayer;
         private Timer _deathTimer;
         private SelectableComponent _selectableComponent;
         private Sprite _sprite;
         private Texture _spriteTexture;
-        private PanelContainer _labelContainer;
-        private Label _nameLabel;
 
         private float _floorY;
         private Vector2 _velocity;
@@ -90,11 +88,6 @@ namespace GameFeel.GameObject.Loot
             _blinkAnimationPlayer = GetNode<AnimationPlayer>("BlinkAnimationPlayer");
             _deathTimer = GetNode<Timer>("DeathTimer");
             _selectableComponent = GetNode<SelectableComponent>("SelectableComponent");
-            _labelContainer = GetNode<PanelContainer>("PanelContainer");
-            _labelContainer.Visible = false;
-            _labelAnimationPlayer = GetNode<AnimationPlayer>("PanelContainer/AnimationPlayer");
-            _nameLabel = GetNode<Label>("PanelContainer/DisplayName");
-            _nameLabel.Text = DisplayName;
 
             _sprite = GetNode<Sprite>("Sprite");
             _sprite.Texture = _spriteTexture;
@@ -117,14 +110,6 @@ namespace GameFeel.GameObject.Loot
         public override void _Process(float delta)
         {
             _stateMachine.Update();
-            if (_labelContainer.Visible)
-            {
-                _labelContainer.RectSize = Vector2.Zero; // set size to zero to force size update
-                _labelContainer.RectPivotOffset = _labelContainer.RectSize / 2f;
-                var pos = _labelContainer.RectPosition;
-                pos.x = -_labelContainer.RectPivotOffset.x;
-                _labelContainer.RectPosition = pos;
-            }
         }
 
         private void StateBouncing()
@@ -245,25 +230,12 @@ namespace GameFeel.GameObject.Loot
 
         private void OnSelectEnter()
         {
-            _labelContainer.Visible = true;
-            if (_labelAnimationPlayer.IsPlaying())
-            {
-                _labelAnimationPlayer.Seek(0f, true);
-            }
-            else
-            {
-                _labelAnimationPlayer.Play("ControlBounceIn");
-            }
+            TooltipUI.ShowItemTooltip(Id);
         }
 
         private void OnSelectLeave()
         {
-            if (_labelAnimationPlayer.IsPlaying())
-            {
-                _labelAnimationPlayer.Stop();
-            }
-            _labelAnimationPlayer.Seek(0, true);
-            _labelContainer.Visible = false;
+            TooltipUI.HideTooltip();
         }
     }
 }

@@ -7,3 +7,4 @@ script = ExtResource( 1 )
 Id = "Null"
 DisplayName = "Null"
 _deathEffectComponentPath = NodePath("")
+_selectableComponentPath = NodePath("")

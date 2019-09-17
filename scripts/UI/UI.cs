@@ -38,7 +38,7 @@ namespace GameFeel.UI
                 EmitSignal(nameof(CloseRequested));
                 _rootControl.AcceptEvent();
             }
-            else if (evt.IsActionPressed("deselect") && _openedTypes.Contains(typeof(PlayerInventoryUI)))
+            else if (evt.IsActionPressed("deselect") && (_openedTypes.Contains(typeof(PlayerInventoryUI)) || _openedTypes.Contains(typeof(EquipmentUI))))
             {
                 EmitSignal(nameof(DeselectRequested));
                 _rootControl.AcceptEvent();

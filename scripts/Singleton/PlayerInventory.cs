@@ -17,6 +17,8 @@ namespace GameFeel.Singleton
         public delegate void CurrencyChanged();
         [Signal]
         public delegate void ItemEquipped(Equipment equipment);
+        [Signal]
+        public delegate void EquipmentUpdated(int slotIdx);
 
         private const int MAX_SIZE = 25;
         private const int EQUIPMENT_SLOT_COUNT = 2;
@@ -212,11 +214,32 @@ namespace GameFeel.Singleton
                         AddItem(EquipmentSlots[slot].Id, 1);
                     }
                     EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
+                    Instance.EmitSignal(nameof(EquipmentUpdated), slot);
 
                     var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
                     var equipment = equipmentScene.Instance() as Equipment;
                     Instance.EmitSignal(nameof(ItemEquipped), equipment);
                 }
+            }
+        }
+
+        public static void SwapEquipmentAndInventoryItems(int slotIdx, int itemIdx)
+        {
+            if (itemIdx >= Items.Count || itemIdx < 0 || slotIdx < 0 || slotIdx >= EQUIPMENT_SLOT_COUNT)
+            {
+                Logger.Error("Tried to perform an out of bounds operation");
+                return;
+            }
+
+            var item = Items[itemIdx];
+            var equipment = EquipmentSlots[slotIdx];
+            if (equipment == null)
+            {
+                return;
+            }
+            if (item != null && ItemCanBeSlotted(item.Id, slotIdx))
+            {
+                EquipInventoryItem(item.Id, slotIdx);
             }
         }
 

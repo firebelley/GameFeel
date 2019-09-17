@@ -93,11 +93,10 @@ namespace GameFeel.UI
 
         private void CancelSelection()
         {
-            if (Cursor.DragIndex >= 0)
+            if (Cursor.DragFrom == Cursor.DragSource.INVENTORY && Cursor.DragIndex >= 0)
             {
-                PlayerInventory.SwapIndices(Cursor.DragIndex, Cursor.DragIndex);
+                SwapIndices(Cursor.DragIndex, Cursor.DragIndex);
             }
-            Cursor.ClearDragSelection();
         }
 
         private void SwapIndices(int idx1, int idx2)
@@ -109,7 +108,7 @@ namespace GameFeel.UI
         private void SelectIndex(int idx)
         {
             var item = PlayerInventory.Items[idx];
-            Cursor.StartDrag(Cursor.DragSource.INVENTORY, item, idx);
+            Cursor.Drag(Cursor.DragSource.INVENTORY, item, idx);
             ClearCell(idx);
         }
 
@@ -131,7 +130,15 @@ namespace GameFeel.UI
         {
             if (Cursor.DragIndex >= 0)
             {
-                SwapIndices(Cursor.DragIndex, idx);
+                if (Cursor.DragFrom == Cursor.DragSource.INVENTORY)
+                {
+                    SwapIndices(Cursor.DragIndex, idx);
+                }
+                else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT)
+                {
+                    PlayerInventory.SwapEquipmentAndInventoryItems(Cursor.DragIndex, idx);
+                    Cursor.ClearDragSelection();
+                }
             }
             else if (PlayerInventory.Items[idx] != null)
             {

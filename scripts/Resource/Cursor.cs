@@ -45,6 +45,7 @@ namespace GameFeel.Resource
             _primary = GetNode<Sprite>("Scaler/Cursor/PrimarySprite");
             _secondary = GetNode<Sprite>("Scaler/Cursor/SecondarySprite");
             _animationPlayer = GetNode<AnimationPlayer>("Scaler/Cursor/AnimationPlayer");
+            ClearDragSelection();
         }
 
         public override void _Process(float delta)
@@ -57,7 +58,7 @@ namespace GameFeel.Resource
             }
         }
 
-        public static void StartDrag(DragSource from, InventoryItem dragging, int dragIndex)
+        public static void Drag(DragSource from, InventoryItem dragging, int dragIndex)
         {
             DragFrom = from;
             Dragging = dragging;

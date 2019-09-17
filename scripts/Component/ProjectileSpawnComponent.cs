@@ -3,8 +3,11 @@ using GodotTools.Extension;
 
 namespace GameFeel.Component
 {
+    [Tool]
     public class ProjectileSpawnComponent : Position2D
     {
+        [Export(PropertyHint.Layers2dPhysics)]
+        private int _collisionMask;
         [Export]
         private PackedScene _scene;
         [Export]
@@ -26,6 +29,15 @@ namespace GameFeel.Component
         {
             _spawnTimer = GetNode<Timer>("SpawnTimer");
             _spawnTimer.Connect("timeout", this, nameof(OnSpawnTimerTimeout));
+        }
+
+        public override string _GetConfigurationWarning()
+        {
+            if (_collisionMask == 0)
+            {
+                return "Be sure to set a collision mask for the projectile.";
+            }
+            return string.Empty;
         }
 
         public void SpawnToPosition(Vector2 targetPos)
@@ -65,6 +77,7 @@ namespace GameFeel.Component
             GameZone.EffectsLayer.AddChild(scene);
             scene.GlobalPosition = GlobalPosition;
             scene.LinearVelocity = _targetDirection * _speed;
+            scene.CollisionMask = _collisionMask;
 
             if (_maxDistance > 0f)
             {

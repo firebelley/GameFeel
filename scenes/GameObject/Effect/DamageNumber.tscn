@@ -3,7 +3,6 @@
 [ext_resource path="res://scripts/Effect/DamageNumber.cs" type="Script" id=1]
 [ext_resource path="res://resources/fonts/HitFont.tres" type="DynamicFont" id=2]
 
-
 [sub_resource type="Animation" id=1]
 resource_name = "in"
 length = 1.5

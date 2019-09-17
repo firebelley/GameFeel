@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/Component/DamageDealerComponent.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/Effect/SpiderBallDeath.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/GameObject/Effect/SpiderBallDeath.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Component/ProjectileDeleterComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/sound/squish-01.wav" type="AudioStream" id=5]
@@ -39,18 +39,18 @@ hue_variation_random = 1.0
 
 [node name="SpiderBall" type="RigidBody2D"]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 0
 gravity_scale = 0.0
 continuous_cd = 1
 
 [node name="DamageDealerComponent" parent="." instance=ExtResource( 1 )]
-_projectileDeleterComponentPath = NodePath("../ProjectileDeleterComponent")
 Damage = 1.0
+_projectileDeleterComponentPath = NodePath("../ProjectileDeleterComponent")
 _hitEffect = ExtResource( 2 )
 
 [node name="ProjectileDeleterComponent" parent="." instance=ExtResource( 3 )]
-_hideOnDeletePath = NodePath("../Sprite")
 _particlesPath = NodePath("../Particles2D")
+_hideOnDeletePath = NodePath("../Sprite")
 
 [node name="AudioStreamPlayerComponent" parent="." instance=ExtResource( 4 )]
 stream = ExtResource( 5 )

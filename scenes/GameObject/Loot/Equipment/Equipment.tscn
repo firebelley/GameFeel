@@ -14,3 +14,4 @@ one_shot = true
 texture = ExtResource( 2 )
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 3 )]
+_collisionMask = 4

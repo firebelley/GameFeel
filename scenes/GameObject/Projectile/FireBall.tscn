@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/Component/ProjectileDeleterComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/DamageDealerComponent.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Effect/FireballDeath.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/GameObject/Effect/FireballDeath.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Component/AttenuatedSoundComponent.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/sound/fire-loop.wav" type="AudioStream" id=5]
 [ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=6]
@@ -37,7 +37,7 @@ color_ramp = ExtResource( 8 )
 
 [node name="Fireball" type="RigidBody2D"]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 0
 gravity_scale = 0.0
 continuous_cd = 1
 

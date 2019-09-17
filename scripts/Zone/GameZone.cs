@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameFeel.Effect;
+using GameFeel.GameObject.Effect;
 using Godot;
 using GodotTools.Extension;
 

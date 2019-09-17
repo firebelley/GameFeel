@@ -1,12 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/GameObject/Loot/Equipment/Equipment.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/GameObject/Fireball.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/GameObject/Projectile/FireBall.tscn" type="PackedScene" id=2]
 
-[node name="FireTome" instance=ExtResource( 1 )]
-ManaCost = 2.0
+[node name="FireTome" index="0" instance=ExtResource( 1 )]
+FireRate = 7.0
+ManaCost = 1.25
 
 [node name="ProjectileSpawnComponent" parent="." index="2"]
+_maxDistance = 180.0
 _scene = ExtResource( 2 )
 _speed = 580.0
-_maxDistance = 180.0

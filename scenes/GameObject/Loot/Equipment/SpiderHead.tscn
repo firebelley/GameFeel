@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/GameObject/Loot/Equipment/Equipment.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/art/loot/loot-spider-queen-head.png" type="Texture" id=2]
-[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/GameObject/Projectile/VenomBall.tscn" type="PackedScene" id=3]
 
 [node name="SpiderHead" instance=ExtResource( 1 )]
 FireRate = 3.0
@@ -12,8 +12,8 @@ ManaCost = 3.0
 texture = ExtResource( 2 )
 
 [node name="ProjectileSpawnComponent" parent="." index="2"]
-_scene = ExtResource( 3 )
-_speed = 250.0
-_maxDistance = 75.0
-_number = 5
 _angleDelta = 15.0
+_maxDistance = 75.0
+_scene = ExtResource( 3 )
+_number = 5
+_speed = 250.0

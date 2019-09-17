@@ -21,7 +21,7 @@
 [ext_resource path="res://scenes/Component/DeathEffectComponent.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/Component/AttackIntentComponent.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/Component/ProjectileSpawnComponent.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/GameObject/SpiderBall.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/GameObject/Projectile/VenomBall.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Component/DamageReceiverComponent.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=25]
@@ -150,9 +150,9 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
+DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
-DisplayName = "Spider"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
@@ -190,6 +190,7 @@ position = Vector2( 0, -6 )
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 21 )]
 position = Vector2( 0, -6 )
+_collisionMask = 2
 _scene = ExtResource( 22 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 23 )]

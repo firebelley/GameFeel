@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-namespace GameFeel.Environment
+namespace GameFeel.GameObject.Environment
 {
     [Tool]
     public class EnvironmentObject : StaticBody2D

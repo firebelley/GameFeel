@@ -1,6 +1,6 @@
 using Godot;
 
-namespace GameFeel.Effect
+namespace GameFeel.GameObject.Effect
 {
     public class DamageNumber : Position2D
     {

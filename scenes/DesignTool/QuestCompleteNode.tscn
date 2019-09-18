@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scripts/DesignTool/QuestCompleteNode.cs" type="Script" id=1]
-[ext_resource path="res://scenes/DesignTool/QuestItemSelector.tscn" type="PackedScene" id=2]
 
 [node name="QuestCompleteNode" type="GraphNode"]
 margin_right = 320.0
@@ -20,7 +19,7 @@ script = ExtResource( 1 )
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 304.0
-margin_bottom = 100.0
+margin_bottom = 48.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 288.0
@@ -38,36 +37,3 @@ margin_right = 288.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 editable = false
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 28.0
-margin_right = 288.0
-margin_bottom = 48.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_top = 3.0
-margin_right = 46.0
-margin_bottom = 17.0
-text = "Reward"
-
-[node name="QuestItemSelector" parent="VBoxContainer/HBoxContainer" instance=ExtResource( 2 )]
-margin_left = 50.0
-margin_right = 288.0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 52.0
-margin_right = 288.0
-margin_bottom = 76.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
-margin_top = 5.0
-margin_right = 101.0
-margin_bottom = 19.0
-text = "Reward Amount"
-
-[node name="SpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer2"]
-margin_left = 105.0
-margin_right = 179.0
-margin_bottom = 24.0
-min_value = 1.0
-value = 1.0

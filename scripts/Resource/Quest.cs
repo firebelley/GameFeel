@@ -175,7 +175,6 @@ namespace GameFeel.Resource
 
         private void Complete(QuestCompleteModel questComplete)
         {
-            PlayerInventory.AddItem(questComplete.RewardItemId, questComplete.RewardItemAmount);
             EmitSignal(nameof(QuestCompleted), this, questComplete.Id);
             QueueFree();
         }

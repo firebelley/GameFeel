@@ -11,6 +11,7 @@ namespace GameFeel.Data.Model
         public HashSet<QuestStageModel> Stages = new HashSet<QuestStageModel>();
         public HashSet<QuestEventModel> Events = new HashSet<QuestEventModel>();
         public HashSet<QuestCompleteModel> Completions = new HashSet<QuestCompleteModel>();
+        public HashSet<QuestRewardModel> Rewards = new HashSet<QuestRewardModel>();
         public Dictionary<string, List<string>> RightConnections = new Dictionary<string, List<string>>();
         public Dictionary<string, Dictionary<string, Tuple<int, int>>> RightConnectionPorts = new Dictionary<string, Dictionary<string, Tuple<int, int>>>();
 
@@ -24,6 +25,7 @@ namespace GameFeel.Data.Model
                 questModels.AddRange(Stages);
                 questModels.AddRange(Events);
                 questModels.AddRange(Completions);
+                questModels.AddRange(Rewards);
                 questModels.Add(Start);
                 questModels.ForEach(x => dict.Add(x.Id, x));
                 return dict;

@@ -17,6 +17,8 @@ namespace GameFeel.UI
         public delegate void QuestAcceptanceIndicated(bool accepted);
         [Signal]
         public delegate void QuestTurnInIndicated();
+        [Signal]
+        public delegate void NotYetButtonPressed();
 
         [Export]
         private NodePath _dialogueLabelPath;
@@ -27,11 +29,11 @@ namespace GameFeel.UI
         [Export]
         private NodePath _nextButtonPath;
         [Export]
-        private NodePath _turnInButtonPath;
+        private NodePath _completeButtonPath;
         [Export]
         private NodePath _notYetButtonPath;
         [Export]
-        private NodePath _turnInContainerPath;
+        private NodePath _completeContainerPath;
         [Export]
         private NodePath _inventoryCellPath;
 
@@ -39,9 +41,9 @@ namespace GameFeel.UI
         private Button _acceptButton;
         private Button _declineButton;
         private Button _nextButton;
-        private Button _turnInButton;
+        private Button _completeButton;
         private Button _notYetButton;
-        private Container _turnInContainer;
+        private Container _completeContainer;
         private InventoryCell _inventoryCell;
 
         public override void _Ready()
@@ -51,32 +53,45 @@ namespace GameFeel.UI
             _nextButton.Connect("pressed", this, nameof(OnNextButtonPressed));
             _acceptButton.Connect("pressed", this, nameof(OnAcceptButtonPressed));
             _declineButton.Connect("pressed", this, nameof(OnDeclineButtonPressed));
-            _turnInButton.Connect("pressed", this, nameof(OnTurnInButtonPressed));
-            _notYetButton.Connect("pressed", this, nameof(OnNextButtonPressed));
+            _completeButton.Connect("pressed", this, nameof(OnTurnInButtonPressed));
+            _notYetButton.Connect("pressed", this, nameof(OnNotYetButtonPressed));
         }
 
         public void DisplayLine(DialogueLine line)
         {
             HideButtons();
             _dialogueLabel.Text = line.Text;
-            switch (line.LineContainerType)
+
+            if (line.IsQuestStarter())
             {
-                case DialogueLine.LineType.NORMAL:
-                    _nextButton.Show();
-                    break;
-                case DialogueLine.LineType.QUEST_ACCEPTANCE:
-                    ShowQuestAcceptanceButtons();
-                    break;
-                case DialogueLine.LineType.TURN_IN:
-                    SetupInventoryCell(line);
-                    ShowTurnIn(line);
-                    break;
+                ShowQuestAcceptanceButtons();
+            }
+            else
+            {
+                ShowNextButton();
+            }
+        }
+
+        public void DisplayTurnIn(QuestEventModel questEventModel)
+        {
+            HideButtons();
+            _completeContainer.Show();
+            _notYetButton.Show();
+
+            if (Quest.IsQuestEventReadyForCompletion(questEventModel))
+            {
+                _completeButton.Show();
             }
         }
 
         public void SetupLastLine()
         {
             _nextButton.Text = "Continue";
+        }
+
+        private void ShowNextButton()
+        {
+            _nextButton.Show();
         }
 
         private void ShowQuestAcceptanceButtons()
@@ -86,26 +101,14 @@ namespace GameFeel.UI
             _declineButton.Show();
         }
 
-        private void ShowTurnIn(DialogueLine line)
-        {
-            HideButtons();
-            _turnInContainer.Show();
-            _notYetButton.Show();
-
-            if (Quest.IsQuestEventReadyForCompletion(line.GetAssociatedQuestModel()))
-            {
-                _turnInButton.Show();
-            }
-        }
-
         private void HideButtons()
         {
             _acceptButton.Hide();
             _declineButton.Hide();
             _nextButton.Hide();
-            _turnInButton.Hide();
+            _completeButton.Hide();
             _notYetButton.Hide();
-            _turnInContainer.Hide();
+            _completeContainer.Hide();
         }
 
         private void SetupInventoryCell(DialogueLine dialogueLine)
@@ -132,6 +135,11 @@ namespace GameFeel.UI
         private void OnNextButtonPressed()
         {
             EmitSignal(nameof(NextButtonPressed));
+        }
+
+        private void OnNotYetButtonPressed()
+        {
+            EmitSignal(nameof(NotYetButtonPressed));
         }
 
         private void OnAcceptButtonPressed()

@@ -16,28 +16,27 @@ _dialogueLabelPath = NodePath("DialogueLabel")
 _acceptButtonPath = NodePath("ButtonContainer/AcceptButton")
 _declineButtonPath = NodePath("ButtonContainer/DeclineButton")
 _nextButtonPath = NodePath("ButtonContainer/NextButton")
-_turnInButtonPath = NodePath("ButtonContainer/TurnInButton")
+_completeButtonPath = NodePath("ButtonContainer/CompleteButton")
 _notYetButtonPath = NodePath("ButtonContainer/NotYetButton")
-_turnInContainerPath = NodePath("TurnInContainer")
-_inventoryCellPath = NodePath("TurnInContainer/InventoryCell")
+_completeContainerPath = NodePath("CompleteContainer")
+_inventoryCellPath = NodePath("CompleteContainer/InventoryCell")
 
 [node name="DialogueLabel" type="Label" parent="."]
-margin_right = 324.0
+margin_right = 332.0
 margin_bottom = 8.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 autowrap = true
 
-[node name="TurnInContainer" type="VBoxContainer" parent="."]
-editor/display_folded = true
-margin_left = 146.0
+[node name="CompleteContainer" type="VBoxContainer" parent="."]
+margin_left = 150.0
 margin_top = 16.0
-margin_right = 178.0
+margin_right = 182.0
 margin_bottom = 48.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="InventoryCell" parent="TurnInContainer" instance=ExtResource( 3 )]
+[node name="InventoryCell" parent="CompleteContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 32.0
@@ -45,7 +44,7 @@ margin_bottom = 32.0
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
 margin_top = 56.0
-margin_right = 324.0
+margin_right = 332.0
 margin_bottom = 70.0
 size_flags_vertical = 10
 
@@ -72,8 +71,8 @@ margin_right = 252.0
 size_flags_horizontal = 3
 text = "Not Yet"
 
-[node name="TurnInButton" parent="ButtonContainer" instance=ExtResource( 4 )]
+[node name="CompleteButton" parent="ButtonContainer" instance=ExtResource( 4 )]
 margin_left = 256.0
-margin_right = 324.0
+margin_right = 332.0
 size_flags_horizontal = 3
-text = "Turn In"
+text = "Complete"

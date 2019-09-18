@@ -151,6 +151,7 @@ namespace GameFeel.UI
             if (_itemsToDisplay.Count > 0)
             {
                 var item = _itemsToDisplay.Dequeue();
+                _linesToDisplay.Clear();
                 foreach (var line in item.GetValidLines())
                 {
                     _linesToDisplay.Enqueue(line);
@@ -178,7 +179,7 @@ namespace GameFeel.UI
                 }
 
                 container.DisplayLine(line);
-                container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed));
+                container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { line });
                 container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
                 container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { line });
             }
@@ -190,6 +191,16 @@ namespace GameFeel.UI
             {
                 AdvanceItem();
             }
+        }
+
+        private void ShowTurnIn(DialogueLine dialogueLine)
+        {
+            ClearContainer();
+            var container = _resourcePreloader.InstanceScene<DialogueLineContainer>();
+            _dialogueContent.AddChild(container);
+            container.DisplayTurnIn((QuestEventModel) dialogueLine.GetAssociatedQuestModel());
+            container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { dialogueLine });
+            container.Connect(nameof(DialogueLineContainer.NotYetButtonPressed), this, nameof(OnNotYetButtonPressed));
         }
 
         private void OnDialogueStarted(string eventGuid, DialogueComponent dialogueComponent)
@@ -205,9 +216,16 @@ namespace GameFeel.UI
             AdvanceItem();
         }
 
-        private void OnNextLineButtonPressed()
+        private void OnNextLineButtonPressed(DialogueLine dialogueLine)
         {
-            AdvanceLine();
+            if (dialogueLine.IsQuestTurnIn() && _linesToDisplay.Count == 0)
+            {
+                ShowTurnIn(dialogueLine);
+            }
+            else
+            {
+                AdvanceLine();
+            }
         }
 
         private void OnQuestAcceptanceIndicated(bool accepted, DialogueLine dialogueLine)
@@ -242,6 +260,11 @@ namespace GameFeel.UI
             {
                 CloseImmediate();
             }
+        }
+
+        private void OnNotYetButtonPressed()
+        {
+            AdvanceItem();
         }
     }
 }

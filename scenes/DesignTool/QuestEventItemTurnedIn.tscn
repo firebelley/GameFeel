@@ -5,6 +5,12 @@
 [ext_resource path="res://scenes/DesignTool/QuestItemSelector.tscn" type="PackedScene" id=3]
 
 [node name="QuestEventItemTurnedIn" instance=ExtResource( 1 )]
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color( 1, 1, 1, 1 )
+slot/2/right_enabled = true
+slot/2/right_type = 3
+slot/2/right_color = Color( 0, 1, 0.368627, 1 )
 script = ExtResource( 2 )
 
 [node name="VBoxContainer" parent="." index="0"]
@@ -47,4 +53,12 @@ margin_bottom = 104.0
 
 [node name="VBoxContainer2" parent="." index="1"]
 margin_top = 128.0
-margin_bottom = 128.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="." index="2"]
+margin_left = 16.0
+margin_top = 169.0
+margin_right = 304.0
+margin_bottom = 209.0
+rect_min_size = Vector2( 0, 40 )

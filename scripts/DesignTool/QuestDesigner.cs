@@ -41,6 +41,7 @@ namespace GameFeel.DesignTool
             nodeItemList.AddItem(nameof(QuestStageNode));
             nodeItemList.AddItem(nameof(QuestEventNode));
             nodeItemList.AddItem(nameof(QuestCompleteNode));
+            nodeItemList.AddItem(nameof(QuestRewardNode));
             nodeItemList.Connect("item_activated", this, nameof(OnNodeSelectorSelected));
 
             GetNode("VBoxContainer/HBoxContainer/AddNode").Connect("pressed", this, nameof(OnAddNodePressed));
@@ -102,6 +103,10 @@ namespace GameFeel.DesignTool
             {
                 saveModel.Completions.Add(qcn.Model);
             }
+            else if (node is QuestRewardNode qrn)
+            {
+                saveModel.Rewards.Add(qrn.Model);
+            }
         }
 
         private void Load(string path)
@@ -147,6 +152,13 @@ namespace GameFeel.DesignTool
                 var completion = AddQuestNode<QuestCompleteNode>();
                 completion.LoadModel(model);
                 idToNodeMappings.Add(completion.Model.Id, completion);
+            }
+
+            foreach (var model in saveModel.Rewards)
+            {
+                var reward = AddQuestNode<QuestRewardNode>();
+                reward.LoadModel(model);
+                idToNodeMappings.Add(reward.Model.Id, reward);
             }
 
             foreach (var sourceId in saveModel.RightConnections.Keys)

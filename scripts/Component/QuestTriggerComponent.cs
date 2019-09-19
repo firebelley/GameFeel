@@ -14,10 +14,7 @@ namespace GameFeel.Component
             Setup();
         }
 
-        protected virtual void Trigger()
-        {
-
-        }
+        protected abstract void Trigger();
 
         private void Setup()
         {

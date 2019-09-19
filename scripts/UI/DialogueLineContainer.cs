@@ -61,6 +61,7 @@ namespace GameFeel.UI
         {
             HideButtons();
             _dialogueLabel.Text = line.Text;
+            _dialogueLabel.Show();
 
             if (line.IsQuestStarter())
             {
@@ -75,6 +76,7 @@ namespace GameFeel.UI
         public void DisplayTurnIn(QuestEventModel questEventModel)
         {
             HideButtons();
+            _dialogueLabel.Hide();
             _completeContainer.Show();
             _notYetButton.Show();
 

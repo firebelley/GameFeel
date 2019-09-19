@@ -29,6 +29,7 @@ custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 autowrap = true
 
 [node name="CompleteContainer" type="VBoxContainer" parent="."]
+editor/display_folded = true
 margin_left = 150.0
 margin_top = 16.0
 margin_right = 182.0

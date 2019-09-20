@@ -259,6 +259,12 @@ namespace GameFeel.Singleton
         private void OnItemTurnedInEvent(string eventGuid, string modelId, string itemGuid, int amount)
         {
             RemoveItem(itemGuid, amount);
+
+            var quest = QuestTracker.GetActiveQuestContainingModelId(modelId);
+            foreach (var reward in quest.GetRewards(modelId))
+            {
+                AddItem(reward.ItemId, reward.Amount);
+            }
         }
     }
 }

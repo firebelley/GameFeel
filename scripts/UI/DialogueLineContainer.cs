@@ -21,6 +21,8 @@ namespace GameFeel.UI
         public delegate void NotYetButtonPressed();
 
         [Export]
+        private NodePath _resourcePreloaderPath;
+        [Export]
         private NodePath _dialogueLabelPath;
         [Export]
         private NodePath _acceptButtonPath;
@@ -33,9 +35,13 @@ namespace GameFeel.UI
         [Export]
         private NodePath _notYetButtonPath;
         [Export]
-        private NodePath _completeContainerPath;
-        [Export]
         private NodePath _inventoryCellPath;
+        [Export]
+        private NodePath _rewardsContainerPath;
+        [Export]
+        private NodePath _requirementsContainerPath;
+        [Export]
+        private NodePath _turnInContainerPath;
 
         private Label _dialogueLabel;
         private Button _acceptButton;
@@ -43,8 +49,11 @@ namespace GameFeel.UI
         private Button _nextButton;
         private Button _completeButton;
         private Button _notYetButton;
-        private Container _completeContainer;
         private InventoryCell _inventoryCell;
+        private ResourcePreloader _resourcePreloader;
+        private Container _rewardsContainer;
+        private Container _requirementsContainer;
+        private Container _turnInContainer;
 
         public override void _Ready()
         {
@@ -77,8 +86,10 @@ namespace GameFeel.UI
         {
             HideButtons();
             _dialogueLabel.Hide();
-            _completeContainer.Show();
+            _turnInContainer.Show();
             _notYetButton.Show();
+
+            ShowTurnInRequirements(questEventModel);
 
             if (Quest.IsQuestEventReadyForCompletion(questEventModel))
             {
@@ -110,7 +121,7 @@ namespace GameFeel.UI
             _nextButton.Hide();
             _completeButton.Hide();
             _notYetButton.Hide();
-            _completeContainer.Hide();
+            _turnInContainer.Hide();
         }
 
         private void SetupInventoryCell(DialogueLine dialogueLine)
@@ -131,6 +142,48 @@ namespace GameFeel.UI
             else
             {
                 Logger.Error("Could not parse model as an event model " + model.Id);
+            }
+        }
+
+        private void ShowTurnInRequirements(QuestEventModel questEventModel)
+        {
+            var quest = QuestTracker.GetActiveQuestContainingModelId(questEventModel.Id);
+            var rewards = quest.GetRewards(questEventModel.Id);
+
+            foreach (var child in _rewardsContainer.GetChildren<Node>())
+            {
+                if (child is InventoryCell)
+                {
+                    child.GetParent().RemoveChild(child);
+                    child.QueueFree();
+                }
+            }
+
+            foreach (var child in _requirementsContainer.GetChildren<Node>())
+            {
+                if (child is InventoryCell)
+                {
+                    child.GetParent().RemoveChild(child);
+                    child.QueueFree();
+                }
+            }
+
+            var requirementCell = _resourcePreloader.InstanceScene<InventoryCell>();
+            requirementCell.SizeFlagsHorizontal = (int) SizeFlags.ShrinkCenter;
+            _requirementsContainer.AddChild(requirementCell);
+            var requirementItem = InventoryItem.FromItemId(questEventModel.ItemId);
+            requirementItem.Amount = questEventModel.Required;
+            requirementCell.SetInventoryItem(requirementItem);
+
+            foreach (var reward in rewards)
+            {
+                var rewardCell = _resourcePreloader.InstanceScene<InventoryCell>();
+                rewardCell.SizeFlagsHorizontal = (int) SizeFlags.ShrinkCenter;
+                _rewardsContainer.AddChild(rewardCell);
+
+                var item = InventoryItem.FromItemId(reward.ItemId);
+                item.Amount = reward.Amount;
+                rewardCell.SetInventoryItem(item);
             }
         }
 

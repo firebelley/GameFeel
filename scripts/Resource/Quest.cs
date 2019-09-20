@@ -54,6 +54,18 @@ namespace GameFeel.Resource
             _idToModelMap = _questSaveModel.IdToModelMap;
         }
 
+        public List<QuestRewardModel> GetRewards(string modelId)
+        {
+            if (_questSaveModel.RightConnections.ContainsKey(modelId))
+            {
+                return _questSaveModel.RightConnections[modelId]
+                    .Select(x => _idToModelMap[x] as QuestRewardModel)
+                    .Where(x => x != null)
+                    .ToList();
+            }
+            return new List<QuestRewardModel>();
+        }
+
         public void Start()
         {
             if (_questSaveModel == null)

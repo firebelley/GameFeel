@@ -11,6 +11,8 @@ namespace GameFeel.Component
         [Export]
         private PackedScene _scene;
         [Export]
+        private float _damageOverride;
+        [Export]
         private float _speed = 100f;
         [Export]
         private float _maxDistance = 100f;
@@ -82,6 +84,15 @@ namespace GameFeel.Component
             if (_maxDistance > 0f)
             {
                 scene.GetFirstNodeOfType<ProjectileDeleterComponent>()?.SetTravelDistance(_maxDistance);
+            }
+
+            if (_damageOverride > 0f)
+            {
+                var damageDealerComponent = scene.GetFirstNodeOfType<DamageDealerComponent>();
+                if (damageDealerComponent != null)
+                {
+                    damageDealerComponent.Damage = _damageOverride;
+                }
             }
 
             _totalSpawned++;

@@ -8,6 +8,6 @@ FireRate = 7.0
 ManaCost = 1.25
 
 [node name="ProjectileSpawnComponent" parent="." index="2"]
-_maxDistance = 180.0
 _scene = ExtResource( 2 )
 _speed = 580.0
+_maxDistance = 180.0

@@ -15,6 +15,8 @@ namespace GameFeel.Component
         [Export]
         private float _maxHp;
 
+        private DamageReceiverComponent _damageReceiverComponent;
+
         private float _hp;
 
         public override void _Ready()
@@ -23,7 +25,8 @@ namespace GameFeel.Component
 
             if (_damageReceiverComponentPath != null)
             {
-                GetNodeOrNull<DamageReceiverComponent>(_damageReceiverComponentPath)?.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
+                _damageReceiverComponent = GetNodeOrNull<DamageReceiverComponent>(_damageReceiverComponentPath);
+                _damageReceiverComponent?.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
             }
         }
 
@@ -33,6 +36,7 @@ namespace GameFeel.Component
             EmitSignal(nameof(HealthDecremented));
             if (_hp <= 0f)
             {
+                _damageReceiverComponent?.Disable();
                 EmitSignal(nameof(HealthDepleted));
             }
         }

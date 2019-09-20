@@ -41,6 +41,8 @@ namespace GameFeel.Component
         private Shape2D _realShape;
         private CollisionShape2D _collisionShape2d;
 
+        private bool _enabled = true;
+
         public override void _Ready()
         {
             _collisionShape2d = GetNode<CollisionShape2D>("CollisionShape2D");
@@ -62,10 +64,18 @@ namespace GameFeel.Component
             EmitSignal(nameof(DamageReceived), damageDealer.Damage);
         }
 
+        public void Disable()
+        {
+            _enabled = false;
+        }
+
         private void OnBodyEntered(PhysicsBody2D body)
         {
-            var otherDamageComponent = body.GetFirstNodeOfType<DamageDealerComponent>();
-            otherDamageComponent?.HandleHit(this);
+            if (_enabled)
+            {
+                var otherDamageComponent = body.GetFirstNodeOfType<DamageDealerComponent>();
+                otherDamageComponent?.HandleHit(this);
+            }
         }
     }
 }

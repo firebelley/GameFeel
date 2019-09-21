@@ -6,6 +6,8 @@ namespace GameFeel.GameObject.Loot
 {
     public class Equipment : Node2D
     {
+        private const string ANIM_ATTACK = "attack";
+
         [Export(PropertyHint.Enum, "1,2,3,4")]
         public int SlotIndex { get; private set; }
 
@@ -17,6 +19,7 @@ namespace GameFeel.GameObject.Loot
 
         private ProjectileSpawnComponent _projectileSpawnComponent;
         private Timer _fireRateTimer;
+        private AnimationPlayer _animationPlayer;
 
         public override void _Ready()
         {
@@ -26,6 +29,7 @@ namespace GameFeel.GameObject.Loot
                 player.Connect(nameof(Player.Attacking), this, nameof(OnPlayerAttacking));
             }
             _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>("ProjectileSpawnComponent");
+            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _fireRateTimer = GetNode<Timer>("FireRateTimer");
             _fireRateTimer.WaitTime = 1f / FireRate;
         }
@@ -34,6 +38,11 @@ namespace GameFeel.GameObject.Loot
         {
             var direction = Vector2.Right.Rotated(GlobalRotation * Mathf.Sign(GlobalScale.y));
             _projectileSpawnComponent.Spawn(direction);
+            if (_animationPlayer.IsPlaying())
+            {
+                _animationPlayer.Stop(true);
+            }
+            _animationPlayer.Play(ANIM_ATTACK);
         }
 
         private void OnPlayerAttacking(Player player)

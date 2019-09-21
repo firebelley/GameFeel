@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spider-queen.png-c0e657152ac84c06ca73668e54d49bb0.stex"
+path="res://.import/spider-queen3.png-48494845f8febb2faf69ad018a2ad813.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/spider-queen.png"
-dest_files=[ "res://.import/spider-queen.png-c0e657152ac84c06ca73668e54d49bb0.stex" ]
+source_file="res://assets/art/spider-queen3.png"
+dest_files=[ "res://.import/spider-queen3.png-48494845f8febb2faf69ad018a2ad813.stex" ]
 
 [params]
 

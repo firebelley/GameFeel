@@ -115,7 +115,6 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
-editor/display_folded = true
 _animatedSpritePath = NodePath("../AnimatedSprite")
 _pathfindComponentPath = NodePath("../PathfindComponent")
 
@@ -152,8 +151,8 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
-DisplayName = "Spider"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")

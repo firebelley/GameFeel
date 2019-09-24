@@ -1,6 +1,6 @@
 namespace GameFeel.Component.Subcomponent.Behavior
 {
-    public class FalseDecorator : BehaviorNode
+    public class FailDecorator : BehaviorNode
     {
         protected override void InternalEnter()
         {

@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/Attack.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/Selector.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/SkipSequence.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/FalseDecorator.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/FailDecorator.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveToPlayer.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/DefaultWanderSequence.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=16]
@@ -133,18 +133,18 @@ _projectileSpawnComponentPath = NodePath("../../../../../../ProjectileSpawnCompo
 
 [node name="SkipSequence" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector" instance=ExtResource( 12 )]
 
-[node name="FalseDecorator" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/SkipSequence" instance=ExtResource( 13 )]
+[node name="FailDecorator" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/SkipSequence" instance=ExtResource( 13 )]
 editor/display_folded = true
 
-[node name="MoveToPlayer" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/SkipSequence/FalseDecorator" instance=ExtResource( 14 )]
+[node name="MoveToPlayer" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/SkipSequence/FailDecorator" instance=ExtResource( 14 )]
 _targetDistanceFromPlayer = 75.0
 
 [node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/SkipSequence" instance=ExtResource( 9 )]
 _animationName = "run"
 
-[node name="FalseDecorator" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector" instance=ExtResource( 13 )]
+[node name="FailDecorator" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector" instance=ExtResource( 13 )]
 
-[node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/FalseDecorator" instance=ExtResource( 9 )]
+[node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSelector/FailDecorator" instance=ExtResource( 9 )]
 
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 15 )]
 

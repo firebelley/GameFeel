@@ -4,18 +4,21 @@ namespace GameFeel.Component.Subcomponent.Behavior
 {
     public class DynamicSelector : BehaviorNode
     {
-        private int _processingIndex = 0;
-        private List<BehaviorNode> _failedNodes = new List<BehaviorNode>();
+        private List<BehaviorNode> _retryNodes = new List<BehaviorNode>();
+        private int _tryIndex = 0;
 
         protected override void InternalEnter()
         {
-            _processingIndex = 0;
             SetProcess(true);
-            if (_children.Count > 0)
+
+            _retryNodes.Clear();
+            _tryIndex = 0;
+            foreach (var child in _children)
             {
-                _children[0].Enter();
+                _retryNodes.Add(child);
             }
-            else
+
+            if (_children.Count == 0)
             {
                 Leave(Status.FAIL);
             }
@@ -23,36 +26,69 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void Tick()
         {
-            var failures = _failedNodes.ToArray();
-            _failedNodes.Clear();
-            foreach (var child in failures)
+            BehaviorNode runningChild = GetFirstRunningChild();
+            int childIndex = runningChild?.GetIndex() ?? _retryNodes.Count;
+            if (runningChild != null && _tryIndex > runningChild.GetIndex())
             {
-                child.Enter();
+                _tryIndex = 0;
+            }
+
+            var tryNode = FindFirstTryNodeBeforeIndex(childIndex);
+            if (tryNode != null)
+            {
+                _retryNodes[_tryIndex] = null;
+                tryNode.Enter();
+                if (tryNode.IsRunning)
+                {
+                    runningChild?.Terminate();
+                }
+            }
+            else
+            {
+                _tryIndex = 0;
             }
         }
 
         protected override void InternalLeave()
         {
-            _failedNodes.Clear();
+            _retryNodes.Clear();
         }
 
         protected override void ChildStatusUpdated(Status status, BehaviorNode behaviorNode)
         {
             if (status == Status.FAIL)
             {
-                _failedNodes.Add(behaviorNode);
-                if (_processingIndex < _children.Count - 1)
-                {
-                    _processingIndex++;
-                    var nextChild = _children[_processingIndex];
-                    nextChild.Enter();
-                }
+                _tryIndex++;
+                _retryNodes[behaviorNode.GetIndex()] = behaviorNode;
             }
             else if (status == Status.SUCCESS)
             {
                 EmitSignal(nameof(Aborted));
                 Leave(Status.SUCCESS);
             }
+        }
+
+        private BehaviorNode GetFirstRunningChild()
+        {
+            var childIndex = GetFirstRunningChildIndex();
+            if (childIndex > -1)
+            {
+                return _children[childIndex];
+            }
+            return null;
+        }
+
+        private BehaviorNode FindFirstTryNodeBeforeIndex(int beforeIdx)
+        {
+            while (_tryIndex < beforeIdx && _retryNodes[_tryIndex] == null)
+            {
+                _tryIndex++;
+            }
+            if (_tryIndex < beforeIdx)
+            {
+                return _children[_tryIndex];
+            }
+            return null;
         }
     }
 }

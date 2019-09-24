@@ -2,5 +2,5 @@
 
 [ext_resource path="res://scripts/Component/Subcomponent/Behavior/FailDecorator.cs" type="Script" id=1]
 
-[node name="FalseDecorator" type="Node"]
+[node name="FailDecorator" type="Node"]
 script = ExtResource( 1 )

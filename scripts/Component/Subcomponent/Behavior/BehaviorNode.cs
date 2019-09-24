@@ -48,6 +48,15 @@ namespace GameFeel.Component.Subcomponent.Behavior
             InternalEnter();
         }
 
+        public void Terminate()
+        {
+            if (IsRunning)
+            {
+                EmitSignal(nameof(Aborted));
+                Abort();
+            }
+        }
+
         protected abstract void InternalEnter();
         protected abstract void Tick();
         protected abstract void InternalLeave();
@@ -69,6 +78,18 @@ namespace GameFeel.Component.Subcomponent.Behavior
                 EmitSignal(nameof(StatusUpdated), status);
             }
             PostLeave();
+        }
+
+        protected int GetFirstRunningChildIndex()
+        {
+            for (int i = 0; i < _children.Count; i++)
+            {
+                if (_children[i].IsRunning)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         protected virtual void ChildStatusUpdated(Status status, BehaviorNode behaviorNode) { }
@@ -97,11 +118,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         private void OnAborted()
         {
-            if (IsRunning)
-            {
-                EmitSignal(nameof(Aborted));
-                Abort();
-            }
+            Terminate();
         }
     }
 }

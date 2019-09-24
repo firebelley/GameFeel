@@ -4,7 +4,7 @@ namespace GameFeel.Component.Subcomponent.Behavior
     {
         protected override void InternalEnter()
         {
-            if (_children.Count > 0)
+            if (_children.Count == 1)
             {
                 _children[0].Enter();
             }

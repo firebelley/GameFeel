@@ -6,6 +6,9 @@ namespace GameFeel.Component
     [Tool]
     public class ProjectileSpawnComponent : Position2D
     {
+        [Signal]
+        public delegate void AllSpawned();
+
         [Export(PropertyHint.Layers2dPhysics)]
         private int _collisionMask;
         [Export]
@@ -109,6 +112,10 @@ namespace GameFeel.Component
                     _spawnTimer.WaitTime = _delayPerSpawn;
                     _spawnTimer.Start();
                 }
+            }
+            else
+            {
+                EmitSignal(nameof(AllSpawned));
             }
         }
 

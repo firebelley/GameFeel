@@ -6,6 +6,8 @@ namespace GameFeel.Component.Subcomponent.Behavior
     {
         [Export]
         private NodePath _projectileSpawnComponentPath;
+        [Export]
+        private bool _waitAllSpawned = false;
 
         private ProjectileSpawnComponent _projectileSpawnComponent;
 
@@ -13,12 +15,16 @@ namespace GameFeel.Component.Subcomponent.Behavior
         {
             base._Ready();
             _projectileSpawnComponent = GetNodeOrNull<ProjectileSpawnComponent>(_projectileSpawnComponentPath ?? string.Empty);
+            _projectileSpawnComponent.Connect(nameof(ProjectileSpawnComponent.AllSpawned), this, nameof(OnAllSpawned));
         }
 
         protected override void InternalEnter()
         {
             _projectileSpawnComponent.SpawnToPosition(_root.Blackboard.AttackTargetPosition);
-            Leave(Status.SUCCESS);
+            if (!_waitAllSpawned)
+            {
+                Leave(Status.SUCCESS);
+            }
         }
 
         protected override void Tick()
@@ -28,5 +34,12 @@ namespace GameFeel.Component.Subcomponent.Behavior
 
         protected override void InternalLeave() { }
 
+        private void OnAllSpawned()
+        {
+            if (_waitAllSpawned)
+            {
+                Leave(Status.SUCCESS);
+            }
+        }
     }
 }

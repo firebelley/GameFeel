@@ -154,16 +154,16 @@ _animationName = "run"
 editor/display_folded = true
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 16 )]
-Id = "7696d797-1260-51bf-a10d-0941f9916122"
-DisplayName = "Spider Queen"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider Queen"
+Id = "7696d797-1260-51bf-a10d-0941f9916122"
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 17 )]
 _maxSpeed = 65.0
 
 [node name="HealthComponent" parent="." instance=ExtResource( 18 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
-_maxHp = 50.0
+MaxHp = 50.0
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 19 )]
 _shaderMaterial = SubResource( 1 )
@@ -191,8 +191,8 @@ _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_number = 11
 _speed = 150.0
+_number = 11
 _scene = ExtResource( 28 )
 _collisionMask = 2
 _maxDistance = 200.0
@@ -200,9 +200,9 @@ _angleDelta = 32.72
 
 [node name="ProjectileSpawnComponent2" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_number = 7
 _speed = 150.0
 _delayPerSpawn = 0.1
+_number = 7
 _scene = ExtResource( 28 )
 _collisionMask = 2
 _maxDistance = 200.0

@@ -14,6 +14,12 @@ namespace GameFeel
         public static Node FloatersLayer { get; private set; }
 
         [Export]
+        public string Id { get; private set; }
+
+        [Export]
+        public string DisplayName { get; private set; }
+
+        [Export]
         private bool _drawNavigation;
 
         private ResourcePreloader _resourcePreloader;
@@ -58,18 +64,6 @@ namespace GameFeel
                 var inVec = Vector2.Zero;
                 var outVec = Vector2.Zero;
 
-                // var dir = point - points[i - 1];
-                // if (Mathf.Abs(dir.x) > 0.1f)
-                // {
-                //     inVec.y = Mathf.Sign(dir.x);
-                //     outVec.y = -inVec.y;
-                // }
-
-                // if (Mathf.Abs(dir.y) > 0.1f)
-                // {
-                //     inVec.x = -Mathf.Sign(dir.y);
-                //     outVec.x = -inVec.x;
-                // }
                 curve.AddPoint(point, inVec * handleMagnitude, outVec * handleMagnitude);
 
             }

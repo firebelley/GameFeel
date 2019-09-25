@@ -154,13 +154,13 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
-Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
-DisplayName = "Spider"
 _deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider"
+Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
-_maxHp = 3.0
+MaxHp = 3.0
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 12 )]
 _acceleration = 500.0
@@ -171,7 +171,6 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 15 )]
-editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Ruby" parent="LootTableComponent" instance=ExtResource( 16 )]

@@ -8,9 +8,6 @@
 [ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://scenes/Camera.tscn" type="PackedScene" id=7]
 
-
-
-
 [node name="GameZone" type="Node"]
 script = ExtResource( 1 )
 
@@ -51,5 +48,7 @@ __meta__ = {
 [node name="Floaters" type="Node" parent="."]
 
 [node name="SpawnZones" type="Node" parent="."]
+
+[node name="ZoneTransitionAreas" type="Node" parent="."]
 
 [node name="Camera2D" parent="." instance=ExtResource( 7 )]

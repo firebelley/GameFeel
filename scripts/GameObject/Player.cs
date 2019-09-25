@@ -40,7 +40,7 @@ namespace GameFeel.GameObject
         private Position2D _weaponPosition2d;
         private Position2D _cameraTargetPosition2d;
 
-        private DamageReceiverComponent _damageReceiverComponent;
+        private HealthComponent _healthComponent;
 
         private float _weaponRadius;
         private float _weaponHeight;
@@ -48,24 +48,35 @@ namespace GameFeel.GameObject
 
         public float Mana { get; private set; } = 15f;
         public float MaxMana { get; private set; } = 15f;
-        public float Health { get; private set; } = 10f;
-        public float MaxHealth { get; private set; } = 10f;
+        public float Health
+        {
+            get
+            {
+                return _healthComponent?.CurrentHp ?? -1f;
+            }
+        }
+        public float MaxHealth
+        {
+            get
+            {
+                return _healthComponent?.MaxHp ?? -1f;
+            }
+        }
 
         public override void _Ready()
         {
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _weaponPosition2d = GetNode<Position2D>("WeaponPosition2D");
             _cameraTargetPosition2d = GetNode<Position2D>("CameraTargetPosition2D");
-
-            _damageReceiverComponent = this.GetFirstNodeOfType<DamageReceiverComponent>();
+            _healthComponent = GetNode<HealthComponent>("HealthComponent");
 
             _weaponRadius = _weaponPosition2d.Position.x;
             _weaponHeight = _weaponPosition2d.Position.y;
 
             AddToGroup(GROUP);
 
-            _damageReceiverComponent.Connect(nameof(DamageReceiverComponent.DamageReceived), this, nameof(OnDamageReceived));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemEquipped), this, nameof(OnItemEquipped));
+            _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
         }
 
         public override void _Process(float delta)
@@ -169,11 +180,6 @@ namespace GameFeel.GameObject
             return moveVec.Normalized();
         }
 
-        private void OnDamageReceived(float damage)
-        {
-            Health -= damage;
-        }
-
         private void OnItemEquipped(Equipment equipment)
         {
             // TODO: account for equipment slots here
@@ -183,6 +189,12 @@ namespace GameFeel.GameObject
                 child.QueueFree();
             }
             _weaponPosition2d.AddChild(equipment);
+        }
+
+        private void OnHealthDepleted()
+        {
+            GameEventDispatcher.DispatchPlayerDiedEvent();
+            QueueFree();
         }
     }
 }

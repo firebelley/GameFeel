@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://scenes/Component/BehaviorTreeComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/Sequence.tscn" type="PackedScene" id=2]
@@ -27,13 +27,17 @@
 [ext_resource path="res://scenes/Component/HealthBarComponent.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/Component/IntermittentSoundComponent.tscn" type="PackedScene" id=26]
 [ext_resource path="res://assets/sound/spider-02.wav" type="AudioStream" id=27]
-[ext_resource path="res://assets/art/spider1.png" type="Texture" id=28]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=29]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=30]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=31]
-[ext_resource path="res://assets/art/spider-attack1.png" type="Texture" id=32]
-[ext_resource path="res://assets/art/spider-attack2.png" type="Texture" id=33]
-[ext_resource path="res://assets/art/spider-attack3.png" type="Texture" id=34]
+[ext_resource path="res://assets/art/spider8.png" type="Texture" id=28]
+[ext_resource path="res://assets/art/spider9.png" type="Texture" id=29]
+[ext_resource path="res://assets/art/spider10.png" type="Texture" id=30]
+[ext_resource path="res://assets/art/spider11.png" type="Texture" id=31]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=32]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=33]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=34]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=35]
+[ext_resource path="res://assets/art/spider5.png" type="Texture" id=36]
+[ext_resource path="res://assets/art/spider6.png" type="Texture" id=37]
+[ext_resource path="res://assets/art/spider7.png" type="Texture" id=38]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -94,17 +98,17 @@ shader_param/_hitShadePercent = 0.0
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 28 ) ],
+"frames": [ ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ) ],
 "loop": true,
 "name": "idle",
-"speed": 5.0
+"speed": 10.0
 }, {
-"frames": [ ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ) ],
+"frames": [ ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ) ],
 "loop": true,
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ) ],
+"frames": [ ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ) ],
 "loop": false,
 "name": "attack",
 "speed": 10.0
@@ -151,8 +155,8 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 DisplayName = "Spider"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
@@ -190,8 +194,8 @@ position = Vector2( 0, -6 )
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 21 )]
 position = Vector2( 0, -6 )
-_collisionMask = 2
 _scene = ExtResource( 22 )
+_collisionMask = 2
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 23 )]
 position = Vector2( 0, -1 )

@@ -20,9 +20,6 @@ namespace GameFeel.Resource
         {
             _instance = this;
             this.SetNodesByDeclaredNodePaths();
-
-            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerDied), this, nameof(OnPlayerDied));
-
             Transition(MetadataLoader.ZoneIdToMetadata["267df08a-63fb-54da-9e30-ac39612ac708"]);
         }
 
@@ -46,6 +43,11 @@ namespace GameFeel.Resource
         {
             _instance._zoneTransitionAreaIndex = zoneTransitionAreaIndex;
             Transition(toZoneData);
+        }
+
+        public static void TransitionToGraveyard()
+        {
+            Transition(MetadataLoader.ZoneIdToMetadata[MetadataLoader.GRAVEYARD_ZONE_ID]);
         }
 
         private void SwapZone(string zonePath)
@@ -87,11 +89,6 @@ namespace GameFeel.Resource
             var playerScene = GD.Load(playerData.ResourcePath) as PackedScene;
             var player = playerScene.Instance() as Player;
             return player;
-        }
-
-        private void OnPlayerDied()
-        {
-            TransitionToArea(MetadataLoader.ZoneIdToMetadata[MetadataLoader.GRAVEYARD_ZONE_ID], -1);
         }
     }
 }

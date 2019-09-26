@@ -122,6 +122,7 @@
     <Compile Include="scripts\GameObject\SpawnZone.cs" />
     <Compile Include="scripts\Resource\Quest.cs" />
     <Compile Include="scripts\Resource\ZoneTransitioner.cs" />
+    <Compile Include="scripts\UI\DeadUI.cs" />
     <Compile Include="scripts\UI\DialogueLineContainer.cs" />
     <Compile Include="scripts\UI\DialogueOptionButton.cs" />
     <Compile Include="scripts\UI\DialogueOptionsContainer.cs" />

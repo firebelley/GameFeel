@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/GameObject/Environment/Gravestone1.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/GameObject/Environment/ZoneTransitionArea.tscn" type="PackedScene" id=3]
 
-[node name="GraveyardZone" instance=ExtResource( 1 )]
+[node name="GraveyardZone" index="0" instance=ExtResource( 1 )]
 Id = "bddf6731-53e9-5103-b909-70b3026b2e13"
 DisplayName = "Graveyard"
 

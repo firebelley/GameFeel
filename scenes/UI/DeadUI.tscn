@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/DeadUI.cs" type="Script" id=2]
+[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=3]
+[ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=5]
+
+[node name="DeadUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+_panelContainerPath = NodePath("CenterContainer/PanelContainer")
+_animationPlayerPath = NodePath("CenterContainer/PanelContainer/AnimationPlayer")
+_respawnButtonPath = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Button")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+margin_left = 228.0
+margin_top = 146.0
+margin_right = 412.0
+margin_bottom = 214.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+editor/display_folded = true
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 176.0
+margin_bottom = 60.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+editor/display_folded = true
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 160.0
+margin_bottom = 44.0
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 152.0
+margin_bottom = 8.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
+text = "You are dead!"
+align = 1
+
+[node name="Button" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 12.0
+margin_right = 152.0
+margin_bottom = 36.0
+text = "To the Graveyard!"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CenterContainer/PanelContainer"]
+anims/ControlBounceIn = ExtResource( 5 )

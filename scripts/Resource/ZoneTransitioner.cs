@@ -1,3 +1,5 @@
+using System.Linq;
+using GameFeel.GameObject;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
@@ -20,6 +22,8 @@ namespace GameFeel.Resource
             this.SetNodesByDeclaredNodePaths();
 
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerDied), this, nameof(OnPlayerDied));
+
+            Transition(MetadataLoader.ZoneIdToMetadata["267df08a-63fb-54da-9e30-ac39612ac708"]);
         }
 
         public static void Transition(MetadataLoader.Metadata toZoneData)
@@ -47,13 +51,42 @@ namespace GameFeel.Resource
         private void SwapZone(string zonePath)
         {
             var zoneScene = GD.Load(zonePath) as PackedScene;
-            var zone = zoneScene.Instance();
+            var zone = zoneScene.Instance() as GameZone;
+
+            if (zone == null)
+            {
+                Logger.Error("Zone with path " + zonePath + " was not a " + nameof(GameZone));
+                return;
+            }
             _viewport.AddChild(zone);
+            CreateAndPlacePlayer();
+        }
 
-            // TODO: if zone transition area index > -1 then place the player at the indicated area index
-            // if area index not found, then do default placement behavior
+        private void CreateAndPlacePlayer()
+        {
+            var transitionArea = GameZone.Instance.ZoneTransitionAreas.Where(x => x.Index == _zoneTransitionAreaIndex).FirstOrDefault();
+            Vector2 position;
+            if (transitionArea == null)
+            {
+                position = GameZone.Instance.DefaultPlayerSpawnPosition;
+            }
+            else
+            {
+                position = transitionArea.SpawnPosition;
+            }
 
+            var player = CreatePlayer();
+            GameZone.EntitiesLayer.AddChild(player);
+            player.GlobalPosition = position;
             _zoneTransitionAreaIndex = -1;
+        }
+
+        private Player CreatePlayer()
+        {
+            var playerData = MetadataLoader.EntityIdToMetadata[MetadataLoader.PLAYER_ID];
+            var playerScene = GD.Load(playerData.ResourcePath) as PackedScene;
+            var player = playerScene.Instance() as Player;
+            return player;
         }
 
         private void OnPlayerDied()

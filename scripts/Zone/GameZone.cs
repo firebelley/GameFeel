@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameFeel.GameObject.Effect;
+using GameFeel.GameObject.Environment;
 using Godot;
 using GodotTools.Extension;
 
@@ -21,6 +22,22 @@ namespace GameFeel
 
         [Export]
         private bool _drawNavigation;
+
+        public Vector2 DefaultPlayerSpawnPosition
+        {
+            get
+            {
+                return GetNode<Position2D>("DefaultPlayerSpawnPosition").GlobalPosition;
+            }
+        }
+
+        public List<ZoneTransitionArea> ZoneTransitionAreas
+        {
+            get
+            {
+                return GetNode("ZoneTransitionAreas").GetChildren<ZoneTransitionArea>();
+            }
+        }
 
         private ResourcePreloader _resourcePreloader;
         private Navigation2D _navigation;

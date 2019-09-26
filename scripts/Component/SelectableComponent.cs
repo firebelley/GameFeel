@@ -1,4 +1,5 @@
 using GameFeel.GameObject;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
 
@@ -35,7 +36,7 @@ namespace GameFeel.Component
                 _shadedNode.Material = Material.Duplicate() as Material;
             }
 
-            GetTree().GetFirstNodeInGroup<Player>(Player.GROUP)?.Connect(nameof(Player.Interact), this, nameof(OnPlayerInteract));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInteract), this, nameof(OnPlayerInteract));
 
             Connect("mouse_entered", this, nameof(OnMouseEntered));
             Connect("mouse_exited", this, nameof(OnMouseExited));

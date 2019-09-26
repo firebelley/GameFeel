@@ -15,8 +15,6 @@ namespace GameFeel.GameObject
         public delegate void AttackEnd(Player p);
         [Signal]
         public delegate void Attacking(Player p);
-        [Signal]
-        public delegate void Interact();
 
         public const string GROUP = "player";
 
@@ -77,6 +75,9 @@ namespace GameFeel.GameObject
 
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemEquipped), this, nameof(OnItemEquipped));
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
+            _healthComponent.Connect(nameof(HealthComponent.HealthDecremented), this, nameof(OnHealthDecremented));
+
+            GameEventDispatcher.DispatchPlayerCreatedEvent(this);
         }
 
         public override void _Process(float delta)
@@ -90,7 +91,7 @@ namespace GameFeel.GameObject
                 // TODO: uncomment for testing
                 PlayerInventory.AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
                 PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
-                EmitSignal(nameof(Interact));
+                GameEventDispatcher.DispatchPlayerInteractEvent();
             }
 
             if (_attacking)
@@ -122,7 +123,7 @@ namespace GameFeel.GameObject
 
         public void RemoveMana(float amount)
         {
-            Mana -= amount;
+            AddMana(-amount);
         }
 
         public Vector2 GetCameraTargetPosition()
@@ -153,10 +154,20 @@ namespace GameFeel.GameObject
             _animatedSprite.Scale = spriteScale;
         }
 
+        private void AddMana(float amount)
+        {
+            var prevMana = Mana;
+            Mana = Mathf.Clamp(Mana + amount, 0f, MaxMana);
+            if (!Mathf.IsEqualApprox(prevMana, Mana))
+            {
+                GameEventDispatcher.DispatchPlayerManaChangedEvent(this);
+            }
+        }
+
         private void UpdateRegen()
         {
             var delta = GetProcessDeltaTime();
-            Mana = Mathf.Clamp(Mana + MANA_REGEN_RATE * delta, 0f, MaxMana);
+            AddMana(MANA_REGEN_RATE * delta);
         }
 
         private void UpdateWeaponOrientation()
@@ -195,6 +206,11 @@ namespace GameFeel.GameObject
         {
             GameEventDispatcher.DispatchPlayerDiedEvent();
             QueueFree();
+        }
+
+        private void OnHealthDecremented()
+        {
+            GameEventDispatcher.DispatchPlayerHealthChangedEvent(this);
         }
     }
 }

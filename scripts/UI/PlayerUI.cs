@@ -1,4 +1,5 @@
 using GameFeel.GameObject;
+using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
 
@@ -34,34 +35,38 @@ namespace GameFeel.UI
         public override void _Ready()
         {
             this.SetNodesByDeclaredNodePaths();
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerHealthChanged), this, nameof(OnPlayerHealthChanged));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerManaChanged), this, nameof(OnPlayerManaChanged));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerCreated), this, nameof(OnPlayerCreated));
         }
 
-        public override void _Process(float delta)
+        private void OnPlayerHealthChanged(Player player)
         {
-            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            if (player == null)
-            {
-                return;
-            }
-            var prevManaValue = _manaBar.Value;
-            _manaBar.Value = player.Mana / (player.MaxMana > 0f ? player.MaxMana : 1f);
-            _manaLabel.Text = string.Format(RESOURCE_LABEL_FORMAT, Mathf.Floor(player.Mana), player.MaxMana);
+            UpdateProgressBar(_healthBar, _healthBarAnimationPlayer, _healthLabel, player.Health, player.MaxHealth);
+        }
 
-            if (prevManaValue > _manaBar.Value + RESOURCE_ANIM_THRESHHOLD)
-            {
-                _manaBarAnimationPlayer.Stop();
-                _manaBarAnimationPlayer.Play(ANIM_DEFAULT);
-            }
+        private void OnPlayerManaChanged(Player player)
+        {
+            UpdateProgressBar(_manaBar, _manaBarAnimationPlayer, _manaLabel, player.Mana, player.MaxMana);
+        }
 
-            var prevHealthValue = _healthBar.Value;
-            _healthBar.Value = player.Health / (player.MaxHealth > 0f ? player.MaxHealth : 1f);
-            _healthLabel.Text = string.Format(RESOURCE_LABEL_FORMAT, Mathf.Floor(player.Health), player.MaxHealth);
+        private void UpdateProgressBar(ProgressBar bar, AnimationPlayer animationPlayer, Label label, float currentResource, float maxResource)
+        {
+            var prevHealthValue = bar.Value;
+            bar.Value = currentResource / (maxResource > 0f ? maxResource : 1f);
+            label.Text = string.Format(RESOURCE_LABEL_FORMAT, Mathf.Floor(currentResource), maxResource);
 
-            if (prevHealthValue > _healthBar.Value + RESOURCE_ANIM_THRESHHOLD)
+            if (prevHealthValue > bar.Value + RESOURCE_ANIM_THRESHHOLD)
             {
-                _healthBarAnimationPlayer.Stop();
-                _healthBarAnimationPlayer.Play(ANIM_DEFAULT);
+                animationPlayer.Stop();
+                animationPlayer.Play(ANIM_DEFAULT);
             }
+        }
+
+        private void OnPlayerCreated(Player player)
+        {
+            OnPlayerHealthChanged(player);
+            OnPlayerManaChanged(player);
         }
     }
 }

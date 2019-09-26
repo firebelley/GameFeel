@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameFeel.Component;
+using GameFeel.GameObject;
 using Godot;
 
 namespace GameFeel.Singleton
@@ -18,6 +19,14 @@ namespace GameFeel.Singleton
         public delegate void EventEntityEngaged(string eventGuid, string entityGuid);
         [Signal]
         public delegate void EventPlayerDied();
+        [Signal]
+        public delegate void EventPlayerInteract();
+        [Signal]
+        public delegate void EventPlayerHealthChanged(Player player);
+        [Signal]
+        public delegate void EventPlayerManaChanged(Player player);
+        [Signal]
+        public delegate void EventPlayerCreated(Player player);
 
         public const string PLAYER_INVENTORY_ITEM_UPDATED = "aaa35184-7b8d-5544-a642-722a842e6b27";
         public const string ENTITY_KILLED = "2e51c8d6-47ab-55aa-a274-66ff242365d7";
@@ -25,6 +34,10 @@ namespace GameFeel.Singleton
         public const string ITEM_TURNED_IN = "b9c562bc-d71c-5870-8c52-ea7e4ba5d81f";
         public const string ENTITY_ENGAGED = "ccef037b-eca4-5a83-b68e-5e0484084187";
         public const string PLAYER_DIED = "6d556c41-90d1-513f-a981-34f0d2cf404f";
+        public const string PLAYER_INTERACT = "2a9af056-564c-53af-92b1-65395d9a08bd";
+        public const string PLAYER_HEALTH_CHANGED = "abf010d8-2216-56fc-930b-58cabc83a533";
+        public const string PLAYER_MANA_CHANGED = "7e5f57f6-58d8-5370-8930-062e7677a12a";
+        public const string PLAYER_CREATED = "8d52e404-c184-5bdf-8dde-7a90a03a3cba";
 
         public static Dictionary<string, GameEvent> GameEventMapping { get; private set; } = new Dictionary<string, GameEvent>();
         public static GameEventDispatcher Instance { get; private set; }
@@ -50,6 +63,10 @@ namespace GameFeel.Singleton
             GameEventMapping.Add(DIALOGUE_STARTED, new GameEvent(DIALOGUE_STARTED, nameof(DIALOGUE_STARTED)));
             GameEventMapping.Add(ENTITY_ENGAGED, new GameEvent(ENTITY_ENGAGED, nameof(ENTITY_ENGAGED)));
             GameEventMapping.Add(PLAYER_DIED, new GameEvent(PLAYER_DIED, nameof(PLAYER_DIED)));
+            GameEventMapping.Add(PLAYER_INTERACT, new GameEvent(PLAYER_INTERACT, nameof(PLAYER_INTERACT)));
+            GameEventMapping.Add(PLAYER_HEALTH_CHANGED, new GameEvent(PLAYER_HEALTH_CHANGED, nameof(PLAYER_HEALTH_CHANGED)));
+            GameEventMapping.Add(PLAYER_MANA_CHANGED, new GameEvent(PLAYER_MANA_CHANGED, nameof(PLAYER_MANA_CHANGED)));
+            GameEventMapping.Add(PLAYER_CREATED, new GameEvent(PLAYER_CREATED, nameof(PLAYER_CREATED)));
         }
 
         public static void DispatchEntityKilledEvent(string entityGuid)
@@ -80,6 +97,26 @@ namespace GameFeel.Singleton
         public static void DispatchPlayerDiedEvent()
         {
             Instance.EmitSignal(nameof(EventPlayerDied));
+        }
+
+        public static void DispatchPlayerInteractEvent()
+        {
+            Instance.EmitSignal(nameof(EventPlayerInteract));
+        }
+
+        public static void DispatchPlayerHealthChangedEvent(Player player)
+        {
+            Instance.EmitSignal(nameof(EventPlayerHealthChanged), player);
+        }
+
+        public static void DispatchPlayerManaChangedEvent(Player player)
+        {
+            Instance.EmitSignal(nameof(EventPlayerManaChanged), player);
+        }
+
+        public static void DispatchPlayerCreatedEvent(Player player)
+        {
+            Instance.EmitSignal(nameof(EventPlayerCreated), player);
         }
     }
 }

@@ -14,7 +14,7 @@
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/Attack.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/SkipSequence.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/Component/Subcomponent/Behavior/MoveToPlayer.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/Component/Subcomponent/Behavior/FailDecorator.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/Component/Subcomponent/Behavior/DefaultWanderSequence.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/Component/PathfindComponent.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/Component/HealthComponent.tscn" type="PackedScene" id=18]
@@ -150,12 +150,11 @@ _animationName = "run"
 
 [node name="PlayAnimation" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector/AggressiveSequence" instance=ExtResource( 11 )]
 
-[node name="FailDecorator" parent="BehaviorTreeComponent/DynamicSelector/AggressiveSequence/DynamicSelector" instance=ExtResource( 15 )]
-editor/display_folded = true
+[node name="DefaultWanderSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 15 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 16 )]
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 DisplayName = "Spider Queen"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 Id = "7696d797-1260-51bf-a10d-0941f9916122"
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 17 )]
@@ -175,8 +174,8 @@ editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 22 )]
-Weight = 1
 Scene = ExtResource( 23 )
+Weight = 1
 
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 24 )]
 position = Vector2( 0, -24 )
@@ -191,22 +190,22 @@ _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_speed = 150.0
-_number = 11
+_angleDelta = 32.72
 _scene = ExtResource( 28 )
 _collisionMask = 2
 _maxDistance = 200.0
-_angleDelta = 32.72
+_number = 11
+_speed = 150.0
 
 [node name="ProjectileSpawnComponent2" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_speed = 150.0
-_delayPerSpawn = 0.1
-_number = 7
+_angleDelta = 20.0
 _scene = ExtResource( 28 )
 _collisionMask = 2
 _maxDistance = 200.0
-_angleDelta = 20.0
+_number = 7
+_delayPerSpawn = 0.1
+_speed = 150.0
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 29 )]
 _healthComponentPath = NodePath("../HealthComponent")
@@ -226,5 +225,5 @@ offset = Vector2( -24, -48 )
 
 [node name="SpawnZone" parent="." instance=ExtResource( 42 )]
 _radius = 25.0
-_maxSpawned = 3
 _spawnedScene = ExtResource( 43 )
+_maxSpawned = 3

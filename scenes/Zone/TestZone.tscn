@@ -47,13 +47,10 @@ position = Vector2( 1024, 848 )
 [node name="DefaultPlayerSpawnPosition" parent="." index="6"]
 position = Vector2( 880, 1088 )
 
-[node name="SpawnZones" parent="." index="8"]
-editor/display_folded = true
-
 [node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 6 )]
 position = Vector2( 912, 800 )
 _radius = 100.0
-_maxSpawned = 10
+_maxSpawned = 50
 _spawnedScene = ExtResource( 7 )
 
 [node name="SpawnZone2" parent="SpawnZones" index="1" instance=ExtResource( 6 )]

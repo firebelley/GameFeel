@@ -7,9 +7,9 @@
 [ext_resource path="res://resources/styles/HealthBarFg.tres" type="StyleBox" id=5]
 [ext_resource path="res://resources/fonts/UIFont.tres" type="DynamicFont" id=6]
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=2]
 texture = ExtResource( 2 )
 region_rect = Rect2( 98, 34, 28, 28 )
 margin_left = 8.0
@@ -39,7 +39,7 @@ margin_bottom = 8.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[sub_resource type="StyleBoxTexture" id=1]
+[sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 3 )
 region_rect = Rect2( 0, 16, 16, 16 )
 margin_left = 3.0
@@ -49,22 +49,22 @@ margin_bottom = 3.0
 
 [resource]
 default_font = ExtResource( 6 )
-Button/colors/font_color = Color( 0.917647, 0.760784, 0.121569, 1 )
+Button/colors/font_color = Color( 1, 0.796078, 0.207843, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
 Button/colors/font_color_pressed = Color( 0.121569, 0.121569, 0.121569, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = ExtResource( 1 )
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 2 )
-Button/styles/hover = SubResource( 5 )
+Button/styles/focus = SubResource( 1 )
+Button/styles/hover = SubResource( 2 )
 Button/styles/normal = SubResource( 3 )
 Button/styles/pressed = SubResource( 4 )
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
 MarginContainer/constants/margin_top = 8
-PanelContainer/styles/panel = SubResource( 1 )
+PanelContainer/styles/panel = SubResource( 5 )
 ProgressBar/colors/font_color = Color( 0.941176, 0.941176, 0.941176, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
 ProgressBar/fonts/font = null

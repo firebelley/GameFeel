@@ -9,7 +9,7 @@ void fragment() {
 	COLOR = texture(TEXTURE, UV);
 	float alpha = COLOR.a;
 	
-	if (alpha == 0.0 && _enabled) {
+	if (alpha < 0.75 && _enabled) {
 		float adjacentAlpha = 0.0;
 		adjacentAlpha += texture(TEXTURE, UV + vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;
 		adjacentAlpha += texture(TEXTURE, UV - vec2(TEXTURE_PIXEL_SIZE.x, 0)).a;

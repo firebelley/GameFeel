@@ -34,7 +34,7 @@ namespace GameFeel.UI
             _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
         }
 
-        private void OnPlayerDied()
+        private void OnPlayerDied(string eventGuid)
         {
             Show();
             _animationPlayer.Play(ANIM_BOUNCE_IN);

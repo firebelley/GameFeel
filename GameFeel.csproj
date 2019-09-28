@@ -115,6 +115,7 @@
     <Compile Include="scripts\DesignTool\QuestStartNode.cs" />
     <Compile Include="scripts\Effect\DamageNumber.cs" />
     <Compile Include="scripts\Environment\EnvironmentObject.cs" />
+    <Compile Include="scripts\Environment\SignArrow.cs" />
     <Compile Include="scripts\Environment\ZoneTransitionArea.cs" />
     <Compile Include="scripts\GameObject\Loot\Equipment.cs" />
     <Compile Include="scripts\GameObject\Loot\LootItem.cs" />

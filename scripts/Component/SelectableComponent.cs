@@ -127,7 +127,7 @@ namespace GameFeel.Component
             }
         }
 
-        private void OnPlayerInteract()
+        private void OnPlayerInteract(string eventGuid)
         {
             if (_selected == this && _valid)
             {

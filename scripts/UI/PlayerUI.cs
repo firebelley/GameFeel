@@ -40,14 +40,14 @@ namespace GameFeel.UI
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerCreated), this, nameof(OnPlayerCreated));
         }
 
-        private void OnPlayerHealthChanged(Player player)
+        private void OnPlayerHealthChanged(string eventGuid, Player player)
         {
-            UpdateProgressBar(_healthBar, _healthBarAnimationPlayer, _healthLabel, player.Health, player.MaxHealth);
+            UpdateHealth(player);
         }
 
-        private void OnPlayerManaChanged(Player player)
+        private void OnPlayerManaChanged(string eventGuid, Player player)
         {
-            UpdateProgressBar(_manaBar, _manaBarAnimationPlayer, _manaLabel, player.Mana, player.MaxMana);
+            UpdateMana(player);
         }
 
         private void UpdateProgressBar(ProgressBar bar, AnimationPlayer animationPlayer, Label label, float currentResource, float maxResource)
@@ -63,10 +63,20 @@ namespace GameFeel.UI
             }
         }
 
-        private void OnPlayerCreated(Player player)
+        private void UpdateHealth(Player player)
         {
-            OnPlayerHealthChanged(player);
-            OnPlayerManaChanged(player);
+            UpdateProgressBar(_healthBar, _healthBarAnimationPlayer, _healthLabel, player.Health, player.MaxHealth);
+        }
+
+        private void UpdateMana(Player player)
+        {
+            UpdateProgressBar(_manaBar, _manaBarAnimationPlayer, _manaLabel, player.Mana, player.MaxMana);
+        }
+
+        private void OnPlayerCreated(string eventGuid, Player player)
+        {
+            UpdateHealth(player);
+            UpdateMana(player);
         }
     }
 }

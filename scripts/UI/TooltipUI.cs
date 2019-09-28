@@ -28,6 +28,7 @@ namespace GameFeel.UI
             this.SetNodesByDeclaredNodePaths();
             HideTooltip();
             _panelContainer.Connect("resized", this, nameof(OnPanelResized));
+            GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventZoneChanged), this, nameof(OnZoneChanged));
         }
 
         public override void _Process(float delta)
@@ -73,6 +74,10 @@ namespace GameFeel.UI
             {
                 ShowEntity(MetadataLoader.EntityIdToMetadata[itemId]);
             }
+            else if (MetadataLoader.ZoneIdToMetadata.ContainsKey(itemId))
+            {
+                ShowZone(MetadataLoader.ZoneIdToMetadata[itemId]);
+            }
         }
 
         private static void ShowEquipment(MetadataLoader.EquipmentMetadata metadata)
@@ -93,10 +98,14 @@ namespace GameFeel.UI
             ShowTooltip();
         }
 
+        private static void ShowZone(MetadataLoader.Metadata metadata)
+        {
+            _nameLabel.Text = "To " + metadata.DisplayName;
+            ShowTooltip();
+        }
+
         public static void HideTooltip()
         {
-            // _animationPlayer.SetSpeedScale(2f);
-            // _animationPlayer.PlayBackwards(ANIM_BOUNCE_IN);
             _panelContainer.Hide();
             _instance.SetProcess(false);
         }
@@ -116,6 +125,11 @@ namespace GameFeel.UI
         private void OnPanelResized()
         {
             _panelContainer.RectPivotOffset = _panelContainer.RectSize / 2f;
+        }
+
+        private void OnZoneChanged(string eventGuid, string zoneId)
+        {
+            HideTooltip();
         }
     }
 }

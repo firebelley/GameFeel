@@ -62,6 +62,7 @@ namespace GameFeel.Resource
             }
             _viewport.AddChild(zone);
             CreateAndPlacePlayer();
+            GameEventDispatcher.DispatchZoneChangedEvent(zone.Id);
         }
 
         private void CreateAndPlacePlayer()

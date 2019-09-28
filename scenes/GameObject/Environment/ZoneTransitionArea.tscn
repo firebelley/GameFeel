@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/Environment/ZoneTransitionArea.cs" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 32.0
+radius = 8.0
 
 [node name="ZoneTransitionArea" type="Area2D"]
 collision_layer = 0

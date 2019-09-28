@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/Environment/EnvironmentObject.cs" type="Script" id=1]
 
@@ -23,6 +23,10 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.490196 ) ]
 }
 
+[sub_resource type="RectangleShape2D" id=3]
+resource_local_to_scene = true
+extents = Vector2( 4, 4 )
+
 [node name="EnvironmentObject" type="StaticBody2D"]
 collision_mask = 0
 script = ExtResource( 1 )
@@ -38,7 +42,8 @@ collision_mask = 48
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Area2D"]
 shape = SubResource( 1 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/default = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )

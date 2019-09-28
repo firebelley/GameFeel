@@ -8,6 +8,8 @@ namespace GameFeel
 {
     public class GameZone : Node
     {
+        private const int TILE_SIZE = 16;
+
         public static GameZone Instance { get; private set; }
 
         public static YSort EntitiesLayer { get; private set; }
@@ -124,32 +126,34 @@ namespace GameFeel
             {
                 if (node is StaticBody2D staticBody)
                 {
-                    var collisionShape = staticBody.GetFirstNodeOfType<CollisionPolygon2D>();
+                    var collisionShapeNode = staticBody.GetFirstNodeOfType<CollisionShape2D>();
+                    var collisionShape = collisionShapeNode.Shape as RectangleShape2D;
                     if (collisionShape == null)
                     {
                         continue;
                     }
 
-                    var centroid = Vector2.Zero;
-                    var polygonPointsSum = Vector2.Zero;
-                    foreach (var point in collisionShape.Polygon)
+                    List<Vector2> subdividedPoints = new List<Vector2>();
+                    var shapeSize = collisionShape.Extents * 2f;
+                    var xOffset = -collisionShape.Extents.x;
+                    while (xOffset < collisionShape.Extents.x)
                     {
-                        polygonPointsSum += point;
-                    }
-                    centroid = polygonPointsSum / collisionShape.Polygon.Length;
-
-                    var scaledPolygonPoints = new List<Vector2>();
-                    foreach (var point in collisionShape.Polygon)
-                    {
-                        // normalize the polygon
-                        var newPoint = point - centroid;
-                        newPoint *= .9f;
-                        scaledPolygonPoints.Add(newPoint + centroid);
+                        var yOffset = -collisionShape.Extents.y;
+                        while (yOffset < collisionShape.Extents.y)
+                        {
+                            subdividedPoints.Add(new Vector2(xOffset, yOffset));
+                            yOffset += TILE_SIZE;
+                        }
+                        xOffset += TILE_SIZE;
                     }
 
-                    foreach (var point in scaledPolygonPoints)
+                    // add the right corners
+                    subdividedPoints.Add(new Vector2(collisionShape.Extents.x, -collisionShape.Extents.y));
+                    subdividedPoints.Add(new Vector2(collisionShape.Extents.x, collisionShape.Extents.y));
+
+                    foreach (var point in subdividedPoints)
                     {
-                        var blockedCellV = worldTileMap.WorldToMap(staticBody.GlobalPosition + point);
+                        var blockedCellV = worldTileMap.WorldToMap(collisionShapeNode.GlobalPosition + point * .99f);
                         blockedSet.Add(blockedCellV);
                     }
 

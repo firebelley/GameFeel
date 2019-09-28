@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/GameObject/Environment/EnvironmentObject.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/art/tileset.png" type="Texture" id=2]
@@ -6,6 +6,10 @@
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
 extents = Vector2( 16, 16 )
+
+[sub_resource type="RectangleShape2D" id=2]
+resource_local_to_scene = true
+extents = Vector2( 8, 4 )
 
 [node name="Bush" instance=ExtResource( 1 )]
 
@@ -16,5 +20,6 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" parent="Sprite/Area2D" index="0"]
 shape = SubResource( 1 )
 
-[node name="CollisionPolygon2D" parent="." index="1"]
-polygon = PoolVector2Array( -8, 0, -8, -8, 0, -8, 8, -8, 8, 0, 0, 0 )
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2( 0, -4 )
+shape = SubResource( 2 )

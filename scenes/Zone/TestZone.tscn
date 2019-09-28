@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=11]
 
-[node name="TestZone" index="0" instance=ExtResource( 1 )]
+[node name="TestZone" instance=ExtResource( 1 )]
 Id = "267df08a-63fb-54da-9e30-ac39612ac708"
 DisplayName = "Test Zone"
 _drawNavigation = true
@@ -36,10 +36,10 @@ position = Vector2( 864, 1040 )
 position = Vector2( 920, 992 )
 
 [node name="EnvironmentObject2" parent="Entities" index="2" instance=ExtResource( 4 )]
-position = Vector2( 992, 912 )
+position = Vector2( 984, 912 )
 
 [node name="Bush" parent="Entities" index="3" instance=ExtResource( 5 )]
-position = Vector2( 944, 976 )
+position = Vector2( 968, 976 )
 
 [node name="Bush2" parent="Entities" index="4" instance=ExtResource( 5 )]
 position = Vector2( 992, 944 )

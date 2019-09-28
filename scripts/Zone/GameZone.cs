@@ -127,6 +127,11 @@ namespace GameFeel
                 if (node is StaticBody2D staticBody)
                 {
                     var collisionShapeNode = staticBody.GetFirstNodeOfType<CollisionShape2D>();
+                    if (collisionShapeNode == null)
+                    {
+                        continue;
+                    }
+
                     var collisionShape = collisionShapeNode.Shape as RectangleShape2D;
                     if (collisionShape == null)
                     {

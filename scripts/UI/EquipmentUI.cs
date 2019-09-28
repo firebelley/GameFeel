@@ -103,7 +103,7 @@ namespace GameFeel.UI
                 if (item != null && PlayerInventory.ItemCanBeSlotted(item.Id, slotIdx))
                 {
                     var swapItem = InventoryItem.FromItemId(item.Id);
-                    PlayerInventory.EquipInventoryItem(item.Id, slotIdx);
+                    PlayerInventory.EquipInventoryItem(Cursor.DragIndex, slotIdx);
                     Cursor.ClearDragSelection();
                 }
             }

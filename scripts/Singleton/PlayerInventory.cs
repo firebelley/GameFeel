@@ -18,6 +18,8 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void ItemEquipped(Equipment equipment);
         [Signal]
+        public delegate void EquipmentCleared(int slot);
+        [Signal]
         public delegate void EquipmentUpdated(int slotIdx);
 
         private const int MAX_SIZE = 25;
@@ -194,7 +196,7 @@ namespace GameFeel.Singleton
             return false;
         }
 
-        public static void EquipInventoryItem(string itemId, int slot)
+        public static void EquipInventoryItem(int itemIdx, int slot)
         {
             if (slot >= EquipmentSlots.Length)
             {
@@ -202,12 +204,22 @@ namespace GameFeel.Singleton
                 return;
             }
 
-            if (ItemCanBeSlotted(itemId, slot))
+            var item = Items[itemIdx];
+            if (item == null)
             {
-                var itemIdx = FindItemIndex(itemId);
+                if (EquipmentSlots[slot] != null)
+                {
+                    AddItem(EquipmentSlots[slot].Id, 1);
+                }
+                EquipmentSlots[slot] = null;
+                Instance.EmitSignal(nameof(EquipmentUpdated), slot);
+                Instance.EmitSignal(nameof(EquipmentCleared), slot);
+            }
+            else if (ItemCanBeSlotted(item.Id, slot))
+            {
                 if (itemIdx >= 0)
                 {
-                    var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
+                    var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[item.Id];
                     RemoveItemAtIndex(itemIdx, 1);
                     if (EquipmentSlots[slot] != null)
                     {
@@ -223,7 +235,7 @@ namespace GameFeel.Singleton
             }
         }
 
-        public static void SwapEquipmentAndInventoryItems(int slotIdx, int itemIdx)
+        public static void SwapEquipmentAndInventoryItem(int slotIdx, int itemIdx)
         {
             if (itemIdx >= Items.Count || itemIdx < 0 || slotIdx < 0 || slotIdx >= EQUIPMENT_SLOT_COUNT)
             {
@@ -231,16 +243,19 @@ namespace GameFeel.Singleton
                 return;
             }
 
-            var item = Items[itemIdx];
-            var equipment = EquipmentSlots[slotIdx];
-            if (equipment == null)
+            if (!CanEquipInventoryItem(slotIdx, itemIdx))
             {
+                Logger.Error("Attempted to swap equipment item with unequippable item");
                 return;
             }
-            if (item != null && ItemCanBeSlotted(item.Id, slotIdx))
-            {
-                EquipInventoryItem(item.Id, slotIdx);
-            }
+
+            EquipInventoryItem(itemIdx, slotIdx);
+        }
+
+        public static bool CanEquipInventoryItem(int slotIdx, int itemIdx)
+        {
+            var item = Items[itemIdx];
+            return item == null || ItemCanBeSlotted(item.Id, slotIdx);
         }
 
         private void OnItemUpdated(int idx)

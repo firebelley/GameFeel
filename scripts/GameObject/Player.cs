@@ -74,6 +74,7 @@ namespace GameFeel.GameObject
             AddToGroup(GROUP);
 
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemEquipped), this, nameof(OnItemEquipped));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.EquipmentCleared), this, nameof(OnEquipmentCleared));
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _healthComponent.Connect(nameof(HealthComponent.HealthDecremented), this, nameof(OnHealthDecremented));
 
@@ -199,7 +200,17 @@ namespace GameFeel.GameObject
                 child.GetParent().RemoveChild(child);
                 child.QueueFree();
             }
+
             _weaponPosition2d.AddChild(equipment);
+        }
+
+        private void OnEquipmentCleared(int slotIdx)
+        {
+            foreach (var child in _weaponPosition2d.GetChildren<Node>())
+            {
+                child.GetParent().RemoveChild(child);
+                child.QueueFree();
+            }
         }
 
         private void OnHealthDepleted()

@@ -134,9 +134,9 @@ namespace GameFeel.UI
                 {
                     SwapIndices(Cursor.DragIndex, idx);
                 }
-                else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT)
+                else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT && PlayerInventory.CanEquipInventoryItem(Cursor.DragIndex, idx))
                 {
-                    PlayerInventory.SwapEquipmentAndInventoryItems(Cursor.DragIndex, idx);
+                    PlayerInventory.SwapEquipmentAndInventoryItem(Cursor.DragIndex, idx);
                     Cursor.ClearDragSelection();
                 }
             }

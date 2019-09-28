@@ -18,12 +18,11 @@ namespace GameFeel.GameObject.Environment
         public override void _Ready()
         {
             var sprite = GetNode<Sprite>("Sprite");
-            var area = GetNode<Area2D>("Area2D");
-            var collisionShape = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
+            var area = GetNode<Area2D>("Sprite/Area2D");
+            var collisionShape = GetNode<CollisionShape2D>("Sprite/Area2D/CollisionShape2D");
 
             var shape = collisionShape.Shape as RectangleShape2D;
             shape.Extents = sprite.RegionRect.Size / 2f;
-            area.Position = sprite.Position;
 
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 

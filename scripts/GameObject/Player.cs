@@ -89,9 +89,6 @@ namespace GameFeel.GameObject
 
             if (Input.IsActionJustPressed(INPUT_INTERACT))
             {
-                // TODO: uncomment for testing
-                PlayerInventory.AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
-                PlayerInventory.AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
                 GameEventDispatcher.DispatchPlayerInteractEvent();
             }
 

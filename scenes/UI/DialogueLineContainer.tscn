@@ -12,7 +12,7 @@
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
-[sub_resource type="StyleBoxFlat" id=21]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -25,11 +25,15 @@ bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="StyleBoxEmpty" id=7]
 
+[sub_resource type="StyleBoxEmpty" id=8]
+
 [sub_resource type="StyleBoxEmpty" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
 [sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=12]
 
 [sub_resource type="StyleBoxEmpty" id=13]
 
@@ -37,11 +41,7 @@ bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="StyleBoxEmpty" id=15]
 
-[sub_resource type="StyleBoxEmpty" id=17]
-
-[sub_resource type="StyleBoxEmpty" id=18]
-
-[sub_resource type="StyleBoxEmpty" id=19]
+[sub_resource type="StyleBoxEmpty" id=16]
 
 [node name="DialogueLineContainer" type="VBoxContainer"]
 margin_right = 180.0
@@ -150,7 +150,7 @@ size_flags_horizontal = 3
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/disabled = SubResource( 3 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/normal = SubResource( 4 )
 text = "Decline"
 flat = false
 
@@ -162,7 +162,7 @@ size_flags_horizontal = 3
 custom_styles/hover = SubResource( 5 )
 custom_styles/pressed = SubResource( 6 )
 custom_styles/disabled = SubResource( 7 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/normal = SubResource( 4 )
 text = "Accept"
 flat = false
 
@@ -171,10 +171,10 @@ margin_left = 128.0
 margin_right = 168.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 9 )
-custom_styles/pressed = SubResource( 10 )
-custom_styles/disabled = SubResource( 11 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/hover = SubResource( 8 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 4 )
 text = "Next"
 flat = false
 
@@ -183,10 +183,10 @@ margin_left = 172.0
 margin_right = 236.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 13 )
-custom_styles/pressed = SubResource( 14 )
-custom_styles/disabled = SubResource( 15 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 4 )
 text = "Not Yet"
 flat = false
 
@@ -195,9 +195,9 @@ margin_left = 240.0
 margin_right = 312.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 17 )
-custom_styles/pressed = SubResource( 18 )
-custom_styles/disabled = SubResource( 19 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/disabled = SubResource( 16 )
+custom_styles/normal = SubResource( 4 )
 text = "Complete"
 flat = false

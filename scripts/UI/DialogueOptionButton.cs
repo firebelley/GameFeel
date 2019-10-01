@@ -4,7 +4,7 @@ namespace GameFeel.UI
 {
     public class DialogueOptionButton : Button
     {
-        private string ANIM_BREATHE = "breathe";
+        private string ANIM_BREATHE = "ControlBreathe";
 
         [Export]
         private Font _hoverFont;

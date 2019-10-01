@@ -133,6 +133,7 @@
     <Compile Include="scripts\UI\QuestTrackerUI.cs" />
     <Compile Include="scripts\UI\QuestTrackItem.cs" />
     <Compile Include="scripts\UI\TooltipUI.cs" />
+    <Compile Include="scripts\UI\TutorialUI.cs" />
     <Compile Include="scripts\UI\UI.cs" />
     <Compile Include="scripts\Zone\GameZone.cs" />
     <Compile Include="scripts\Main.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="scripts\Component\Subcomponent\Behavior\BehaviorNode.cs" />
     <Compile Include="scripts\Component\Subcomponent\Behavior\Blackboard.cs" />
     <Compile Include="scripts\Data\Model\QuestRewardModel.cs" />
+    <Compile Include="scripts\Singleton\GameData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

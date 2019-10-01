@@ -34,13 +34,13 @@
 [ext_resource path="res://assets/art/spider-queen6.png" type="Texture" id=32]
 [ext_resource path="res://assets/art/spider-queen7.png" type="Texture" id=33]
 [ext_resource path="res://assets/art/spider-queen8.png" type="Texture" id=34]
-[ext_resource path="res://assets/art/spider-queen1.png" type="Texture" id=35]
-[ext_resource path="res://assets/art/spider-queen2.png" type="Texture" id=36]
-[ext_resource path="res://assets/art/spider-queen3.png" type="Texture" id=37]
-[ext_resource path="res://assets/art/spider-queen4.png" type="Texture" id=38]
-[ext_resource path="res://assets/art/spider-queen9.png" type="Texture" id=39]
-[ext_resource path="res://assets/art/spider-queen10.png" type="Texture" id=40]
-[ext_resource path="res://assets/art/spider-queen11.png" type="Texture" id=41]
+[ext_resource path="res://assets/art/spider-queen9.png" type="Texture" id=35]
+[ext_resource path="res://assets/art/spider-queen10.png" type="Texture" id=36]
+[ext_resource path="res://assets/art/spider-queen11.png" type="Texture" id=37]
+[ext_resource path="res://assets/art/spider-queen1.png" type="Texture" id=38]
+[ext_resource path="res://assets/art/spider-queen2.png" type="Texture" id=39]
+[ext_resource path="res://assets/art/spider-queen3.png" type="Texture" id=40]
+[ext_resource path="res://assets/art/spider-queen4.png" type="Texture" id=41]
 [ext_resource path="res://scenes/GameObject/SpawnZone.tscn" type="PackedScene" id=42]
 [ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=43]
 
@@ -63,14 +63,14 @@ animations = [ {
 "name": "idle",
 "speed": 8.0
 }, {
-"frames": [ ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ) ],
-"loop": true,
-"name": "run",
-"speed": 8.0
-}, {
-"frames": [ ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ) ],
+"frames": [ ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ) ],
 "loop": true,
 "name": "attack",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ) ],
+"loop": true,
+"name": "run",
 "speed": 8.0
 } ]
 
@@ -153,9 +153,9 @@ _animationName = "run"
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent/DynamicSelector" instance=ExtResource( 15 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 16 )]
-DisplayName = "Spider Queen"
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 Id = "7696d797-1260-51bf-a10d-0941f9916122"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
+DisplayName = "Spider Queen"
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 17 )]
 _maxSpeed = 65.0
@@ -170,7 +170,6 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 21 )]
-editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 22 )]
@@ -190,22 +189,22 @@ _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_angleDelta = 32.72
-_scene = ExtResource( 28 )
 _collisionMask = 2
-_maxDistance = 200.0
+_scene = ExtResource( 28 )
 _number = 11
+_angleDelta = 32.72
 _speed = 150.0
+_maxDistance = 200.0
 
 [node name="ProjectileSpawnComponent2" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
-_angleDelta = 20.0
-_scene = ExtResource( 28 )
 _collisionMask = 2
-_maxDistance = 200.0
+_scene = ExtResource( 28 )
 _number = 7
-_delayPerSpawn = 0.1
+_angleDelta = 20.0
 _speed = 150.0
+_maxDistance = 200.0
+_delayPerSpawn = 0.1
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 29 )]
 _healthComponentPath = NodePath("../HealthComponent")
@@ -224,6 +223,6 @@ centered = false
 offset = Vector2( -24, -48 )
 
 [node name="SpawnZone" parent="." instance=ExtResource( 42 )]
-_radius = 25.0
-_spawnedScene = ExtResource( 43 )
 _maxSpawned = 3
+_spawnedScene = ExtResource( 43 )
+_radius = 25.0

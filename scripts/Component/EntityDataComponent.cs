@@ -19,12 +19,20 @@ namespace GameFeel.Component
         [Export]
         private NodePath _selectableComponentPath;
 
+        [Export]
+        private bool _doNotRespawn;
+
         public override void _Ready()
         {
             GetNodeOrNull<DeathEffectComponent>(_deathEffectComponentPath ?? string.Empty)?.Connect(nameof(DeathEffectComponent.Killed), this, nameof(OnKilled));
             var selectableComponent = GetNodeOrNull<SelectableComponent>(_selectableComponentPath ?? string.Empty);
             selectableComponent?.Connect(nameof(SelectableComponent.SelectEnter), this, nameof(OnSelectEnter));
             selectableComponent?.Connect(nameof(SelectableComponent.SelectLeave), this, nameof(OnSelectLeave));
+
+            if (_doNotRespawn && GameData.DoNotSpawnEntityIds.Contains(Id))
+            {
+                GetOwnerOrNull<Node>()?.QueueFree();
+            }
         }
 
         public override string _GetConfigurationWarning()
@@ -38,6 +46,10 @@ namespace GameFeel.Component
 
         private void OnKilled()
         {
+            if (_doNotRespawn)
+            {
+                GameData.DoNotSpawnEntityIds.Add(Id);
+            }
             GameEventDispatcher.DispatchEntityKilledEvent(Id);
         }
 

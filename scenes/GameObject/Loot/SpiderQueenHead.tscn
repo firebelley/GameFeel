@@ -20,10 +20,11 @@ radius = 15.0
 resource_local_to_scene = true
 radius = 5.0
 
-[node name="SpiderQueenHead" instance=ExtResource( 1 )]
+[node name="SpiderQueenHead" index="0" instance=ExtResource( 1 )]
 Id = "b198239c-7323-57a8-88b7-2dd8c8042e6b"
 Icon = ExtResource( 2 )
 DisplayName = "Spider Queen Head"
+_persist = true
 
 [node name="SelectableComponent" parent="." index="1"]
 material = SubResource( 1 )

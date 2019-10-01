@@ -14,13 +14,13 @@ namespace GameFeel.Resource
 
         private static ZoneTransitioner _instance;
         private Viewport _viewport;
-        private int _zoneTransitionAreaIndex;
+        private int _zoneTransitionAreaIndex = -1;
 
         public override void _Ready()
         {
             _instance = this;
             this.SetNodesByDeclaredNodePaths();
-            Transition(MetadataLoader.ZoneIdToMetadata["267df08a-63fb-54da-9e30-ac39612ac708"]);
+            Transition(MetadataLoader.ZoneIdToMetadata["ae44e7c6-923b-5b9b-a88a-c15cc41f5b56"]);
         }
 
         public static void Transition(MetadataLoader.Metadata toZoneData)

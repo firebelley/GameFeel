@@ -13,6 +13,7 @@ namespace GameFeel.GameObject.Loot
         private const string ANIM_IDLE = "idle";
         private const string ANIM_PICKUP = "pickup";
         private const string ANIM_DEFAULT = "default";
+        private const string ANIM_BOUNCE_IN = "BounceIn";
         private const float PLAYER_NEAR_DISTANCE = 50f;
         private const float PLAYER_HOVER_Y_OFFSET = -24f;
 
@@ -53,6 +54,12 @@ namespace GameFeel.GameObject.Loot
         [Export]
         public PackedScene EquipmentScene { get; private set; }
 
+        [Export]
+        private bool _startSettled;
+
+        [Export]
+        private bool _persist;
+
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
         private AnimationPlayer _animationPlayer;
@@ -77,12 +84,6 @@ namespace GameFeel.GameObject.Loot
 
         public override void _Ready()
         {
-            _stateMachine.AddState(State.BOUNCING, StateBouncing);
-            _stateMachine.AddState(State.SEPARATE, StateSeparate);
-            _stateMachine.AddState(State.SETTLED, StateSettled);
-            _stateMachine.AddState(State.PICKED_UP, StatePickedUp);
-            _stateMachine.SetInitialState(State.BOUNCING);
-
             _collisionShape2d = GetNode<CollisionShape2D>("CollisionShape2D");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _blinkAnimationPlayer = GetNode<AnimationPlayer>("BlinkAnimationPlayer");
@@ -95,16 +96,26 @@ namespace GameFeel.GameObject.Loot
             _velocity = Vector2.Right.Rotated(Mathf.Deg2Rad(Main.RNG.RandfRange(MIN_ANGLE, MAX_ANGLE)));
             _velocity *= Main.RNG.RandfRange(MIN_SPEED, MAX_SPEED);
 
+            _stateMachine.AddState(State.BOUNCING, StateBouncing);
+            _stateMachine.AddState(State.SEPARATE, StateSeparate);
+            _stateMachine.AddState(State.SETTLED, StateSettled);
+            _stateMachine.AddState(State.PICKED_UP, StatePickedUp);
+
+            if (_startSettled)
+            {
+                _stateMachine.SetInitialState(State.SETTLED);
+            }
+            else
+            {
+                _animationPlayer.Play(ANIM_BOUNCE_IN);
+                _stateMachine.SetInitialState(State.BOUNCING);
+            }
+
             AddToGroup(GROUP);
             _deathTimer.Connect("timeout", this, nameof(OnDeathTimerTimeout));
             _selectableComponent.Connect(nameof(SelectableComponent.Selected), this, nameof(OnSelected));
             _selectableComponent.Connect(nameof(SelectableComponent.SelectEnter), this, nameof(OnSelectEnter));
             _selectableComponent.Connect(nameof(SelectableComponent.SelectLeave), this, nameof(OnSelectLeave));
-
-            if (Engine.IsEditorHint())
-            {
-                SetProcess(false);
-            }
         }
 
         public override void _Process(float delta)
@@ -220,7 +231,10 @@ namespace GameFeel.GameObject.Loot
 
         private void OnDeathTimerTimeout()
         {
-            _blinkAnimationPlayer.Play(ANIM_DEFAULT);
+            if (!_persist)
+            {
+                _blinkAnimationPlayer.Play(ANIM_DEFAULT);
+            }
         }
 
         private void OnSelected()

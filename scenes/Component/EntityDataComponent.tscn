@@ -4,7 +4,7 @@
 
 [node name="EntityDataComponent" type="Node"]
 script = ExtResource( 1 )
-_deathEffectComponentPath = NodePath("")
 _selectableComponentPath = NodePath("")
-DisplayName = "Null"
 Id = "Null"
+_deathEffectComponentPath = NodePath("")
+DisplayName = "Null"

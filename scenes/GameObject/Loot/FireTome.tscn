@@ -21,7 +21,7 @@ radius = 15.0
 resource_local_to_scene = true
 radius = 5.0
 
-[node name="FireTome" index="0" instance=ExtResource( 1 )]
+[node name="FireTome" instance=ExtResource( 1 )]
 Id = "b79a2c9d-55a6-4f01-856e-e200dfe027bc"
 Icon = ExtResource( 2 )
 DisplayName = "Fire Tome"
@@ -33,6 +33,9 @@ _shadedNodePath = NodePath("../../FireTome/Sprite")
 
 [node name="CollisionShape2D" parent="SelectableComponent" index="0"]
 shape = SubResource( 2 )
+
+[node name="AnimationPlayer" parent="." index="3"]
+autoplay = ""
 
 [node name="CollisionShape2D" parent="." index="5"]
 shape = SubResource( 3 )

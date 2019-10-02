@@ -44,6 +44,7 @@ namespace GameFeel.UI
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventDialogueStarted), this, nameof(OnDialogueStarted));
             _animationPlayer.Connect("animation_finished", this, nameof(OnAnimationFinished));
+            _dialogueWindow.Connect("mouse_entered", this, nameof(OnWindowMouseEntered));
         }
 
         public override void _Process(float delta)
@@ -265,6 +266,13 @@ namespace GameFeel.UI
         private void OnNotYetButtonPressed()
         {
             AdvanceItem();
+        }
+
+        private void OnWindowMouseEntered()
+        {
+            var evt = new InputEventMouseMotion();
+            evt.Position = Vector2.Left * 100_000_000;
+            Main.SendInput(evt);
         }
     }
 }

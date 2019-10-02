@@ -10,5 +10,5 @@ monitorable = false
 collision_layer = 524288
 collision_mask = 0
 script = ExtResource( 2 )
-_shadedNodePath = NodePath("")
 _playerNearDistance = 50
+_shadedNodePath = NodePath("")

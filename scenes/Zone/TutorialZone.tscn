@@ -4,8 +4,8 @@
 [ext_resource path="res://scenes/GameObject/Environment/ZoneTransitionArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/GameObject/Environment/Flag1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/GameObject/Environment/SignArrow.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/GameObject/Loot/FireTome.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/GameObject/Environment/TutorialBoulder.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/GameObject/Environment/TutorialBoulder.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/GameObject/Miner.tscn" type="PackedScene" id=6]
 
 [node name="TutorialZone" index="0" instance=ExtResource( 1 )]
 Id = "ae44e7c6-923b-5b9b-a88a-c15cc41f5b56"
@@ -25,13 +25,11 @@ position = Vector2( 448, 312 )
 [node name="SignArrow" parent="Entities" index="1" instance=ExtResource( 4 )]
 position = Vector2( 496, 312 )
 
-[node name="FireTome" parent="Entities" index="2" instance=ExtResource( 5 )]
-position = Vector2( 512, 360 )
-_startSettled = true
-_persist = true
-
-[node name="EnvironmentObject" parent="Entities" index="3" instance=ExtResource( 6 )]
+[node name="EnvironmentObject" parent="Entities" index="2" instance=ExtResource( 5 )]
 position = Vector2( 471, 314 )
+
+[node name="Miner" parent="Entities" index="3" instance=ExtResource( 6 )]
+position = Vector2( 416, 360 )
 
 [node name="DefaultPlayerSpawnPosition" parent="." index="7"]
 position = Vector2( 480, 408 )

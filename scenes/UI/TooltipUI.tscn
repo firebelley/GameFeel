@@ -23,7 +23,7 @@ mouse_filter = 2
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 103.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 mouse_filter = 2
 custom_constants/margin_right = 2
 custom_constants/margin_top = 2
@@ -34,13 +34,14 @@ custom_constants/margin_bottom = 2
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 98.0
-margin_bottom = 16.0
+margin_bottom = 10.0
 mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 96.0
 margin_bottom = 8.0
 text = "Name of Item"
+align = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
 anims/ControlBounceIn = ExtResource( 3 )

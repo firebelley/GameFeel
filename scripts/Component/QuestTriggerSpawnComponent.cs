@@ -1,3 +1,4 @@
+using GameFeel.GameObject.Loot;
 using Godot;
 
 namespace GameFeel.Component
@@ -15,6 +16,12 @@ namespace GameFeel.Component
             }
 
             var node = _scene.Instance() as Node2D;
+
+            if (node is LootItem li)
+            {
+                li.Persist = true;
+            }
+
             GameZone.EntitiesLayer.AddChild(node);
             node.GlobalPosition = GlobalPosition;
         }

@@ -177,8 +177,8 @@ script = ExtResource( 1 )
 [node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
 material = SubResource( 1 )
 position = Vector2( 0, -8 )
-_shadedNodePath = NodePath("../Sprite")
 _requirePlayerNear = true
+_shadedNodePath = NodePath("../Sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 shape = SubResource( 2 )

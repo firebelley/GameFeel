@@ -22,6 +22,7 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             base._Ready();
+            Model = new QuestCompleteModel();
             _idLineEdit = GetNode<LineEdit>("VBoxContainer/HBoxContainer3/LineEdit");
         }
 

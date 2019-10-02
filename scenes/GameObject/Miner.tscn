@@ -1,0 +1,92 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Component/DialogueComponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Component/Subcomponent/DialogueItem.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Component/Subcomponent/DialogueLine.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=7]
+[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/GameObject/Loot/FireTome.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=11]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 7 )
+shader_param/_outlineColor = Color( 1, 1, 1, 1 )
+shader_param/_invalidOutlineColor = Color( 0.7, 0, 0, 1 )
+shader_param/_enabled = null
+shader_param/_valid = null
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 15.0
+height = 15.0
+
+[node name="Miner" type="Node2D"]
+
+[node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
+Id = "7c326523-1892-5490-abb3-d2f00193663f"
+_selectableComponentPath = NodePath("../SelectableComponent")
+DisplayName = "Miner"
+
+[node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, -16 )
+Introduction = "What a predicament we're in."
+_selectableComponentPath = NodePath("../SelectableComponent")
+_entityDataComponentPath = NodePath("../EntityDataComponent")
+
+[node name="Trapped" parent="DialogueComponent" instance=ExtResource( 3 )]
+editor/display_folded = true
+Title = "Trapped"
+ShowImmediately = true
+
+[node name="DialogueLine" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
+Text = "Ah you're trapped here too!"
+
+[node name="DialogueLine2" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
+Text = "I found this while I was down here, I have no idea how to make it work!"
+
+[node name="DialogueLine3" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
+editor/display_folded = true
+Text = "If you can figure out how to use it you can keep it."
+
+[node name="QuestStarterComponent" parent="DialogueComponent/Trapped/DialogueLine3" instance=ExtResource( 5 )]
+_questId = "0e0417bb-8c88-4edc-8f56-ffab87e34d62"
+
+[node name="Tutorial" parent="DialogueComponent" instance=ExtResource( 3 )]
+Title = "How-To"
+ShowImmediately = true
+
+[node name="DialogueLine4" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
+Text = "* Hover over the tome and press 'E' to pickup *"
+
+[node name="DialogueLine" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
+Text = "* Press 'I' to open your inventory *"
+
+[node name="DialogueLine2" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
+Text = "* Press 'C' to open your equipment *"
+
+[node name="DialogueLine3" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
+Text = "* Click the tome in your inventory and place it into the weapon slot *"
+
+[node name="SelectableComponent" parent="." instance=ExtResource( 6 )]
+material = SubResource( 1 )
+position = Vector2( 0, -6 )
+_shadedNodePath = NodePath("../Sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
+shape = SubResource( 2 )
+
+[node name="ShadowComponent" parent="." instance=ExtResource( 8 )]
+_radius = 6.0
+
+[node name="QuestTriggerSpawnComponent" parent="." instance=ExtResource( 9 )]
+position = Vector2( 16, -8 )
+_questModelId = "22f2aa31-20a1-465c-bee9-be45b8296559"
+_scene = ExtResource( 10 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -6 )
+texture = ExtResource( 11 )

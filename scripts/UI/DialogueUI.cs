@@ -158,6 +158,10 @@ namespace GameFeel.UI
                 }
                 AdvanceLine();
             }
+            else if (_closeAfterLinesShown)
+            {
+                Close();
+            }
             else
             {
                 ShowNavigation();
@@ -182,10 +186,6 @@ namespace GameFeel.UI
                 container.Connect(nameof(DialogueLineContainer.NextButtonPressed), this, nameof(OnNextLineButtonPressed), new Godot.Collections.Array() { line });
                 container.Connect(nameof(DialogueLineContainer.QuestAcceptanceIndicated), this, nameof(OnQuestAcceptanceIndicated), new Godot.Collections.Array() { line });
                 container.Connect(nameof(DialogueLineContainer.QuestTurnInIndicated), this, nameof(OnQuestTurnInIndicated), new Godot.Collections.Array() { line });
-            }
-            else if (_closeAfterLinesShown)
-            {
-                Close();
             }
             else
             {

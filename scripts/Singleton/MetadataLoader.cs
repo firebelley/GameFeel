@@ -55,6 +55,7 @@ namespace GameFeel.Singleton
         {
             LoadScenesInDir("res://scenes/GameObject/Loot/", LoadItem);
             LoadScenesInDir("res://scenes/GameObject/", LoadEntity);
+            LoadScenesInDir("res://scenes/GameObject/Environment/", LoadEntity);
             LoadScenesInDir("res://scenes/Zone/", LoadZone);
         }
 

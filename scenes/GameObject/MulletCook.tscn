@@ -35,8 +35,8 @@ animations = [ {
 [node name="MulletCook" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-_selectableComponentPath = NodePath("../SelectableComponent")
 Id = "e98d8232-398a-53e9-8b3d-ad35758d8e08"
+_selectableComponentPath = NodePath("../SelectableComponent")
 DisplayName = "Mullet Cook"
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
@@ -111,8 +111,8 @@ Text = "So in a roundabout way, you did what was asked of ya. I don't like your 
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
 material = SubResource( 1 )
-_shadedNodePath = NodePath("../AnimatedSprite")
 _requirePlayerNear = true
+_shadedNodePath = NodePath("../AnimatedSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )

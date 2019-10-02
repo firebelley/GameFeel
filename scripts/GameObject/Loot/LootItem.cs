@@ -55,10 +55,7 @@ namespace GameFeel.GameObject.Loot
         public PackedScene EquipmentScene { get; private set; }
 
         [Export]
-        private bool _startSettled;
-
-        [Export]
-        private bool _persist;
+        public bool Persist { get; set; }
 
         private StateMachine<State> _stateMachine = new StateMachine<State>();
 
@@ -100,16 +97,7 @@ namespace GameFeel.GameObject.Loot
             _stateMachine.AddState(State.SEPARATE, StateSeparate);
             _stateMachine.AddState(State.SETTLED, StateSettled);
             _stateMachine.AddState(State.PICKED_UP, StatePickedUp);
-
-            if (_startSettled)
-            {
-                _stateMachine.SetInitialState(State.SETTLED);
-            }
-            else
-            {
-                _animationPlayer.Play(ANIM_BOUNCE_IN);
-                _stateMachine.SetInitialState(State.BOUNCING);
-            }
+            _stateMachine.SetInitialState(State.BOUNCING);
 
             AddToGroup(GROUP);
             _deathTimer.Connect("timeout", this, nameof(OnDeathTimerTimeout));
@@ -231,7 +219,7 @@ namespace GameFeel.GameObject.Loot
 
         private void OnDeathTimerTimeout()
         {
-            if (!_persist)
+            if (!Persist)
             {
                 _blinkAnimationPlayer.Play(ANIM_DEFAULT);
             }

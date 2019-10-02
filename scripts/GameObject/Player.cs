@@ -78,6 +78,7 @@ namespace GameFeel.GameObject
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _healthComponent.Connect(nameof(HealthComponent.HealthDecremented), this, nameof(OnHealthDecremented));
 
+            UpdateEquipment();
             GameEventDispatcher.DispatchPlayerCreatedEvent(this);
         }
 
@@ -189,7 +190,21 @@ namespace GameFeel.GameObject
             return moveVec.Normalized();
         }
 
-        private void OnItemEquipped(Equipment equipment)
+        private void UpdateEquipment()
+        {
+            foreach (var equipment in PlayerInventory.EquipmentSlots)
+            {
+                if (equipment == null) continue;
+
+                var scene = PlayerInventory.CreateEquipmentScene(equipment);
+                if (IsInstanceValid(scene))
+                {
+                    EquipItem(scene);
+                }
+            }
+        }
+
+        private void EquipItem(Equipment equipment)
         {
             // TODO: account for equipment slots here
             foreach (var child in _weaponPosition2d.GetChildren<Node>())
@@ -199,6 +214,11 @@ namespace GameFeel.GameObject
             }
 
             _weaponPosition2d.AddChild(equipment);
+        }
+
+        private void OnItemEquipped(Equipment equipment)
+        {
+            EquipItem(equipment);
         }
 
         private void OnEquipmentCleared(int slotIdx)

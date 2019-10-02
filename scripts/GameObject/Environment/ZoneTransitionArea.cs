@@ -24,10 +24,15 @@ namespace GameFeel.GameObject.Environment
             Connect("body_entered", this, nameof(OnBodyEntered));
         }
 
-        private void OnBodyEntered(PhysicsBody2D body)
+        private void Transition()
         {
             var metaData = MetadataLoader.ZoneIdToMetadata[ToZoneId];
             ZoneTransitioner.TransitionToArea(metaData, Index);
+        }
+
+        private void OnBodyEntered(PhysicsBody2D body)
+        {
+            CallDeferred(nameof(Transition));
         }
     }
 }

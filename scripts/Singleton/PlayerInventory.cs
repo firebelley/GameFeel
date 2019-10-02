@@ -228,8 +228,7 @@ namespace GameFeel.Singleton
                     EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
                     Instance.EmitSignal(nameof(EquipmentUpdated), slot);
 
-                    var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
-                    var equipment = equipmentScene.Instance() as Equipment;
+                    var equipment = CreateEquipmentScene(EquipmentSlots[slot]);
                     Instance.EmitSignal(nameof(ItemEquipped), equipment);
                 }
             }
@@ -256,6 +255,19 @@ namespace GameFeel.Singleton
         {
             var item = Items[itemIdx];
             return item == null || ItemCanBeSlotted(item.Id, slotIdx);
+        }
+
+        public static Equipment CreateEquipmentScene(InventoryItem inventoryItem)
+        {
+            if (!MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(inventoryItem.Id))
+            {
+                Logger.Error("Attempted to create equipment that doesn't exist");
+                return null;
+            }
+            var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[inventoryItem.Id];
+            var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
+            var equipment = equipmentScene.Instance() as Equipment;
+            return equipment;
         }
 
         private void OnItemUpdated(int idx)

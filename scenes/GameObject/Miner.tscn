@@ -27,9 +27,9 @@ height = 15.0
 [node name="Miner" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-Id = "7c326523-1892-5490-abb3-d2f00193663f"
-_selectableComponentPath = NodePath("../SelectableComponent")
 DisplayName = "Miner"
+_selectableComponentPath = NodePath("../SelectableComponent")
+Id = "7c326523-1892-5490-abb3-d2f00193663f"
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -16 )

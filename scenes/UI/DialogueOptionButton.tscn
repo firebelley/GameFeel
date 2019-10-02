@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://resources/fonts/DialogueFont.tres" type="DynamicFont" id=2]
@@ -7,7 +7,20 @@
 [ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=5]
 [ext_resource path="res://resources/animations/ControlBreathe.tres" type="Animation" id=6]
 
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
 [sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0, 0, 0, 0 )
 
 [sub_resource type="Shader" id=2]
 resource_local_to_scene = true
@@ -38,14 +51,17 @@ shader_param/_shadeColor = Color( 0.929412, 0.929412, 0.929412, 1 )
 shader_param/_sampleTexture = ExtResource( 5 )
 
 [node name="DialogueOptionButton" type="Button"]
-margin_right = 44.0
-margin_bottom = 14.0
+margin_right = 40.0
+margin_bottom = 16.0
 theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
 custom_styles/focus = SubResource( 1 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 text = "test"
-flat = true
 script = ExtResource( 3 )
 _hoverFont = ExtResource( 4 )
 

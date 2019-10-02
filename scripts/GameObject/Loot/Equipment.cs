@@ -23,6 +23,7 @@ namespace GameFeel.GameObject.Loot
 
         public override void _Ready()
         {
+            GD.Print(GetTree().GetNodesInGroup(Player.GROUP).Count);
             var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
             if (player != null)
             {

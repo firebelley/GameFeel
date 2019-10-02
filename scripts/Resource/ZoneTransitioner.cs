@@ -33,6 +33,7 @@ namespace GameFeel.Resource
 
             foreach (var child in _instance._viewport.GetChildren<Node>())
             {
+                child.GetParent().RemoveChild(child);
                 child.QueueFree();
             }
 

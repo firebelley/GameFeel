@@ -5,8 +5,9 @@
 [ext_resource path="res://scenes/GameObject/Projectile/FireBall.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/GameObject/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/GameObject/Spider.tscn" type="PackedScene" id=5]
-[ext_resource path="res://resources/Tileset.tres" type="TileSet" id=6]
+[ext_resource path="res://resources/TilesetForest.tres" type="TileSet" id=6]
 [ext_resource path="res://scenes/Camera.tscn" type="PackedScene" id=7]
+
 
 [node name="GameZone" type="Node"]
 script = ExtResource( 1 )

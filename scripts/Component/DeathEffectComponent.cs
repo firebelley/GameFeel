@@ -1,3 +1,4 @@
+using GameFeel.GameObject.Effect;
 using Godot;
 
 namespace GameFeel.Component
@@ -14,9 +15,15 @@ namespace GameFeel.Component
         [Export]
         private NodePath _healthComponentPath;
 
+        [Export]
+        private NodePath _textureSourcePath;
+
+        private Node _textureSource;
+
         public override void _Ready()
         {
             GetHealthComponent()?.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
+            _textureSource = GetNodeOrNull(_textureSourcePath ?? string.Empty);
         }
 
         public override string _GetConfigurationWarning()
@@ -43,6 +50,12 @@ namespace GameFeel.Component
             var death = _deathScene.Instance() as Node2D;
             GameZone.EffectsLayer.AddChild(death);
             death.GlobalPosition = GlobalPosition;
+
+            if (death is EntityDeath e)
+            {
+                e.SetTextureFromNode(_textureSource);
+            }
+
             EmitSignal(nameof(Killed));
             GetOwner().QueueFree();
         }

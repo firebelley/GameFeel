@@ -10,6 +10,8 @@ namespace GameFeel.Resource
     public class ZoneTransitioner : Node
     {
         [Export]
+        private string _debugStartZoneId;
+        [Export]
         private NodePath _viewportPath;
 
         private static ZoneTransitioner _instance;
@@ -20,7 +22,15 @@ namespace GameFeel.Resource
         {
             _instance = this;
             this.SetNodesByDeclaredNodePaths();
-            Transition(MetadataLoader.ZoneIdToMetadata["ae44e7c6-923b-5b9b-a88a-c15cc41f5b56"]);
+
+            if (OS.IsDebugBuild() && !string.IsNullOrEmpty(_debugStartZoneId))
+            {
+                Transition(MetadataLoader.ZoneIdToMetadata[_debugStartZoneId]);
+            }
+            else
+            {
+                Transition(MetadataLoader.ZoneIdToMetadata["ae44e7c6-923b-5b9b-a88a-c15cc41f5b56"]);
+            }
         }
 
         public static void Transition(MetadataLoader.Metadata toZoneData)

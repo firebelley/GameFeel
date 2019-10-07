@@ -154,15 +154,15 @@ _animationName = "run"
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 16 )]
 Id = "7696d797-1260-51bf-a10d-0941f9916122"
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 DisplayName = "Spider Queen"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 17 )]
 _maxSpeed = 65.0
 
 [node name="HealthComponent" parent="." instance=ExtResource( 18 )]
-_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 MaxHp = 50.0
+_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="HitEffectComponent" parent="." instance=ExtResource( 19 )]
 _shaderMaterial = SubResource( 1 )
@@ -173,8 +173,8 @@ _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="LootTableItem" parent="LootTableComponent" instance=ExtResource( 22 )]
-Scene = ExtResource( 23 )
 Weight = 1
+Scene = ExtResource( 23 )
 
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 24 )]
 position = Vector2( 0, -24 )
@@ -189,25 +189,26 @@ _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
+_speed = 150.0
+_angleDelta = 32.72
+_maxDistance = 200.0
+_number = 11
 _collisionMask = 2
 _scene = ExtResource( 28 )
-_number = 11
-_angleDelta = 32.72
-_speed = 150.0
-_maxDistance = 200.0
 
 [node name="ProjectileSpawnComponent2" parent="." instance=ExtResource( 27 )]
 position = Vector2( 0, -24 )
+_speed = 150.0
+_delayPerSpawn = 0.1
+_angleDelta = 20.0
+_maxDistance = 200.0
+_number = 7
 _collisionMask = 2
 _scene = ExtResource( 28 )
-_number = 7
-_angleDelta = 20.0
-_speed = 150.0
-_maxDistance = 200.0
-_delayPerSpawn = 0.1
 
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 29 )]
 _healthComponentPath = NodePath("../HealthComponent")
+_textureSourcePath = NodePath("../AnimatedSprite")
 
 [node name="AttackIntentComponent" parent="." instance=ExtResource( 30 )]
 position = Vector2( 0, -32 )
@@ -223,6 +224,6 @@ centered = false
 offset = Vector2( -24, -48 )
 
 [node name="SpawnZone" parent="." instance=ExtResource( 42 )]
-_maxSpawned = 3
-_spawnedScene = ExtResource( 43 )
 _radius = 25.0
+_spawnedScene = ExtResource( 43 )
+_maxSpawned = 3

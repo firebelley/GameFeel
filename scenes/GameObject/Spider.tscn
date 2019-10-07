@@ -31,13 +31,13 @@
 [ext_resource path="res://assets/art/spider9.png" type="Texture" id=29]
 [ext_resource path="res://assets/art/spider10.png" type="Texture" id=30]
 [ext_resource path="res://assets/art/spider11.png" type="Texture" id=31]
-[ext_resource path="res://assets/art/spider1.png" type="Texture" id=32]
-[ext_resource path="res://assets/art/spider2.png" type="Texture" id=33]
-[ext_resource path="res://assets/art/spider3.png" type="Texture" id=34]
-[ext_resource path="res://assets/art/spider4.png" type="Texture" id=35]
-[ext_resource path="res://assets/art/spider5.png" type="Texture" id=36]
-[ext_resource path="res://assets/art/spider6.png" type="Texture" id=37]
-[ext_resource path="res://assets/art/spider7.png" type="Texture" id=38]
+[ext_resource path="res://assets/art/spider5.png" type="Texture" id=32]
+[ext_resource path="res://assets/art/spider6.png" type="Texture" id=33]
+[ext_resource path="res://assets/art/spider7.png" type="Texture" id=34]
+[ext_resource path="res://assets/art/spider1.png" type="Texture" id=35]
+[ext_resource path="res://assets/art/spider2.png" type="Texture" id=36]
+[ext_resource path="res://assets/art/spider3.png" type="Texture" id=37]
+[ext_resource path="res://assets/art/spider4.png" type="Texture" id=38]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -103,14 +103,14 @@ animations = [ {
 "name": "idle",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ) ],
-"loop": true,
-"name": "run",
-"speed": 10.0
-}, {
-"frames": [ ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ) ],
+"frames": [ ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ) ],
 "loop": false,
 "name": "attack",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ) ],
+"loop": true,
+"name": "run",
 "speed": 10.0
 } ]
 
@@ -119,6 +119,7 @@ collision_layer = 16
 collision_mask = 17
 
 [node name="BehaviorTreeComponent" parent="." instance=ExtResource( 1 )]
+editor/display_folded = true
 _animatedSpritePath = NodePath("../AnimatedSprite")
 _pathfindComponentPath = NodePath("../PathfindComponent")
 
@@ -154,13 +155,13 @@ _projectileSpawnComponentPath = NodePath("../../../../ProjectileSpawnComponent")
 [node name="DefaultWanderSequence" parent="BehaviorTreeComponent" instance=ExtResource( 9 )]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 10 )]
-_deathEffectComponentPath = NodePath("../DeathEffectComponent")
-DisplayName = "Spider"
 Id = "c6dc7fbf-4bee-55b6-9748-0a640d95d37e"
+DisplayName = "Spider"
+_deathEffectComponentPath = NodePath("../DeathEffectComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource( 11 )]
-_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 MaxHp = 3.0
+_damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="PathfindComponent" parent="." instance=ExtResource( 12 )]
 _acceleration = 500.0
@@ -171,6 +172,7 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="LootTableComponent" parent="." instance=ExtResource( 15 )]
+editor/display_folded = true
 _healthComponentPath = NodePath("../HealthComponent")
 
 [node name="Ruby" parent="LootTableComponent" instance=ExtResource( 16 )]
@@ -187,14 +189,15 @@ Weight = 100
 [node name="DeathEffectComponent" parent="." instance=ExtResource( 19 )]
 position = Vector2( 0, -6 )
 _healthComponentPath = NodePath("../HealthComponent")
+_textureSourcePath = NodePath("../AnimatedSprite")
 
 [node name="AttackIntentComponent" parent="." instance=ExtResource( 20 )]
 position = Vector2( 0, -6 )
 
 [node name="ProjectileSpawnComponent" parent="." instance=ExtResource( 21 )]
 position = Vector2( 0, -6 )
-_scene = ExtResource( 22 )
 _collisionMask = 2
+_scene = ExtResource( 22 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 23 )]
 position = Vector2( 0, -1 )

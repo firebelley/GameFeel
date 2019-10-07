@@ -53,6 +53,11 @@ namespace GameFeel.Singleton
             Connect(nameof(ItemUpdated), this, nameof(OnItemUpdated));
             Connect(nameof(ItemCleared), this, nameof(OnItemCleared));
             GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(OnItemTurnedInEvent));
+
+            if (OS.IsDebugBuild())
+            {
+                AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
+            }
         }
 
         public static void AddItem(LootItem lootItem)

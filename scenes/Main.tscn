@@ -9,6 +9,7 @@
 script = ExtResource( 1 )
 
 [node name="ZoneTransitioner" parent="." instance=ExtResource( 2 )]
+_debugStartZoneId = "267df08a-63fb-54da-9e30-ac39612ac708"
 _viewportPath = NodePath("../ViewportContainer/Viewport")
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]

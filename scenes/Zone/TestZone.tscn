@@ -56,21 +56,21 @@ position = Vector2( 880, 1088 )
 
 [node name="SpawnZone" parent="SpawnZones" index="0" instance=ExtResource( 8 )]
 position = Vector2( 912, 800 )
+_radius = 100.0
 _spawnedScene = ExtResource( 9 )
 _maxSpawned = 10
-_radius = 100.0
 
 [node name="SpawnZone2" parent="SpawnZones" index="1" instance=ExtResource( 8 )]
 position = Vector2( 816, 461.6 )
+_radius = 100.0
 _spawnedScene = ExtResource( 9 )
 _maxSpawned = 10
-_radius = 100.0
 
 [node name="SpawnZone3" parent="SpawnZones" index="2" instance=ExtResource( 8 )]
 position = Vector2( 1216, 592 )
+_radius = 80.0
 _spawnedScene = ExtResource( 9 )
 _maxSpawned = 10
-_radius = 80.0
 
 [node name="QuestTriggerSpawnComponent" parent="SpawnZones" index="3" instance=ExtResource( 10 )]
 position = Vector2( 736, 416 )

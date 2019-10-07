@@ -22,7 +22,8 @@ namespace GameFeel.GameObject
         private const string INPUT_MOVE_LEFT = "move_left";
         private const string INPUT_MOVE_RIGHT = "move_right";
         private const string INPUT_MOVE_UP = "move_up";
-        private const string INPUT_ATTACK = "attack";
+        private const string INPUT_MAIN_ATTACK = "main_attack";
+        private const string INPUT_SECONDARY_ATTACK = "secondary_attack";
         private const string INPUT_INTERACT = "interact";
 
         private const string ANIM_IDLE = "idle";
@@ -36,9 +37,13 @@ namespace GameFeel.GameObject
         private Vector2 _velocity;
         private AnimatedSprite _animatedSprite;
         private Position2D _weaponPosition2d;
+        private Position2D _secondaryWeaponPosition2d;
         private Position2D _cameraTargetPosition2d;
 
         private HealthComponent _healthComponent;
+
+        private Equipment[] _equippedItems = new Equipment[2];
+        private int _currentAttackingIndex = -1;
 
         private float _weaponRadius;
         private float _weaponHeight;
@@ -65,6 +70,7 @@ namespace GameFeel.GameObject
         {
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _weaponPosition2d = GetNode<Position2D>("WeaponPosition2D");
+            _secondaryWeaponPosition2d = GetNode<Position2D>("SecondaryWeaponPosition2D");
             _cameraTargetPosition2d = GetNode<Position2D>("CameraTargetPosition2D");
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
 
@@ -101,17 +107,27 @@ namespace GameFeel.GameObject
 
         public override void _UnhandledInput(InputEvent evt)
         {
-            if (evt.IsActionPressed(INPUT_ATTACK))
+            if (evt.IsActionPressed(INPUT_MAIN_ATTACK) || evt.IsActionPressed(INPUT_SECONDARY_ATTACK))
             {
-                GetTree().SetInputAsHandled();
-                _attacking = true;
-                EmitSignal(nameof(AttackStart), this);
+                if (_currentAttackingIndex == -1)
+                {
+                    _currentAttackingIndex = evt.IsActionPressed(INPUT_MAIN_ATTACK) ? 0 : 1;
+                    SwapToWeapon(_currentAttackingIndex);
+                    GetTree().SetInputAsHandled();
+                    _attacking = true;
+                    EmitSignal(nameof(AttackStart), this);
+                }
             }
-            else if (evt.IsActionReleased(INPUT_ATTACK))
+            else if (evt.IsActionReleased(INPUT_MAIN_ATTACK) || evt.IsActionReleased(INPUT_SECONDARY_ATTACK))
             {
-                GetTree().SetInputAsHandled();
-                _attacking = false;
-                EmitSignal(nameof(AttackEnd), this);
+                var checkIndex = evt.IsActionReleased(INPUT_MAIN_ATTACK) ? 0 : 1;
+                if (_currentAttackingIndex == checkIndex)
+                {
+                    _currentAttackingIndex = -1;
+                    GetTree().SetInputAsHandled();
+                    _attacking = false;
+                    EmitSignal(nameof(AttackEnd), this);
+                }
             }
         }
 
@@ -192,33 +208,65 @@ namespace GameFeel.GameObject
 
         private void UpdateEquipment()
         {
-            foreach (var equipment in PlayerInventory.EquipmentSlots)
+            for (int i = 0; i < PlayerInventory.EquipmentSlots.Length; i++)
             {
+                var equipment = PlayerInventory.EquipmentSlots[i];
                 if (equipment == null) continue;
 
                 var scene = PlayerInventory.CreateEquipmentScene(equipment);
                 if (IsInstanceValid(scene))
                 {
-                    EquipItem(scene);
+                    EquipItem(scene, i);
                 }
             }
         }
 
-        private void EquipItem(Equipment equipment)
+        private void EquipItem(Equipment equipment, int slot)
         {
-            // TODO: account for equipment slots here
-            foreach (var child in _weaponPosition2d.GetChildren<Node>())
+            if (IsInstanceValid(_equippedItems[slot]))
             {
-                child.GetParent().RemoveChild(child);
-                child.QueueFree();
+                _equippedItems[slot].GetParent().RemoveChild(_equippedItems[slot]);
+                _equippedItems[slot].QueueFree();
+                _equippedItems[slot] = null;
             }
-
-            _weaponPosition2d.AddChild(equipment);
+            _equippedItems[slot] = equipment;
+            SwapToWeapon(0);
         }
 
-        private void OnItemEquipped(Equipment equipment)
+        private void SwapToWeapon(int index)
         {
-            EquipItem(equipment);
+            if (_weaponPosition2d.GetChildren().Count > 0 && (_weaponPosition2d.GetChild(0) == _equippedItems[index] || !IsInstanceValid(_equippedItems[index])))
+            {
+                return;
+            }
+
+            foreach (var item in _equippedItems)
+            {
+                if (IsInstanceValid(item) && item.IsInsideTree())
+                {
+                    item.GetParent().RemoveChild(item);
+                }
+            }
+
+            var desiredWeapon = _equippedItems[index];
+            var secondWeapon = index + 1 > 1 ? _equippedItems[0] : _equippedItems[1];
+            if (IsInstanceValid(desiredWeapon))
+            {
+                _weaponPosition2d.AddChild(desiredWeapon);
+                if (IsInstanceValid(secondWeapon))
+                {
+                    _secondaryWeaponPosition2d.AddChild(secondWeapon);
+                }
+            }
+            else if (IsInstanceValid(secondWeapon))
+            {
+                _weaponPosition2d.AddChild(secondWeapon);
+            }
+        }
+
+        private void OnItemEquipped(Equipment equipment, int slot)
+        {
+            EquipItem(equipment, slot);
         }
 
         private void OnEquipmentCleared(int slotIdx)

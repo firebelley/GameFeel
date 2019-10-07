@@ -51,7 +51,7 @@ namespace GameFeel.Resource
         public override void _Process(float delta)
         {
             _cursorRoot.GlobalPosition = _cursorRoot.GetGlobalMousePosition();
-            if (Input.IsActionJustPressed("attack"))
+            if (Input.IsActionJustPressed("main_attack"))
             {
                 _animationPlayer.Stop();
                 _animationPlayer.Play(ANIM_DEFAULT);

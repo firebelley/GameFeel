@@ -12,8 +12,8 @@ ManaCost = 3.0
 texture = ExtResource( 2 )
 
 [node name="ProjectileSpawnComponent" parent="." index="2"]
+_speed = 250.0
 _angleDelta = 15.0
+_number = 5
 _maxDistance = 75.0
 _scene = ExtResource( 3 )
-_number = 5
-_speed = 250.0

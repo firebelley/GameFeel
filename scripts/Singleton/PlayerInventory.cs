@@ -16,7 +16,7 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void CurrencyChanged();
         [Signal]
-        public delegate void ItemEquipped(Equipment equipment);
+        public delegate void ItemEquipped(Equipment equipment, int slot);
         [Signal]
         public delegate void EquipmentCleared(int slot);
         [Signal]
@@ -57,6 +57,7 @@ namespace GameFeel.Singleton
             if (OS.IsDebugBuild())
             {
                 AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
+                AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
             }
         }
 
@@ -196,7 +197,10 @@ namespace GameFeel.Singleton
             if (IsItemEquippable(itemId))
             {
                 var equipmentMetadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
-                return equipmentMetadata.SlotIndex == slotIdx;
+                var hasSameSlotIndex = equipmentMetadata.SlotIndex == slotIdx;
+                var isWeaponSlotIndex = (slotIdx == 0 || slotIdx == 1) && (equipmentMetadata.SlotIndex == 0 || equipmentMetadata.SlotIndex == 1);
+                var equipmentItemMatchesSlot = hasSameSlotIndex || isWeaponSlotIndex;
+                return equipmentItemMatchesSlot;
             }
             return false;
         }
@@ -234,7 +238,7 @@ namespace GameFeel.Singleton
                     Instance.EmitSignal(nameof(EquipmentUpdated), slot);
 
                     var equipment = CreateEquipmentScene(EquipmentSlots[slot]);
-                    Instance.EmitSignal(nameof(ItemEquipped), equipment);
+                    Instance.EmitSignal(nameof(ItemEquipped), equipment, slot);
                 }
             }
         }

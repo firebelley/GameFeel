@@ -10,10 +10,6 @@ namespace GameFeel.GameObject
     public class Player : KinematicBody2D
     {
         [Signal]
-        public delegate void AttackStart(Player p);
-        [Signal]
-        public delegate void AttackEnd(Player p);
-        [Signal]
         public delegate void Attacking(Player p);
 
         public const string GROUP = "player";
@@ -38,12 +34,13 @@ namespace GameFeel.GameObject
         private AnimatedSprite _animatedSprite;
         private Position2D _weaponPosition2d;
         private Position2D _secondaryWeaponPosition2d;
+        private Node2D _secondaryWeapon;
         private Position2D _cameraTargetPosition2d;
 
         private HealthComponent _healthComponent;
 
         private Equipment[] _equippedItems = new Equipment[2];
-        private int _currentAttackingIndex = -1;
+        private bool[] _attackMouseButtons = new bool[2];
 
         private float _weaponRadius;
         private float _weaponHeight;
@@ -70,7 +67,8 @@ namespace GameFeel.GameObject
         {
             _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             _weaponPosition2d = GetNode<Position2D>("WeaponPosition2D");
-            _secondaryWeaponPosition2d = GetNode<Position2D>("SecondaryWeaponPosition2D");
+            _secondaryWeapon = GetNode<Node2D>("SecondaryWeapon");
+            _secondaryWeaponPosition2d = GetNode<Position2D>("SecondaryWeapon/SecondaryWeaponPosition2D");
             _cameraTargetPosition2d = GetNode<Position2D>("CameraTargetPosition2D");
             _healthComponent = GetNode<HealthComponent>("HealthComponent");
 
@@ -109,25 +107,27 @@ namespace GameFeel.GameObject
         {
             if (evt.IsActionPressed(INPUT_MAIN_ATTACK) || evt.IsActionPressed(INPUT_SECONDARY_ATTACK))
             {
-                if (_currentAttackingIndex == -1)
-                {
-                    _currentAttackingIndex = evt.IsActionPressed(INPUT_MAIN_ATTACK) ? 0 : 1;
-                    SwapToWeapon(_currentAttackingIndex);
-                    GetTree().SetInputAsHandled();
-                    _attacking = true;
-                    EmitSignal(nameof(AttackStart), this);
-                }
+                var buttonIndex = evt.IsActionPressed(INPUT_MAIN_ATTACK) ? 0 : 1;
+                _attackMouseButtons[buttonIndex] = true;
+                SwapToWeapon(buttonIndex);
+                GetTree().SetInputAsHandled();
+                _attacking = true;
             }
             else if (evt.IsActionReleased(INPUT_MAIN_ATTACK) || evt.IsActionReleased(INPUT_SECONDARY_ATTACK))
             {
-                var checkIndex = evt.IsActionReleased(INPUT_MAIN_ATTACK) ? 0 : 1;
-                if (_currentAttackingIndex == checkIndex)
+                var buttonIndex = evt.IsActionReleased(INPUT_MAIN_ATTACK) ? 0 : 1;
+                _attackMouseButtons[buttonIndex] = false;
+                GetTree().SetInputAsHandled();
+
+                for (int i = 0; i < _attackMouseButtons.Length; i++)
                 {
-                    _currentAttackingIndex = -1;
-                    GetTree().SetInputAsHandled();
-                    _attacking = false;
-                    EmitSignal(nameof(AttackEnd), this);
+                    if (_attackMouseButtons[i])
+                    {
+                        SwapToWeapon(i);
+                        return;
+                    }
                 }
+                _attacking = false;
             }
         }
 
@@ -196,6 +196,9 @@ namespace GameFeel.GameObject
             var weaponScale = _weaponPosition2d.Scale;
             weaponScale.y = Mathf.Sign(_animatedSprite.Scale.x);
             _weaponPosition2d.Scale = weaponScale;
+
+            _secondaryWeapon.Scale = _animatedSprite.Scale;
+            _secondaryWeaponPosition2d.Scale = new Vector2(-1, 1);
         }
 
         private Vector2 GetMovementVector()
@@ -230,7 +233,7 @@ namespace GameFeel.GameObject
                 _equippedItems[slot] = null;
             }
             _equippedItems[slot] = equipment;
-            SwapToWeapon(0);
+            PrepareWeapon(0);
         }
 
         private void SwapToWeapon(int index)
@@ -239,11 +242,16 @@ namespace GameFeel.GameObject
             {
                 return;
             }
+            PrepareWeapon(index);
+        }
 
+        private void PrepareWeapon(int index)
+        {
             foreach (var item in _equippedItems)
             {
                 if (IsInstanceValid(item) && item.IsInsideTree())
                 {
+                    item.DisconnectAllSignals(this);
                     item.GetParent().RemoveChild(item);
                 }
             }
@@ -253,6 +261,7 @@ namespace GameFeel.GameObject
             if (IsInstanceValid(desiredWeapon))
             {
                 _weaponPosition2d.AddChild(desiredWeapon);
+                desiredWeapon.ConnectSignals(this);
                 if (IsInstanceValid(secondWeapon))
                 {
                     _secondaryWeaponPosition2d.AddChild(secondWeapon);

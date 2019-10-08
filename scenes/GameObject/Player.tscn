@@ -51,16 +51,16 @@ _shadedNodePath = NodePath("../AnimatedSprite")
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource( 5 )]
-MaxHp = 10.0
 _damageReceiverComponentPath = NodePath("../DamageReceiverComponent")
+MaxHp = 10.0
 
 [node name="DamageReceiverComponent" parent="." instance=ExtResource( 6 )]
 position = Vector2( 0, -11 )
 collision_layer = 2
-_shape = SubResource( 2 )
 _showDamageNumber = false
 _cameraShakeMagnitude = 1.5
 _flashScreen = true
+_shape = SubResource( 2 )
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 7 )]
 position = Vector2( 0, -1 )
@@ -69,7 +69,7 @@ _radius = 7.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
 animation = "run"
-frame = 2
+frame = 1
 playing = true
 offset = Vector2( 0, -16 )
 
@@ -79,9 +79,12 @@ position = Vector2( 0, -16 )
 [node name="WeaponPosition2D" type="Position2D" parent="."]
 position = Vector2( 14, -11 )
 
-[node name="SecondaryWeaponPosition2D" type="Position2D" parent="."]
+[node name="SecondaryWeapon" type="Node2D" parent="."]
 show_behind_parent = true
-position = Vector2( -2, -13 )
+position = Vector2( 0, -12 )
+
+[node name="SecondaryWeaponPosition2D" type="Position2D" parent="SecondaryWeapon"]
+position = Vector2( -3, -9.53674e-007 )
 rotation = -0.261799
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

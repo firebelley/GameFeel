@@ -1,6 +1,5 @@
 using GameFeel.Component;
 using Godot;
-using GodotTools.Extension;
 
 namespace GameFeel.GameObject.Loot
 {
@@ -23,15 +22,15 @@ namespace GameFeel.GameObject.Loot
 
         public override void _Ready()
         {
-            var player = GetTree().GetFirstNodeInGroup<Player>(Player.GROUP);
-            if (player != null)
-            {
-                player.Connect(nameof(Player.Attacking), this, nameof(OnPlayerAttacking));
-            }
             _projectileSpawnComponent = GetNode<ProjectileSpawnComponent>("ProjectileSpawnComponent");
             _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
             _fireRateTimer = GetNode<Timer>("FireRateTimer");
             _fireRateTimer.WaitTime = 1f / FireRate;
+        }
+
+        public void ConnectSignals(Player player)
+        {
+            player.Connect(nameof(Player.Attacking), this, nameof(OnPlayerAttacking));
         }
 
         private void Fire()

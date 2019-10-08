@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/art/spider1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Effect/EntityDeath.cs" type="Script" id=2]
 
-[sub_resource type="Shader" id=7]
+[sub_resource type="Shader" id=1]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -15,9 +15,9 @@ void fragment() {
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=8]
+[sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = SubResource( 7 )
+shader = SubResource( 1 )
 shader_param/u_percentage = 0.0
 
 [sub_resource type="Curve" id=3]
@@ -29,11 +29,11 @@ curve = SubResource( 3 )
 
 [sub_resource type="ParticlesMaterial" id=5]
 flag_disable_z = true
-spread = 35.0
+spread = 15.0
 gravity = Vector3( 0, 600, 0 )
 initial_velocity = 150.0
 angular_velocity = 1000.0
-angular_velocity_random = 0.25
+angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale_curve = SubResource( 4 )
@@ -69,7 +69,7 @@ tracks/1/keys = {
 }
 
 [node name="EntityDeath" type="Particles2D"]
-material = SubResource( 8 )
+material = SubResource( 2 )
 rotation = -1.5708
 emitting = false
 amount = 1

@@ -77,8 +77,7 @@ namespace GameFeel.GameObject
 
             AddToGroup(GROUP);
 
-            PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemEquipped), this, nameof(OnItemEquipped));
-            PlayerInventory.Instance.Connect(nameof(PlayerInventory.EquipmentCleared), this, nameof(OnEquipmentCleared));
+            PlayerInventory.Instance.Connect(nameof(PlayerInventory.EquipmentUpdated), this, nameof(OnEquipmentUpdated));
             _healthComponent.Connect(nameof(HealthComponent.HealthDepleted), this, nameof(OnHealthDepleted));
             _healthComponent.Connect(nameof(HealthComponent.HealthDecremented), this, nameof(OnHealthDecremented));
 
@@ -215,16 +214,11 @@ namespace GameFeel.GameObject
             {
                 var equipment = PlayerInventory.EquipmentSlots[i];
                 if (equipment == null) continue;
-
-                var scene = PlayerInventory.CreateEquipmentScene(equipment);
-                if (IsInstanceValid(scene))
-                {
-                    EquipItem(scene, i);
-                }
+                EquipItem(i);
             }
         }
 
-        private void EquipItem(Equipment equipment, int slot)
+        private void EquipItem(int slot)
         {
             if (IsInstanceValid(_equippedItems[slot]))
             {
@@ -232,7 +226,7 @@ namespace GameFeel.GameObject
                 _equippedItems[slot].QueueFree();
                 _equippedItems[slot] = null;
             }
-            _equippedItems[slot] = equipment;
+            _equippedItems[slot] = PlayerInventory.CreateEquipmentScene(PlayerInventory.EquipmentSlots[slot]);
             PrepareWeapon(0);
         }
 
@@ -276,14 +270,9 @@ namespace GameFeel.GameObject
             equippedWeapon?.ConnectSignals(this);
         }
 
-        private void OnItemEquipped(Equipment equipment, int slot)
+        private void OnEquipmentUpdated(int slot)
         {
-            EquipItem(equipment, slot);
-        }
-
-        private void OnEquipmentCleared(int slotIdx)
-        {
-            EquipItem(null, slotIdx);
+            EquipItem(slot);
         }
 
         private void OnHealthDepleted()

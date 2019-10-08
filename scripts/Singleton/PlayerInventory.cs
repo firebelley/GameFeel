@@ -16,10 +16,6 @@ namespace GameFeel.Singleton
         [Signal]
         public delegate void CurrencyChanged();
         [Signal]
-        public delegate void ItemEquipped(Equipment equipment, int slot);
-        [Signal]
-        public delegate void EquipmentCleared(int slot);
-        [Signal]
         public delegate void EquipmentUpdated(int slotIdx);
 
         private const int MAX_SIZE = 25;
@@ -222,7 +218,6 @@ namespace GameFeel.Singleton
                 }
                 EquipmentSlots[slot] = null;
                 Instance.EmitSignal(nameof(EquipmentUpdated), slot);
-                Instance.EmitSignal(nameof(EquipmentCleared), slot);
             }
             else if (ItemCanBeSlotted(item.Id, slot))
             {
@@ -236,9 +231,6 @@ namespace GameFeel.Singleton
                     }
                     EquipmentSlots[slot] = InventoryItem.FromMetadata(equipmentMetadata);
                     Instance.EmitSignal(nameof(EquipmentUpdated), slot);
-
-                    var equipment = CreateEquipmentScene(EquipmentSlots[slot]);
-                    Instance.EmitSignal(nameof(ItemEquipped), equipment, slot);
                 }
             }
         }
@@ -268,6 +260,11 @@ namespace GameFeel.Singleton
 
         public static Equipment CreateEquipmentScene(InventoryItem inventoryItem)
         {
+            if (inventoryItem == null)
+            {
+                return null;
+            }
+
             if (!MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(inventoryItem.Id))
             {
                 Logger.Error("Attempted to create equipment that doesn't exist");
@@ -277,6 +274,18 @@ namespace GameFeel.Singleton
             var equipmentScene = GD.Load(equipmentMetadata.ResourcePath) as PackedScene;
             var equipment = equipmentScene.Instance() as Equipment;
             return equipment;
+        }
+
+        public static void SwapEquipmentItems(int fromIdx, int toIdx)
+        {
+            var item1 = EquipmentSlots[fromIdx];
+            var item2 = EquipmentSlots[toIdx];
+
+            EquipmentSlots[toIdx] = item1;
+            Instance.EmitSignal(nameof(EquipmentUpdated), toIdx);
+
+            EquipmentSlots[fromIdx] = item2;
+            Instance.EmitSignal(nameof(EquipmentUpdated), fromIdx);
         }
 
         private void OnItemUpdated(int idx)

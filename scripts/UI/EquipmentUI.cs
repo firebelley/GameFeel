@@ -109,11 +109,8 @@ namespace GameFeel.UI
             }
             else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT && Cursor.DragIndex > -1)
             {
-                if (Cursor.DragIndex == slotIdx)
-                {
-                    inventoryCell.SetInventoryItem(Cursor.Dragging);
-                    Cursor.ClearDragSelection();
-                }
+                PlayerInventory.SwapEquipmentItems(Cursor.DragIndex, slotIdx);
+                Cursor.ClearDragSelection();
             }
             else if (PlayerInventory.EquipmentSlots[slotIdx] != null)
             {

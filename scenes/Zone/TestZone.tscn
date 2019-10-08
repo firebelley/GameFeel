@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/GameObject/SpiderQueen.tscn" type="PackedScene" id=11]
 
-[node name="TestZone" index="0" instance=ExtResource( 1 )]
+[node name="TestZone" instance=ExtResource( 1 )]
 Id = "267df08a-63fb-54da-9e30-ac39612ac708"
 DisplayName = "Test Zone"
 

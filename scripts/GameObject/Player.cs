@@ -258,10 +258,11 @@ namespace GameFeel.GameObject
 
             var desiredWeapon = _equippedItems[index];
             var secondWeapon = index + 1 > 1 ? _equippedItems[0] : _equippedItems[1];
+            Equipment equippedWeapon = null;
             if (IsInstanceValid(desiredWeapon))
             {
                 _weaponPosition2d.AddChild(desiredWeapon);
-                desiredWeapon.ConnectSignals(this);
+                equippedWeapon = desiredWeapon;
                 if (IsInstanceValid(secondWeapon))
                 {
                     _secondaryWeaponPosition2d.AddChild(secondWeapon);
@@ -269,8 +270,10 @@ namespace GameFeel.GameObject
             }
             else if (IsInstanceValid(secondWeapon))
             {
+                equippedWeapon = secondWeapon;
                 _weaponPosition2d.AddChild(secondWeapon);
             }
+            equippedWeapon?.ConnectSignals(this);
         }
 
         private void OnItemEquipped(Equipment equipment, int slot)
@@ -280,11 +283,7 @@ namespace GameFeel.GameObject
 
         private void OnEquipmentCleared(int slotIdx)
         {
-            foreach (var child in _weaponPosition2d.GetChildren<Node>())
-            {
-                child.GetParent().RemoveChild(child);
-                child.QueueFree();
-            }
+            EquipItem(null, slotIdx);
         }
 
         private void OnHealthDepleted()

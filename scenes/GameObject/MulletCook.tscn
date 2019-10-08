@@ -111,8 +111,8 @@ Text = "So in a roundabout way, you did what was asked of ya. I don't like your 
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
 material = SubResource( 1 )
-_requirePlayerNear = true
 _shadedNodePath = NodePath("../AnimatedSprite")
+_requirePlayerNear = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 position = Vector2( 0, -12 )
@@ -120,6 +120,5 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 3
 playing = true
 offset = Vector2( 0, -13 )

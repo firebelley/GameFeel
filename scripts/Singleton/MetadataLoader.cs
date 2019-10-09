@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using GameFeel.Component;
+using GameFeel.Data.Model;
 using GameFeel.GameObject.Loot;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Util;
+using Newtonsoft.Json;
 
 namespace GameFeel.Singleton
 {
@@ -17,6 +19,7 @@ namespace GameFeel.Singleton
         public static Dictionary<string, Metadata> EntityIdToMetadata = new Dictionary<string, Metadata>();
         public static Dictionary<string, EquipmentMetadata> LootItemIdToEquipmentMetadata = new Dictionary<string, EquipmentMetadata>();
         public static Dictionary<string, Metadata> ZoneIdToMetadata = new Dictionary<string, Metadata>();
+        public static Dictionary<string, QuestMetadata> QuestFileToMetadata = new Dictionary<string, QuestMetadata>();
 
         public class Metadata
         {
@@ -44,6 +47,16 @@ namespace GameFeel.Singleton
             }
         }
 
+        public class QuestMetadata : Metadata
+        {
+            public QuestSaveModel QuestSaveModel { get; private set; }
+
+            public QuestMetadata(string id, string displayName, string resourcePath, Texture icon, QuestSaveModel questSaveModel) : base(id, displayName, resourcePath, icon)
+            {
+                QuestSaveModel = questSaveModel;
+            }
+        }
+
         private delegate void FullPathLoader(string fullPath);
 
         public override void _Ready()
@@ -53,6 +66,7 @@ namespace GameFeel.Singleton
 
         private void LoadMetadata()
         {
+            LoadScenesInDir("res://resources/quests/", LoadQuest);
             LoadScenesInDir("res://scenes/GameObject/Loot/", LoadItem);
             LoadScenesInDir("res://scenes/GameObject/", LoadEntity);
             LoadScenesInDir("res://scenes/GameObject/Environment/", LoadEntity);
@@ -79,7 +93,7 @@ namespace GameFeel.Singleton
                     break;
                 }
 
-                if (path.EndsWith(".tscn"))
+                if (path.EndsWith(".tscn") || path.EndsWith(".quest"))
                 {
                     fullPathLoader(dirPath + path);
                 }
@@ -141,6 +155,34 @@ namespace GameFeel.Singleton
                 ZoneIdToMetadata[zone.Id] = info;
             }
             node.QueueFree();
+        }
+
+        private void LoadQuest(string fullPath)
+        {
+            var file = new File();
+            var err = file.OpenCompressed(fullPath, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
+            if (err != Error.Ok)
+            {
+                Logger.Error("Could not load quest " + fullPath + " error code " + err);
+                file.Close();
+                return;
+            }
+            var json = file.GetAsText();
+            file.Close();
+            var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
+            if (saveModel != null)
+            {
+                if (QuestFileToMetadata.ContainsKey(fullPath))
+                {
+                    Logger.Error("Quests already has file " + fullPath);
+                }
+                var metadata = new QuestMetadata(saveModel.Start.Id, fullPath, fullPath, null, saveModel);
+                QuestFileToMetadata[fullPath] = metadata;
+            }
+            else
+            {
+                Logger.Error("Could not deserialize quest " + fullPath);
+            }
         }
     }
 }

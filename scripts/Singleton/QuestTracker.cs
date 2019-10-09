@@ -5,7 +5,6 @@ using GameFeel.Resource;
 using Godot;
 using GodotTools.Extension;
 using GodotTools.Util;
-using Newtonsoft.Json;
 
 namespace GameFeel.Singleton
 {
@@ -20,7 +19,6 @@ namespace GameFeel.Singleton
 
         public static QuestTracker Instance { get; private set; }
 
-        private static Dictionary<string, QuestSaveModel> _quests = new Dictionary<string, QuestSaveModel>();
         private static HashSet<string> _activeQuests = new HashSet<string>();
         private static HashSet<string> _completedQuests = new HashSet<string>();
 
@@ -30,12 +28,11 @@ namespace GameFeel.Singleton
         {
             Instance = this;
             _questScene = GD.Load(QUEST_NODE_PATH) as PackedScene;
-            LoadQuests();
         }
 
         public static void StartQuest(string questPath)
         {
-            if (_quests.ContainsKey(questPath))
+            if (MetadataLoader.QuestFileToMetadata.ContainsKey(questPath))
             {
                 if (!IsQuestAvailable(questPath))
                 {
@@ -44,7 +41,7 @@ namespace GameFeel.Singleton
                 var quest = _questScene.Instance() as Quest;
 
                 _activeQuests.Add(questPath);
-                quest.SetModel(_quests[questPath]);
+                quest.SetModel(MetadataLoader.QuestFileToMetadata[questPath].QuestSaveModel);
 
                 Instance.AddChild(quest);
                 Instance.EmitSignal(nameof(PreQuestStarted), quest);
@@ -76,64 +73,6 @@ namespace GameFeel.Singleton
         public static bool IsQuestCompleted(string questGuid)
         {
             return _completedQuests.Contains(questGuid);
-        }
-
-        private void LoadQuests()
-        {
-            _quests.Clear();
-            var dir = new Directory();
-            var err = dir.Open(QUESTS_PATH);
-            if (err != Error.Ok)
-            {
-                Logger.Error("Could not load quests code " + (int) err);
-                return;
-            }
-
-            dir.ListDirBegin();
-
-            while (true)
-            {
-                var path = dir.GetNext();
-                if (string.IsNullOrEmpty(path))
-                {
-                    break;
-                }
-
-                if (path.EndsWith(QUEST_EXTENSION))
-                {
-                    LoadQuest(path);
-                }
-            }
-
-            dir.ListDirEnd();
-        }
-
-        private void LoadQuest(string fileName)
-        {
-            var fullPath = QUESTS_PATH + fileName;
-            var file = new File();
-            var err = file.OpenCompressed(fullPath, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
-            if (err != Error.Ok)
-            {
-                Logger.Error("Could not load quest " + fileName + " error code " + err);
-                file.Close();
-                return;
-            }
-            var json = file.GetAsText();
-            file.Close();
-            var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
-            if (saveModel != null)
-            {
-                if (_quests.ContainsKey(fullPath))
-                {
-                    Logger.Error("Quests already has file " + fullPath);
-                }
-                _quests[fullPath] = saveModel;
-            }
-            else
-            {
-                Logger.Error("Could not deserialize quest " + fileName);
-            }
         }
 
         private void OnQuestCompleted(Quest quest, string modelId)

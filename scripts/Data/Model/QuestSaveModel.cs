@@ -20,6 +20,11 @@ namespace GameFeel.Data.Model
         {
             get
             {
+                if (_idToModelMap != null)
+                {
+                    return _idToModelMap;
+                }
+
                 var dict = new Dictionary<string, QuestModel>();
                 List<QuestModel> questModels = new List<QuestModel>();
                 questModels.AddRange(Stages);
@@ -28,9 +33,13 @@ namespace GameFeel.Data.Model
                 questModels.AddRange(Rewards);
                 questModels.Add(Start);
                 questModels.ForEach(x => dict.Add(x.Id, x));
-                return dict;
+                _idToModelMap = dict;
+                return _idToModelMap;
             }
         }
+
+        [JsonIgnore]
+        private Dictionary<string, QuestModel> _idToModelMap;
 
         public void AddRightConnection(string fromId, string toId, int fromPort, int toPort)
         {

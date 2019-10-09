@@ -4,35 +4,21 @@ using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
 using GodotTools.Extension;
-using GodotTools.Util;
 
 namespace GameFeel.Resource
 {
-    public class Quest : Node
+    public class Quest
     {
-        [Signal]
-        public delegate void QuestStageStarted(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestStarted(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestEventCompleted(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestEventStarted(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestCompleted(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestEventProgress(Quest quest, string modelGuid);
-        [Signal]
-        public delegate void QuestModelActivated(Quest quest, string modelGuid);
-
+        public MetadataLoader.QuestMetadata Metadata { get; private set; }
         private QuestSaveModel _questSaveModel;
         private Dictionary<string, QuestModel> _idToModelMap;
         private HashSet<QuestModel> _activeModels = new HashSet<QuestModel>();
         private Dictionary<string, int> _eventProgress = new Dictionary<string, int>();
 
-        public override void _Ready()
+        public Quest(string questPath)
         {
-
+            Metadata = MetadataLoader.QuestFileToMetadata[questPath];
+            _questSaveModel = Metadata.QuestSaveModel;
         }
 
         public static bool IsQuestEventReadyForCompletion(QuestModel questModel)
@@ -48,12 +34,6 @@ namespace GameFeel.Resource
             return false;
         }
 
-        public void SetModel(QuestSaveModel questSaveModel)
-        {
-            _questSaveModel = questSaveModel;
-            _idToModelMap = _questSaveModel.IdToModelMap;
-        }
-
         public List<QuestRewardModel> GetRewards(string modelId)
         {
             if (_questSaveModel.RightConnections.ContainsKey(modelId))
@@ -66,13 +46,13 @@ namespace GameFeel.Resource
             return new List<QuestRewardModel>();
         }
 
+        public IEnumerable<QuestEventModel> GetActiveQuestEventModels(string eventGuid)
+        {
+            return _activeModels.Select(x => x as QuestEventModel).Where(x => x != null && x.EventId == eventGuid);
+        }
+
         public void Start()
         {
-            if (_questSaveModel == null)
-            {
-                Logger.Error("No quest save model set before starting!");
-                return;
-            }
             Activate(_questSaveModel.Start);
         }
 
@@ -100,6 +80,21 @@ namespace GameFeel.Resource
             return 0;
         }
 
+        public void SetEventProgress(QuestEventModel eventModel, int amount)
+        {
+            _eventProgress[eventModel.Id] = Mathf.Clamp(amount, 0, eventModel.Required);
+        }
+
+        public void IncrementEventProgress(QuestEventModel eventModel)
+        {
+            IncrementEventProgress(eventModel, 1);
+        }
+
+        public void IncrementEventProgress(QuestEventModel eventModel, int amount)
+        {
+            _eventProgress[eventModel.Id] = Mathf.Clamp(_eventProgress[eventModel.Id] + amount, 0, eventModel.Required);
+        }
+
         public QuestModel GetActiveModel(string modelId)
         {
             return _activeModels.FirstOrDefault(x => x.Id == modelId);
@@ -118,8 +113,7 @@ namespace GameFeel.Resource
             }
             else if (model is QuestEventModel qem)
             {
-                EmitSignal(nameof(QuestEventStarted), this, qem.Id);
-                InitializeEvent(qem);
+                QuestTracker.Instance.EmitSignal(nameof(QuestTracker.QuestEventStarted), Metadata.ResourcePath, model.Id);
             }
             else if (model is QuestCompleteModel qcm)
             {
@@ -128,7 +122,7 @@ namespace GameFeel.Resource
             EmitSignal(nameof(QuestModelActivated), this, model.Id);
         }
 
-        private void AdvanceFromModel(QuestModel model)
+        public void AdvanceFromModel(QuestModel model)
         {
             _activeModels.Remove(model);
 
@@ -164,82 +158,9 @@ namespace GameFeel.Resource
             }
         }
 
-        private void InitializeEvent(QuestEventModel eventModel)
-        {
-            _eventProgress[eventModel.Id] = 0;
-            switch (eventModel.EventId)
-            {
-                case GameEventDispatcher.PLAYER_INVENTORY_ITEM_UPDATED:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInventoryItemUpdated), this, nameof(CheckInventoryItemUpdatedCompletion));
-                    CheckInventoryItemUpdatedCompletion(eventModel.EventId, eventModel.ItemId);
-                    break;
-                case GameEventDispatcher.ENTITY_KILLED:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityKilled), this, nameof(CheckEntityKilledCompletion));
-                    break;
-                case GameEventDispatcher.ITEM_TURNED_IN:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventItemTurnedIn), this, nameof(CheckTurnInCompletion));
-                    break;
-                case GameEventDispatcher.ENTITY_ENGAGED:
-                    GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityEngaged), this, nameof(CheckEntityEngagedCompletion));
-                    break;
-            }
-        }
-
         private void Complete(QuestCompleteModel questComplete)
         {
             EmitSignal(nameof(QuestCompleted), this, questComplete.Id);
-            QueueFree();
-        }
-
-        private void CheckInventoryItemUpdatedCompletion(string eventGuid, string itemId)
-        {
-            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == itemId).Select(x => x as QuestEventModel).FirstOrDefault();
-            if (evt != null && _eventProgress.ContainsKey(evt.Id))
-            {
-                var count = Mathf.Clamp(PlayerInventory.GetItemCount(itemId), 0, evt.Required);
-                _eventProgress[evt.Id] = count;
-                EmitSignal(nameof(QuestEventProgress), this, evt.Id);
-                if (count == evt.Required)
-                {
-                    AdvanceFromModel(evt);
-                }
-            }
-        }
-
-        private void CheckEntityKilledCompletion(string eventGuid, string entityId)
-        {
-            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == entityId).Select(x => x as QuestEventModel).FirstOrDefault();
-            if (evt != null && _eventProgress.ContainsKey(evt.Id))
-            {
-                _eventProgress[evt.Id]++;
-                EmitSignal(nameof(QuestEventProgress), this, evt.Id);
-                if (_eventProgress[evt.Id] == evt.Required)
-                {
-                    AdvanceFromModel(evt);
-                }
-            }
-        }
-
-        private void CheckTurnInCompletion(string eventGuid, string modelId, string itemId, int amount)
-        {
-            var evt = _activeModels.Where(x => x is QuestEventModel && x.Id == modelId).Select(x => x as QuestEventModel).FirstOrDefault();
-            if (evt != null && _eventProgress.ContainsKey(evt.Id))
-            {
-                _eventProgress[evt.Id] += amount;
-                if (_eventProgress[evt.Id] == evt.Required)
-                {
-                    AdvanceFromModel(evt);
-                }
-            }
-        }
-
-        private void CheckEntityEngagedCompletion(string eventGuid, string entityId)
-        {
-            var evt = _activeModels.Where(x => x is QuestEventModel qem && qem.EventId == eventGuid && qem.ItemId == entityId).FirstOrDefault();
-            if (evt != null)
-            {
-                AdvanceFromModel(evt);
-            }
         }
     }
 }

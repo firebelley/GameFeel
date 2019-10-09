@@ -36,8 +36,8 @@ animations = [ {
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
 Id = "e98d8232-398a-53e9-8b3d-ad35758d8e08"
-_selectableComponentPath = NodePath("../SelectableComponent")
 DisplayName = "Mullet Cook"
+_selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
@@ -71,7 +71,7 @@ Text = "I'm over here tryin' to make my famous Spider Leg Soup, and not one of y
 Text = "Fetch me ten spider legs. And why don't ya kill twenty in total as payment for keepin' me waitin'."
 
 [node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegSoup/DialogueLine2" instance=ExtResource( 6 )]
-_questId = "388998cb-c2c9-43ae-9a5f-de1c450fef5d"
+_questFile = "res://resources/quests/SpiderLegSoup.quest"
 
 [node name="TurnInSpiderLegs" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "Turn in Spider Legs"
@@ -93,7 +93,7 @@ Text = "Ack! The spider legs were no good. Probably 'cause you touched 'em with 
 Text = "Go find a better source of spider legs. Once you do, bring me those instead!"
 
 [node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegsSpoiled/DialogueLine2" instance=ExtResource( 6 )]
-_questId = "e7567d20-8f70-46be-9eb1-003d548e48bb"
+_questFile = "res://resources/quests/SpiderLegsSpoiled.quest"
 
 [node name="ReturnQueenHead" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "Spider Queen's Head"
@@ -120,5 +120,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
+frame = 2
 playing = true
 offset = Vector2( 0, -13 )

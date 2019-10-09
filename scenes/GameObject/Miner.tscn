@@ -27,9 +27,9 @@ height = 15.0
 [node name="Miner" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
+Id = "7c326523-1892-5490-abb3-d2f00193663f"
 DisplayName = "Miner"
 _selectableComponentPath = NodePath("../SelectableComponent")
-Id = "7c326523-1892-5490-abb3-d2f00193663f"
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -16 )
@@ -38,7 +38,6 @@ _selectableComponentPath = NodePath("../SelectableComponent")
 _entityDataComponentPath = NodePath("../EntityDataComponent")
 
 [node name="Trapped" parent="DialogueComponent" instance=ExtResource( 3 )]
-editor/display_folded = true
 Title = "Trapped"
 ShowImmediately = true
 
@@ -49,11 +48,10 @@ Text = "Ah you're trapped here too!"
 Text = "I found this while I was down here, I have no idea how to make it work!"
 
 [node name="DialogueLine3" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
-editor/display_folded = true
 Text = "If you can figure out how to use it you can keep it."
 
 [node name="QuestStarterComponent" parent="DialogueComponent/Trapped/DialogueLine3" instance=ExtResource( 5 )]
-_questId = "0e0417bb-8c88-4edc-8f56-ffab87e34d62"
+_questFile = "res://resources/quests/Tutorial.quest"
 
 [node name="Tutorial" parent="DialogueComponent" instance=ExtResource( 3 )]
 Title = "How-To"

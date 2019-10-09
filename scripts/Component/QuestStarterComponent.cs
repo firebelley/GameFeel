@@ -6,8 +6,8 @@ namespace GameFeel.Component
     [Tool]
     public class QuestStarterComponent : Node
     {
-        [Export]
-        private string _questId;
+        [Export(PropertyHint.File, "*.quest")]
+        private string _questFile;
         [Export]
         private NodePath _selectableComponentPath;
 
@@ -21,12 +21,12 @@ namespace GameFeel.Component
 
         public void StartQuest()
         {
-            QuestTracker.StartQuest(_questId);
+            QuestTracker.StartQuest(_questFile);
         }
 
         public bool IsQuestAvailable()
         {
-            return QuestTracker.IsQuestAvailable(_questId);
+            return QuestTracker.IsQuestAvailable(_questFile);
         }
 
         private void OnSelected()

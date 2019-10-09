@@ -33,18 +33,18 @@ namespace GameFeel.Singleton
             LoadQuests();
         }
 
-        public static void StartQuest(string questGuid)
+        public static void StartQuest(string questPath)
         {
-            if (_quests.ContainsKey(questGuid))
+            if (_quests.ContainsKey(questPath))
             {
-                if (!IsQuestAvailable(questGuid))
+                if (!IsQuestAvailable(questPath))
                 {
                     return;
                 }
                 var quest = _questScene.Instance() as Quest;
 
-                _activeQuests.Add(questGuid);
-                quest.SetModel(_quests[questGuid]);
+                _activeQuests.Add(questPath);
+                quest.SetModel(_quests[questPath]);
 
                 Instance.AddChild(quest);
                 Instance.EmitSignal(nameof(PreQuestStarted), quest);
@@ -54,7 +54,7 @@ namespace GameFeel.Singleton
             }
             else
             {
-                Logger.Error("No quest with id " + questGuid + " exists");
+                Logger.Error("No quest with path " + questPath + " exists");
             }
         }
 
@@ -68,9 +68,9 @@ namespace GameFeel.Singleton
             return Instance.GetChildren<Quest>().FirstOrDefault(x => x.ContainsModelId(modelId));
         }
 
-        public static bool IsQuestAvailable(string questGuid)
+        public static bool IsQuestAvailable(string questFile)
         {
-            return !_activeQuests.Contains(questGuid) && !IsQuestCompleted(questGuid);
+            return !_activeQuests.Contains(questFile) && !IsQuestCompleted(questFile);
         }
 
         public static bool IsQuestCompleted(string questGuid)
@@ -110,8 +110,9 @@ namespace GameFeel.Singleton
 
         private void LoadQuest(string fileName)
         {
+            var fullPath = QUESTS_PATH + fileName;
             var file = new File();
-            var err = file.OpenCompressed(QUESTS_PATH + fileName, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
+            var err = file.OpenCompressed(fullPath, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
             if (err != Error.Ok)
             {
                 Logger.Error("Could not load quest " + fileName + " error code " + err);
@@ -123,11 +124,11 @@ namespace GameFeel.Singleton
             var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
             if (saveModel != null)
             {
-                if (_quests.ContainsKey(saveModel.Start.Id))
+                if (_quests.ContainsKey(fullPath))
                 {
-                    Logger.Error("Quests already has key " + saveModel.Start.Id);
+                    Logger.Error("Quests already has file " + fullPath);
                 }
-                _quests[saveModel.Start.Id] = saveModel;
+                _quests[fullPath] = saveModel;
             }
             else
             {

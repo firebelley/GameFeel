@@ -51,7 +51,7 @@ Text = "I found this while I was down here, I have no idea how to make it work!"
 Text = "If you can figure out how to use it you can keep it."
 
 [node name="QuestStarterComponent" parent="DialogueComponent/Trapped/DialogueLine3" instance=ExtResource( 5 )]
-_questFile = "res://resources/quests/Tutorial.quest"
+_questFile = "res://resources/quests/Trapped.quest"
 
 [node name="Tutorial" parent="DialogueComponent" instance=ExtResource( 3 )]
 Title = "How-To"

@@ -37,9 +37,9 @@ namespace GameFeel.Component
 
         private void InitialCheck()
         {
-            if (QuestTracker.GetActiveModel(_questModelId) != null)
+            if (QuestTracker.GetActiveModel(_questModelId) != null || QuestTracker.IsModelIdComplete(_questModelId))
             {
-                Trigger();
+                CallDeferred(nameof(Trigger));
             }
         }
 

@@ -24,16 +24,13 @@ namespace GameFeel.Resource
         public delegate void QuestEventProgress(Quest quest, string modelGuid);
         [Signal]
         public delegate void QuestModelActivated(Quest quest, string modelGuid);
+        [Signal]
+        public delegate void QuestModelDeactivated(Quest quest, string modelGuid);
 
-        private QuestSaveModel _questSaveModel;
-        private Dictionary<string, QuestModel> _idToModelMap;
+        public QuestSaveModel QuestSaveModel { get; private set; }
+        private MetadataLoader.QuestMetadata Metadata;
         private HashSet<QuestModel> _activeModels = new HashSet<QuestModel>();
         private Dictionary<string, int> _eventProgress = new Dictionary<string, int>();
-
-        public override void _Ready()
-        {
-
-        }
 
         public static bool IsQuestEventReadyForCompletion(QuestModel questModel)
         {
@@ -48,18 +45,18 @@ namespace GameFeel.Resource
             return false;
         }
 
-        public void SetModel(QuestSaveModel questSaveModel)
+        public void LoadQuest(string questPath)
         {
-            _questSaveModel = questSaveModel;
-            _idToModelMap = _questSaveModel.IdToModelMap;
+            Metadata = MetadataLoader.QuestFileToMetadata[questPath];
+            QuestSaveModel = Metadata.QuestSaveModel;
         }
 
         public List<QuestRewardModel> GetRewards(string modelId)
         {
-            if (_questSaveModel.RightConnections.ContainsKey(modelId))
+            if (QuestSaveModel.RightConnections.ContainsKey(modelId))
             {
-                return _questSaveModel.RightConnections[modelId]
-                    .Select(x => _idToModelMap[x] as QuestRewardModel)
+                return QuestSaveModel.RightConnections[modelId]
+                    .Select(x => QuestSaveModel.IdToModelMap[x] as QuestRewardModel)
                     .Where(x => x != null)
                     .ToList();
             }
@@ -68,27 +65,22 @@ namespace GameFeel.Resource
 
         public void Start()
         {
-            if (_questSaveModel == null)
+            if (QuestSaveModel == null)
             {
                 Logger.Error("No quest save model set before starting!");
                 return;
             }
-            Activate(_questSaveModel.Start);
-        }
-
-        public QuestSaveModel GetQuestSaveModel()
-        {
-            return _questSaveModel;
+            Activate(QuestSaveModel.Start);
         }
 
         public bool ContainsModelId(string modelId)
         {
-            return _idToModelMap.ContainsKey(modelId);
+            return QuestSaveModel.IdToModelMap.ContainsKey(modelId);
         }
 
         public QuestModel GetQuestModel(string modelId)
         {
-            return _idToModelMap[modelId];
+            return QuestSaveModel.IdToModelMap[modelId];
         }
 
         public int GetEventProgress(string modelId)
@@ -131,6 +123,7 @@ namespace GameFeel.Resource
         private void AdvanceFromModel(QuestModel model)
         {
             _activeModels.Remove(model);
+            EmitSignal(nameof(QuestModelDeactivated), this, model.Id);
 
             if (_activeModels.Count > 0)
             {
@@ -154,11 +147,11 @@ namespace GameFeel.Resource
                 EmitSignal(nameof(QuestStageStarted), this, model.Id);
             }
 
-            if (_questSaveModel.RightConnections.ContainsKey(model.Id))
+            if (QuestSaveModel.RightConnections.ContainsKey(model.Id))
             {
-                foreach (var rightConnectionId in _questSaveModel.RightConnections[model.Id])
+                foreach (var rightConnectionId in QuestSaveModel.RightConnections[model.Id])
                 {
-                    var toModel = _idToModelMap[rightConnectionId];
+                    var toModel = QuestSaveModel.IdToModelMap[rightConnectionId];
                     Activate(toModel);
                 }
             }

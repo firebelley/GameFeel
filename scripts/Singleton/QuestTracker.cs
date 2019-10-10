@@ -10,8 +10,6 @@ namespace GameFeel.Singleton
 {
     public class QuestTracker : Node
     {
-        private const string QUESTS_PATH = "res://resources/quests/";
-        private const string QUEST_EXTENSION = ".quest";
         private const string QUEST_NODE_PATH = "res://scenes/Resource/Quest.tscn";
 
         [Signal]
@@ -19,8 +17,10 @@ namespace GameFeel.Singleton
 
         public static QuestTracker Instance { get; private set; }
 
-        private static HashSet<string> _activeQuests = new HashSet<string>();
-        private static HashSet<string> _completedQuests = new HashSet<string>();
+        private static HashSet<string> _activeQuestIds = new HashSet<string>();
+        private static HashSet<string> _completedQuestIds = new HashSet<string>();
+        private static HashSet<string> _completedModelIds = new HashSet<string>();
+        private static HashSet<QuestModel> _activeQuestModels = new HashSet<QuestModel>();
 
         private static PackedScene _questScene;
 
@@ -40,13 +40,15 @@ namespace GameFeel.Singleton
                 }
                 var quest = _questScene.Instance() as Quest;
 
-                _activeQuests.Add(questPath);
-                quest.SetModel(MetadataLoader.QuestFileToMetadata[questPath].QuestSaveModel);
+                quest.LoadQuest(questPath);
+                _activeQuestIds.Add(quest.QuestSaveModel.Start.Id);
 
                 Instance.AddChild(quest);
-                Instance.EmitSignal(nameof(PreQuestStarted), quest);
-
                 quest.Connect(nameof(Quest.QuestCompleted), Instance, nameof(OnQuestCompleted));
+                quest.Connect(nameof(Quest.QuestModelActivated), Instance, nameof(OnQuestModelActivated));
+                quest.Connect(nameof(Quest.QuestModelDeactivated), Instance, nameof(OnQuestModelDeactivated));
+
+                Instance.EmitSignal(nameof(PreQuestStarted), quest);
                 quest.Start();
             }
             else
@@ -57,7 +59,12 @@ namespace GameFeel.Singleton
 
         public static QuestModel GetActiveModel(string modelId)
         {
-            return Instance.GetChildren<Quest>().Select(x => x.GetActiveModel(modelId)).FirstOrDefault(x => x != null);
+            return _activeQuestModels.Where(x => x.Id == modelId).FirstOrDefault();
+        }
+
+        public static bool IsModelIdComplete(string modelId)
+        {
+            return _completedModelIds.Contains(modelId);
         }
 
         public static Quest GetActiveQuestContainingModelId(string modelId)
@@ -67,18 +74,34 @@ namespace GameFeel.Singleton
 
         public static bool IsQuestAvailable(string questFile)
         {
-            return !_activeQuests.Contains(questFile) && !IsQuestCompleted(questFile);
+            var questId = MetadataLoader.QuestFileToMetadata[questFile].QuestSaveModel.Start.Id;
+            return !_activeQuestIds.Contains(questId) && !IsQuestCompleted(questId);
         }
 
         public static bool IsQuestCompleted(string questGuid)
         {
-            return _completedQuests.Contains(questGuid);
+            return _completedQuestIds.Contains(questGuid);
         }
 
         private void OnQuestCompleted(Quest quest, string modelId)
         {
-            var questId = quest.GetQuestSaveModel().Start.Id;
-            _completedQuests.Add(questId);
+            var questId = quest.QuestSaveModel.Start.Id;
+            _completedQuestIds.Add(questId);
+        }
+
+        private void OnQuestModelActivated(Quest quest, string modelId)
+        {
+            _activeQuestModels.Add(quest.QuestSaveModel.IdToModelMap[modelId]);
+        }
+
+        private void OnQuestModelDeactivated(Quest quest, string modelId)
+        {
+            var model = quest.QuestSaveModel.IdToModelMap[modelId];
+            if (_activeQuestModels.Contains(model))
+            {
+                _activeQuestModels.Remove(model);
+                _completedModelIds.Add(model.Id);
+            }
         }
     }
 }

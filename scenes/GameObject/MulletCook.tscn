@@ -35,9 +35,9 @@ animations = [ {
 [node name="MulletCook" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-Id = "e98d8232-398a-53e9-8b3d-ad35758d8e08"
 DisplayName = "Mullet Cook"
 _selectableComponentPath = NodePath("../SelectableComponent")
+Id = "e98d8232-398a-53e9-8b3d-ad35758d8e08"
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
 
@@ -120,5 +120,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
+frame = 3
 playing = true
 offset = Vector2( 0, -13 )

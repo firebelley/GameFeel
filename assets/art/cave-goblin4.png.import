@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cave-goblin.png-1509af96f32f2ef53cb75b1f9a7799be.stex"
+path="res://.import/cave-goblin4.png-a5408c5693d1af77352edaceec933eae.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/cave-goblin.png"
-dest_files=[ "res://.import/cave-goblin.png-1509af96f32f2ef53cb75b1f9a7799be.stex" ]
+source_file="res://assets/art/cave-goblin4.png"
+dest_files=[ "res://.import/cave-goblin4.png-a5408c5693d1af77352edaceec933eae.stex" ]
 
 [params]
 

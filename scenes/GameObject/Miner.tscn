@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/DialogueComponent.tscn" type="PackedScene" id=2]
@@ -10,7 +10,10 @@
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/GameObject/Loot/FireTome.tscn" type="PackedScene" id=10]
-[ext_resource path="res://assets/art/cave-goblin.png" type="Texture" id=11]
+[ext_resource path="res://assets/art/cave-goblin1.png" type="Texture" id=11]
+[ext_resource path="res://assets/art/cave-goblin2.png" type="Texture" id=12]
+[ext_resource path="res://assets/art/cave-goblin3.png" type="Texture" id=13]
+[ext_resource path="res://assets/art/cave-goblin4.png" type="Texture" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -23,6 +26,14 @@ shader_param/_valid = null
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 15.0
 height = 15.0
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "idle",
+"speed": 8.0
+} ]
 
 [node name="Miner" type="Node2D"]
 
@@ -73,7 +84,7 @@ Text = "* Click the tome in your inventory and place it into the weapon slot *"
 [node name="SelectableComponent" parent="." instance=ExtResource( 6 )]
 material = SubResource( 1 )
 position = Vector2( 0, -13 )
-_shadedNodePath = NodePath("../Sprite")
+_shadedNodePath = NodePath("../AnimatedSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 shape = SubResource( 2 )
@@ -86,6 +97,9 @@ position = Vector2( 16, -8 )
 _questModelId = "22f2aa31-20a1-465c-bee9-be45b8296559"
 _scene = ExtResource( 10 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -15 )
-texture = ExtResource( 11 )
+frames = SubResource( 3 )
+animation = "idle"
+frame = 1
+playing = true

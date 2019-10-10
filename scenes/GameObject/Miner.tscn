@@ -10,7 +10,7 @@
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/Component/QuestTriggerSpawnComponent.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/GameObject/Loot/FireTome.tscn" type="PackedScene" id=10]
-[ext_resource path="res://assets/art/spider1.png" type="Texture" id=11]
+[ext_resource path="res://assets/art/cave-goblin.png" type="Texture" id=11]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -32,7 +32,8 @@ DisplayName = "Miner"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
-position = Vector2( 0, -16 )
+editor/display_folded = true
+position = Vector2( 0, -28 )
 Introduction = "What a predicament we're in."
 _selectableComponentPath = NodePath("../SelectableComponent")
 _entityDataComponentPath = NodePath("../EntityDataComponent")
@@ -71,7 +72,7 @@ Text = "* Click the tome in your inventory and place it into the weapon slot *"
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 6 )]
 material = SubResource( 1 )
-position = Vector2( 0, -6 )
+position = Vector2( 0, -13 )
 _shadedNodePath = NodePath("../Sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
@@ -86,5 +87,5 @@ _questModelId = "22f2aa31-20a1-465c-bee9-be45b8296559"
 _scene = ExtResource( 10 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, -6 )
+position = Vector2( 0, -15 )
 texture = ExtResource( 11 )

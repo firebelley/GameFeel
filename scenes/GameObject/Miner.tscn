@@ -24,8 +24,7 @@ shader_param/_enabled = null
 shader_param/_valid = null
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 15.0
-height = 15.0
+height = 10.0
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
@@ -38,8 +37,8 @@ animations = [ {
 [node name="Miner" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-Id = "7c326523-1892-5490-abb3-d2f00193663f"
 DisplayName = "Miner"
+Id = "7c326523-1892-5490-abb3-d2f00193663f"
 _selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
@@ -101,5 +100,5 @@ _scene = ExtResource( 10 )
 position = Vector2( 0, -15 )
 frames = SubResource( 3 )
 animation = "idle"
-frame = 1
+frame = 2
 playing = true

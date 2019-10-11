@@ -15,6 +15,7 @@ namespace GameFeel
         public static YSort EntitiesLayer { get; private set; }
         public static YSort EffectsLayer { get; private set; }
         public static Node FloatersLayer { get; private set; }
+        public static Camera2D Camera { get; private set; }
 
         [Export]
         public string Id { get; private set; }
@@ -51,6 +52,7 @@ namespace GameFeel
             EntitiesLayer = GetNode<YSort>("Entities");
             EffectsLayer = GetNode<YSort>("Effects");
             FloatersLayer = GetNode<Node>("Floaters");
+            Camera = GetNode<Camera2D>("Camera2D");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             _navigation = GetNode<Navigation2D>("Navigation2D");
 

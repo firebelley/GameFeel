@@ -92,6 +92,7 @@ namespace GameFeel.Resource
             var player = CreatePlayer();
             GameZone.EntitiesLayer.AddChild(player);
             player.GlobalPosition = position;
+            GameZone.Camera.GlobalPosition = position;
             _zoneTransitionAreaIndex = -1;
         }
 

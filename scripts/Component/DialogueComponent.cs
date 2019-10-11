@@ -117,6 +117,8 @@ namespace GameFeel.Component
         private void OnPreQuestStarted(Quest quest)
         {
             quest.Connect(nameof(Quest.QuestModelActivated), this, nameof(OnQuestUpdate));
+            quest.Connect(nameof(Quest.QuestModelDeactivated), this, nameof(OnQuestUpdate));
+            quest.Connect(nameof(Quest.QuestCompleted), this, nameof(OnQuestUpdate));
         }
 
         private void OnQuestUpdate(Quest quest, string modelId)

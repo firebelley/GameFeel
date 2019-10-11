@@ -100,12 +100,16 @@ namespace GameFeel.Resource
         private void Activate(QuestModel model)
         {
             _activeModels.Add(model);
+            EmitSignal(nameof(QuestModelActivated), this, model.Id);
+
             if (model is QuestStartModel qsm)
             {
+                EmitSignal(nameof(QuestStarted), this, qsm.Id);
                 AdvanceFromModel(qsm);
             }
             else if (model is QuestStageModel qstm)
             {
+                EmitSignal(nameof(QuestStageStarted), this, qstm.Id);
                 AdvanceFromModel(qstm);
             }
             else if (model is QuestEventModel qem)
@@ -115,9 +119,8 @@ namespace GameFeel.Resource
             }
             else if (model is QuestCompleteModel qcm)
             {
-                Complete(qcm);
+                AdvanceFromModel(qcm);
             }
-            EmitSignal(nameof(QuestModelActivated), this, model.Id);
         }
 
         private void AdvanceFromModel(QuestModel model)
@@ -134,17 +137,14 @@ namespace GameFeel.Resource
 
             this.DisconnectAllSignals(GameEventDispatcher.Instance);
 
-            if (model is QuestStartModel questStart)
-            {
-                EmitSignal(nameof(QuestStarted), this, model.Id);
-            }
-            else if (model is QuestEventModel questEvent)
+            if (model is QuestEventModel questEvent)
             {
                 EmitSignal(nameof(QuestEventCompleted), this, model.Id);
             }
-            else if (model is QuestStageModel questStage)
+            else if (model is QuestCompleteModel questComplete)
             {
-                EmitSignal(nameof(QuestStageStarted), this, model.Id);
+                EmitSignal(nameof(QuestCompleted), this, model.Id);
+                QueueFree();
             }
 
             if (QuestSaveModel.RightConnections.ContainsKey(model.Id))
@@ -176,12 +176,6 @@ namespace GameFeel.Resource
                     GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventEntityEngaged), this, nameof(CheckEntityEngagedCompletion));
                     break;
             }
-        }
-
-        private void Complete(QuestCompleteModel questComplete)
-        {
-            EmitSignal(nameof(QuestCompleted), this, questComplete.Id);
-            QueueFree();
         }
 
         private void CheckInventoryItemUpdatedCompletion(string eventGuid, string itemId)

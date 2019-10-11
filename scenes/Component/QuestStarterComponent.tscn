@@ -4,5 +4,4 @@
 
 [node name="QuestStarterComponent" type="Node"]
 script = ExtResource( 1 )
-_questFile = "Null"
 _selectableComponentPath = NodePath("")

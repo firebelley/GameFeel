@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Resource/QuestResource.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+QuestId = "e7567d20-8f70-46be-9eb1-003d548e48bb"

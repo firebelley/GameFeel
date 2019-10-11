@@ -19,7 +19,7 @@ namespace GameFeel.Singleton
         public static Dictionary<string, Metadata> EntityIdToMetadata = new Dictionary<string, Metadata>();
         public static Dictionary<string, EquipmentMetadata> LootItemIdToEquipmentMetadata = new Dictionary<string, EquipmentMetadata>();
         public static Dictionary<string, Metadata> ZoneIdToMetadata = new Dictionary<string, Metadata>();
-        public static Dictionary<string, QuestMetadata> QuestFileToMetadata = new Dictionary<string, QuestMetadata>();
+        public static Dictionary<string, QuestMetadata> QuestIdToMetadata = new Dictionary<string, QuestMetadata>();
 
         public class Metadata
         {
@@ -172,12 +172,12 @@ namespace GameFeel.Singleton
             var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
             if (saveModel != null)
             {
-                if (QuestFileToMetadata.ContainsKey(fullPath))
+                if (QuestIdToMetadata.ContainsKey(saveModel.Start.Id))
                 {
                     Logger.Error("Quests already has file " + fullPath);
                 }
                 var metadata = new QuestMetadata(saveModel.Start.Id, fullPath, fullPath, null, saveModel);
-                QuestFileToMetadata[fullPath] = metadata;
+                QuestIdToMetadata[saveModel.Start.Id] = metadata;
             }
             else
             {

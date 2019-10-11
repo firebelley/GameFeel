@@ -1,3 +1,4 @@
+using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
 
@@ -6,8 +7,8 @@ namespace GameFeel.Component
     [Tool]
     public class QuestStarterComponent : Node
     {
-        [Export(PropertyHint.File, "*.quest")]
-        private string _questFile;
+        [Export]
+        private QuestResource _questResource;
         [Export]
         private NodePath _selectableComponentPath;
 
@@ -21,12 +22,12 @@ namespace GameFeel.Component
 
         public void StartQuest()
         {
-            QuestTracker.StartQuest(_questFile);
+            QuestTracker.StartQuest(_questResource.QuestId);
         }
 
         public bool IsQuestAvailable()
         {
-            return QuestTracker.IsQuestAvailable(_questFile);
+            return QuestTracker.IsQuestAvailable(_questResource.QuestId);
         }
 
         private void OnSelected()

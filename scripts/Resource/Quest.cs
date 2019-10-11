@@ -45,9 +45,9 @@ namespace GameFeel.Resource
             return false;
         }
 
-        public void LoadQuest(string questPath)
+        public void LoadQuest(string questGuid)
         {
-            Metadata = MetadataLoader.QuestFileToMetadata[questPath];
+            Metadata = MetadataLoader.QuestIdToMetadata[questGuid];
             QuestSaveModel = Metadata.QuestSaveModel;
         }
 

@@ -30,17 +30,17 @@ namespace GameFeel.Singleton
             _questScene = GD.Load(QUEST_NODE_PATH) as PackedScene;
         }
 
-        public static void StartQuest(string questPath)
+        public static void StartQuest(string questGuid)
         {
-            if (MetadataLoader.QuestFileToMetadata.ContainsKey(questPath))
+            if (MetadataLoader.QuestIdToMetadata.ContainsKey(questGuid))
             {
-                if (!IsQuestAvailable(questPath))
+                if (!IsQuestAvailable(questGuid))
                 {
                     return;
                 }
                 var quest = _questScene.Instance() as Quest;
 
-                quest.LoadQuest(questPath);
+                quest.LoadQuest(questGuid);
                 _activeQuestIds.Add(quest.QuestSaveModel.Start.Id);
 
                 Instance.AddChild(quest);
@@ -53,7 +53,7 @@ namespace GameFeel.Singleton
             }
             else
             {
-                Logger.Error("No quest with path " + questPath + " exists");
+                Logger.Error("No quest with path " + questGuid + " exists");
             }
         }
 
@@ -72,9 +72,8 @@ namespace GameFeel.Singleton
             return Instance.GetChildren<Quest>().FirstOrDefault(x => x.ContainsModelId(modelId));
         }
 
-        public static bool IsQuestAvailable(string questFile)
+        public static bool IsQuestAvailable(string questId)
         {
-            var questId = MetadataLoader.QuestFileToMetadata[questFile].QuestSaveModel.Start.Id;
             return !_activeQuestIds.Contains(questId) && !IsQuestCompleted(questId);
         }
 

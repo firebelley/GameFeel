@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/Component/EntityDataComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
@@ -6,16 +6,18 @@
 [ext_resource path="res://scenes/Component/Subcomponent/DialogueItem.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Component/Subcomponent/DialogueLine.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Component/QuestStarterComponent.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=7]
-[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=8]
-[ext_resource path="res://assets/art/mullet-cook1.png" type="Texture" id=9]
-[ext_resource path="res://assets/art/mullet-cook2.png" type="Texture" id=10]
-[ext_resource path="res://assets/art/mullet-cook3.png" type="Texture" id=11]
-[ext_resource path="res://assets/art/mullet-cook4.png" type="Texture" id=12]
+[ext_resource path="res://resources/quests/SpiderLegSoup.tres" type="Resource" id=7]
+[ext_resource path="res://resources/quests/SpiderLegsSpoiled.tres" type="Resource" id=8]
+[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=9]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=10]
+[ext_resource path="res://assets/art/mullet-cook1.png" type="Texture" id=11]
+[ext_resource path="res://assets/art/mullet-cook2.png" type="Texture" id=12]
+[ext_resource path="res://assets/art/mullet-cook3.png" type="Texture" id=13]
+[ext_resource path="res://assets/art/mullet-cook4.png" type="Texture" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
-shader = ExtResource( 8 )
+shader = ExtResource( 10 )
 shader_param/_outlineColor = Color( 1, 1, 1, 1 )
 shader_param/_invalidOutlineColor = Color( 0.5, 0, 0, 1 )
 shader_param/_enabled = null
@@ -26,7 +28,7 @@ height = 10.0
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ) ],
 "loop": true,
 "name": "default",
 "speed": 8.0
@@ -35,8 +37,8 @@ animations = [ {
 [node name="MulletCook" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-DisplayName = "Mullet Cook"
 _selectableComponentPath = NodePath("../SelectableComponent")
+DisplayName = "Mullet Cook"
 Id = "e98d8232-398a-53e9-8b3d-ad35758d8e08"
 
 [node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
@@ -71,7 +73,7 @@ Text = "I'm over here tryin' to make my famous Spider Leg Soup, and not one of y
 Text = "Fetch me ten spider legs. And why don't ya kill twenty in total as payment for keepin' me waitin'."
 
 [node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegSoup/DialogueLine2" instance=ExtResource( 6 )]
-_questFile = "res://resources/quests/SpiderLegSoup.quest"
+_questResource = ExtResource( 7 )
 
 [node name="TurnInSpiderLegs" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "Turn in Spider Legs"
@@ -93,7 +95,7 @@ Text = "Ack! The spider legs were no good. Probably 'cause you touched 'em with 
 Text = "Go find a better source of spider legs. Once you do, bring me those instead!"
 
 [node name="QuestStarterComponent" parent="DialogueComponent/SpiderLegsSpoiled/DialogueLine2" instance=ExtResource( 6 )]
-_questFile = "res://resources/quests/SpiderLegsSpoiled.quest"
+_questResource = ExtResource( 8 )
 
 [node name="ReturnQueenHead" parent="DialogueComponent" instance=ExtResource( 4 )]
 Title = "Spider Queen's Head"
@@ -109,7 +111,7 @@ Text = "Whichever spiderling decides to take up the queenship should be a better
 [node name="DialogueLine3" parent="DialogueComponent/ReturnQueenHead" instance=ExtResource( 5 )]
 Text = "So in a roundabout way, you did what was asked of ya. I don't like your clever solutions. Follow instructions next time!"
 
-[node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
+[node name="SelectableComponent" parent="." instance=ExtResource( 9 )]
 material = SubResource( 1 )
 _shadedNodePath = NodePath("../AnimatedSprite")
 _requirePlayerNear = true
@@ -120,6 +122,6 @@ shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 3
+frame = 2
 playing = true
 offset = Vector2( 0, -13 )

@@ -1,17 +1,22 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/UI/PlayerInventoryUI.cs" type="Script" id=1]
-[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=2]
-[ext_resource path="res://resources/Theme.tres" type="Theme" id=3]
-[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=4]
-[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=5]
-[ext_resource path="res://assets/art/ui/currency.png" type="Texture" id=6]
-[ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=7]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=8]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/sound/inventory-pickup.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/sound/inventory-place.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/sound/inventory-open.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sound/inventory-close.wav" type="AudioStream" id=6]
+[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=7]
+[ext_resource path="res://resources/Theme.tres" type="Theme" id=8]
+[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=9]
+[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=10]
+[ext_resource path="res://assets/art/ui/currency.png" type="Texture" id=11]
+[ext_resource path="res://resources/fonts/InventoryFont.tres" type="DynamicFont" id=12]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=13]
 
 [sub_resource type="StyleBoxTexture" id=1]
 content_margin_bottom = 8.0
-texture = ExtResource( 5 )
+texture = ExtResource( 10 )
 region_rect = Rect2( 96, 8, 56, 12 )
 margin_left = 14.0
 margin_right = 14.0
@@ -23,7 +28,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 5 )
+atlas = ExtResource( 10 )
 region = Rect2( 0, 64, 32, 32 )
 
 [node name="PlayerInventoryUI" type="Control"]
@@ -35,15 +40,39 @@ _gridContainerPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/Marg
 _animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
 _panelContainerPath = NodePath("MarginContainer/PanelContainer")
 _currencyLabelPath = NodePath("MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer/CurrencyLabel")
+_inventoryPickupPath = NodePath("InventoryPickupComponent")
+_inventoryPlacePath = NodePath("InventoryPlaceComponent")
+_inventoryClosePath = NodePath("InventoryCloseComponent")
+_inventoryOpenPath = NodePath("InventoryOpenComponent")
+
+[node name="InventoryPickupComponent" parent="." instance=ExtResource( 2 )]
+stream = ExtResource( 3 )
+volume_db = -10.0
+_randomPitch = true
+
+[node name="InventoryPlaceComponent" parent="." instance=ExtResource( 2 )]
+stream = ExtResource( 4 )
+volume_db = -10.0
+_randomPitch = true
+
+[node name="InventoryOpenComponent" parent="." instance=ExtResource( 2 )]
+stream = ExtResource( 5 )
+volume_db = -10.0
+_randomPitch = true
+
+[node name="InventoryCloseComponent" parent="." instance=ExtResource( 2 )]
+stream = ExtResource( 6 )
+volume_db = -10.0
+_randomPitch = true
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [ PoolStringArray( "InventoryCell" ), [ ExtResource( 2 ) ] ]
+resources = [ PoolStringArray( "InventoryCell" ), [ ExtResource( 7 ) ] ]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-theme = ExtResource( 3 )
+theme = ExtResource( 8 )
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 margin_left = 536.0
@@ -52,7 +81,7 @@ margin_right = 632.0
 margin_bottom = 352.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
-custom_styles/panel = ExtResource( 4 )
+custom_styles/panel = ExtResource( 9 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 8.0
@@ -95,7 +124,7 @@ alignment = 2
 margin_right = 10.0
 margin_bottom = 32.0
 mouse_filter = 2
-texture = ExtResource( 6 )
+texture = ExtResource( 11 )
 stretch_mode = 4
 
 [node name="CurrencyLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/PanelContainer/HBoxContainer/HBoxContainer"]
@@ -103,7 +132,7 @@ margin_left = 12.0
 margin_top = 12.0
 margin_right = 20.0
 margin_bottom = 20.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.956863, 0.890196, 1 )
 text = "0"
 align = 2
@@ -132,4 +161,4 @@ custom_constants/hseparation = 2
 columns = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
-anims/ControlBounceIn = ExtResource( 8 )
+anims/ControlBounceIn = ExtResource( 13 )

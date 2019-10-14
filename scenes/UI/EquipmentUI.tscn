@@ -1,14 +1,18 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/EquipmentUI.cs" type="Script" id=2]
-[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=3]
-[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=4]
-[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=5]
-[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=6]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sound/inventory-pickup.wav" type="AudioStream" id=4]
+[ext_resource path="res://scripts/Component/AudioStreamPlayerComponent.cs" type="Script" id=5]
+[ext_resource path="res://assets/sound/inventory-place.wav" type="AudioStream" id=6]
+[ext_resource path="res://resources/styles/DefaultPanel.tres" type="StyleBox" id=7]
+[ext_resource path="res://assets/art/ui/inventory-widgets2x.png" type="Texture" id=8]
+[ext_resource path="res://scenes/UI/InventoryCell.tscn" type="PackedScene" id=9]
+[ext_resource path="res://resources/animations/ControlBounceIn.tres" type="Animation" id=10]
 
 [sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 8 )
 region = Rect2( 72, 104, 16, 16 )
 
 [node name="EquipmentUI" type="Control"]
@@ -21,6 +25,22 @@ _slot1Path = NodePath("MarginContainer/PanelContainer/MarginContainer/HBoxContai
 _slot2Path = NodePath("MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/Slot2InventoryCell")
 _animationPlayerPath = NodePath("MarginContainer/PanelContainer/AnimationPlayer")
 _panelContainerPath = NodePath("MarginContainer/PanelContainer")
+_inventoryPickupPath = NodePath("InventoryPickupComponent")
+_inventoryPlacePath = NodePath("InventoryPlaceComponent")
+
+[node name="InventoryPickupComponent" type="AudioStreamPlayer" parent="." instance=ExtResource( 3 )]
+stream = ExtResource( 4 )
+volume_db = -10.0
+bus = "SFX"
+script = ExtResource( 5 )
+_randomPitch = true
+
+[node name="InventoryPlaceComponent" type="AudioStreamPlayer" parent="." instance=ExtResource( 3 )]
+stream = ExtResource( 6 )
+volume_db = -10.0
+bus = "SFX"
+script = ExtResource( 5 )
+_randomPitch = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -34,7 +54,7 @@ margin_right = 370.0
 margin_bottom = 352.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = ExtResource( 7 )
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 8.0
@@ -58,7 +78,7 @@ margin_bottom = 16.0
 texture = SubResource( 1 )
 stretch_mode = 4
 
-[node name="Slot1InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="Slot1InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 9 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 20.0
@@ -76,7 +96,7 @@ margin_bottom = 16.0
 texture = SubResource( 1 )
 stretch_mode = 4
 
-[node name="Slot2InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3" instance=ExtResource( 5 )]
+[node name="Slot2InventoryCell" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3" instance=ExtResource( 9 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 20.0
@@ -84,4 +104,4 @@ margin_right = 32.0
 margin_bottom = 52.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/PanelContainer"]
-anims/ControlBounceIn = ExtResource( 6 )
+anims/ControlBounceIn = ExtResource( 10 )

@@ -1,3 +1,4 @@
+using GameFeel.Component;
 using GameFeel.Data;
 using GameFeel.Resource;
 using GameFeel.Singleton;
@@ -19,12 +20,18 @@ namespace GameFeel.UI
         private NodePath _animationPlayerPath;
         [Export]
         private NodePath _panelContainerPath;
+        [Export]
+        private NodePath _inventoryPickupPath;
+        [Export]
+        private NodePath _inventoryPlacePath;
 
         private InventoryCell[] _slots = new InventoryCell[2];
         private InventoryCell _slot1;
         private InventoryCell _slot2;
         private AnimationPlayer _animationPlayer;
         private PanelContainer _panelContainer;
+        private AudioStreamPlayerComponent _inventoryPickup;
+        private AudioStreamPlayerComponent _inventoryPlace;
 
         public override void _Ready()
         {
@@ -105,17 +112,20 @@ namespace GameFeel.UI
                     var swapItem = InventoryItem.FromItemId(item.Id);
                     PlayerInventory.EquipInventoryItem(Cursor.DragIndex, slotIdx);
                     Cursor.ClearDragSelection();
+                    _inventoryPlace.Play();
                 }
             }
             else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT && Cursor.DragIndex > -1)
             {
                 PlayerInventory.SwapEquipmentItems(Cursor.DragIndex, slotIdx);
                 Cursor.ClearDragSelection();
+                _inventoryPlace.Play();
             }
             else if (PlayerInventory.EquipmentSlots[slotIdx] != null)
             {
                 Cursor.Drag(Cursor.DragSource.EQUIPMENT, PlayerInventory.EquipmentSlots[slotIdx], slotIdx);
                 inventoryCell.SetInventoryItem(null);
+                _inventoryPickup.Play();
             }
         }
 

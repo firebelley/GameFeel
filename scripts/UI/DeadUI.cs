@@ -42,6 +42,7 @@ namespace GameFeel.UI
 
         private void OnRespawnButtonPressed()
         {
+            UI.PlayClick();
             Hide();
             ZoneTransitioner.TransitionToGraveyard();
         }

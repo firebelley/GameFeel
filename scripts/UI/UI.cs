@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameFeel.Component;
 using Godot;
 
 namespace GameFeel.UI
@@ -11,13 +12,19 @@ namespace GameFeel.UI
         [Signal]
         public delegate void DeselectRequested();
 
+        private static UI _instance;
+
         private HashSet<Node> _openedNodes = new HashSet<Node>();
         private HashSet<Type> _openedTypes = new HashSet<Type>();
 
         private Control _rootControl;
+        private AudioStreamPlayerComponent _clickAudio;
 
         public override void _Ready()
         {
+            _instance = this;
+
+            _clickAudio = GetNode<AudioStreamPlayerComponent>("ClickAudio");
             _rootControl = GetNode<Control>("Control");
             _rootControl.Connect("gui_input", this, nameof(OnGuiInput));
 
@@ -28,6 +35,14 @@ namespace GameFeel.UI
                     tu.Connect(nameof(ToggleUI.Closed), this, nameof(OnUIClosed));
                     tu.Connect(nameof(ToggleUI.Opened), this, nameof(OnUIOpened));
                 }
+            }
+        }
+
+        public static void PlayClick()
+        {
+            if (IsInstanceValid(_instance))
+            {
+                _instance._clickAudio.Play();
             }
         }
 

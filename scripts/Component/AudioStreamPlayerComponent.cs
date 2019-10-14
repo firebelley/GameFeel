@@ -12,15 +12,21 @@ namespace GameFeel.Component
 
         public override void _Ready()
         {
+            RandomizePitch();
+            Connect("finished", this, nameof(OnFinished));
+        }
+
+        private void RandomizePitch()
+        {
             if (_randomPitch)
             {
                 PitchScale = Main.RNG.RandfRange(MIN_PITCH, MAX_PITCH);
             }
         }
 
-        private void OnDamageReceived(float damage)
+        private void OnFinished()
         {
-            Play();
+            RandomizePitch();
         }
     }
 }

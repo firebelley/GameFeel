@@ -1,3 +1,4 @@
+using GameFeel.Component;
 using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
@@ -20,12 +21,24 @@ namespace GameFeel.UI
         private NodePath _panelContainerPath;
         [Export]
         private NodePath _currencyLabelPath;
+        [Export]
+        private NodePath _inventoryPickupPath;
+        [Export]
+        private NodePath _inventoryPlacePath;
+        [Export]
+        private NodePath _inventoryClosePath;
+        [Export]
+        private NodePath _inventoryOpenPath;
 
         private ResourcePreloader _resourcePreloader;
         private GridContainer _gridContainer;
         private AnimationPlayer _animationPlayer;
         private Control _panelContainer;
         private Label _currencyLabel;
+        private AudioStreamPlayerComponent _inventoryPickup;
+        private AudioStreamPlayerComponent _inventoryPlace;
+        private AudioStreamPlayerComponent _inventoryOpen;
+        private AudioStreamPlayerComponent _inventoryClose;
 
         public override void _Ready()
         {
@@ -34,6 +47,7 @@ namespace GameFeel.UI
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
             CreateInventoryCells();
 
+            Visible = false;
             Close();
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.ItemUpdated), this, nameof(OnItemUpdated));
             PlayerInventory.Instance.Connect(nameof(PlayerInventory.CurrencyChanged), this, nameof(OnCurrencyChanged));
@@ -66,6 +80,7 @@ namespace GameFeel.UI
             }
             _animationPlayer.Play(ANIM_BOUNCE_IN);
             Camera.ClearShift();
+            _inventoryOpen.Play();
         }
 
         protected override void Deselect()
@@ -77,6 +92,10 @@ namespace GameFeel.UI
         protected override void Close()
         {
             base.Close();
+            if (Visible)
+            {
+                _inventoryClose.Play();
+            }
             Hide();
             CancelSelection();
         }
@@ -133,16 +152,19 @@ namespace GameFeel.UI
                 if (Cursor.DragFrom == Cursor.DragSource.INVENTORY)
                 {
                     SwapIndices(Cursor.DragIndex, idx);
+                    _inventoryPlace.Play();
                 }
                 else if (Cursor.DragFrom == Cursor.DragSource.EQUIPMENT && PlayerInventory.CanEquipInventoryItem(Cursor.DragIndex, idx))
                 {
                     PlayerInventory.SwapEquipmentAndInventoryItem(Cursor.DragIndex, idx);
                     Cursor.ClearDragSelection();
+                    _inventoryPlace.Play();
                 }
             }
             else if (PlayerInventory.Items[idx] != null)
             {
                 SelectIndex(idx);
+                _inventoryPickup.Play();
             }
         }
 

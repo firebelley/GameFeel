@@ -7,22 +7,22 @@
 [ext_resource path="res://assets/art/ui/left-right-fade.png" type="Texture" id=5]
 [ext_resource path="res://resources/animations/ControlBreathe.tres" type="Animation" id=6]
 
-[sub_resource type="StyleBoxEmpty" id=4]
-
-[sub_resource type="StyleBoxEmpty" id=5]
-
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="StyleBoxEmpty" id=2]
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=6]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -43,9 +43,9 @@ void fragment() {
 	}
 }"
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=7]
 resource_local_to_scene = true
-shader = SubResource( 2 )
+shader = SubResource( 6 )
 shader_param/_cutoff = 0.0
 shader_param/_shadeColor = Color( 0.929412, 0.929412, 0.929412, 1 )
 shader_param/_sampleTexture = ExtResource( 5 )
@@ -54,11 +54,11 @@ shader_param/_sampleTexture = ExtResource( 5 )
 margin_right = 40.0
 margin_bottom = 16.0
 theme = ExtResource( 1 )
-custom_styles/hover = SubResource( 4 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/focus = SubResource( 1 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.317647, 0.286275, 0.243137, 1 )
 text = "test"
@@ -67,7 +67,7 @@ _hoverFont = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 show_behind_parent = true
-material = SubResource( 3 )
+material = SubResource( 7 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2

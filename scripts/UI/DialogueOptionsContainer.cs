@@ -44,6 +44,7 @@ namespace GameFeel.UI
 
         private void OnButtonPressed(DialogueItem dialogueItem)
         {
+            UI.PlayClick();
             EmitSignal(nameof(DialogueOptionSelected), dialogueItem);
         }
     }

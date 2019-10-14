@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/inventory-open.wav-41499766aa4a33dc12955ad4852a6ed2.sample"
+
+[deps]
+
+source_file="res://assets/sound/inventory-open.wav"
+dest_files=[ "res://.import/inventory-open.wav-41499766aa4a33dc12955ad4852a6ed2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

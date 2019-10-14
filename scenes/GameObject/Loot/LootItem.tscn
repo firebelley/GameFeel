@@ -1,15 +1,17 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scripts/GameObject/Loot/LootItem.cs" type="Script" id=1]
-[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=3]
-[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=4]
-[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=5]
-[ext_resource path="res://assets/effect/star16.png" type="Texture" id=6]
+[ext_resource path="res://scenes/Component/AudioStreamPlayerComponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/sound/item-pickup.wav" type="AudioStream" id=3]
+[ext_resource path="res://scenes/Component/ShadowComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Component/SelectableComponent.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/shaders/Outline.shader" type="Shader" id=6]
+[ext_resource path="res://resources/animations/BounceIn.tres" type="Animation" id=7]
+[ext_resource path="res://assets/effect/star16.png" type="Texture" id=8]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
-shader = ExtResource( 4 )
+shader = ExtResource( 6 )
 shader_param/_outlineColor = Color( 1, 1, 1, 1 )
 shader_param/_invalidOutlineColor = Color( 0.7, 0, 0, 1 )
 shader_param/_enabled = null
@@ -110,6 +112,18 @@ tracks/5/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath("AudioStreamPlayerComponent:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=5]
 length = 4.0
@@ -172,13 +186,18 @@ color_ramp = SubResource( 8 )
 collision_layer = 0
 script = ExtResource( 1 )
 
-[node name="ShadowComponent" parent="." instance=ExtResource( 2 )]
+[node name="AudioStreamPlayerComponent" parent="." instance=ExtResource( 2 )]
+stream = ExtResource( 3 )
+volume_db = -10.0
+_randomPitch = true
 
-[node name="SelectableComponent" parent="." instance=ExtResource( 3 )]
+[node name="ShadowComponent" parent="." instance=ExtResource( 4 )]
+
+[node name="SelectableComponent" parent="." instance=ExtResource( 5 )]
 material = SubResource( 1 )
 position = Vector2( 0, -8 )
-_requirePlayerNear = true
 _shadedNodePath = NodePath("../Sprite")
+_requirePlayerNear = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableComponent"]
 shape = SubResource( 2 )
@@ -189,7 +208,7 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "BounceIn"
-anims/BounceIn = ExtResource( 5 )
+anims/BounceIn = ExtResource( 7 )
 anims/idle = SubResource( 3 )
 anims/pickup = SubResource( 4 )
 
@@ -212,4 +231,4 @@ amount = 5
 lifetime = 1.5
 preprocess = 1.0
 process_material = SubResource( 11 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )

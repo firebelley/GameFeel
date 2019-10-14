@@ -189,26 +189,31 @@ namespace GameFeel.UI
 
         private void OnNextButtonPressed()
         {
+            UI.PlayClick();
             EmitSignal(nameof(NextButtonPressed));
         }
 
         private void OnNotYetButtonPressed()
         {
+            UI.PlayClick();
             EmitSignal(nameof(NotYetButtonPressed));
         }
 
         private void OnAcceptButtonPressed()
         {
+            UI.PlayClick();
             EmitSignal(nameof(QuestAcceptanceIndicated), true);
         }
 
         private void OnDeclineButtonPressed()
         {
+            UI.PlayClick();
             EmitSignal(nameof(QuestAcceptanceIndicated), false);
         }
 
         private void OnTurnInButtonPressed()
         {
+            UI.PlayClick();
             EmitSignal(nameof(QuestTurnInIndicated));
         }
     }

@@ -100,5 +100,5 @@ _scene = ExtResource( 11 )
 position = Vector2( 0, -15 )
 frames = SubResource( 3 )
 animation = "idle"
-frame = 3
+frame = 2
 playing = true

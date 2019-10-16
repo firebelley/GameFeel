@@ -52,8 +52,8 @@ namespace GameFeel.Singleton
 
             if (OS.IsDebugBuild())
             {
-                AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
-                AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
+                // AddItem("b79a2c9d-55a6-4f01-856e-e200dfe027bc", 1);
+                // AddItem("cd157a56-1c11-5316-bc32-9cdd92c49abe", 1);
             }
         }
 

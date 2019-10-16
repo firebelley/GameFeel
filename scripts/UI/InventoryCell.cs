@@ -48,7 +48,7 @@ namespace GameFeel.UI
 
             if (_mouseHovered)
             {
-                TooltipUI.ShowItemTooltip(_inventoryItem.Id);
+                TooltipUI.ShowInventoryItemTooltip(_inventoryItem.Id);
             }
         }
 
@@ -82,7 +82,7 @@ namespace GameFeel.UI
             _animationPlayer.Play(ANIM_HOVER);
             if (_inventoryItem != null)
             {
-                TooltipUI.ShowItemTooltip(_inventoryItem.Id);
+                TooltipUI.ShowInventoryItemTooltip(_inventoryItem.Id);
             }
         }
 

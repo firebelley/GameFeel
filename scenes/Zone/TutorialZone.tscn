@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/GameObject/Environment/Flag1.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/GameObject/Environment/SignArrow.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/GameObject/Environment/TutorialBoulder.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/GameObject/Miner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/GameObject/CaveGoblin.tscn" type="PackedScene" id=7]
 
 [node name="TutorialZone" instance=ExtResource( 1 )]
 Id = "ae44e7c6-923b-5b9b-a88a-c15cc41f5b56"

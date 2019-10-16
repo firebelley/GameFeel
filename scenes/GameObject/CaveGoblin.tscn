@@ -35,12 +35,12 @@ animations = [ {
 "speed": 8.0
 } ]
 
-[node name="Miner" type="Node2D"]
+[node name="CaveGoblin" type="Node2D"]
 
 [node name="EntityDataComponent" parent="." instance=ExtResource( 1 )]
-_selectableComponentPath = NodePath("../SelectableComponent")
-DisplayName = "Miner"
 Id = "7c326523-1892-5490-abb3-d2f00193663f"
+DisplayName = "Cave Goblin"
+_selectableComponentPath = NodePath("../SelectableComponent")
 
 [node name="DialogueComponent" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -28 )
@@ -53,13 +53,13 @@ Title = "Trapped"
 ShowImmediately = true
 
 [node name="DialogueLine" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
-Text = "Ah you're trapped here too!"
+Text = "Hehe oh looks we gots a spirit trapped in here wit' me!"
 
 [node name="DialogueLine2" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
-Text = "I found this while I was down here, I have no idea how to make it work!"
+Text = "Let's have a look-see..."
 
 [node name="DialogueLine3" parent="DialogueComponent/Trapped" instance=ExtResource( 4 )]
-Text = "If you can figure out how to use it you can keep it."
+Text = "I found this - hehe - I dunno what to do wit' it!"
 
 [node name="QuestStarterComponent" parent="DialogueComponent/Trapped/DialogueLine3" instance=ExtResource( 5 )]
 _questResource = ExtResource( 6 )
@@ -69,16 +69,16 @@ Title = "How-To"
 ShowImmediately = true
 
 [node name="DialogueLine4" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
-Text = "* Hover over the tome and press 'E' to pickup *"
+Text = "* Hover over the tome and press 'E' to pickup"
 
 [node name="DialogueLine" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
-Text = "* Press 'I' to open your inventory *"
+Text = "* Press 'I' to open your inventory"
 
 [node name="DialogueLine2" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
-Text = "* Press 'C' to open your equipment *"
+Text = "* Press 'C' to open your equipment"
 
 [node name="DialogueLine3" parent="DialogueComponent/Tutorial" instance=ExtResource( 4 )]
-Text = "* Click the tome in your inventory and place it into the weapon slot *"
+Text = "* Click the tome in your inventory and place it into a weapon slot in the equipment menu"
 
 [node name="SelectableComponent" parent="." instance=ExtResource( 7 )]
 material = SubResource( 1 )
@@ -100,5 +100,5 @@ _scene = ExtResource( 11 )
 position = Vector2( 0, -15 )
 frames = SubResource( 3 )
 animation = "idle"
-frame = 1
+frame = 3
 playing = true

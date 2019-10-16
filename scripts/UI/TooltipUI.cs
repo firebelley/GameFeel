@@ -80,21 +80,33 @@ namespace GameFeel.UI
             }
         }
 
+        public static void ShowInventoryItemTooltip(string itemId)
+        {
+            if (MetadataLoader.LootItemIdToMetadata.ContainsKey(itemId))
+            {
+                _nameLabel.Text = MetadataLoader.LootItemIdToMetadata[itemId].DisplayName;
+                ShowTooltip();
+            }
+        }
+
         private static void ShowEquipment(MetadataLoader.EquipmentMetadata metadata)
         {
             _nameLabel.Text = metadata.DisplayName;
+            _nameLabel.Text += "\nE - Pickup";
             ShowTooltip();
         }
 
         private static void ShowItem(MetadataLoader.Metadata metadata)
         {
             _nameLabel.Text = metadata.DisplayName;
+            _nameLabel.Text += "\nE - Pickup";
             ShowTooltip();
         }
 
         private static void ShowEntity(MetadataLoader.Metadata metadata)
         {
             _nameLabel.Text = metadata.DisplayName;
+            _nameLabel.Text += "\nE - Talk";
             ShowTooltip();
         }
 

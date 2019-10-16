@@ -26,8 +26,8 @@ config/icon="res://assets/art/icon16.png"
 
 [autoload]
 
-GameData="*res://scripts/Singleton/GameData.cs"
 MetadataLoader="*res://scripts/Singleton/MetadataLoader.cs"
+GameData="*res://scripts/Singleton/GameData.cs"
 GameEventDispatcher="*res://scripts/Singleton/GameEventDispatcher.cs"
 PlayerInventory="*res://scripts/Singleton/PlayerInventory.cs"
 QuestTracker="*res://scripts/Singleton/QuestTracker.cs"

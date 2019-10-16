@@ -92,9 +92,9 @@ namespace GameFeel.Singleton
                 {
                     break;
                 }
-
-                if (path.EndsWith(".tscn") || path.EndsWith(".quest"))
+                if (!path.Contains(".converted.res") && (path.Contains(".tscn") || path.Contains(".quest")))
                 {
+                    path = path.Replace(".remap", "");
                     fullPathLoader(dirPath + path);
                 }
             }

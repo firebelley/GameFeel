@@ -16,11 +16,20 @@ namespace GameFeel.UI
         private NodePath _animationPlayerPath;
         [Export]
         private NodePath _nameLabelPath;
+        [Export]
+        private NodePath _weaponLabelPath;
+        [Export]
+        private NodePath _pickupLabelPath;
+        [Export]
+        private NodePath _talkLabelPath;
 
         private static TooltipUI _instance;
         private static PanelContainer _panelContainer;
         private static Label _nameLabel;
         private static AnimationPlayer _animationPlayer;
+        private static Label _weaponLabel;
+        private static Label _pickupLabel;
+        private static Label _talkLabel;
 
         public override void _Ready()
         {
@@ -82,7 +91,14 @@ namespace GameFeel.UI
 
         public static void ShowInventoryItemTooltip(string itemId)
         {
-            if (MetadataLoader.LootItemIdToMetadata.ContainsKey(itemId))
+            if (MetadataLoader.LootItemIdToEquipmentMetadata.ContainsKey(itemId))
+            {
+                var metadata = MetadataLoader.LootItemIdToEquipmentMetadata[itemId];
+                _weaponLabel.Show();
+                _nameLabel.Text = metadata.DisplayName;
+                ShowTooltip();
+            }
+            else if (MetadataLoader.LootItemIdToMetadata.ContainsKey(itemId))
             {
                 _nameLabel.Text = MetadataLoader.LootItemIdToMetadata[itemId].DisplayName;
                 ShowTooltip();
@@ -91,22 +107,23 @@ namespace GameFeel.UI
 
         private static void ShowEquipment(MetadataLoader.EquipmentMetadata metadata)
         {
+            _weaponLabel.Show();
+            _pickupLabel.Show();
             _nameLabel.Text = metadata.DisplayName;
-            _nameLabel.Text += "\nE - Pickup";
             ShowTooltip();
         }
 
         private static void ShowItem(MetadataLoader.Metadata metadata)
         {
             _nameLabel.Text = metadata.DisplayName;
-            _nameLabel.Text += "\nE - Pickup";
+            _pickupLabel.Show();
             ShowTooltip();
         }
 
         private static void ShowEntity(MetadataLoader.Metadata metadata)
         {
             _nameLabel.Text = metadata.DisplayName;
-            _nameLabel.Text += "\nE - Talk";
+            _talkLabel.Show();
             ShowTooltip();
         }
 
@@ -118,6 +135,9 @@ namespace GameFeel.UI
 
         public static void HideTooltip()
         {
+            _weaponLabel.Hide();
+            _talkLabel.Hide();
+            _pickupLabel.Hide();
             _panelContainer.Hide();
             _instance.SetProcess(false);
         }

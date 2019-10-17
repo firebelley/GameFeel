@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using GameFeel.Data;
 using GameFeel.GameObject.Loot;
 using Godot;
-using GodotTools.Util;
+using GodotApiTools.Util;
 
 namespace GameFeel.Singleton
 {

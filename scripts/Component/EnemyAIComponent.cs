@@ -1,8 +1,8 @@
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Logic;
-using GodotTools.Logic.Interface;
-using GodotTools.Util;
+using GodotApiTools.Extension;
+using GodotApiTools.Logic;
+using GodotApiTools.Logic.Interface;
+using GodotApiTools.Util;
 
 namespace GameFeel.Component
 {
@@ -24,10 +24,10 @@ namespace GameFeel.Component
         public override void _Ready()
         {
             MetaPathfindComponent = GetNodeOrNull<PathfindComponent>(_pathfindComponentPath ?? string.Empty);
-            MetaEntityDataComponent = GetOwner().GetFirstNodeOfType<EntityDataComponent>();
+            MetaEntityDataComponent = Owner.GetFirstNodeOfType<EntityDataComponent>();
             if (MetaPathfindComponent == null)
             {
-                Logger.Error("No pathfind component set in " + GetOwner().Filename);
+                Logger.Error("No pathfind component set in " + Owner.Filename);
                 QueueFree();
                 return;
             }

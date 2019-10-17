@@ -2,8 +2,8 @@ using GameFeel.Component;
 using GameFeel.Singleton;
 using GameFeel.UI;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Logic;
+using GodotApiTools.Extension;
+using GodotApiTools.Logic;
 
 namespace GameFeel.GameObject.Loot
 {

@@ -1,6 +1,6 @@
 using GameFeel.GameObject;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -55,7 +55,7 @@ namespace GameFeel.Component
             _pathEndReached = false;
             _currentT = 0f;
 
-            var result = GetViewport().GetWorld2d().DirectSpaceState.Raycast(fromPos, toPos, null, 1 << 0);
+            var result = GetViewport().World2d.DirectSpaceState.Raycast(fromPos, toPos, null, 1 << 0);
             Curve = GameZone.GetPathCurve(fromPos, result?.Position ?? toPos, 0f);
         }
 

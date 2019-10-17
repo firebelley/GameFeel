@@ -1,7 +1,7 @@
 using GameFeel.GameObject;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Util;
+using GodotApiTools.Extension;
+using GodotApiTools.Util;
 
 namespace GameFeel
 {

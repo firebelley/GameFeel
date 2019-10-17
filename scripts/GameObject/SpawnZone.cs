@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.GameObject
 {
@@ -50,7 +50,7 @@ namespace GameFeel.GameObject
             _cullTimer.Connect("timeout", this, nameof(OnTimerTimeout));
             _spawnTimer.Connect("timeout", this, nameof(OnSpawnTimerTimeout));
 
-            if (!Engine.IsEditorHint())
+            if (!Engine.EditorHint)
             {
                 CallDeferred(nameof(SpawnAll));
             }
@@ -58,7 +58,7 @@ namespace GameFeel.GameObject
 
         public override void _Draw()
         {
-            if (Engine.IsEditorHint())
+            if (Engine.EditorHint)
             {
                 DrawCircle(Vector2.Zero, _radius, new Color(1f, 1f, 1f, .25f));
             }

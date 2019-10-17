@@ -1,7 +1,7 @@
 using GameFeel.GameObject;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Logic.Interface;
+using GodotApiTools.Extension;
+using GodotApiTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {

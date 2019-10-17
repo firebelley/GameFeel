@@ -1,5 +1,5 @@
 using Godot;
-using GodotTools.Logic.Interface;
+using GodotApiTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {
@@ -11,7 +11,7 @@ namespace GameFeel.Component.State
         public override void _Ready()
         {
             _parent = GetParent() as EnemyAIComponent;
-            _parentOwner = _parent.GetOwner() as Node2D;
+            _parentOwner = _parent.Owner as Node2D;
         }
 
         public virtual void StateActive()

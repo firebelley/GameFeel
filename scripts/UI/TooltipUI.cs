@@ -1,7 +1,7 @@
 using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.UI
 {
@@ -150,7 +150,7 @@ namespace GameFeel.UI
             {
                 _animationPlayer.Seek(0f, true);
             }
-            _animationPlayer.SetSpeedScale(1f);
+            _animationPlayer.PlaybackSpeed = 1f;
             _animationPlayer.Play(ANIM_BOUNCE_IN);
         }
 

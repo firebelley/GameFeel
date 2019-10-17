@@ -34,7 +34,7 @@ namespace GameFeel.Component
                 _hideOnDelete = GetNode(_hideOnDeletePath) as Node2D;
             }
 
-            _owner = GetOwner() as RigidBody2D;
+            _owner = Owner as RigidBody2D;
 
             _deleteTimer = GetNode<Timer>("DeleteTimer");
             _deleteTimer.Connect("timeout", this, nameof(OnDeleteTimerTimeout));
@@ -104,9 +104,9 @@ namespace GameFeel.Component
 
         private void OnDeleteTimerTimeout()
         {
-            if (IsInstanceValid(GetOwner()))
+            if (IsInstanceValid(Owner))
             {
-                GetOwner().QueueFree();
+                Owner.QueueFree();
             }
         }
     }

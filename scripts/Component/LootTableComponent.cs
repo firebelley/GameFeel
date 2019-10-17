@@ -1,7 +1,7 @@
 using GameFeel.Component.Subcomponent;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Logic;
+using GodotApiTools.Extension;
+using GodotApiTools.Logic;
 
 namespace GameFeel.Component
 {
@@ -48,7 +48,7 @@ namespace GameFeel.Component
         private void SpawnItem()
         {
             var toSpawn = _lootTable.PickItem();
-            if (GetOwner() is Node2D node)
+            if (Owner is Node2D node)
             {
                 var scene = toSpawn.Scene?.Instance() as Node2D;
                 if (scene != null)

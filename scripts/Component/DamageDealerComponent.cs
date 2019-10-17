@@ -41,7 +41,7 @@ namespace GameFeel.Component
 
         private void SpawnHitEffect()
         {
-            if (GetOwner() is Node2D owner && _hitEffect != null)
+            if (Owner is Node2D owner && _hitEffect != null)
             {
                 var death = _hitEffect.Instance() as Node2D;
                 GameZone.EffectsLayer.AddChild(death);

@@ -6,7 +6,7 @@ using GameFeel.Data.Model;
 using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.UI
 {
@@ -65,14 +65,14 @@ namespace GameFeel.UI
             Show();
             ClearAll();
             SetProcess(true);
-            _animationPlayer.SetSpeedScale(1f);
+            _animationPlayer.PlaybackSpeed = 1f;
             _animationPlayer.Play(ANIM_BOUNCE_IN);
         }
 
         protected override void Close()
         {
             base.Close();
-            _animationPlayer.SetSpeedScale(2f);
+            _animationPlayer.PlaybackSpeed = 2f;
             _animationPlayer.PlayBackwards(ANIM_BOUNCE_IN_SECONDARY);
         }
 

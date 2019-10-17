@@ -1,5 +1,5 @@
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -10,7 +10,7 @@ namespace GameFeel.Component
         public delegate void AllSpawned();
 
         [Export(PropertyHint.Layers2dPhysics)]
-        private int _collisionMask;
+        private uint _collisionMask;
         [Export]
         private PackedScene _scene;
         [Export]

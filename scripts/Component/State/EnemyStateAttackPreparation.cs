@@ -1,5 +1,5 @@
 using Godot;
-using GodotTools.Logic.Interface;
+using GodotApiTools.Logic.Interface;
 
 namespace GameFeel.Component.State
 {

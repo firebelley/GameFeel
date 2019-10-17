@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -13,12 +13,12 @@ namespace GameFeel.Component
 
         public override void _Draw()
         {
-            if (Engine.IsEditorHint())
+            if (Engine.EditorHint)
             {
                 return;
             }
 
-            var points = GetOwner().GetFirstNodeOfType<PathfindComponent>().Curve.GetBakedPoints();
+            var points = Owner.GetFirstNodeOfType<PathfindComponent>().Curve.GetBakedPoints();
             List<Vector2> newPoints = new List<Vector2>();
 
             foreach (var point in points)
@@ -31,7 +31,7 @@ namespace GameFeel.Component
                 DrawPolyline(newPoints.ToArray(), new Color(1f, 1f, 1f), 1);
             }
 
-            var targetPoint = GetOwner().GetFirstNodeOfType<PathfindComponent>().GetTargetPoint();
+            var targetPoint = Owner.GetFirstNodeOfType<PathfindComponent>().GetTargetPoint();
             DrawCircle(GetGlobalTransform().XformInv(targetPoint), 3f, new Color(0, 0, 1, 1));
         }
     }

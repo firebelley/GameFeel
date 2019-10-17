@@ -4,8 +4,8 @@ using GameFeel.Data.Model;
 using GameFeel.Resource;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Util;
+using GodotApiTools.Extension;
+using GodotApiTools.Util;
 
 namespace GameFeel.UI
 {

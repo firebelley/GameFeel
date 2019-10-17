@@ -11,7 +11,7 @@ namespace GameFeel.UI
 
         public override void _Ready()
         {
-            if (GetOwner() is UI ui)
+            if (Owner is UI ui)
             {
                 ui.Connect(nameof(UI.CloseRequested), this, nameof(OnCloseRequested));
                 ui.Connect(nameof(UI.DeselectRequested), this, nameof(OnDeselectRequested));

@@ -2,8 +2,8 @@ using System.Linq;
 using GameFeel.GameObject;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Util;
+using GodotApiTools.Extension;
+using GodotApiTools.Util;
 
 namespace GameFeel.Resource
 {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using GameFeel.Data.Model;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 using Newtonsoft.Json;
 
 namespace GameFeel.DesignTool
@@ -19,7 +19,7 @@ namespace GameFeel.DesignTool
         public override void _Ready()
         {
             GetTree().SetScreenStretch(SceneTree.StretchMode.Mode2d, SceneTree.StretchAspect.Ignore, new Vector2(1920, 1080));
-            OS.SetWindowMaximized(true);
+            OS.WindowMaximized = true;
 
             _graphEdit = GetNode<GraphEdit>("VBoxContainer/GraphEdit");
             _resourcePreloader = GetNode<ResourcePreloader>("ResourcePreloader");
@@ -120,7 +120,7 @@ namespace GameFeel.DesignTool
                 }
             }
             var file = new File();
-            file.OpenCompressed(path, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
+            file.OpenCompressed(path, File.ModeFlags.Read, File.CompressionMode.Gzip);
             var json = file.GetAsText();
             file.Close();
             var saveModel = JsonConvert.DeserializeObject<QuestSaveModel>(json);
@@ -177,7 +177,7 @@ namespace GameFeel.DesignTool
                         toPort = tuple.Item2;
                     }
 
-                    _graphEdit.ConnectNode(fromNode.GetName(), fromPort, toNode.GetName(), toPort);
+                    _graphEdit.ConnectNode(fromNode.Name, fromPort, toNode.Name, toPort);
                 }
             }
             InvalidateFileDialogs();
@@ -212,7 +212,7 @@ namespace GameFeel.DesignTool
             }
             var json = JsonConvert.SerializeObject(saveModel);
             var file = new File();
-            file.OpenCompressed(path, (int) File.ModeFlags.Write, (int) File.CompressionMode.Gzip);
+            file.OpenCompressed(path, File.ModeFlags.Write, File.CompressionMode.Gzip);
             file.StoreLine(json);
             file.Close();
             InvalidateFileDialogs();
@@ -247,7 +247,7 @@ namespace GameFeel.DesignTool
                 var to = (string) connection["to"];
                 var fromPort = (int) connection["from_port"];
                 var toPort = (int) connection["to_port"];
-                if (from == questNode.GetName() || to == questNode.GetName())
+                if (from == questNode.Name || to == questNode.Name)
                 {
                     if (_graphEdit.IsNodeConnected(from, fromPort, to, toPort))
                     {

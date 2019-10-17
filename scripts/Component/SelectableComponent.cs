@@ -1,7 +1,7 @@
 using GameFeel.GameObject;
 using GameFeel.Singleton;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.Component
 {
@@ -30,13 +30,13 @@ namespace GameFeel.Component
 
         public override void _Ready()
         {
-            if (!Engine.IsEditorHint() && _shadedNodePath != null)
+            if (!Engine.EditorHint && _shadedNodePath != null)
             {
                 _shadedNode = GetNode<Node2D>(_shadedNodePath);
                 _shadedNode.Material = Material.Duplicate() as Material;
             }
 
-            if (!Engine.IsEditorHint())
+            if (!Engine.EditorHint)
             {
                 GameEventDispatcher.Instance.Connect(nameof(GameEventDispatcher.EventPlayerInteract), this, nameof(OnPlayerInteract));
             }

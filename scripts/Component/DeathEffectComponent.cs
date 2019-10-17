@@ -28,7 +28,7 @@ namespace GameFeel.Component
 
         public override string _GetConfigurationWarning()
         {
-            if (!IsInstanceValid(GetOwner()) || GetHealthComponent() == null)
+            if (!IsInstanceValid(Owner) || GetHealthComponent() == null)
             {
                 return "Must have a " + nameof(HealthComponent);
             }
@@ -57,7 +57,7 @@ namespace GameFeel.Component
             }
 
             EmitSignal(nameof(Killed));
-            GetOwner().QueueFree();
+            Owner.QueueFree();
         }
     }
 }

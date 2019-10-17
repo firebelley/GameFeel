@@ -1,5 +1,5 @@
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel.Component.Subcomponent.Behavior
 {

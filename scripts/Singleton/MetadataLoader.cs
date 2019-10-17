@@ -3,8 +3,8 @@ using GameFeel.Component;
 using GameFeel.Data.Model;
 using GameFeel.GameObject.Loot;
 using Godot;
-using GodotTools.Extension;
-using GodotTools.Util;
+using GodotApiTools.Extension;
+using GodotApiTools.Util;
 using Newtonsoft.Json;
 
 namespace GameFeel.Singleton
@@ -160,7 +160,7 @@ namespace GameFeel.Singleton
         private void LoadQuest(string fullPath)
         {
             var file = new File();
-            var err = file.OpenCompressed(fullPath, (int) File.ModeFlags.Read, (int) File.CompressionMode.Gzip);
+            var err = file.OpenCompressed(fullPath, File.ModeFlags.Read, File.CompressionMode.Gzip);
             if (err != Error.Ok)
             {
                 Logger.Error("Could not load quest " + fullPath + " error code " + err);

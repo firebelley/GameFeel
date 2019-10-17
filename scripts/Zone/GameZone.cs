@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using GameFeel.GameObject.Effect;
 using GameFeel.GameObject.Environment;
 using Godot;
-using GodotTools.Extension;
+using GodotApiTools.Extension;
 
 namespace GameFeel
 {
@@ -95,7 +95,7 @@ namespace GameFeel
         public static Curve2D GetStraightCurve(Vector2 fromPos, Vector2 toPos)
         {
             var curve = new Curve2D();
-            var raycast = Instance.GetViewport().GetWorld2d().DirectSpaceState.Raycast(fromPos, toPos, null, 1);
+            var raycast = Instance.GetViewport().World2d.DirectSpaceState.Raycast(fromPos, toPos, null, 1);
             var endPos = raycast?.Position ?? toPos;
             curve.AddPoint(fromPos);
             curve.AddPoint(endPos);
@@ -111,7 +111,7 @@ namespace GameFeel
 
             if (Instance.GetParent() is Viewport vp)
             {
-                return vp.GetCanvasTransform().XformInv(vp.GetMousePosition());
+                return vp.CanvasTransform.XformInv(vp.GetMousePosition());
             }
 
             return Vector2.Zero;
@@ -194,7 +194,7 @@ namespace GameFeel
                 if (OS.IsDebugBuild() && _drawNavigation)
                 {
                     var polygonNode = new Polygon2D();
-                    polygonNode.Polygon = poly.GetVertices();
+                    polygonNode.Polygon = poly.Vertices;
                     polygonNode.Transform = transform;
                     polygonNode.Modulate = new Color(0f, .5f, .5f, .5f);
                     _navigation.AddChild(polygonNode);

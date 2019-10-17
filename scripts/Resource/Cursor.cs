@@ -72,7 +72,7 @@ namespace GameFeel.Resource
 
         public static Vector2 GetAdjustedGlobalMousePosition(Node2D n)
         {
-            var mousePos = n.GetTree().GetRoot().GetMousePosition() * Main.UI_TO_GAME_DISPLAY_RATIO;
+            var mousePos = n.GetTree().Root.GetMousePosition() * Main.UI_TO_GAME_DISPLAY_RATIO;
             return n.GetCanvasTransform().AffineInverse().Xform(mousePos);
         }
 
